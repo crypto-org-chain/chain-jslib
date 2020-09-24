@@ -1,6 +1,15 @@
 {
-    "extends": ["airbnb-base", "prettier"],
-    "plugins": ["@typescript-eslint", "prettier"],
+    "extends": [
+        "airbnb-base",
+        "plugin:mocha/recommended",
+        "prettier"
+    ],
+    "plugins": [
+        "@typescript-eslint",
+        "chai-friendly",
+        "mocha",
+        "prettier"
+    ],
     "parser": "@typescript-eslint/parser",
     "settings": {
         // https://github.com/benmosher/eslint-plugin-import/issues/1615
@@ -11,6 +20,14 @@
         }
     },
     "rules": {
+        // airbnb-base enables func-names, but conflicts with Mocha conventions
+        // https://mochajs.org/#arrow-functions
+        // https://github.com/airbnb/javascript/issues/433
+        "func-names": 0,
+        // airbnb-base enables no-unused-expressions, but conflicts with chai assertion expressions
+        "no-unused-expressions": 0,
+        "chai-friendly/no-unused-expressions": 2,
+
         "prettier/prettier": "error",
         "import/no-extraneous-dependencies": [
             "error",
