@@ -1,0 +1,38 @@
+{
+    "extends": ["airbnb-base", "prettier"],
+    "plugins": ["@typescript-eslint", "prettier"],
+    "parser": "@typescript-eslint/parser",
+    "settings": {
+        // https://github.com/benmosher/eslint-plugin-import/issues/1615
+        "import/resolver": {
+            "node": {
+                "extensions": [".js", ".ts", ".json"]
+            }
+        }
+    },
+    "rules": {
+        "prettier/prettier": "error",
+        "import/no-extraneous-dependencies": [
+            "error",
+            {
+                "devDependencies": true
+            }
+        ],
+        "import/prefer-default-export": "off",
+        "no-unused-vars": "off",
+        "@typescript-eslint/no-unused-vars": "error",
+        // https://github.com/benmosher/eslint-plugin-import/issues/1615
+        "import/extensions": [
+            "error",
+            "ignorePackages",
+            {
+                "js": "never",
+                "mjs": "never",
+                "ts": "never"
+            }
+        ]
+    },
+    "env": {
+        "mocha": true
+    }
+}
