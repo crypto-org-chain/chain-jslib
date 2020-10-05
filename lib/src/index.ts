@@ -1,2 +1,6 @@
-// eslint-disable-next-line no-console
-console.log('Hello world');
+import { Coin } from './coin';
+
+const cro = {
+    Coin,
+};
+export default cro;

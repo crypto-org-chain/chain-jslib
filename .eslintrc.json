@@ -47,7 +47,27 @@
                 "mjs": "never",
                 "ts": "never"
             }
-        ]
+        ],
+        // no-use-before-define conflicts with clean code top-to-bottom rules
+        // https://github.com/eslint/eslint/issues/10589
+        // https://github.com/typescript-eslint/typescript-eslint/blob/v4.2.0/packages/eslint-plugin/docs/rules/no-use-before-define.md
+        "no-use-before-define": "off",
+        "@typescript-eslint/no-use-before-define": [
+            "error", { 
+                "functions": false, 
+                "classes": false, 
+                "variables": false,
+                "typedefs": false,
+                "enums": false
+            }
+        ],
+        "mocha/no-setup-in-describe": "off",
+        // https://github.com/typescript-eslint/typescript-eslint/blob/v4.0.0/packages/eslint-plugin/docs/rules/no-shadow.md
+        "no-shadow": "off",
+        "@typescript-eslint/no-shadow": ["error"],
+        // https://github.com/typescript-eslint/typescript-eslint/blob/v4.0.0/packages/eslint-plugin/docs/rules/no-redeclare.md
+        "no-redeclare": "off",
+        "@typescript-eslint/no-redeclare": ["error"]
     },
     "env": {
         "mocha": true
