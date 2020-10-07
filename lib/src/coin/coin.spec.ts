@@ -1,12 +1,12 @@
 import 'mocha';
 import { expect } from 'chai';
-import { fuzzDescribe } from './test/mocha-fuzz/suite';
+import { fuzzyDescribe } from '../test/mocha-fuzz/suite';
 
 import { Coin } from './coin';
 
 describe('Coin', function () {
     describe('constructor', function () {
-        fuzzDescribe('should throw Error when the provided argument is not (string, Unit)', function (fuzzy) {
+        fuzzyDescribe('should throw Error when the provided argument is not (string, Unit)', function (fuzzy) {
             const testRunner = fuzzy(fuzzy.StringArg('1000'), fuzzy.StringArg(Coin.UNIT_BASE));
             testRunner(
                 function (args0, args1) {
@@ -99,7 +99,7 @@ describe('Coin', function () {
     });
 
     describe('fromBaseUnit', function () {
-        fuzzDescribe('should throw Error when the provided value is not a string', function (fuzzy) {
+        fuzzyDescribe('should throw Error when the provided value is not a string', function (fuzzy) {
             const testRunner = fuzzy(fuzzy.StringArg('1000'));
             testRunner(
                 function (arg) {
@@ -145,7 +145,7 @@ describe('Coin', function () {
     });
 
     describe('fromCRO', function () {
-        fuzzDescribe('should throw Error when the provided value is not a string', function (fuzzy) {
+        fuzzyDescribe('should throw Error when the provided value is not a string', function (fuzzy) {
             const testRunner = fuzzy(fuzzy.StringArg('0.1'));
             testRunner(
                 function (arg) {
@@ -194,7 +194,7 @@ describe('Coin', function () {
     });
 
     describe('add', function () {
-        fuzzDescribe('should throw Error when the provided coins is not an instance of Coin', function (fuzzy) {
+        fuzzyDescribe('should throw Error when the provided coins is not an instance of Coin', function (fuzzy) {
             const anyValidCoin = Coin.fromBaseUnit('1000');
             const testRunner = fuzzy(fuzzy.NonPrimitiveArg(anyValidCoin));
             testRunner(
@@ -238,7 +238,7 @@ describe('Coin', function () {
     });
 
     describe('sub', function () {
-        fuzzDescribe('should throw Error when the provided coins is not an instance of Coin', function (fuzzy) {
+        fuzzyDescribe('should throw Error when the provided coins is not an instance of Coin', function (fuzzy) {
             const anyValidCoin = Coin.fromBaseUnit('1000');
             const testRunner = fuzzy(fuzzy.NonPrimitiveArg(anyValidCoin));
             testRunner(
@@ -282,7 +282,7 @@ describe('Coin', function () {
     });
 
     describe('toString', function () {
-        fuzzDescribe('should throw Error when the provided unit is not a string', function (fuzzy) {
+        fuzzyDescribe('should throw Error when the provided unit is not a string', function (fuzzy) {
             const testRunner = fuzzy(fuzzy.optional(fuzzy.String)(Coin.UNIT_BASE));
             testRunner(
                 function (arg) {
