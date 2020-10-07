@@ -1,0 +1,39 @@
+# This is a basic workflow to help you get started with Actions
+
+name: integration_test_poc
+
+# Controls when the action will run. Triggers the workflow on push or pull request
+# events but only for the master branch
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: Sample Input
+        default: v1.0.0
+        required: false
+  #push:
+    #branches: [ master ]
+  #pull_request:
+   # branches: [ master ]
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  # This workflow contains a single job called "build"
+  integrate:
+    runs-on: ubuntu-latest
+    steps:
+    - name: ts-project
+      uses: actions/checkout@v2
+      with:
+        path: main
+    - name: Checkout chain-main repo
+      uses: actions/checkout@v2
+      with:
+        repository: crypto-com/chain-main
+        path: chain-main
+    - uses: cachix/install-nix-action@v10
+      with:
+       nix_path: nixpkgs=channel:nixos-unstable
+    - run: |
+        cd chain-main && nix-shell --run "pystarport serve &"
+        echo "hello"
