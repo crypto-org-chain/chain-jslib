@@ -320,5 +320,13 @@ describe('Coin', function () {
             const expectedCROValue = '0.00001';
             expect(coins.toString(Coin.UNIT_CRO)).to.eq(expectedCROValue);
         });
+
+        it('should return the CRO value when unit is CRO and has 8 decimal places', function () {
+            const anyBaseValue = '12345678';
+            const coins = Coin.fromBaseUnit(anyBaseValue);
+
+            const expectedCROValue = '0.12345678';
+            expect(coins.toString(Coin.UNIT_CRO)).to.eq(expectedCROValue);
+        });
     });
 });
