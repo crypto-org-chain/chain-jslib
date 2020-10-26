@@ -1,6 +1,6 @@
 import Big from 'big.js';
 import { Coin } from './coin/coin';
-import { KeyPair } from './keypair/keypair';
+import { Secp256k1KeyPair } from './keypair/secp256k1';
 import utils from './utils';
 
 // The maximum number of decimal places of the results of operations involving division
@@ -11,5 +11,5 @@ export default {
     utils,
 
     Coin,
-    KeyPair,
+    Secp256k1KeyPair,
 };

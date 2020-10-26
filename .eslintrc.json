@@ -37,7 +37,11 @@
         ],
         "import/prefer-default-export": "off",
         "no-unused-vars": "off",
-        "@typescript-eslint/no-unused-vars": "error",
+        "@typescript-eslint/no-unused-vars": [
+            "error", {
+                "argsIgnorePattern": "^_"
+            }
+        ],
         // https://github.com/benmosher/eslint-plugin-import/issues/1615
         "import/extensions": [
             "error",

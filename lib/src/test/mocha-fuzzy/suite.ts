@@ -106,7 +106,6 @@ enum FuzzyArgType {
     Function,
     Undefined,
     Null,
-    NonPrimitive,
 }
 
 /* eslint-disable no-multi-assign */
@@ -117,7 +116,6 @@ fuzzyTestRunnerCompose.Object = fuzzyTestRunnerCompose.Obj = FuzzyArgType.Object
 fuzzyTestRunnerCompose.Function = fuzzyTestRunnerCompose.Func = fuzzyTestRunnerCompose.Fn = FuzzyArgType.Function;
 fuzzyTestRunnerCompose.Undefined = FuzzyArgType.Undefined;
 fuzzyTestRunnerCompose.Null = FuzzyArgType.Null;
-fuzzyTestRunnerCompose.NonPrimitive = FuzzyArgType.NonPrimitive;
 /**
  * Generate a fuzzy argument definition function with list of possible argument types
  * @param argTypes list of possible argument types
@@ -177,7 +175,9 @@ fuzzyTestRunnerCompose.BooleanArg = fuzzyTestRunnerCompose.BoolArg = fuzzyArgDef
  * Define an object argument
  * @param validValue a valid argument value to be passed to the test function
  */
-fuzzyTestRunnerCompose.ObjectArg = fuzzyTestRunnerCompose.ObjArg = fuzzyArgDefFnGenerator<object>(FuzzyArgType.Object);
+fuzzyTestRunnerCompose.ObjectArg = fuzzyTestRunnerCompose.ObjArg = fuzzyArgDefFnGenerator<object | any>(
+    FuzzyArgType.Object,
+);
 /**
  * Define a function argument
  * @param validValue a valid argument value to be passed to the test function
@@ -190,7 +190,6 @@ fuzzyTestRunnerCompose.FunctionArg = fuzzyTestRunnerCompose.FuncArg = fuzzyTestR
  */
 fuzzyTestRunnerCompose.UndefinedArg = fuzzyNilArgDefFnGenerator<undefined>(FuzzyArgType.Undefined, undefined);
 fuzzyTestRunnerCompose.NullArg = fuzzyNilArgDefFnGenerator<null>(FuzzyArgType.Null, null);
-fuzzyTestRunnerCompose.NonPrimitiveArg = fuzzyArgDefFnGenerator<any>(FuzzyArgType.NonPrimitive);
 /* eslint-enable no-multi-assign */
 
 // Entries of all the primitive fuzzy types and random value generator functions
