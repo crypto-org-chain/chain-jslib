@@ -1,0 +1,8 @@
+This project contains portions of code derived from the following libraries:
+
+* CosmJS
+ * Copyright: Copyright (c) 2018-2020 IOV SAS
+ * Copyright: Copyright (c) 2020 Confio UO
+ * Copyright: Copyright (c) 2020 Simon Warta
+ * License: Apache License 2.0
+ * Repository: https://github.com/cosmos/cosmjs

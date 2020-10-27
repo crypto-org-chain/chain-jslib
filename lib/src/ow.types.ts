@@ -1,4 +1,5 @@
 import ow from 'ow';
+import Big from 'big.js';
 
 const strictObjectValidator = (val: object) => ({
     validator: typeof val !== 'function',
@@ -24,3 +25,10 @@ const parseObjectLabel = (label: string): string => {
  */
 export const owStrictObject = () => ow.object.validate(strictObjectValidator);
 export const owOptionalStrictObject = () => ow.optional.object.validate(strictObjectValidator);
+
+const owBigValidator = (val: object) => ({
+    validator: val instanceof Big,
+    message: (label: string) => `Expected ${label} to be an instance of \`Big\``,
+});
+export const owBig = () => owStrictObject().validate(owBigValidator);
+export const owOptionalBig = () => owOptionalStrictObject().validate(owBigValidator);

@@ -1,3 +1,6 @@
+# OS
+.DS_Store
+
 # Logs
 logs
 *.log
@@ -31,3 +34,7 @@ node_modules/
 
 # library build folder
 lib/dist/
+
+# Protobuf build folder
+proto/
+tmp/

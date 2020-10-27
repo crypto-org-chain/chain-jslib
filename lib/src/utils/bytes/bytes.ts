@@ -1,5 +1,5 @@
 import ow from 'ow';
-import base64js from 'base64-js';
+import { Buffer } from 'buffer';
 import { cloneUint8Array } from '../typed-array';
 import { owBase64String, owHexString } from './ow.types';
 
@@ -22,6 +22,18 @@ export class Bytes {
     }
 
     /**
+     * Create Bytes from Uint8Array value
+     * @param {Uint8Array} value
+     * @throws {Error} value is invalid
+     * @returns {Bytes}
+     */
+    public static fromUint8Array(value: Uint8Array): Bytes {
+        ow(value, 'value', ow.uint8Array);
+
+        return new Bytes(value);
+    }
+
+    /**
      * Create Bytes from Buffer value
      * @param {Buffer} buf the buffer
      * @throws {Error} value is invalid
@@ -32,7 +44,7 @@ export class Bytes {
 
         const arr = new Uint8Array(value.length);
         arr.set(value);
-        return new Bytes(arr);
+        return Bytes.fromUint8Array(arr);
     }
 
     /**
@@ -45,16 +57,36 @@ export class Bytes {
         ow(value, 'value', owHexString);
 
         if (value.length === 0) {
-            return new Bytes(new Uint8Array());
+            return Bytes.fromUint8Array(new Uint8Array());
         }
         const arr = new Uint8Array(value.match(/.{2}/g)!.map((v) => parseInt(v, 16)));
-        return new Bytes(arr);
+        return Bytes.fromUint8Array(arr);
     }
 
+    /**
+     * Create Bytes from base64 encoded string
+     * @param {string} value Base64 encoded string
+     * @throws {Error} value is invalid
+     * @returns {Bytes}
+     */
     public static fromBase64String(value: string): Bytes {
         ow(value, 'value', owBase64String);
 
-        return new Bytes(base64js.toByteArray(value));
+        return Bytes.fromBuffer(Buffer.from(value, 'base64'));
+    }
+
+    /**
+     * Return true when the provided bytes is the same
+     * @param {Bytes} anotherBytes
+     * @returns {boolean}
+     */
+    public isEqual(anotherBytes: Bytes): boolean {
+        if (this.length !== anotherBytes.length) {
+            return false;
+        }
+
+        const anotherBytesValue = anotherBytes.toUint8Array();
+        return this.value.every((val, i) => val === anotherBytesValue[i]);
     }
 
     /**
@@ -88,7 +120,7 @@ export class Bytes {
      * @returns {string}
      */
     public toBase64String(): string {
-        return base64js.fromByteArray(this.value);
+        return this.toBuffer().toString('base64');
     }
 
     /**
@@ -96,7 +128,7 @@ export class Bytes {
      * @returns {Bytes}
      */
     public clone(): Bytes {
-        return new Bytes(cloneUint8Array(this.value));
+        return Bytes.fromUint8Array(cloneUint8Array(this.value));
     }
 
     public get length(): number {

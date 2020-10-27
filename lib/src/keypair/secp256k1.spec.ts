@@ -31,7 +31,7 @@ describe('Secp256k1KeyPair', function () {
         it('should return KeyPair', function () {
             const keyPair = new Secp256k1KeyPair(ANY_VALID_PRIV_KEY);
 
-            expect(keyPair.toPrivKey()).to.deep.eq(ANY_VALID_PRIV_KEY);
+            expect(keyPair.getPrivKey()).to.deep.eq(ANY_VALID_PRIV_KEY);
         });
     });
 
@@ -68,12 +68,12 @@ describe('Secp256k1KeyPair', function () {
         });
 
         it('should throw Error when the private key is not 32 bytes long', function () {
-            const shorterPrivKey = new Bytes(Uint8Array.from([1, 1, 1]));
+            const shorterPrivKey = Bytes.fromUint8Array(Uint8Array.from([1, 1, 1]));
             expect(() => Secp256k1KeyPair.fromPrivKey(shorterPrivKey)).to.throw(
                 'Expected object `privKey` to be an instance of `Bytes` of byte length in 32',
             );
 
-            const longerPrivKey = new Bytes(new Uint8Array(64).fill(1));
+            const longerPrivKey = Bytes.fromUint8Array(new Uint8Array(64).fill(1));
             expect(() => Secp256k1KeyPair.fromPrivKey(longerPrivKey)).to.throw(
                 'Expected object `privKey` to be an instance of `Bytes` of byte length in 32',
             );
@@ -86,14 +86,14 @@ describe('Secp256k1KeyPair', function () {
         it('should return KeyPair', function () {
             const keyPair = Secp256k1KeyPair.fromPrivKey(ANY_VALID_PRIV_KEY);
 
-            expect(keyPair.toPrivKey()).to.deep.eq(ANY_VALID_PRIV_KEY);
+            expect(keyPair.getPrivKey()).to.deep.eq(ANY_VALID_PRIV_KEY);
         });
     });
 
     describe('generateRandom', function () {
         it('should return a randomly generated KeyPair', function () {
             const keyPair = Secp256k1KeyPair.generateRandom();
-            expect(secp256k1.privateKeyVerify(keyPair.toPrivKey().toUint8Array())).to.be.true;
+            expect(secp256k1.privateKeyVerify(keyPair.getPrivKey().toUint8Array())).to.be.true;
         });
 
         it('should generate new random KeyPair on each call', function () {
@@ -101,9 +101,9 @@ describe('Secp256k1KeyPair', function () {
 
             for (let i = 0; i < 1000; i += 1) {
                 const keyPair = Secp256k1KeyPair.generateRandom();
-                expect(secp256k1.privateKeyVerify(keyPair.toPrivKey().toUint8Array())).to.be.true;
+                expect(secp256k1.privateKeyVerify(keyPair.getPrivKey().toUint8Array())).to.be.true;
 
-                const privKey = keyPair.toPrivKey().toHexString();
+                const privKey = keyPair.getPrivKey().toHexString();
                 expect(privKeysGenerated.includes(privKey)).to.be.false;
 
                 privKeysGenerated.push(privKey);
@@ -117,7 +117,7 @@ describe('Secp256k1KeyPair', function () {
             testRunner(function (options) {
                 if (!options.valid) {
                     const keyPair = Secp256k1KeyPair.fromPrivKey(ANY_VALID_PRIV_KEY);
-                    expect(() => keyPair.toPubKey(options.value)).to.throw('Expected argument to be of type `object`');
+                    expect(() => keyPair.getPubKey(options.value)).to.throw('Expected argument to be of type `object`');
                 }
             });
         });
@@ -128,7 +128,7 @@ describe('Secp256k1KeyPair', function () {
                 if (!compressed.valid) {
                     const keyPair = Secp256k1KeyPair.fromPrivKey(ANY_VALID_PRIV_KEY);
                     expect(() =>
-                        keyPair.toPubKey({
+                        keyPair.getPubKey({
                             compressed: compressed.value,
                         }),
                     ).to.throw('Expected property `compressed` to be of type `boolean`');
@@ -140,7 +140,7 @@ describe('Secp256k1KeyPair', function () {
             const keyPair = Secp256k1KeyPair.fromPrivKey(ANY_VALID_KEY_PAIR.privKey);
 
             expect(
-                keyPair.toPubKey({
+                keyPair.getPubKey({
                     compressed: true,
                 }),
             ).to.deep.eq(ANY_VALID_KEY_PAIR.compressedPubKey);
@@ -150,7 +150,7 @@ describe('Secp256k1KeyPair', function () {
             const keyPair = Secp256k1KeyPair.fromPrivKey(ANY_VALID_KEY_PAIR.privKey);
 
             expect(
-                keyPair.toPubKey({
+                keyPair.getPubKey({
                     compressed: false,
                 }),
             ).to.deep.eq(ANY_VALID_KEY_PAIR.pubKey);
@@ -159,19 +159,19 @@ describe('Secp256k1KeyPair', function () {
         it('should return compressed public key when not specified', function () {
             const keyPair = Secp256k1KeyPair.fromPrivKey(ANY_VALID_KEY_PAIR.privKey);
 
-            expect(keyPair.toPubKey()).to.deep.eq(ANY_VALID_KEY_PAIR.compressedPubKey);
+            expect(keyPair.getPubKey()).to.deep.eq(ANY_VALID_KEY_PAIR.compressedPubKey);
         });
     });
 
     describe('sign', function () {
         fuzzyDescribe('should throw Error when message is not Uint8Array', function (fuzzy) {
-            const anyMessage = new Uint8Array(32).fill(1);
+            const anyMessage = Bytes.fromUint8Array(new Uint8Array(32).fill(1));
             const testRunner = fuzzy(fuzzy.ObjArg(anyMessage));
 
             testRunner(function (message) {
                 if (!message.valid) {
                     const keyPair = Secp256k1KeyPair.fromPrivKey(ANY_VALID_PRIV_KEY);
-                    expect(() => keyPair.sign(message.value)).to.throw('Expected argument to be of type `Uint8Array`');
+                    expect(() => keyPair.sign(message.value)).to.throw('Expected argument to be of type `object`');
                 }
             });
         });
@@ -179,11 +179,16 @@ describe('Secp256k1KeyPair', function () {
         it('should return the signature of signing the same message', function () {
             const keyPair = Secp256k1KeyPair.fromPrivKey(ANY_VALID_PRIV_KEY);
 
-            const anyMessage = new Uint8Array(32).fill(1);
+            const anyMessage = Bytes.fromUint8Array(new Uint8Array(32).fill(1));
             const actualSignature = keyPair.sign(anyMessage);
 
-            expect(secp256k1.ecdsaVerify(actualSignature.toUint8Array(), anyMessage, keyPair.toPubKey().toUint8Array()))
-                .to.be.true;
+            expect(
+                secp256k1.ecdsaVerify(
+                    actualSignature.toUint8Array(),
+                    anyMessage.toUint8Array(),
+                    keyPair.getPubKey().toUint8Array(),
+                ),
+            ).to.be.true;
         });
     });
 });

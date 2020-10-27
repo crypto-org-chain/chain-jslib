@@ -8,6 +8,7 @@ export enum Units {
     CRO = 'cro',
 }
 
+// TODO: support network
 export class Coin {
     /**
      * Total supply in base unit represented as string

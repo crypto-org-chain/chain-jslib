@@ -1,5 +1,5 @@
 import ow, { Predicate } from 'ow';
-import base64js from 'base64-js';
+import { Buffer } from 'buffer';
 import { owOptionalStrictObject, owStrictObject } from '../../ow.types';
 import { Bytes } from './bytes';
 
@@ -10,7 +10,7 @@ export const owHexString = ow.string.validate((val: string) => ({
 }));
 
 export const owBase64String = ow.string.validate((val: string) => ({
-    validator: val.length % 4 === 0 && base64js.fromByteArray(base64js.toByteArray(val)) === val,
+    validator: val.length % 4 === 0 && Buffer.from(val, 'base64').toString('base64') === val,
     message: `Expected valid base64 string of length be multiple of 4, got \`${JSON.stringify(val)}\``,
 }));
 
