@@ -1,6 +1,6 @@
 import 'mocha';
 import { expect } from 'chai';
-import { fuzzyDescribe } from '../test/mocha-fuzz/suite';
+import { fuzzyDescribe } from '../test/mocha-fuzzy/suite';
 
 import { Coin } from './coin';
 
@@ -196,7 +196,7 @@ describe('Coin', function () {
     describe('add', function () {
         fuzzyDescribe('should throw Error when the provided coins is not an instance of Coin', function (fuzzy) {
             const anyValidCoin = Coin.fromBaseUnit('1000');
-            const testRunner = fuzzy(fuzzy.NonPrimitiveArg(anyValidCoin));
+            const testRunner = fuzzy(fuzzy.ObjArg(anyValidCoin));
             testRunner(
                 function (arg) {
                     const anyCoin = Coin.fromBaseUnit('1000');
@@ -240,7 +240,7 @@ describe('Coin', function () {
     describe('sub', function () {
         fuzzyDescribe('should throw Error when the provided coins is not an instance of Coin', function (fuzzy) {
             const anyValidCoin = Coin.fromBaseUnit('1000');
-            const testRunner = fuzzy(fuzzy.NonPrimitiveArg(anyValidCoin));
+            const testRunner = fuzzy(fuzzy.ObjArg(anyValidCoin));
             testRunner(
                 function (arg) {
                     const anyCoin = Coin.fromBaseUnit('1000');
@@ -296,7 +296,7 @@ describe('Coin', function () {
         it('should throw Error when the provided unit is invalid', function () {
             const anyCoin = Coin.fromBaseUnit('1000');
 
-            expect(() => anyCoin.toString('invalid' as any)).to.throw('Expected argument to be one of the Coin units');
+            expect(() => anyCoin.toString('invalid' as any)).to.throw('Expected string to be one of the Coin units');
         });
 
         it('should return the base unit when no unit is provided', function () {

@@ -1,6 +1,7 @@
 import ow from 'ow';
+import base64js from 'base64-js';
 import { cloneUint8Array } from '../typed-array';
-import { owHexString } from './ow.types';
+import { owBase64String, owHexString } from './ow.types';
 
 /**
  * Immutable Bytes value
@@ -50,6 +51,12 @@ export class Bytes {
         return new Bytes(arr);
     }
 
+    public static fromBase64String(value: string): Bytes {
+        ow(value, 'value', owBase64String);
+
+        return new Bytes(base64js.toByteArray(value));
+    }
+
     /**
      * Returns Uint8Array representation of the Bytes
      * @returns {Uint8Array}
@@ -74,6 +81,22 @@ export class Bytes {
         return Array.from(this.value)
             .map((i) => `0${i.toString(16)}`.slice(-2))
             .join('');
+    }
+
+    /**
+     * Returns hexadecimal string representation of the Bytes
+     * @returns {string}
+     */
+    public toBase64String(): string {
+        return base64js.fromByteArray(this.value);
+    }
+
+    /**
+     * Returns a cloned copy of the Bytes
+     * @returns {Bytes}
+     */
+    public clone(): Bytes {
+        return new Bytes(cloneUint8Array(this.value));
     }
 
     public get length(): number {

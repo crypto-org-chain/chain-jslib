@@ -3,8 +3,20 @@ import ow from 'ow';
 const strictObjectValidator = (val: object) => ({
     validator: typeof val !== 'function',
     message: (label: string) =>
-        `Expected ${label === 'object' ? 'argument' : label} to be of type \`object\`, got \`${JSON.stringify(val)}\``,
+        `Expected ${parseObjectLabel(label)} to be of type \`object\`, but received type \`function\``,
 });
+
+const parseObjectLabel = (label: string): string => {
+    if (label === 'object') {
+        return 'argument';
+    }
+    if (label.startsWith('object ')) {
+        const parts = label.split('object ');
+        return parts.length === 2 ? parts[1] : 'argument';
+    }
+
+    return label;
+};
 /**
  * Technically speaking functions are objects in JavaScript. However, this definition is not intuitive in argument
  * use cases. strict object eliminates function validity from the ow.object predicate.

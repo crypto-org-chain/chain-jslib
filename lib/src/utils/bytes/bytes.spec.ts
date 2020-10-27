@@ -1,13 +1,13 @@
 import 'mocha';
 import { expect } from 'chai';
-import { fuzzyDescribe } from '../../test/mocha-fuzz/suite';
+import { fuzzyDescribe } from '../../test/mocha-fuzzy/suite';
 
 import { Bytes } from './bytes';
 
 describe('Bytes', function () {
     describe('constructor', function () {
         fuzzyDescribe('should throw Error when argument is not Uint8Array', function (fuzzy) {
-            const testRunner = fuzzy(fuzzy.NonPrimitiveArg(new Uint8Array(32).fill(1)));
+            const testRunner = fuzzy(fuzzy.ObjArg(new Uint8Array(32).fill(1)));
 
             testRunner(function (arg) {
                 if (!arg.valid) {
@@ -35,7 +35,7 @@ describe('Bytes', function () {
 
     describe('fromBuffer', function () {
         fuzzyDescribe('should throw Error when argument is not Buffer', function (fuzzy) {
-            const testRunner = fuzzy(fuzzy.NonPrimitiveArg(Buffer.alloc(32).fill(1)));
+            const testRunner = fuzzy(fuzzy.ObjArg(Buffer.alloc(32).fill(1)));
 
             testRunner(function (arg) {
                 if (!arg.valid) {
@@ -101,6 +101,44 @@ describe('Bytes', function () {
         });
     });
 
+    describe('fromBase64String', function () {
+        fuzzyDescribe('should throw Error when argument is not string', function (fuzzy) {
+            const testRunner = fuzzy(fuzzy.StringArg('Hy/hEXURHOHziOcyS7u6coBcoCfVtYvZ+0sJhkfr5I4='));
+
+            testRunner(function (arg) {
+                if (!arg.valid) {
+                    expect(() => Bytes.fromBase64String(arg.value)).to.throw('Expected `value` to be of type `string`');
+                }
+            });
+        });
+
+        it('should throw Error when string is not valid base64 string', function () {
+            expect(() => Bytes.fromBase64String('!@#$%^&*')).to.throw(
+                'Expected valid base64 string of length be multiple of 4',
+            );
+        });
+
+        it('should throw Error when string is not valid base64 string of length be multiple of 4', function () {
+            expect(() => Bytes.fromBase64String('6chars')).to.throw(
+                'Expected valid base64 string of length be multiple of 4',
+            );
+        });
+
+        it('should return empty Bytes when string is empty', function () {
+            const bytes = Bytes.fromBase64String('');
+
+            expect(bytes.toUint8Array().length).to.eq(0);
+        });
+
+        it('should return Bytes of the provided base64 string', function () {
+            const anyHexString = 'AQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQE=';
+            const bytes = Bytes.fromBase64String(anyHexString);
+
+            const expectedUint8Array = new Uint8Array(32).fill(1);
+            expect(bytes.toUint8Array()).to.deep.eq(expectedUint8Array);
+        });
+    });
+
     describe('length', function () {
         it('should return 0 when the Bytes is empty', function () {
             const anyBytes = Bytes.fromHexString('');
@@ -143,6 +181,16 @@ describe('Bytes', function () {
 
             const expectedHexString = '01'.repeat(32);
             expect(bytes.toHexString()).to.deep.eq(expectedHexString);
+        });
+    });
+
+    describe('toBase64String', function () {
+        it('should return base64 string representation', function () {
+            const anyUint8Array = new Uint8Array(32).fill(1);
+            const bytes = new Bytes(anyUint8Array);
+
+            const expectedBase64String = 'AQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQE=';
+            expect(bytes.toBase64String()).to.deep.eq(expectedBase64String);
         });
     });
 });

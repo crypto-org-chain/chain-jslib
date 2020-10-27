@@ -1,5 +1,6 @@
 import Big from 'big.js';
 import ow from 'ow';
+
 import { owCoin, owCoinUnit } from './ow.types';
 
 export enum Units {
@@ -76,7 +77,7 @@ export class Coin {
         try {
             coins = new Big(amount);
         } catch (err) {
-            throw new TypeError(`Expected amount to be a base10 number represented as string, got '${amount}'`);
+            throw new TypeError(`Expected amount to be a base10 number represented as string, got \`${amount}\``);
         }
 
         this.baseAmount = unit === Units.BASE ? Coin.parseBaseAmount(coins) : Coin.parseCROAmount(coins);
@@ -90,14 +91,14 @@ export class Coin {
      */
     private static parseBaseAmount(baseAmount: Big): Big {
         if (baseAmount.cmp(baseAmount.toFixed(0)) !== 0) {
-            throw new TypeError(`Expected base amount to be an integer, got '${baseAmount}'`);
+            throw new TypeError(`Expected base amount to be an integer, got \`${baseAmount}\``);
         }
         if (baseAmount.lt(0)) {
-            throw new TypeError(`Expected base amount to be positive, got '${baseAmount}'`);
+            throw new TypeError(`Expected base amount to be positive, got \`${baseAmount}\``);
         }
 
         if (baseAmount.gt(Coin.TOTAL_SUPPLY_STRING)) {
-            throw new TypeError(`Expected base amount to be within total supply, got '${baseAmount}'`);
+            throw new TypeError(`Expected base amount to be within total supply, got \`${baseAmount}\``);
         }
 
         return baseAmount;
@@ -112,15 +113,15 @@ export class Coin {
     private static parseCROAmount(croAmount: Big): Big {
         const baseAmount = croAmount.mul(Coin.ONE_CRO_IN_BASE_UNIT);
         if (baseAmount.cmp(baseAmount.toFixed(0)) !== 0) {
-            throw new TypeError(`Expected CRO amount to have at most 8 decimal places, got '${croAmount}'`);
+            throw new TypeError(`Expected CRO amount to have at most 8 decimal places, got \`${croAmount}\``);
         }
 
         if (baseAmount.lt(0)) {
-            throw new TypeError(`Expected CRO amount to be positive, got '${croAmount}'`);
+            throw new TypeError(`Expected CRO amount to be positive, got \`${croAmount}\``);
         }
 
         if (baseAmount.gt(Coin.TOTAL_SUPPLY_STRING)) {
-            throw new TypeError(`Expected CRO amount to be within total supply, got '${croAmount}'`);
+            throw new TypeError(`Expected CRO amount to be within total supply, got \`${croAmount}\``);
         }
 
         return baseAmount;

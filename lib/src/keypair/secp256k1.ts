@@ -2,21 +2,21 @@ import secp256k1 from 'secp256k1';
 import ow from 'ow';
 import randomBytes from 'randombytes';
 
-import { owPrivKey, owOptionalToPubKeyOptions } from './ow.types';
+import { owSecp256k1PrivKey, owOptionalSecp256k1KeyPairToPubKeyOptions } from './ow.types';
 import { Bytes } from '../utils/bytes/bytes';
 
-export class KeyPair {
+export class Secp256k1KeyPair {
     private privKey: Bytes;
 
     /**
      * Constructor to create a KeyPair
      * @param {Bytes} privKey private key
      * @throws {Error} private key is invalid
-     * @returns {KeyPair}
+     * @returns {Secp256k1KeyPair}
      * @memberof KeyPair
      */
     constructor(privKey: Bytes) {
-        ow(privKey, owPrivKey);
+        ow(privKey, owSecp256k1PrivKey);
 
         // `Bytes` is immutable, so no clone is needed
         this.privKey = privKey;
@@ -26,27 +26,27 @@ export class KeyPair {
      * Create a KeyPair from private key
      * @param {Bytes} privKey private key
      * @throws {Error} private key is invalid
-     * @returns {KeyPair}
+     * @returns {Secp256k1KeyPair}
      * @memberof KeyPair
      */
-    public static fromPrivKey(privKey: Bytes): KeyPair {
-        ow(privKey, 'privKey', owPrivKey);
+    public static fromPrivKey(privKey: Bytes): Secp256k1KeyPair {
+        ow(privKey, 'privKey', owSecp256k1PrivKey);
 
-        return new KeyPair(privKey);
+        return new Secp256k1KeyPair(privKey);
     }
 
     /**
      * generates random private key and returns KeyPair of it
-     * @returns {KeyPair} generated KeyPair
+     * @returns {Secp256k1KeyPair} generated KeyPair
      * @memberof KeyPair
      */
-    public static generateRandom(): KeyPair {
+    public static generateRandom(): Secp256k1KeyPair {
         let privKey: Buffer;
         do {
             privKey = randomBytes(32);
         } while (!secp256k1.privateKeyVerify(privKey));
 
-        return new KeyPair(new Bytes(privKey));
+        return new Secp256k1KeyPair(new Bytes(privKey));
     }
 
     /**
@@ -67,7 +67,7 @@ export class KeyPair {
      * @memberof KeyPair
      */
     public toPubKey(options?: PubKeyOptions): Bytes {
-        ow(options, owOptionalToPubKeyOptions as any);
+        ow(options, owOptionalSecp256k1KeyPairToPubKeyOptions as any);
 
         const compressed = typeof options?.compressed === 'undefined' ? true : options.compressed;
         return new Bytes(secp256k1.publicKeyCreate(this.privKey.toUint8Array(), compressed));
@@ -90,6 +90,6 @@ export class KeyPair {
     }
 }
 
-type PubKeyOptions = {
+export type PubKeyOptions = {
     compressed: boolean;
 };
