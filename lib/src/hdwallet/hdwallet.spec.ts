@@ -35,7 +35,6 @@ describe('HDWallet', function () {
                         'Expected `mnemonic` to be of type `string`',
                     );
                 } else if (!passphrase.valid) {
-                    console.log(mnemonic, passphrase);
                     expect(() => HDWallet.fromMnemonic(mnemonic.value, passphrase.value)).to.throw(
                         'Expected `passphrase` to be of type `string`',
                     );
