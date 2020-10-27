@@ -65,6 +65,7 @@ export class Coin {
      * Constructor to create a Coin
      * @param {string} amount coins amount represented as string
      * @param {Units} unit unit of the coins
+     * @throws {Error} amount or unit is invalid
      * @returns {Coin}
      */
     constructor(amount: string, unit: Units) {
@@ -129,6 +130,7 @@ export class Coin {
      * Create a Coin from the base unit
      * @param {string} baseValue coins value in base unit
      * @returns {Coin}
+     * @throws {Error} base value is invalid
      * @memberof Coin
      */
     public static fromBaseUnit(baseValue: string): Coin {
@@ -139,6 +141,7 @@ export class Coin {
      * Create a Coin from CRO unit
      * @param {string} croValue coins value in CRO unit
      * @returns {Coin}
+     * @throws {Error} cro value is invalid
      * @memberof Coin
      */
     public static fromCRO(croValue: string): Coin {
@@ -149,6 +152,7 @@ export class Coin {
      * Add two coins together and returns a new Coin
      * @param {Coin} anotherCoin coins to add
      * @returns {Coin}
+     * @throws {Error} adding two coins would exceed total supply
      * @memberof Coin
      */
     public add(anotherCoin: Coin): Coin {
@@ -165,6 +169,7 @@ export class Coin {
      * Subtract another Coin and returns a new Coin
      * @param {Coin} anotherCoin coins to subtract
      * @returns {Coin}
+     * @throws {Error} subtracting two coins would become negative
      * @memberof Coin
      */
     public sub(anotherCoin: Coin): Coin {
@@ -190,6 +195,7 @@ export class Coin {
      * Returns a string representation of the coins in the specified unit. Default unit is base.
      * @param {Units} [unit=Unit.Base] coins unit
      * @returns {string}
+     * @throws {Error} unit is invalid
      * @memberof Coin
      */
     public toString(unit: Units = Units.BASE): string {

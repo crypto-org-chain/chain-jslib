@@ -9,8 +9,8 @@ const chance = new Chance();
  * @param {function} fn callback function containing nested suites. A Fuzzy Test Runner Compose function is passed to
  * generate fuzzy test runner for running the actual test
  */
-export const fuzzDescribe = (title: string, fn: DescFunc): Mocha.Suite => {
-    return describe(`[Fuzz] ${title}`, function () {
+export const fuzzyDescribe = (title: string, fn: DescFunc): Mocha.Suite => {
+    return describe(`[Fuzzy] ${title}`, function () {
         return fn.call(this, fuzzyTestRunnerCompose);
     });
 };
@@ -20,9 +20,9 @@ export const fuzzDescribe = (title: string, fn: DescFunc): Mocha.Suite => {
  * @param {function} fn callback function containing nested suites. A Fuzzy Test Runner Compose function is passed to
  * generate fuzzy test runner for running the actual test
  */
-fuzzDescribe.only = (title: string, fn: DescFunc): Mocha.Suite => {
+fuzzyDescribe.only = (title: string, fn: DescFunc): Mocha.Suite => {
     // eslint-disable-next-line mocha/no-exclusive-tests
-    return describe.only(`[Fuzz] ${title}`, function () {
+    return describe.only(`[Fuzzy] ${title}`, function () {
         return fn.call(this, fuzzyTestRunnerCompose);
     });
 };

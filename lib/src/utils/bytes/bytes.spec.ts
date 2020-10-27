@@ -1,0 +1,148 @@
+import 'mocha';
+import { expect } from 'chai';
+import { fuzzyDescribe } from '../../test/mocha-fuzz/suite';
+
+import { Bytes } from './bytes';
+
+describe('Bytes', function () {
+    describe('constructor', function () {
+        fuzzyDescribe('should throw Error when argument is not Uint8Array', function (fuzzy) {
+            const testRunner = fuzzy(fuzzy.NonPrimitiveArg(new Uint8Array(32).fill(1)));
+
+            testRunner(function (arg) {
+                if (!arg.valid) {
+                    expect(() => new Bytes(arg.value)).to.throw('Expected `value` to be of type `Uint8Array`');
+                }
+            });
+        });
+
+        it('should clone the Uint8Array input', function () {
+            const anyUint8Array = new Uint8Array(32).fill(1);
+            const bytes = new Bytes(anyUint8Array);
+
+            anyUint8Array.fill(0);
+            const expectedUint8Array = new Uint8Array(32).fill(1);
+            expect(bytes.toUint8Array()).to.deep.eq(expectedUint8Array);
+        });
+
+        it('should return Bytes of the provided Uint8Array', function () {
+            const anyUint8Array = new Uint8Array(32).fill(1);
+            const bytes = new Bytes(anyUint8Array);
+
+            expect(bytes.toUint8Array()).to.deep.eq(anyUint8Array);
+        });
+    });
+
+    describe('fromBuffer', function () {
+        fuzzyDescribe('should throw Error when argument is not Buffer', function (fuzzy) {
+            const testRunner = fuzzy(fuzzy.NonPrimitiveArg(Buffer.alloc(32).fill(1)));
+
+            testRunner(function (arg) {
+                if (!arg.valid) {
+                    expect(() => Bytes.fromBuffer(arg.value)).to.throw('Expected `value` to be of type `Buffer`');
+                }
+            });
+        });
+
+        it('should clone the Buffer input', function () {
+            const anyBuffer = Buffer.alloc(32).fill(1);
+            const bytes = Bytes.fromBuffer(anyBuffer);
+
+            anyBuffer.fill(0);
+
+            const expectedUint8Array = new Uint8Array(32).fill(1);
+            expect(bytes.toUint8Array()).to.deep.eq(expectedUint8Array);
+        });
+
+        it('should return Bytes of the provided Buffer', function () {
+            const anyBuffer = Buffer.alloc(32).fill(1);
+            const bytes = Bytes.fromBuffer(anyBuffer);
+
+            const expectedUint8Array = new Uint8Array(32).fill(1);
+            expect(bytes.toUint8Array()).to.deep.eq(expectedUint8Array);
+        });
+    });
+
+    describe('fromHexString', function () {
+        fuzzyDescribe('should throw Error when argument is not string', function (fuzzy) {
+            const testRunner = fuzzy(fuzzy.StringArg('1'.repeat(32)));
+
+            testRunner(function (arg) {
+                if (!arg.valid) {
+                    expect(() => Bytes.fromHexString(arg.value)).to.throw('Expected `value` to be of type `string`');
+                }
+            });
+        });
+
+        it('should throw Error when string is not hexadecimal character', function () {
+            expect(() => Bytes.fromHexString('ZZZZ')).to.throw(
+                'Expected string `value` to be hexadecimal string of even length',
+            );
+        });
+
+        it('should throw Error when string is not hexadecimal character of even length', function () {
+            expect(() => Bytes.fromHexString('111')).to.throw(
+                'Expected string `value` to be hexadecimal string of even length',
+            );
+        });
+
+        it('should return empty Bytes when string is empty', function () {
+            const bytes = Bytes.fromHexString('');
+
+            expect(bytes.toUint8Array().length).to.eq(0);
+        });
+
+        it('should return Bytes of the provided Buffer', function () {
+            const anyHexString = '01'.repeat(32);
+            const bytes = Bytes.fromHexString(anyHexString);
+
+            const expectedUint8Array = new Uint8Array(32).fill(1);
+            expect(bytes.toUint8Array()).to.deep.eq(expectedUint8Array);
+        });
+    });
+
+    describe('length', function () {
+        it('should return 0 when the Bytes is empty', function () {
+            const anyBytes = Bytes.fromHexString('');
+
+            expect(anyBytes.length).to.eq(0);
+        });
+
+        it('should return length of the bytes', function () {
+            const anyBytes = new Bytes(new Uint8Array(32).fill(1));
+
+            expect(anyBytes.length).to.eq(32);
+        });
+    });
+
+    describe('toUint8Array', function () {
+        it('should return new copy of the underlying Uint8Array', function () {
+            const anyUint8Array = new Uint8Array(32).fill(1);
+            const bytes = new Bytes(anyUint8Array);
+
+            const result = bytes.toUint8Array();
+            result.fill(0);
+            expect(bytes.toUint8Array()).to.deep.eq(new Uint8Array(32).fill(1));
+        });
+    });
+
+    describe('toBuffer', function () {
+        it('should return Buffer representation', function () {
+            const anyUint8Array = new Uint8Array(32).fill(1);
+            const bytes = new Bytes(anyUint8Array);
+
+            const expectedBuffer = Buffer.alloc(32).fill(1);
+            expect(bytes.toBuffer()).to.deep.eq(expectedBuffer);
+        });
+    });
+
+    describe('toHexString', function () {
+        it('should return hexadecimal string representation', function () {
+            const anyUint8Array = new Uint8Array(32).fill(1);
+            const bytes = new Bytes(anyUint8Array);
+
+            const expectedHexString = '01'.repeat(32);
+            expect(bytes.toHexString()).to.deep.eq(expectedHexString);
+        });
+    });
+});
