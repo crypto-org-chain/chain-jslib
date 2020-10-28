@@ -72,7 +72,7 @@ export class Transaction {
         return this;
     }
 
-    public appendTxBodyMessageSend(message: MsgSend): Transaction {
+    public appendTxBodyMsgSend(message: MsgSend): Transaction {
         return this.appendTxBodyMessage(message.toMsg());
     }
 
