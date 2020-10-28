@@ -72,6 +72,13 @@ export class Transaction {
         return this;
     }
 
+    /**
+     * Append Cosmos MsgSend to transaction
+     * @param {MsgSend} message one of the supported Cosmos message
+     * @returns {Transaction}
+     * @throws {Error} when message is invalid
+     * @memberof Transaction
+     */
     public appendTxBodyMsgSend(message: MsgSend): Transaction {
         return this.appendTxBodyMessage(message.toMsg());
     }
