@@ -1,8 +1,8 @@
-import 'mocha';
 import { expect } from 'chai';
 import { fuzzyDescribe } from '../test/mocha-fuzzy/suite';
 
 import { Coin } from './coin';
+import { Testnet } from '../network/network';
 
 describe('Coin', function () {
     describe('constructor', function () {
@@ -278,6 +278,16 @@ describe('Coin', function () {
 
             anyCoin.sub(anyAnotherCoin);
             expect(anyCoin.toString()).to.eq(anyCoinValue);
+        });
+    });
+
+    describe('toCosmosCoin', function () {
+        it('should return the Cosmos Coin object', function () {
+            const anyCoin = Coin.fromBaseUnit('1000');
+            expect(anyCoin.toCosmosCoin(Testnet)).to.deep.eq({
+                amount: '1000',
+                denom: Testnet.coin.baseDenom,
+            });
         });
     });
 

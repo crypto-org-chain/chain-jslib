@@ -10,9 +10,10 @@ export type Msg =
       }
     | MsgWithdrawDelegatorReward;
 
-export const owMsg = owStrictObject().partialShape({
-    typeUrl: ow.string,
-});
+export const owMsg = () =>
+    owStrictObject().partialShape({
+        typeUrl: ow.string,
+    });
 
 export type distribution = {
     v1beta1: {

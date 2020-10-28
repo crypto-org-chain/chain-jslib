@@ -11,7 +11,9 @@ describe('Bytes', function () {
 
             testRunner(function (arg) {
                 if (!arg.valid) {
-                    expect(() => Bytes.fromUint8Array(arg.value)).to.throw('Expected `value` to be of type `Uint8Array`');
+                    expect(() => Bytes.fromUint8Array(arg.value)).to.throw(
+                        'Expected `value` to be of type `Uint8Array`',
+                    );
                 }
             });
         });
