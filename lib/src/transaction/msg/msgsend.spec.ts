@@ -35,7 +35,7 @@ describe('Testing MsgSend', function () {
         expect(msgSend.toMsg()).to.be.eqls(rawMsg);
     });
 
-    it('Test appendTxBody MsgSend Tx', function () {
+    it('Test appendTxBody MsgSend Tx signing', function () {
         const anyKeyPair = Secp256k1KeyPair.fromPrivKey(
             Bytes.fromHexString('66633d18513bec30dd11a209f1ceb1787aa9e2069d5d47e590174dc9665102b3'),
         );
