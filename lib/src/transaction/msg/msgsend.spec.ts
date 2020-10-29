@@ -61,8 +61,8 @@ describe('Testing MsgSend', function () {
 
         const signedTx = signableTx.setSignature(0, anyKeyPair.sign(signableTx.toSignDoc(0))).toSigned();
 
-        const signature = signedTx.encode().toHexString();
-        expect(signature).to.be.eql(
+        const txHex = signedTx.encode().toHexString();
+        expect(txHex).to.be.eql(
             '0a9b010a98010a1c2f636f736d6f732e62616e6b2e763162657461312e4d736753656e6412780a2b7463726f313635747a6' +
                 '3726832796c3833673871657178756567326735677a6775353779336665336b6333122b7463726f3138346c7461326c7379753437' +
                 '767779703265387a6d746361336b3579713835703663347670331a1c0a08626173657463726f12103132303030353030303030303' +
