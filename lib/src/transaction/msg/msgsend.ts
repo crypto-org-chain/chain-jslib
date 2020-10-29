@@ -14,19 +14,17 @@ export class MsgSend implements Message {
 
     /**
      * Constructor to create a new MsgSend
-     * @param {string} fromAddress
-     * @param {string} toAddress
-     * @param {Coin} amount
+     * @param {MsgSendOptions} options
      * @returns {MsgSend}
      * @throws {Error} when options is invalid
      */
-    constructor(fromAddress: string, toAddress: string, amount: Coin) {
-        ow(fromAddress, ow.string);
-        ow(toAddress, ow.string);
+    constructor(options: MsgSendOptions) {
+        ow(options.fromAddress, ow.string);
+        ow(options.toAddress, ow.string);
 
-        this.fromAddress = fromAddress;
-        this.toAddress = toAddress;
-        this.value = amount;
+        this.fromAddress = options.fromAddress;
+        this.toAddress = options.toAddress;
+        this.value = options.amount;
     }
 
     /**
@@ -49,3 +47,9 @@ export class MsgSend implements Message {
         };
     }
 }
+
+export type MsgSendOptions = {
+    fromAddress: string;
+    toAddress: string;
+    amount: Coin;
+};

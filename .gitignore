@@ -39,6 +39,4 @@ lib/dist/
 proto/
 tmp/
 
-.idea/
 .idea
-.idea/*

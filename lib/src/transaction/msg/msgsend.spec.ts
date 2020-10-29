@@ -15,11 +15,11 @@ describe('Testing MsgSend', function () {
             amount: '12000500',
         };
 
-        const msgSend = new MsgSend(
-            'tcro165tzcrh2yl83g8qeqxueg2g5gzgu57y3fe3kc3',
-            'tcro184lta2lsyu47vwyp2e8zmtca3k5yq85p6c4vp3',
-            coin,
-        );
+        const msgSend = new MsgSend({
+            fromAddress: 'tcro165tzcrh2yl83g8qeqxueg2g5gzgu57y3fe3kc3',
+            toAddress: 'tcro184lta2lsyu47vwyp2e8zmtca3k5yq85p6c4vp3',
+            amount: coin,
+        });
 
         const rawMsg: Msg = {
             typeUrl: '/cosmos.bank.v1beta1.MsgSend',
@@ -42,14 +42,15 @@ describe('Testing MsgSend', function () {
         const anyKeyPair = Secp256k1KeyPair.fromPrivKey(
             Bytes.fromHexString('66633d18513bec30dd11a209f1ceb1787aa9e2069d5d47e590174dc9665102b3'),
         );
-        const msgSend = new MsgSend(
-            'tcro165tzcrh2yl83g8qeqxueg2g5gzgu57y3fe3kc3',
-            'tcro184lta2lsyu47vwyp2e8zmtca3k5yq85p6c4vp3',
-            {
-                denom: 'cro',
-                amount: '12000500',
-            },
-        );
+        const coin = {
+            denom: 'cro',
+            amount: '12000500',
+        };
+        const msgSend = new MsgSend({
+            fromAddress: 'tcro165tzcrh2yl83g8qeqxueg2g5gzgu57y3fe3kc3',
+            toAddress: 'tcro184lta2lsyu47vwyp2e8zmtca3k5yq85p6c4vp3',
+            amount: coin,
+        });
         const anySigner = {
             publicKey: anyKeyPair.getPubKey(),
             accountNumber: new Big(0),
