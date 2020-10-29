@@ -18,7 +18,7 @@ import { sha256 } from '../utils/hash';
 import { isValidSepc256k1PublicKey } from '../utils/secp256k1';
 import { isBigInteger } from '../utils/big';
 import { owSecp256k1KeyPair } from '../keypair/ow.types';
-import { MsgSend } from './msg/msgsend';
+import { Message } from './msg/Message';
 
 export class Transaction {
     private txBody: TxBody = {
@@ -74,13 +74,13 @@ export class Transaction {
 
     /**
      * Append Cosmos MsgSend to transaction
-     * @param {MsgSend} message one of the supported Cosmos message
+     * @param {Message} message one of the supported Cosmos message
      * @returns {Transaction}
      * @throws {Error} when message is invalid
      * @memberof Transaction
      */
-    public appendTxBodyMsgSend(message: MsgSend): Transaction {
-        return this.appendTxBodyMessage(message.toMsg());
+    public appendMessage(message: Message): Transaction {
+        return this.appendTxBodyMessage(message.toRawMsg());
     }
 
     /**

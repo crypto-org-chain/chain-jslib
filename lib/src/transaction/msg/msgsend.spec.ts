@@ -34,7 +34,7 @@ describe('Testing MsgSend', function () {
             },
         };
 
-        expect(msgSend.toMsg()).to.eq(rawMsg);
+        expect(msgSend.toRawMsg()).to.eqls(rawMsg);
     });
 
     it('Test appendTxBody MsgSend Tx signing', function () {
@@ -58,7 +58,7 @@ describe('Testing MsgSend', function () {
         const tx = new Transaction({
             chainId: 'chain-maind',
         });
-        const transaction = tx.appendTxBodyMsgSend(msgSend).addSigner(anySigner).sign(0, anyKeyPair);
+        const transaction = tx.appendMessage(msgSend).addSigner(anySigner).sign(0, anyKeyPair);
         const signature = transaction.getTxRaw()!.signatures[0].toHexString();
         expect(signature).to.be.eql(
             '5ff01d60897df3e6ede18abb320df06131442fd15839f221d6bc38fa607bf2de0c162566ed931d91f0dcce20fa898dd932200bbd6373b7862b864ebe3e976566',
