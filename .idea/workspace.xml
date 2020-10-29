@@ -28,7 +28,7 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="60b7103f-d0b6-404c-8e10-17ce95de2c7c" name="Default Changelist" comment="Fix lint" />
+    <list default="true" id="60b7103f-d0b6-404c-8e10-17ce95de2c7c" name="Default Changelist" comment="Updated signature with new TxRaw changes" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -86,20 +86,15 @@
       <recent name="$PROJECT_DIR$/lib/src/proto/types" />
     </key>
   </component>
-  <component name="RunManager" selected="Mocha.Testing MsgSend.Test MsgSend conversion">
-    <configuration name="Test MsgSend" type="mocha-javascript-test-runner" temporary="true" nameIsGenerated="true">
-      <node-interpreter>project</node-interpreter>
-      <node-options />
-      <mocha-package>$PROJECT_DIR$/node_modules/mocha</mocha-package>
-      <working-directory>$PROJECT_DIR$</working-directory>
-      <pass-parent-env>true</pass-parent-env>
-      <ui>bdd</ui>
-      <extra-mocha-options>--require ts-node/register</extra-mocha-options>
-      <test-kind>SUITE</test-kind>
-      <test-file>$PROJECT_DIR$/lib/src/transaction/msg/msgsend.spec.ts</test-file>
-      <test-names>
-        <name value="Test MsgSend" />
-      </test-names>
+  <component name="RunManager" selected="npm.test-lib">
+    <configuration name="test-lib" type="js.build_tools.npm" temporary="true">
+      <package-json value="$PROJECT_DIR$/package.json" />
+      <command value="run" />
+      <scripts>
+        <script value="test" />
+      </scripts>
+      <node-interpreter value="project" />
+      <envs />
       <method v="2" />
     </configuration>
     <configuration name="Testing MsgSend" type="mocha-javascript-test-runner" temporary="true" nameIsGenerated="true">
@@ -165,13 +160,20 @@
       </test-names>
       <method v="2" />
     </configuration>
+    <list>
+      <item itemvalue="Mocha.Testing MsgSend" />
+      <item itemvalue="Mocha.Testing MsgSend.Test MsgSend conversion" />
+      <item itemvalue="Mocha.Transaction.constructor" />
+      <item itemvalue="Mocha.Transaction.transaction integration test" />
+      <item itemvalue="npm.test-lib" />
+    </list>
     <recent_temporary>
       <list>
+        <item itemvalue="npm.test-lib" />
         <item itemvalue="Mocha.Testing MsgSend.Test MsgSend conversion" />
         <item itemvalue="Mocha.Testing MsgSend" />
         <item itemvalue="Mocha.Transaction.transaction integration test" />
         <item itemvalue="Mocha.Transaction.constructor" />
-        <item itemvalue="Mocha.Test MsgSend" />
       </list>
     </recent_temporary>
   </component>
@@ -189,7 +191,7 @@
       <workItem from="1603870762110" duration="16000" />
       <workItem from="1603870785391" duration="25000" />
       <workItem from="1603870823871" duration="6905000" />
-      <workItem from="1603946816742" duration="2620000" />
+      <workItem from="1603946816742" duration="2993000" />
     </task>
     <task id="LOCAL-00001" summary="Initial setup">
       <created>1603809728335</created>
@@ -268,7 +270,14 @@
       <option name="project" value="LOCAL" />
       <updated>1603953593430</updated>
     </task>
-    <option name="localTasksCounter" value="12" />
+    <task id="LOCAL-00012" summary="Updated signature with new TxRaw changes">
+      <created>1603953966388</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1603953966388</updated>
+    </task>
+    <option name="localTasksCounter" value="13" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -297,13 +306,18 @@
     <MESSAGE value="Using an interface Message to make appending function more generic" />
     <MESSAGE value="Resolved conflicts" />
     <MESSAGE value="Fix lint" />
-    <option name="LAST_COMMIT_MESSAGE" value="Fix lint" />
+    <MESSAGE value="Updated signature with new TxRaw changes" />
+    <option name="LAST_COMMIT_MESSAGE" value="Updated signature with new TxRaw changes" />
   </component>
   <component name="WindowStateProjectService">
     <state x="757" y="459" key="#ESLint" timestamp="1603783550393">
       <screen x="0" y="0" width="1792" height="1120" />
     </state>
     <state x="757" y="459" key="#ESLint/0.0.1792.1120@0.0.1792.1120" timestamp="1603783550393" />
+    <state x="488" y="302" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1603954688607">
+      <screen x="0" y="0" width="2048" height="1280" />
+    </state>
+    <state x="488" y="302" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.2048.1280@0.0.2048.1280" timestamp="1603954688607" />
     <state x="100" y="100" width="1848" height="1080" key="#com.intellij.execution.junit2.states.ComparisonFailureState$DiffDialog" timestamp="1603877053755">
       <screen x="0" y="0" width="2048" height="1280" />
     </state>
@@ -325,29 +339,29 @@
     </state>
     <state x="100" y="100" width="1592" height="920" key="DiffContextDialog/0.0.1792.1120@0.0.1792.1120" timestamp="1603810071132" />
     <state x="100" y="100" width="1592" height="920" key="DiffContextDialog/0.23.1792.1020@0.23.1792.1020" timestamp="1603810285849" />
-    <state width="2027" height="577" key="GridCell.Tab.0.bottom" timestamp="1603953596959">
+    <state width="2027" height="577" key="GridCell.Tab.0.bottom" timestamp="1603954663697">
       <screen x="0" y="0" width="2048" height="1280" />
     </state>
     <state width="1771" height="318" key="GridCell.Tab.0.bottom/0.0.1792.1120@0.0.1792.1120" timestamp="1603822505077" />
-    <state width="2027" height="577" key="GridCell.Tab.0.bottom/0.0.2048.1280@0.0.2048.1280" timestamp="1603953596959" />
+    <state width="2027" height="577" key="GridCell.Tab.0.bottom/0.0.2048.1280@0.0.2048.1280" timestamp="1603954663697" />
     <state width="2027" height="577" key="GridCell.Tab.0.bottom/0.0.3840.2160@0.0.3840.2160" timestamp="1603909684505" />
-    <state width="2027" height="577" key="GridCell.Tab.0.center" timestamp="1603953596958">
+    <state width="2027" height="577" key="GridCell.Tab.0.center" timestamp="1603954663696">
       <screen x="0" y="0" width="2048" height="1280" />
     </state>
     <state width="1771" height="318" key="GridCell.Tab.0.center/0.0.1792.1120@0.0.1792.1120" timestamp="1603822505075" />
-    <state width="2027" height="577" key="GridCell.Tab.0.center/0.0.2048.1280@0.0.2048.1280" timestamp="1603953596958" />
+    <state width="2027" height="577" key="GridCell.Tab.0.center/0.0.2048.1280@0.0.2048.1280" timestamp="1603954663696" />
     <state width="2027" height="577" key="GridCell.Tab.0.center/0.0.3840.2080@0.0.3840.2080" timestamp="1603909684501" />
-    <state width="2027" height="577" key="GridCell.Tab.0.left" timestamp="1603953596957">
+    <state width="2027" height="577" key="GridCell.Tab.0.left" timestamp="1603954663696">
       <screen x="0" y="0" width="2048" height="1280" />
     </state>
     <state width="1771" height="318" key="GridCell.Tab.0.left/0.0.1792.1120@0.0.1792.1120" timestamp="1603822505074" />
-    <state width="2027" height="577" key="GridCell.Tab.0.left/0.0.2048.1280@0.0.2048.1280" timestamp="1603953596957" />
+    <state width="2027" height="577" key="GridCell.Tab.0.left/0.0.2048.1280@0.0.2048.1280" timestamp="1603954663696" />
     <state width="2027" height="577" key="GridCell.Tab.0.left/0.0.3840.2080@0.0.3840.2080" timestamp="1603909684500" />
-    <state width="2027" height="577" key="GridCell.Tab.0.right" timestamp="1603953596959">
+    <state width="2027" height="577" key="GridCell.Tab.0.right" timestamp="1603954663697">
       <screen x="0" y="0" width="2048" height="1280" />
     </state>
     <state width="1771" height="318" key="GridCell.Tab.0.right/0.0.1792.1120@0.0.1792.1120" timestamp="1603822505076" />
-    <state width="2027" height="577" key="GridCell.Tab.0.right/0.0.2048.1280@0.0.2048.1280" timestamp="1603953596959" />
+    <state width="2027" height="577" key="GridCell.Tab.0.right/0.0.2048.1280@0.0.2048.1280" timestamp="1603954663697" />
     <state width="2027" height="577" key="GridCell.Tab.0.right/0.0.3840.2160@0.0.3840.2160" timestamp="1603909684505" />
     <state x="454" y="227" key="SettingsEditor" timestamp="1603946987649">
       <screen x="0" y="0" width="2048" height="1280" />

@@ -38,3 +38,7 @@ lib/dist/
 # Protobuf build folder
 proto/
 tmp/
+
+.idea/
+.idea
+.idea/*
