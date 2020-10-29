@@ -1,6 +1,6 @@
 import Big from 'big.js';
 import { Coin } from './coin/coin';
-import { HDWallet } from './hdwallet/hdwallet';
+import { HDKey } from './hdkey/hdkey';
 import { Secp256k1KeyPair } from './keypair/secp256k1';
 import address from './address';
 import utils from './utils';
@@ -14,6 +14,6 @@ export default {
     utils,
 
     Coin,
-    HDWallet,
+    HDKey,
     Secp256k1KeyPair,
 };

@@ -1,5 +1,6 @@
 import Big from 'big.js';
 import ow from 'ow';
+import { Network } from '../network/network';
 
 import { owCoin, owCoinUnit } from './ow.types';
 
@@ -158,7 +159,7 @@ export class Coin {
      * @memberof Coin
      */
     public add(anotherCoin: Coin): Coin {
-        ow(anotherCoin, owCoin);
+        ow(anotherCoin, owCoin());
 
         const newAmount = this.baseAmount.add(anotherCoin.toBig());
         if (newAmount.gt(Coin.TOTAL_SUPPLY_STRING)) {
@@ -175,7 +176,7 @@ export class Coin {
      * @memberof Coin
      */
     public sub(anotherCoin: Coin): Coin {
-        ow(anotherCoin, owCoin);
+        ow(anotherCoin, owCoin());
 
         const newAmount = this.baseAmount.sub(anotherCoin.toBig());
         if (newAmount.lt(0)) {
@@ -185,7 +186,7 @@ export class Coin {
     }
 
     /**
-     * Returns the Big representation of the string
+     * Returns the Big representation of the Coin in base unit
      * @returns {Big}
      * @memberof Coin
      */
@@ -194,7 +195,19 @@ export class Coin {
     }
 
     /**
-     * Returns a string representation of the coins in the specified unit. Default unit is base.
+     * Returns the Cosmos-compatible Coin object representation
+     * @returns {CosmosCoin}
+     * @memberof Coin
+     * */
+    public toCosmosCoin(network: Network): CosmosCoin {
+        return {
+            amount: this.toString(Units.BASE),
+            denom: network.coin.baseDenom,
+        };
+    }
+
+    /**
+     * Returns a string representation of the Coin in the specified unit. Default unit is base.
      * @param {Units} [unit=Unit.Base] coins unit
      * @returns {string}
      * @throws {Error} unit is invalid
@@ -209,3 +222,8 @@ export class Coin {
         return this.baseAmount.div(Coin.ONE_CRO_IN_BASE_UNIT).toString();
     }
 }
+
+export type CosmosCoin = {
+    amount: string;
+    denom: string;
+};

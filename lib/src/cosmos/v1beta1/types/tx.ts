@@ -1,4 +1,5 @@
 import Big from 'big.js';
+
 import { Coin } from '../../../coin/coin';
 import { Bytes } from '../../../utils/bytes/bytes';
 import { cosmos } from '../codec';

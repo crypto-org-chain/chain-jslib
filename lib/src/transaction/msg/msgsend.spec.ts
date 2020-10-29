@@ -5,7 +5,8 @@ import { MsgSend } from './msgsend';
 import { Msg } from '../../cosmos/v1beta1/types/msg';
 import { Secp256k1KeyPair } from '../../keypair/secp256k1';
 import { Bytes } from '../../utils/bytes/bytes';
-import { Transaction } from '../transaction';
+import { RawTransaction } from '../raw';
+import { Testnet } from '../../network/network';
 
 describe('Testing MsgSend', function () {
     it('Test MsgSend conversion', function () {
@@ -45,7 +46,7 @@ describe('Testing MsgSend', function () {
             'tcro165tzcrh2yl83g8qeqxueg2g5gzgu57y3fe3kc3',
             'tcro184lta2lsyu47vwyp2e8zmtca3k5yq85p6c4vp3',
             {
-                denom: 'tcro',
+                denom: 'cro',
                 amount: '12000500',
             },
         );
@@ -55,11 +56,13 @@ describe('Testing MsgSend', function () {
             accountSequence: new Big(2),
         };
 
-        const tx = new Transaction({
-            chainId: 'chain-maind',
-        });
-        const transaction = tx.appendMessage(msgSend).addSigner(anySigner).sign(0, anyKeyPair);
-        const signature = transaction.getTxRaw()!.signatures[0].toHexString();
+        const rawTx = new RawTransaction({ network: Testnet });
+
+        const signableTx = rawTx.appendMessage(msgSend).addSigner(anySigner).toSignable();
+
+        const signedTx = signableTx.setSignature(0, anyKeyPair.sign(signableTx.toSignDoc(0))).toSigned();
+
+        const signature = signedTx.encode().toHexString();
         expect(signature).to.be.eql(
             '5ff01d60897df3e6ede18abb320df06131442fd15839f221d6bc38fa607bf2de0c162566ed931d91f0dcce20fa898dd932200bbd6373b7862b864ebe3e976566',
         );

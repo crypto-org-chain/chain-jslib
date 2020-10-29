@@ -6,13 +6,13 @@ import { Bytes } from '../utils/bytes/bytes';
 import { owOptionalWordsLength } from './ow.types';
 import { owBytes } from '../utils/bytes/ow.types';
 
-export class HDWallet {
+export class HDKey {
     private innerSeed: Bytes;
 
     /**
      * constructor to create a HDWallet from seed
      * @param {Bytes} seed seed of the HD wallet
-     * @returns {HDWallet}
+     * @returns {HDKey}
      */
     constructor(seed: Bytes) {
         ow(seed, 'seed', owBytes());
@@ -24,10 +24,10 @@ export class HDWallet {
      * Create and return a HDWallet from mnemonic words
      * @param {string} mnemonic Mnemonic words
      * @param {string} passphrase passphrase to generate the seed
-     * @returns {HDWallet}
+     * @returns {HDKey}
      * @memberof HDWallet
      */
-    public static fromMnemonic(mnemonic: string, passphrase?: string): HDWallet {
+    public static fromMnemonic(mnemonic: string, passphrase?: string): HDKey {
         ow(mnemonic, 'mnemonic', ow.string);
         ow(passphrase, 'passphrase', ow.optional.string);
 
@@ -36,7 +36,7 @@ export class HDWallet {
         }
 
         const seed = bip39.mnemonicToSeedSync(mnemonic, passphrase);
-        return new HDWallet(Bytes.fromBuffer(seed));
+        return new HDKey(Bytes.fromBuffer(seed));
     }
 
     /**
