@@ -28,9 +28,7 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="60b7103f-d0b6-404c-8e10-17ce95de2c7c" name="Default Changelist" comment="Resolved conflicts">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-    </list>
+    <list default="true" id="60b7103f-d0b6-404c-8e10-17ce95de2c7c" name="Default Changelist" comment="Fix lint" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -191,7 +189,7 @@
       <workItem from="1603870762110" duration="16000" />
       <workItem from="1603870785391" duration="25000" />
       <workItem from="1603870823871" duration="6905000" />
-      <workItem from="1603946816742" duration="2324000" />
+      <workItem from="1603946816742" duration="2620000" />
     </task>
     <task id="LOCAL-00001" summary="Initial setup">
       <created>1603809728335</created>
@@ -263,7 +261,14 @@
       <option name="project" value="LOCAL" />
       <updated>1603949513742</updated>
     </task>
-    <option name="localTasksCounter" value="11" />
+    <task id="LOCAL-00011" summary="Fix lint">
+      <created>1603953593430</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1603953593430</updated>
+    </task>
+    <option name="localTasksCounter" value="12" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -291,7 +296,8 @@
     <MESSAGE value="Use a direct coin object" />
     <MESSAGE value="Using an interface Message to make appending function more generic" />
     <MESSAGE value="Resolved conflicts" />
-    <option name="LAST_COMMIT_MESSAGE" value="Resolved conflicts" />
+    <MESSAGE value="Fix lint" />
+    <option name="LAST_COMMIT_MESSAGE" value="Fix lint" />
   </component>
   <component name="WindowStateProjectService">
     <state x="757" y="459" key="#ESLint" timestamp="1603783550393">
@@ -319,29 +325,29 @@
     </state>
     <state x="100" y="100" width="1592" height="920" key="DiffContextDialog/0.0.1792.1120@0.0.1792.1120" timestamp="1603810071132" />
     <state x="100" y="100" width="1592" height="920" key="DiffContextDialog/0.23.1792.1020@0.23.1792.1020" timestamp="1603810285849" />
-    <state width="2027" height="577" key="GridCell.Tab.0.bottom" timestamp="1603953110534">
+    <state width="2027" height="577" key="GridCell.Tab.0.bottom" timestamp="1603953596959">
       <screen x="0" y="0" width="2048" height="1280" />
     </state>
     <state width="1771" height="318" key="GridCell.Tab.0.bottom/0.0.1792.1120@0.0.1792.1120" timestamp="1603822505077" />
-    <state width="2027" height="577" key="GridCell.Tab.0.bottom/0.0.2048.1280@0.0.2048.1280" timestamp="1603953110534" />
+    <state width="2027" height="577" key="GridCell.Tab.0.bottom/0.0.2048.1280@0.0.2048.1280" timestamp="1603953596959" />
     <state width="2027" height="577" key="GridCell.Tab.0.bottom/0.0.3840.2160@0.0.3840.2160" timestamp="1603909684505" />
-    <state width="2027" height="577" key="GridCell.Tab.0.center" timestamp="1603953110533">
+    <state width="2027" height="577" key="GridCell.Tab.0.center" timestamp="1603953596958">
       <screen x="0" y="0" width="2048" height="1280" />
     </state>
     <state width="1771" height="318" key="GridCell.Tab.0.center/0.0.1792.1120@0.0.1792.1120" timestamp="1603822505075" />
-    <state width="2027" height="577" key="GridCell.Tab.0.center/0.0.2048.1280@0.0.2048.1280" timestamp="1603953110533" />
+    <state width="2027" height="577" key="GridCell.Tab.0.center/0.0.2048.1280@0.0.2048.1280" timestamp="1603953596958" />
     <state width="2027" height="577" key="GridCell.Tab.0.center/0.0.3840.2080@0.0.3840.2080" timestamp="1603909684501" />
-    <state width="2027" height="577" key="GridCell.Tab.0.left" timestamp="1603953110533">
+    <state width="2027" height="577" key="GridCell.Tab.0.left" timestamp="1603953596957">
       <screen x="0" y="0" width="2048" height="1280" />
     </state>
     <state width="1771" height="318" key="GridCell.Tab.0.left/0.0.1792.1120@0.0.1792.1120" timestamp="1603822505074" />
-    <state width="2027" height="577" key="GridCell.Tab.0.left/0.0.2048.1280@0.0.2048.1280" timestamp="1603953110533" />
+    <state width="2027" height="577" key="GridCell.Tab.0.left/0.0.2048.1280@0.0.2048.1280" timestamp="1603953596957" />
     <state width="2027" height="577" key="GridCell.Tab.0.left/0.0.3840.2080@0.0.3840.2080" timestamp="1603909684500" />
-    <state width="2027" height="577" key="GridCell.Tab.0.right" timestamp="1603953110533">
+    <state width="2027" height="577" key="GridCell.Tab.0.right" timestamp="1603953596959">
       <screen x="0" y="0" width="2048" height="1280" />
     </state>
     <state width="1771" height="318" key="GridCell.Tab.0.right/0.0.1792.1120@0.0.1792.1120" timestamp="1603822505076" />
-    <state width="2027" height="577" key="GridCell.Tab.0.right/0.0.2048.1280@0.0.2048.1280" timestamp="1603953110533" />
+    <state width="2027" height="577" key="GridCell.Tab.0.right/0.0.2048.1280@0.0.2048.1280" timestamp="1603953596959" />
     <state width="2027" height="577" key="GridCell.Tab.0.right/0.0.3840.2160@0.0.3840.2160" timestamp="1603909684505" />
     <state x="454" y="227" key="SettingsEditor" timestamp="1603946987649">
       <screen x="0" y="0" width="2048" height="1280" />
@@ -361,11 +367,11 @@
       <screen x="0" y="0" width="1792" height="1120" />
     </state>
     <state x="644" y="280" key="git4idea.branch.GitSmartOperationDialog/0.0.1792.1120@0.0.1792.1120" timestamp="1603812800879" />
-    <state x="641" y="287" width="766" height="773" key="search.everywhere.popup" timestamp="1603949539496">
+    <state x="641" y="287" width="766" height="773" key="search.everywhere.popup" timestamp="1603953429010">
       <screen x="0" y="0" width="2048" height="1280" />
     </state>
     <state x="561" y="251" width="670" height="676" key="search.everywhere.popup/0.0.1792.1120@0.0.1792.1120" timestamp="1603822143687" />
-    <state x="641" y="287" width="766" height="773" key="search.everywhere.popup/0.0.2048.1280@0.0.2048.1280" timestamp="1603949539496" />
+    <state x="641" y="287" width="766" height="773" key="search.everywhere.popup/0.0.2048.1280@0.0.2048.1280" timestamp="1603953429010" />
     <state x="641" y="287" width="766" height="773" key="search.everywhere.popup/0.23.2048.1177@0.23.2048.1177" timestamp="1603949529626" />
   </component>
 </project>
