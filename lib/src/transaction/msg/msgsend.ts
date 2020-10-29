@@ -2,6 +2,7 @@ import ow from 'ow';
 import { Msg } from '../../cosmos/v1beta1/types/msg';
 import { cosmos } from '../../cosmos/v1beta1/codec';
 import { Message } from './Message';
+// eslint-disable-next-line no-undef
 import Coin = cosmos.base.v1beta1.Coin;
 
 export class MsgSend implements Message {

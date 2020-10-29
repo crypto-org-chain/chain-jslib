@@ -28,41 +28,8 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="60b7103f-d0b6-404c-8e10-17ce95de2c7c" name="Default Changelist" comment="Using an interface Message to make appending function more generic">
-      <change afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/lib/src/cosmos/v1beta1/types/ow.types.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/lib/src/keypair/test.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/lib/src/keypair/types.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/lib/src/network/network.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/lib/src/network/ow.types.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/lib/src/transaction/integation.spec.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/lib/src/transaction/raw.spec.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/lib/src/transaction/raw.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/lib/src/transaction/signable.spec.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/lib/src/transaction/signable.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/lib/src/transaction/signed.spec.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/lib/src/transaction/signed.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/lib/src/transaction/test.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/lib/src/transaction/types.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/lib/src/utils/clone.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.eslintignore" beforeDir="false" afterPath="$PROJECT_DIR$/.eslintignore" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/src/coin/coin.spec.ts" beforeDir="false" afterPath="$PROJECT_DIR$/lib/src/coin/coin.spec.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/src/coin/coin.ts" beforeDir="false" afterPath="$PROJECT_DIR$/lib/src/coin/coin.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/src/coin/ow.types.ts" beforeDir="false" afterPath="$PROJECT_DIR$/lib/src/coin/ow.types.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/src/cosmos/v1beta1/scripts/define-proto.sh" beforeDir="false" afterPath="$PROJECT_DIR$/lib/src/cosmos/v1beta1/scripts/define-proto.sh" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/src/cosmos/v1beta1/types/msg.ts" beforeDir="false" afterPath="$PROJECT_DIR$/lib/src/cosmos/v1beta1/types/msg.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/src/cosmos/v1beta1/types/tx.ts" beforeDir="false" afterPath="$PROJECT_DIR$/lib/src/cosmos/v1beta1/types/tx.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/src/hdwallet/hdwallet.spec.ts" beforeDir="false" afterPath="$PROJECT_DIR$/lib/src/hdkey/hdkey.spec.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/src/hdwallet/hdwallet.ts" beforeDir="false" afterPath="$PROJECT_DIR$/lib/src/hdkey/hdkey.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/src/hdwallet/ow.types.ts" beforeDir="false" afterPath="$PROJECT_DIR$/lib/src/hdkey/ow.types.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/src/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/lib/src/index.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/src/transaction/msg/msgsend.spec.ts" beforeDir="false" afterPath="$PROJECT_DIR$/lib/src/transaction/msg/msgsend.spec.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/src/transaction/ow.types.ts" beforeDir="false" afterPath="$PROJECT_DIR$/lib/src/transaction/ow.types.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/src/transaction/transaction.spec.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/src/transaction/transaction.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/src/utils/bytes/bytes.spec.ts" beforeDir="false" afterPath="$PROJECT_DIR$/lib/src/utils/bytes/bytes.spec.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
+    <list default="true" id="60b7103f-d0b6-404c-8e10-17ce95de2c7c" name="Default Changelist" comment="Resolved conflicts">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -121,22 +88,7 @@
       <recent name="$PROJECT_DIR$/lib/src/proto/types" />
     </key>
   </component>
-  <component name="RunManager" selected="Mocha.Testing MsgSend">
-    <configuration name="Coin" type="mocha-javascript-test-runner" temporary="true" nameIsGenerated="true">
-      <node-interpreter>project</node-interpreter>
-      <node-options />
-      <mocha-package>$PROJECT_DIR$/node_modules/mocha</mocha-package>
-      <working-directory>$PROJECT_DIR$</working-directory>
-      <pass-parent-env>true</pass-parent-env>
-      <ui>bdd</ui>
-      <extra-mocha-options>--require ts-node/register</extra-mocha-options>
-      <test-kind>SUITE</test-kind>
-      <test-file>$PROJECT_DIR$/lib/src/coin/coin.spec.ts</test-file>
-      <test-names>
-        <name value="Coin" />
-      </test-names>
-      <method v="2" />
-    </configuration>
+  <component name="RunManager" selected="Mocha.Testing MsgSend.Test MsgSend conversion">
     <configuration name="Test MsgSend" type="mocha-javascript-test-runner" temporary="true" nameIsGenerated="true">
       <node-interpreter>project</node-interpreter>
       <node-options />
@@ -164,6 +116,22 @@
       <test-file>$PROJECT_DIR$/lib/src/transaction/msg/msgsend.spec.ts</test-file>
       <test-names>
         <name value="Testing MsgSend" />
+      </test-names>
+      <method v="2" />
+    </configuration>
+    <configuration name="Testing MsgSend.Test MsgSend conversion" type="mocha-javascript-test-runner" temporary="true" nameIsGenerated="true">
+      <node-interpreter>project</node-interpreter>
+      <node-options />
+      <mocha-package>$PROJECT_DIR$/node_modules/mocha</mocha-package>
+      <working-directory>$PROJECT_DIR$</working-directory>
+      <pass-parent-env>true</pass-parent-env>
+      <ui>bdd</ui>
+      <extra-mocha-options>--require ts-node/register</extra-mocha-options>
+      <test-kind>TEST</test-kind>
+      <test-file>$PROJECT_DIR$/lib/src/transaction/msg/msgsend.spec.ts</test-file>
+      <test-names>
+        <name value="Testing MsgSend" />
+        <name value="Test MsgSend conversion" />
       </test-names>
       <method v="2" />
     </configuration>
@@ -201,11 +169,11 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Mocha.Testing MsgSend.Test MsgSend conversion" />
         <item itemvalue="Mocha.Testing MsgSend" />
         <item itemvalue="Mocha.Transaction.transaction integration test" />
         <item itemvalue="Mocha.Transaction.constructor" />
         <item itemvalue="Mocha.Test MsgSend" />
-        <item itemvalue="Mocha.Coin" />
       </list>
     </recent_temporary>
   </component>
@@ -223,7 +191,7 @@
       <workItem from="1603870762110" duration="16000" />
       <workItem from="1603870785391" duration="25000" />
       <workItem from="1603870823871" duration="6905000" />
-      <workItem from="1603946816742" duration="1376000" />
+      <workItem from="1603946816742" duration="2324000" />
     </task>
     <task id="LOCAL-00001" summary="Initial setup">
       <created>1603809728335</created>
@@ -288,7 +256,14 @@
       <option name="project" value="LOCAL" />
       <updated>1603948640482</updated>
     </task>
-    <option name="localTasksCounter" value="10" />
+    <task id="LOCAL-00010" summary="Resolved conflicts">
+      <created>1603949513742</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1603949513742</updated>
+    </task>
+    <option name="localTasksCounter" value="11" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -315,7 +290,8 @@
     <MESSAGE value="Documenting appendTxBodyMsgSend()" />
     <MESSAGE value="Use a direct coin object" />
     <MESSAGE value="Using an interface Message to make appending function more generic" />
-    <option name="LAST_COMMIT_MESSAGE" value="Using an interface Message to make appending function more generic" />
+    <MESSAGE value="Resolved conflicts" />
+    <option name="LAST_COMMIT_MESSAGE" value="Resolved conflicts" />
   </component>
   <component name="WindowStateProjectService">
     <state x="757" y="459" key="#ESLint" timestamp="1603783550393">
@@ -343,29 +319,29 @@
     </state>
     <state x="100" y="100" width="1592" height="920" key="DiffContextDialog/0.0.1792.1120@0.0.1792.1120" timestamp="1603810071132" />
     <state x="100" y="100" width="1592" height="920" key="DiffContextDialog/0.23.1792.1020@0.23.1792.1020" timestamp="1603810285849" />
-    <state width="2027" height="577" key="GridCell.Tab.0.bottom" timestamp="1603949300726">
+    <state width="2027" height="577" key="GridCell.Tab.0.bottom" timestamp="1603953110534">
       <screen x="0" y="0" width="2048" height="1280" />
     </state>
     <state width="1771" height="318" key="GridCell.Tab.0.bottom/0.0.1792.1120@0.0.1792.1120" timestamp="1603822505077" />
-    <state width="2027" height="577" key="GridCell.Tab.0.bottom/0.0.2048.1280@0.0.2048.1280" timestamp="1603949300726" />
+    <state width="2027" height="577" key="GridCell.Tab.0.bottom/0.0.2048.1280@0.0.2048.1280" timestamp="1603953110534" />
     <state width="2027" height="577" key="GridCell.Tab.0.bottom/0.0.3840.2160@0.0.3840.2160" timestamp="1603909684505" />
-    <state width="2027" height="577" key="GridCell.Tab.0.center" timestamp="1603949300725">
+    <state width="2027" height="577" key="GridCell.Tab.0.center" timestamp="1603953110533">
       <screen x="0" y="0" width="2048" height="1280" />
     </state>
     <state width="1771" height="318" key="GridCell.Tab.0.center/0.0.1792.1120@0.0.1792.1120" timestamp="1603822505075" />
-    <state width="2027" height="577" key="GridCell.Tab.0.center/0.0.2048.1280@0.0.2048.1280" timestamp="1603949300725" />
+    <state width="2027" height="577" key="GridCell.Tab.0.center/0.0.2048.1280@0.0.2048.1280" timestamp="1603953110533" />
     <state width="2027" height="577" key="GridCell.Tab.0.center/0.0.3840.2080@0.0.3840.2080" timestamp="1603909684501" />
-    <state width="2027" height="577" key="GridCell.Tab.0.left" timestamp="1603949300724">
+    <state width="2027" height="577" key="GridCell.Tab.0.left" timestamp="1603953110533">
       <screen x="0" y="0" width="2048" height="1280" />
     </state>
     <state width="1771" height="318" key="GridCell.Tab.0.left/0.0.1792.1120@0.0.1792.1120" timestamp="1603822505074" />
-    <state width="2027" height="577" key="GridCell.Tab.0.left/0.0.2048.1280@0.0.2048.1280" timestamp="1603949300724" />
+    <state width="2027" height="577" key="GridCell.Tab.0.left/0.0.2048.1280@0.0.2048.1280" timestamp="1603953110533" />
     <state width="2027" height="577" key="GridCell.Tab.0.left/0.0.3840.2080@0.0.3840.2080" timestamp="1603909684500" />
-    <state width="2027" height="577" key="GridCell.Tab.0.right" timestamp="1603949300725">
+    <state width="2027" height="577" key="GridCell.Tab.0.right" timestamp="1603953110533">
       <screen x="0" y="0" width="2048" height="1280" />
     </state>
     <state width="1771" height="318" key="GridCell.Tab.0.right/0.0.1792.1120@0.0.1792.1120" timestamp="1603822505076" />
-    <state width="2027" height="577" key="GridCell.Tab.0.right/0.0.2048.1280@0.0.2048.1280" timestamp="1603949300725" />
+    <state width="2027" height="577" key="GridCell.Tab.0.right/0.0.2048.1280@0.0.2048.1280" timestamp="1603953110533" />
     <state width="2027" height="577" key="GridCell.Tab.0.right/0.0.3840.2160@0.0.3840.2160" timestamp="1603909684505" />
     <state x="454" y="227" key="SettingsEditor" timestamp="1603946987649">
       <screen x="0" y="0" width="2048" height="1280" />
@@ -385,10 +361,11 @@
       <screen x="0" y="0" width="1792" height="1120" />
     </state>
     <state x="644" y="280" key="git4idea.branch.GitSmartOperationDialog/0.0.1792.1120@0.0.1792.1120" timestamp="1603812800879" />
-    <state x="641" y="287" width="766" height="773" key="search.everywhere.popup" timestamp="1603948460562">
+    <state x="641" y="287" width="766" height="773" key="search.everywhere.popup" timestamp="1603949539496">
       <screen x="0" y="0" width="2048" height="1280" />
     </state>
     <state x="561" y="251" width="670" height="676" key="search.everywhere.popup/0.0.1792.1120@0.0.1792.1120" timestamp="1603822143687" />
-    <state x="641" y="287" width="766" height="773" key="search.everywhere.popup/0.0.2048.1280@0.0.2048.1280" timestamp="1603948460562" />
+    <state x="641" y="287" width="766" height="773" key="search.everywhere.popup/0.0.2048.1280@0.0.2048.1280" timestamp="1603949539496" />
+    <state x="641" y="287" width="766" height="773" key="search.everywhere.popup/0.23.2048.1177@0.23.2048.1177" timestamp="1603949529626" />
   </component>
 </project>
