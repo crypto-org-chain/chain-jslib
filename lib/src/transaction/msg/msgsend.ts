@@ -1,9 +1,8 @@
 import ow from 'ow';
 import { Msg } from '../../cosmos/v1beta1/types/msg';
-import { cosmos } from '../../cosmos/v1beta1/codec';
 import { Message } from './Message';
-// eslint-disable-next-line no-undef
-import Coin = cosmos.base.v1beta1.Coin;
+import { Coin } from '../../coin/coin';
+import { Network } from '../../network/network';
 
 export class MsgSend implements Message {
     private readonly fromAddress: string;
@@ -11,6 +10,9 @@ export class MsgSend implements Message {
     private readonly toAddress: string;
 
     private value: Coin;
+
+    // TODO : In the future, network will be picked from a top level configuration object
+    private network: Network;
 
     /**
      * Constructor to create a new MsgSend
@@ -25,6 +27,7 @@ export class MsgSend implements Message {
         this.fromAddress = options.fromAddress;
         this.toAddress = options.toAddress;
         this.value = options.amount;
+        this.network = options.network;
     }
 
     /**
@@ -32,6 +35,7 @@ export class MsgSend implements Message {
      * @returns {Msg}
      */
     toRawMsg(): Msg {
+        const cosmosCoin = this.value.toCosmosCoin(this.network);
         return {
             typeUrl: '/cosmos.bank.v1beta1.MsgSend',
             value: {
@@ -39,8 +43,8 @@ export class MsgSend implements Message {
                 toAddress: this.toAddress,
                 amount: [
                     {
-                        denom: this.value.denom,
-                        amount: this.value.amount,
+                        denom: cosmosCoin.denom,
+                        amount: cosmosCoin.amount,
                     },
                 ],
             },
@@ -52,4 +56,5 @@ export type MsgSendOptions = {
     fromAddress: string;
     toAddress: string;
     amount: Coin;
+    network: Network;
 };
