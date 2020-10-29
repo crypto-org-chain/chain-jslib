@@ -32,7 +32,7 @@ describe('Testing MsgSend', function () {
             },
         };
 
-        expect(msgSend.toMsg()).to.be.eqls(rawMsg);
+        expect(msgSend.toMsg()).to.eq(rawMsg);
     });
 
     it('Test appendTxBody MsgSend Tx signing', function () {
