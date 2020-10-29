@@ -1,6 +1,8 @@
 import 'mocha';
 import { expect } from 'chai';
 import Big from 'big.js';
+
+import { fuzzyDescribe } from '../../test/mocha-fuzzy/suite';
 import { MsgSend } from './msgsend';
 import { Msg } from '../../cosmos/v1beta1/types/msg';
 import { Secp256k1KeyPair } from '../../keypair/secp256k1';
@@ -10,6 +12,23 @@ import { Testnet } from '../../network/network';
 import { Coin, Units } from '../../coin/coin';
 
 describe('Testing MsgSend', function () {
+    fuzzyDescribe('should throw Error when options is invalid', function (fuzzy) {
+        const anyValidOptions = {
+            fromAddress: 'tcro165tzcrh2yl83g8qeqxueg2g5gzgu57y3fe3kc3',
+            toAddress: 'tcro184lta2lsyu47vwyp2e8zmtca3k5yq85p6c4vp3',
+            amount: new Coin('1000', Units.BASE),
+            network: Testnet,
+        };
+        const testRunner = fuzzy(fuzzy.ObjArg(anyValidOptions));
+
+        testRunner(function (options) {
+            if (options.valid) {
+                return;
+            }
+            expect(() => new MsgSend(options.value)).to.throw('Expected `options` to be of type `object`');
+        });
+    });
+
     it('Test MsgSend conversion', function () {
         const coin: Coin = new Coin('12000500', Units.BASE);
 

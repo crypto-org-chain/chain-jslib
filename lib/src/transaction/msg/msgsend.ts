@@ -3,13 +3,14 @@ import { Msg } from '../../cosmos/v1beta1/types/msg';
 import { Message } from './Message';
 import { Coin } from '../../coin/coin';
 import { Network } from '../../network/network';
+import { owMsgSendOptions } from './ow.types';
 
 export class MsgSend implements Message {
     private readonly fromAddress: string;
 
     private readonly toAddress: string;
 
-    private value: Coin;
+    private amount: Coin;
 
     // TODO : In the future, network will be picked from a top level configuration object
     private network: Network;
@@ -21,12 +22,11 @@ export class MsgSend implements Message {
      * @throws {Error} when options is invalid
      */
     constructor(options: MsgSendOptions) {
-        ow(options.fromAddress, ow.string);
-        ow(options.toAddress, ow.string);
+        ow(options, 'options', owMsgSendOptions);
 
         this.fromAddress = options.fromAddress;
         this.toAddress = options.toAddress;
-        this.value = options.amount;
+        this.amount = options.amount;
         this.network = options.network;
     }
 
@@ -35,7 +35,7 @@ export class MsgSend implements Message {
      * @returns {Msg}
      */
     toRawMsg(): Msg {
-        const cosmosCoin = this.value.toCosmosCoin(this.network);
+        const cosmosCoin = this.amount.toCosmosCoin(this.network);
         return {
             typeUrl: '/cosmos.bank.v1beta1.MsgSend',
             value: {
