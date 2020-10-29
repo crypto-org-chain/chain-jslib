@@ -28,7 +28,7 @@ export const owSecp256k1PrivKey = owBytes().validate((val: Bytes) => {
     };
 });
 
-export const owOptionalSecp256k1KeyPairToPubKeyOptions = owOptionalStrictObject().exactShape({
+export const owOptionalPubKeyOptions = owOptionalStrictObject().exactShape({
     compressed: ow.boolean,
 });
 

@@ -11,14 +11,16 @@ describe('Bytes', function () {
 
             testRunner(function (arg) {
                 if (!arg.valid) {
-                    expect(() => new Bytes(arg.value)).to.throw('Expected `value` to be of type `Uint8Array`');
+                    expect(() => Bytes.fromUint8Array(arg.value)).to.throw(
+                        'Expected `value` to be of type `Uint8Array`',
+                    );
                 }
             });
         });
 
         it('should clone the Uint8Array input', function () {
             const anyUint8Array = new Uint8Array(32).fill(1);
-            const bytes = new Bytes(anyUint8Array);
+            const bytes = Bytes.fromUint8Array(anyUint8Array);
 
             anyUint8Array.fill(0);
             const expectedUint8Array = new Uint8Array(32).fill(1);
@@ -27,7 +29,37 @@ describe('Bytes', function () {
 
         it('should return Bytes of the provided Uint8Array', function () {
             const anyUint8Array = new Uint8Array(32).fill(1);
-            const bytes = new Bytes(anyUint8Array);
+            const bytes = Bytes.fromUint8Array(anyUint8Array);
+
+            expect(bytes.toUint8Array()).to.deep.eq(anyUint8Array);
+        });
+    });
+
+    describe('fromUint8Array', function () {
+        fuzzyDescribe('should throw Error when argument is not Uint8Array', function (fuzzy) {
+            const testRunner = fuzzy(fuzzy.ObjArg(new Uint8Array(32).fill(1)));
+
+            testRunner(function (arg) {
+                if (!arg.valid) {
+                    expect(() => Bytes.fromUint8Array(arg.value)).to.throw(
+                        'Expected `value` to be of type `Uint8Array`',
+                    );
+                }
+            });
+        });
+
+        it('should clone the Uint8Array input', function () {
+            const anyUint8Array = new Uint8Array(32).fill(1);
+            const bytes = Bytes.fromUint8Array(anyUint8Array);
+
+            anyUint8Array.fill(0);
+            const expectedUint8Array = new Uint8Array(32).fill(1);
+            expect(bytes.toUint8Array()).to.deep.eq(expectedUint8Array);
+        });
+
+        it('should return Bytes of the provided Uint8Array', function () {
+            const anyUint8Array = new Uint8Array(32).fill(1);
+            const bytes = Bytes.fromUint8Array(anyUint8Array);
 
             expect(bytes.toUint8Array()).to.deep.eq(anyUint8Array);
         });
@@ -147,16 +179,39 @@ describe('Bytes', function () {
         });
 
         it('should return length of the bytes', function () {
-            const anyBytes = new Bytes(new Uint8Array(32).fill(1));
+            const anyBytes = Bytes.fromUint8Array(new Uint8Array(32).fill(1));
 
             expect(anyBytes.length).to.eq(32);
+        });
+    });
+
+    describe('isEqual', function () {
+        it('should return false when the two Bytes are of different length', function () {
+            const anyBytes = Bytes.fromHexString('ababab');
+            const anotherBytes = Bytes.fromHexString('abcd');
+
+            expect(anyBytes.isEqual(anotherBytes)).to.eq(false);
+        });
+
+        it('should return false when the two Bytes are of same length but different', function () {
+            const anyBytes = Bytes.fromHexString('ababab');
+            const anotherBytes = Bytes.fromHexString('ababcd');
+
+            expect(anyBytes.isEqual(anotherBytes)).to.eq(false);
+        });
+
+        it('should return true when the two Bytes are the same', function () {
+            const anyBytes = Bytes.fromHexString('ababab');
+            const anotherBytes = Bytes.fromHexString('ababab');
+
+            expect(anyBytes.isEqual(anotherBytes)).to.eq(true);
         });
     });
 
     describe('toUint8Array', function () {
         it('should return new copy of the underlying Uint8Array', function () {
             const anyUint8Array = new Uint8Array(32).fill(1);
-            const bytes = new Bytes(anyUint8Array);
+            const bytes = Bytes.fromUint8Array(anyUint8Array);
 
             const result = bytes.toUint8Array();
             result.fill(0);
@@ -167,7 +222,7 @@ describe('Bytes', function () {
     describe('toBuffer', function () {
         it('should return Buffer representation', function () {
             const anyUint8Array = new Uint8Array(32).fill(1);
-            const bytes = new Bytes(anyUint8Array);
+            const bytes = Bytes.fromUint8Array(anyUint8Array);
 
             const expectedBuffer = Buffer.alloc(32).fill(1);
             expect(bytes.toBuffer()).to.deep.eq(expectedBuffer);
@@ -177,7 +232,7 @@ describe('Bytes', function () {
     describe('toHexString', function () {
         it('should return hexadecimal string representation', function () {
             const anyUint8Array = new Uint8Array(32).fill(1);
-            const bytes = new Bytes(anyUint8Array);
+            const bytes = Bytes.fromUint8Array(anyUint8Array);
 
             const expectedHexString = '01'.repeat(32);
             expect(bytes.toHexString()).to.deep.eq(expectedHexString);
@@ -187,7 +242,7 @@ describe('Bytes', function () {
     describe('toBase64String', function () {
         it('should return base64 string representation', function () {
             const anyUint8Array = new Uint8Array(32).fill(1);
-            const bytes = new Bytes(anyUint8Array);
+            const bytes = Bytes.fromUint8Array(anyUint8Array);
 
             const expectedBase64String = 'AQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQE=';
             expect(bytes.toBase64String()).to.deep.eq(expectedBase64String);

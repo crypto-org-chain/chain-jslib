@@ -3,7 +3,7 @@ import bech32 from 'bech32';
 
 import { Secp256k1KeyPair } from '../keypair/secp256k1';
 import { owAccountPubKeySource, owAccountOptions } from './ow.types';
-import { hash160 } from '../utils/crypto';
+import { hash160 } from '../utils/hash';
 import { Bytes } from '../utils/bytes/bytes';
 
 /**
@@ -28,12 +28,12 @@ export const account = (pubKeySource: AccountPubKeySource, options: AccountOptio
 
     const pubKey =
         pubKeySource instanceof Secp256k1KeyPair
-            ? pubKeySource.toPubKey({
+            ? pubKeySource.getPubKey({
                   compressed: true,
               })
             : pubKeySource;
     const pubKeyDigest = hash160(pubKey);
-    const words = bech32.toWords(pubKeyDigest);
+    const words = bech32.toWords(pubKeyDigest.toUint8Array());
     return bech32.encode(options.prefix, words);
 };
 

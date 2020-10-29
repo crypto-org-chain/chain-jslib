@@ -1,1 +1,3 @@
+*.sh
+lib/**/codec/generated/codecimpl.*
 lib/dist
