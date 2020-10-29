@@ -9,13 +9,15 @@ import { Transaction } from '../transaction';
 
 describe('Testing MsgSend', function () {
     it('Test MsgSend conversion', function () {
+        const coin = {
+            denom: 'tcro',
+            amount: '12000500',
+        };
+
         const msgSend = new MsgSend(
             'tcro165tzcrh2yl83g8qeqxueg2g5gzgu57y3fe3kc3',
             'tcro184lta2lsyu47vwyp2e8zmtca3k5yq85p6c4vp3',
-            {
-                denom: 'tcro',
-                amount: '12000500',
-            },
+            coin,
         );
 
         const rawMsg: Msg = {
