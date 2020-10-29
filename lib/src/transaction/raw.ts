@@ -12,6 +12,7 @@ import { Network } from '../network/network';
 import { SignerAccount } from './types';
 import { SignableTransaction } from './signable';
 import { cloneDeep } from '../utils/clone';
+import { Message } from './msg/Message';
 
 export class RawTransaction {
     private txBody: TxBody = {
@@ -57,6 +58,17 @@ export class RawTransaction {
         this.txBody.value.messages.push(message);
 
         return this;
+    }
+
+    /**
+     * Append Cosmos MsgSend to transaction
+     * @param {Message} message one of the supported Cosmos message
+     * @returns {Transaction}
+     * @throws {Error} when message is invalid
+     * @memberof Transaction
+     */
+    public appendMessage(message: Message): RawTransaction {
+        return this.addMessage(message.toRawMsg());
     }
 
     /**
