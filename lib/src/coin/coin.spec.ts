@@ -14,11 +14,11 @@ describe('Coin', function () {
             testRunner(
                 function (args0, args1) {
                     if (!args0.valid) {
-                        expect(() => cro.coin(args0.value, args1.value)).to.throw(
+                        expect(() => cro.Coin(args0.value, args1.value)).to.throw(
                             'Expected `amount` to be of type `string`',
                         );
                     } else if (!args1.valid) {
-                        expect(() => cro.coin(args0.value, args1.value)).to.throw(
+                        expect(() => cro.Coin(args0.value, args1.value)).to.throw(
                             'Expected `unit` to be of type `string`',
                         );
                     }
@@ -29,34 +29,34 @@ describe('Coin', function () {
 
         context('When unit is base unit', function () {
             it('should throw Error when the provided string is not a valid number', function () {
-                expect(() => cro.coin('invalid', Coin.UNIT_BASE)).to.throw(
+                expect(() => cro.Coin('invalid', Coin.UNIT_BASE)).to.throw(
                     'Expected amount to be a base10 number represented as string',
                 );
             });
 
             it('should throw Error when the provided string is a floating number', function () {
-                expect(() => cro.coin('1234.5678', Coin.UNIT_BASE)).to.throw('Expected base amount to be an integer');
+                expect(() => cro.Coin('1234.5678', Coin.UNIT_BASE)).to.throw('Expected base amount to be an integer');
             });
 
             it('should throw Error when the provided string is not a base10 number', function () {
-                expect(() => cro.coin('0xff', Coin.UNIT_BASE)).to.throw(
+                expect(() => cro.Coin('0xff', Coin.UNIT_BASE)).to.throw(
                     'Expected amount to be a base10 number represented as string',
                 );
             });
 
             it('should throw Error when the provided string is a negative integer', function () {
-                expect(() => cro.coin('-1000', Coin.UNIT_BASE)).to.throw('Expected base amount to be positive');
+                expect(() => cro.Coin('-1000', Coin.UNIT_BASE)).to.throw('Expected base amount to be positive');
             });
 
             it('should throw Error if the value exceed total supply', function () {
-                expect(() => cro.coin('10000000000000000001', Coin.UNIT_BASE)).to.throw(
+                expect(() => cro.Coin('10000000000000000001', Coin.UNIT_BASE)).to.throw(
                     'Expected base amount to be within total supply',
                 );
             });
 
             it('should return a coins object of the provided string', function () {
                 const anyBaseValue = '1000';
-                const coins = cro.coin(anyBaseValue, Coin.UNIT_BASE);
+                const coins = cro.Coin(anyBaseValue, Coin.UNIT_BASE);
 
                 expect(coins.toString()).to.eq(anyBaseValue);
             });
@@ -64,36 +64,36 @@ describe('Coin', function () {
 
         context('When unit is CRO', function () {
             it('should throw Error when the provided string is not a valid number', function () {
-                expect(() => cro.coin('invalid', Coin.UNIT_CRO)).to.throw(
+                expect(() => cro.Coin('invalid', Coin.UNIT_CRO)).to.throw(
                     'Expected amount to be a base10 number represented as string',
                 );
             });
 
             it('should throw Error when the provided string is not a base10 number', function () {
-                expect(() => cro.coin('0xff', Coin.UNIT_CRO)).to.throw(
+                expect(() => cro.Coin('0xff', Coin.UNIT_CRO)).to.throw(
                     'Expected amount to be a base10 number represented as string',
                 );
             });
 
             it('should throw Error when the provided string is a negative integer', function () {
-                expect(() => cro.coin('-1000', Coin.UNIT_CRO)).to.throw('Expected CRO amount to be positive');
+                expect(() => cro.Coin('-1000', Coin.UNIT_CRO)).to.throw('Expected CRO amount to be positive');
             });
 
             it('should throw Error when the provided string exceed 8 decimal places', function () {
-                expect(() => cro.coin('1000.123456789', Coin.UNIT_CRO)).to.throw(
+                expect(() => cro.Coin('1000.123456789', Coin.UNIT_CRO)).to.throw(
                     'Expected CRO amount to have at most 8 decimal places',
                 );
             });
 
             it('should throw Error if the value exceed total supply', function () {
-                expect(() => cro.coin('100000000001', Coin.UNIT_CRO)).to.throw(
+                expect(() => cro.Coin('100000000001', Coin.UNIT_CRO)).to.throw(
                     'Expected CRO amount to be within total supply',
                 );
             });
 
             it('should return a coins object of the provided string', function () {
                 const anyCROValue = '0.00001';
-                const coins = cro.coin(anyCROValue, Coin.UNIT_CRO);
+                const coins = cro.Coin(anyCROValue, Coin.UNIT_CRO);
 
                 const expectedBaseValue = '1000';
                 expect(coins.toString()).to.eq(expectedBaseValue);

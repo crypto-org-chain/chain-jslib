@@ -1,17 +1,19 @@
+import ow from 'ow';
 import { Network } from '../network/network';
 import { Coin, Units } from '../coin/coin';
 import { RawTransaction } from '../transaction/raw';
+import { owCroInitParams } from './ow.types';
 
 export class Cro {
-    public options: InitOptions;
+    public readonly configs: InitConfigurations;
 
-    constructor(options: InitOptions) {
-        // TODO : Add proper validation with ow
-        this.options = options;
+    constructor(options: InitConfigurations) {
+        ow(options, 'configs', owCroInitParams);
+        this.configs = options;
     }
 
-    public coin(amount: string, unit: Units): Coin {
-        return new Coin(amount, unit, this.options.network);
+    public Coin(amount: string, unit: Units): Coin {
+        return new Coin(amount, unit, this.configs.network);
     }
 
     /**
@@ -22,7 +24,7 @@ export class Cro {
      * @memberof Cro
      */
     public coinFromBaseUnit(baseValue: string): Coin {
-        return new Coin(baseValue, Units.BASE, this.options.network);
+        return new Coin(baseValue, Units.BASE, this.configs.network);
     }
 
     /**
@@ -33,14 +35,14 @@ export class Cro {
      * @memberof Cro
      */
     public coinFromCRO(croValue: string): Coin {
-        return new Coin(croValue, Units.CRO, this.options.network);
+        return new Coin(croValue, Units.CRO, this.configs.network);
     }
 
-    public rawTransaction(): RawTransaction {
-        return new RawTransaction({ network: this.options.network });
+    public RawTransaction(): RawTransaction {
+        return new RawTransaction({ network: this.configs.network });
     }
 }
 
-export type InitOptions = {
+export type InitConfigurations = {
     network: Network;
 };

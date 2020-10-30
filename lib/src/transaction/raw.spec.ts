@@ -10,7 +10,7 @@ import { Cro } from '../core/cro';
 
 const cro = new Cro({ network: Testnet });
 
-const anyTransaction: () => RawTransaction = () => cro.rawTransaction();
+const anyTransaction: () => RawTransaction = () => cro.RawTransaction();
 
 const anyValidOptions: () => TransactionOptions = () => ({
     network: Testnet,

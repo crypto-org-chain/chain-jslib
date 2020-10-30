@@ -23,18 +23,18 @@ describe('Integration tests (to be removed)', function () {
         const keyPair2 = Secp256k1KeyPair.fromPrivKey(privKey2);
 
         const cro = new Cro({ network: Testnet });
-        const rawTx = cro.rawTransaction();
+        const rawTx = cro.RawTransaction();
 
         const msgSend1 = new MsgSend({
             fromAddress: 'tcro165tzcrh2yl83g8qeqxueg2g5gzgu57y3fe3kc3',
             toAddress: 'tcro184lta2lsyu47vwyp2e8zmtca3k5yq85p6c4vp3',
-            amount: cro.coin('1000', Units.BASE),
+            amount: cro.Coin('1000', Units.BASE),
         });
 
         const msgSend2 = new MsgSend({
             fromAddress: 'tcro184lta2lsyu47vwyp2e8zmtca3k5yq85p6c4vp3',
             toAddress: 'tcro165tzcrh2yl83g8qeqxueg2g5gzgu57y3fe3kc3',
-            amount: cro.coin('2000', Units.BASE),
+            amount: cro.Coin('2000', Units.BASE),
         });
 
         const signableTx = rawTx
