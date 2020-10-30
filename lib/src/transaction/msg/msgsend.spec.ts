@@ -8,11 +8,10 @@ import { Msg } from '../../cosmos/v1beta1/types/msg';
 import { Secp256k1KeyPair } from '../../keypair/secp256k1';
 import { Bytes } from '../../utils/bytes/bytes';
 import { RawTransaction } from '../raw';
-import { Testnet } from '../../network/network';
 import { Coin, Units } from '../../coin/coin';
-import { Cro } from '../../core/cro';
+import { CroSDK } from '../../core/cro';
 
-const cro = new Cro({ network: Testnet });
+const cro = new CroSDK({ network: CroSDK.Testnet });
 
 describe('Testing MsgSend', function () {
     fuzzyDescribe('should throw Error when options is invalid', function (fuzzy) {
@@ -75,7 +74,7 @@ describe('Testing MsgSend', function () {
             accountSequence: new Big(2),
         };
 
-        const rawTx = new RawTransaction({ network: Testnet });
+        const rawTx = new RawTransaction({ network: CroSDK.Testnet });
 
         const signableTx = rawTx.appendMessage(msgSend).addSigner(anySigner).toSignable();
 

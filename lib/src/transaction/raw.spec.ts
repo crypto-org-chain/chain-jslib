@@ -4,16 +4,15 @@ import { fuzzyDescribe } from '../test/mocha-fuzzy/suite';
 import { MessageSuiteFactory, TransactionSignerFactory } from './test';
 
 import { RawTransaction, TransactionOptions } from './raw';
-import { Testnet } from '../network/network';
 import { SignableTransaction } from './signable';
-import { Cro } from '../core/cro';
+import { CroSDK } from '../core/cro';
 
-const cro = new Cro({ network: Testnet });
+const cro = new CroSDK({ network: CroSDK.Testnet });
 
 const anyTransaction: () => RawTransaction = () => cro.RawTransaction();
 
 const anyValidOptions: () => TransactionOptions = () => ({
-    network: Testnet,
+    network: CroSDK.Testnet,
 });
 
 describe('Transaction', function () {
@@ -30,10 +29,10 @@ describe('Transaction', function () {
 
         it('should return a Transaction with the provided network', function () {
             const tx = new RawTransaction({
-                network: Testnet,
+                network: CroSDK.Testnet,
             });
 
-            expect(tx.getNetwork()).to.eq(Testnet);
+            expect(tx.getNetwork()).to.eq(CroSDK.Testnet);
         });
     });
 

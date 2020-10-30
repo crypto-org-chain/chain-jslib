@@ -2,10 +2,9 @@ import { expect } from 'chai';
 import { fuzzyDescribe } from '../test/mocha-fuzzy/suite';
 
 import { Coin } from './coin';
-import { Testnet } from '../network/network';
-import { Cro } from '../core/cro';
+import { CroSDK } from '../core/cro';
 
-const cro = new Cro({ network: Testnet });
+const cro = new CroSDK({ network: CroSDK.Testnet });
 
 describe('Coin', function () {
     describe('constructor', function () {
@@ -219,7 +218,7 @@ describe('Coin', function () {
         });
 
         it('should throw Error when the result exceeds total supply', function () {
-            const totalSupply = Coin.getTotalSupply(Testnet);
+            const totalSupply = Coin.getTotalSupply(CroSDK.Testnet);
             const oneBaseUnit = cro.coinFromBaseUnit('1');
 
             expect(() => totalSupply.add(oneBaseUnit)).to.throw('Adding two Coin together exceed total supply');
@@ -291,7 +290,7 @@ describe('Coin', function () {
             const anyCoin = cro.coinFromBaseUnit('1000');
             expect(anyCoin.toCosmosCoin()).to.deep.eq({
                 amount: '1000',
-                denom: Testnet.coin.baseDenom,
+                denom: CroSDK.Testnet.coin.baseDenom,
             });
         });
     });
