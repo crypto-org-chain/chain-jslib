@@ -141,30 +141,6 @@ export class Coin {
     }
 
     /**
-     * Create a Coin from the base unit
-     * @param {string} baseValue coins value in base unit
-     * @param {Network} network current network configuration
-     * @returns {Coin}
-     * @throws {Error} base value is invalid
-     * @memberof Coin
-     */
-    public static fromBaseUnit(baseValue: string, network: Network): Coin {
-        return new Coin(baseValue, Units.BASE, network);
-    }
-
-    /**
-     * Create a Coin from CRO unit
-     * @param {string} croValue coins value in CRO unit
-     * @param {Network} network current network configuration
-     * @returns {Coin}
-     * @throws {Error} cro value is invalid
-     * @memberof Coin
-     */
-    public static fromCRO(croValue: string, network: Network): Coin {
-        return new Coin(croValue, Units.CRO, network);
-    }
-
-    /**
      * Add two coins together and returns a new Coin
      * @param {Coin} anotherCoin coins to add
      * @returns {Coin}
