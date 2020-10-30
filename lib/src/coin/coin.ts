@@ -3,6 +3,7 @@ import ow from 'ow';
 import { Network } from '../network/network';
 
 import { owCoin, owCoinUnit } from './ow.types';
+import { owNetwork } from '../network/ow.types';
 
 export enum Units {
     BASE = 'base',
@@ -18,14 +19,6 @@ export class Coin {
      * @memberof Coin
      */
     public static TOTAL_SUPPLY_STRING = '10000000000000000000';
-
-    // /**
-    //  * @type {Coin}
-    //  * @static
-    //  * @memberof Coin
-    //  * Total supply represented as Coin object
-    //  */
-    // public static TOTAL_SUPPLY = new Coin(Coin.TOTAL_SUPPLY_STRING, Units.BASE, Testnet);
 
     public static getTotalSupply(network: Network): Coin {
         return new Coin(Coin.TOTAL_SUPPLY_STRING, Units.BASE, network);
@@ -66,9 +59,9 @@ export class Coin {
     /**
      * Coin value stored in basic unit as Big
      */
-    private baseAmount: Big;
+    private readonly baseAmount: Big;
 
-    private network: Network;
+    private readonly network: Network;
 
     /**
      * Constructor to create a Coin
@@ -81,8 +74,7 @@ export class Coin {
     constructor(amount: string, unit: Units, network: Network) {
         ow(amount, 'amount', ow.string);
         ow(unit, 'unit', owCoinUnit);
-        // TODO: Validate network properly
-        // ow(network, 'network', owNetwork());
+        ow(network, 'network', owNetwork());
 
         this.network = network;
 
