@@ -35,7 +35,7 @@ export class RawTransaction {
 
     /**
      * Constructor to create a new Transaction
-     * @param {TransactionOption} options
+     * @param {TransactionOptions} options
      * @returns {RawTransaction}
      * @throws {Error} when options is invalid
      */

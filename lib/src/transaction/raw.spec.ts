@@ -6,11 +6,12 @@ import { MessageSuiteFactory, TransactionSignerFactory } from './test';
 import { RawTransaction, TransactionOptions } from './raw';
 import { Testnet } from '../network/network';
 import { SignableTransaction } from './signable';
+import { Cro } from '../core/cro';
 
-const anyTransaction = (): RawTransaction =>
-    new RawTransaction({
-        network: Testnet,
-    });
+const cro = new Cro({ network: Testnet });
+
+const anyTransaction: () => RawTransaction = () => cro.rawTransaction();
+
 const anyValidOptions: () => TransactionOptions = () => ({
     network: Testnet,
 });

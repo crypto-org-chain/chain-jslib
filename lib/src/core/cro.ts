@@ -1,5 +1,6 @@
 import { Network } from '../network/network';
 import { Coin, Units } from '../coin/coin';
+import { RawTransaction } from '../transaction/raw';
 
 export class Cro {
     public options: InitOptions;
@@ -33,6 +34,10 @@ export class Cro {
      */
     public coinFromCRO(croValue: string): Coin {
         return new Coin(croValue, Units.CRO, this.options.network);
+    }
+
+    public rawTransaction(): RawTransaction {
+        return new RawTransaction({ network: this.options.network });
     }
 }
 
