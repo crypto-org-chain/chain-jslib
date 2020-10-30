@@ -19,13 +19,17 @@ export class Coin {
      */
     public static TOTAL_SUPPLY_STRING = '10000000000000000000';
 
-    /**
-     * @type {Coin}
-     * @static
-     * @memberof Coin
-     * Total supply represented as Coin object
-     */
-    public static TOTAL_SUPPLY = new Coin(Coin.TOTAL_SUPPLY_STRING, Units.BASE);
+    // /**
+    //  * @type {Coin}
+    //  * @static
+    //  * @memberof Coin
+    //  * Total supply represented as Coin object
+    //  */
+    // public static TOTAL_SUPPLY = new Coin(Coin.TOTAL_SUPPLY_STRING, Units.BASE, Testnet);
+
+    public static getTotalSupply(network: Network): Coin {
+        return new Coin(Coin.TOTAL_SUPPLY_STRING, Units.BASE, network);
+    }
 
     /**
      * One CRO in base unit represented as Big object
@@ -64,16 +68,23 @@ export class Coin {
      */
     private baseAmount: Big;
 
+    private network: Network;
+
     /**
      * Constructor to create a Coin
      * @param {string} amount coins amount represented as string
      * @param {Units} unit unit of the coins
+     * @param {Network} network current network configuration
      * @throws {Error} amount or unit is invalid
      * @returns {Coin}
      */
-    constructor(amount: string, unit: Units) {
+    constructor(amount: string, unit: Units, network: Network) {
         ow(amount, 'amount', ow.string);
         ow(unit, 'unit', owCoinUnit);
+        // TODO: Validate network properly
+        // ow(network, 'network', owNetwork());
+
+        this.network = network;
 
         let coins: Big;
         try {
@@ -132,23 +143,25 @@ export class Coin {
     /**
      * Create a Coin from the base unit
      * @param {string} baseValue coins value in base unit
+     * @param {Network} network current network configuration
      * @returns {Coin}
      * @throws {Error} base value is invalid
      * @memberof Coin
      */
-    public static fromBaseUnit(baseValue: string): Coin {
-        return new Coin(baseValue, Units.BASE);
+    public static fromBaseUnit(baseValue: string, network: Network): Coin {
+        return new Coin(baseValue, Units.BASE, network);
     }
 
     /**
      * Create a Coin from CRO unit
      * @param {string} croValue coins value in CRO unit
+     * @param {Network} network current network configuration
      * @returns {Coin}
      * @throws {Error} cro value is invalid
      * @memberof Coin
      */
-    public static fromCRO(croValue: string): Coin {
-        return new Coin(croValue, Units.CRO);
+    public static fromCRO(croValue: string, network: Network): Coin {
+        return new Coin(croValue, Units.CRO, network);
     }
 
     /**
@@ -165,7 +178,7 @@ export class Coin {
         if (newAmount.gt(Coin.TOTAL_SUPPLY_STRING)) {
             throw new Error('Adding two Coin together exceed total supply');
         }
-        return new Coin(newAmount.toString(), Units.BASE);
+        return new Coin(newAmount.toString(), Units.BASE, this.network);
     }
 
     /**
@@ -182,7 +195,7 @@ export class Coin {
         if (newAmount.lt(0)) {
             throw new Error('Subtracting the Coin results in negation Coin');
         }
-        return new Coin(newAmount.toString(), Units.BASE);
+        return new Coin(newAmount.toString(), Units.BASE, this.network);
     }
 
     /**
@@ -199,10 +212,10 @@ export class Coin {
      * @returns {CosmosCoin}
      * @memberof Coin
      * */
-    public toCosmosCoin(network: Network): CosmosCoin {
+    public toCosmosCoin(): CosmosCoin {
         return {
             amount: this.toString(Units.BASE),
-            denom: network.coin.baseDenom,
+            denom: this.network.coin.baseDenom,
         };
     }
 
