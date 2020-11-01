@@ -1,6 +1,6 @@
 import { owStrictObject } from '../ow.types';
 import { owNetwork } from '../network/ow.types';
 
-export const owCroInitParams = owStrictObject().exactShape({
+export const owCroSDKInitParams = owStrictObject().exactShape({
     network: owNetwork(),
 });

@@ -2,7 +2,7 @@ import ow from 'ow';
 import { Network } from '../network/network';
 import { Coin, Units } from '../coin/coin';
 import { RawTransaction } from '../transaction/raw';
-import { owCroInitParams } from './ow.types';
+import { owCroSDKInitParams } from './ow.types';
 
 export class CroSDK {
     public readonly configs: InitConfigurations;
@@ -27,7 +27,7 @@ export class CroSDK {
      * @returns {CroSDK}
      */
     constructor(configs: InitConfigurations) {
-        ow(configs, 'configs', owCroInitParams);
+        ow(configs, 'configs', owCroSDKInitParams);
         this.configs = configs;
     }
 
@@ -77,4 +77,5 @@ export class CroSDK {
 
 export type InitConfigurations = {
     network: Network;
+    // More sdk configs to be added in the future
 };
