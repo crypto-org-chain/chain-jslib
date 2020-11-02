@@ -87,10 +87,6 @@ export const coin = function (config: InitConfigurations) {
                 this.baseAmount = unit === Units.BASE ? Coin.parseBaseAmount(coins) : Coin.parseCROAmount(coins);
             }
 
-            public static create(amount: string, unit: Units): Coin {
-                return new Coin(amount, unit);
-            }
-
             /**
              * Parse and validate a amount in base unit represented as Big
              * @param {Big} baseAmount amount in base unit
