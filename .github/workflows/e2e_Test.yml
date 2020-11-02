@@ -3,12 +3,10 @@
 name: Integration_test_local_full_node
 
 on:
-  [workflow_dispatch]
-
-  # pull_request:
-  # push:
-  #   branches:
-  #     - master
+  pull_request:
+  push:
+    branches:
+      - master
 
 jobs:
   RPC:
