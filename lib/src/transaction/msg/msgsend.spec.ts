@@ -9,9 +9,9 @@ import { Secp256k1KeyPair } from '../../keypair/secp256k1';
 import { Bytes } from '../../utils/bytes/bytes';
 import { RawTransaction } from '../raw';
 import { Coin, Units } from '../../coin/coin';
-import { CroSDK } from '../../core/cro';
+import { CroNetwork } from '../../core/cro';
 
-const cro = new CroSDK({ network: CroSDK.Testnet });
+const cro = new CroNetwork({ network: CroNetwork.Testnet });
 
 describe('Testing MsgSend', function () {
     fuzzyDescribe('should throw Error when options is invalid', function (fuzzy) {
@@ -74,7 +74,7 @@ describe('Testing MsgSend', function () {
             accountSequence: new Big(2),
         };
 
-        const rawTx = new RawTransaction({ network: CroSDK.Testnet });
+        const rawTx = new RawTransaction({ network: CroNetwork.Testnet });
 
         const signableTx = rawTx.appendMessage(msgSend).addSigner(anySigner).toSignable();
 

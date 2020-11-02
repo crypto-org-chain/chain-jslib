@@ -7,7 +7,7 @@ export const croSDK = function (config: InitConfigurations) {
     };
 };
 
-export class CroSDK {
+export class CroNetwork {
     public static Testnet: Network = {
         chainId: 'testnet-croeseid-1',
         addressPrefix: 'tcro',

@@ -3,7 +3,7 @@ import Big from 'big.js';
 import { expect } from 'chai';
 import { HDKey } from '../hdkey/hdkey';
 import { Secp256k1KeyPair } from '../keypair/secp256k1';
-import { CroSDK } from '../core/cro';
+import { CroNetwork } from '../core/cro';
 import { MsgSend } from './msg/msgsend';
 import { Units } from '../coin/coin';
 
@@ -21,7 +21,7 @@ describe('Integration tests (to be removed)', function () {
         const keyPair = Secp256k1KeyPair.fromPrivKey(privKey);
         const keyPair2 = Secp256k1KeyPair.fromPrivKey(privKey2);
 
-        const cro = new CroSDK({ network: CroSDK.Testnet });
+        const cro = new CroNetwork({ network: CroNetwork.Testnet });
         const rawTx = cro.RawTransaction();
 
         const msgSend1 = new MsgSend({

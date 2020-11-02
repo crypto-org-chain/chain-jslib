@@ -5,14 +5,14 @@ import { MessageSuiteFactory, TransactionSignerFactory } from './test';
 
 import { RawTransaction, TransactionOptions } from './raw';
 import { SignableTransaction } from './signable';
-import { CroSDK } from '../core/cro';
+import { CroNetwork } from '../core/cro';
 
-const cro = new CroSDK({ network: CroSDK.Testnet });
+const cro = new CroNetwork({ network: CroNetwork.Testnet });
 
 const anyTransaction: () => RawTransaction = () => cro.RawTransaction();
 
 const anyValidOptions: () => TransactionOptions = () => ({
-    network: CroSDK.Testnet,
+    network: CroNetwork.Testnet,
 });
 
 describe('Transaction', function () {
@@ -29,10 +29,10 @@ describe('Transaction', function () {
 
         it('should return a Transaction with the provided network', function () {
             const tx = new RawTransaction({
-                network: CroSDK.Testnet,
+                network: CroNetwork.Testnet,
             });
 
-            expect(tx.getNetwork()).to.eq(CroSDK.Testnet);
+            expect(tx.getNetwork()).to.eq(CroNetwork.Testnet);
         });
     });
 

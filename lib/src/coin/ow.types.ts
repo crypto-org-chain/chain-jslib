@@ -1,6 +1,6 @@
 import ow from 'ow';
 import { owOptionalStrictObject, owStrictObject } from '../ow.types';
-import { Units } from './coin';
+import { isCoin, Units } from './coin';
 
 export const owCoinUnit = ow.string.validate((val) => ({
     validator: Object.values(Units).includes(val as any),
@@ -8,8 +8,7 @@ export const owCoinUnit = ow.string.validate((val) => ({
 }));
 
 const coinValidatorFn = (val: object) => ({
-    // validator: val instanceof Coin,
-    validator: true,
+    validator: isCoin(val),
     message: (label: string) => `Expected ${label} to be an instance of \`Coin\`, got \`${val}\``,
 });
 

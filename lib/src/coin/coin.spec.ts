@@ -1,9 +1,9 @@
 import { expect } from 'chai';
 import { fuzzyDescribe } from '../test/mocha-fuzzy/suite';
 
-import { CroSDK, croSDK } from '../core/cro';
+import { CroNetwork, croSDK } from '../core/cro';
 
-const cro = croSDK({ network: CroSDK.Testnet });
+const cro = croSDK({ network: CroNetwork.Testnet });
 
 describe('Coin', function () {
     describe('constructor', function () {
@@ -148,7 +148,6 @@ describe('Coin', function () {
         it('should return a coins object of the provided base unit string', function () {
             const anyBaseValue = '1000';
             const coins = cro.coin.Coin.fromBaseUnit(anyBaseValue);
-
             expect(coins.toString()).to.eq(anyBaseValue);
         });
     });
@@ -297,7 +296,7 @@ describe('Coin', function () {
             const anyCoin = cro.coin.Coin.fromBaseUnit('1000');
             expect(anyCoin.toCosmosCoin()).to.deep.eq({
                 amount: '1000',
-                denom: CroSDK.Testnet.coin.baseDenom,
+                denom: CroNetwork.Testnet.coin.baseDenom,
             });
         });
     });

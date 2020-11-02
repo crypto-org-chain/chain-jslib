@@ -9,6 +9,12 @@ export enum Units {
     CRO = 'cro',
 }
 
+/** Duck type check due to limitations of non exportable type for proper instance of checks * */
+export function isCoin(object: Object): boolean {
+    // eslint-disable-next-line no-prototype-builtins
+    return object.hasOwnProperty('baseAmount');
+}
+
 export const coin = function (config: InitConfigurations) {
     // TODO: support network
     return {
@@ -71,9 +77,6 @@ export const coin = function (config: InitConfigurations) {
             constructor(amount: string, unit: Units) {
                 ow(amount, 'amount', ow.string);
                 ow(unit, 'unit', owCoinUnit);
-                // ow(network, 'network', owNetwork());
-
-                // this.network = network;
 
                 let coins: Big;
                 try {
