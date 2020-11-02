@@ -43,14 +43,6 @@ export const coin = function (config: InitConfigurations) {
             public static ONE_CRO_IN_BASE_UNIT = new Big('100000000');
 
             /**
-             * List of Coin unit enum
-             * @type {Units}
-             * @static
-             * @memberof Coin
-             */
-            public static UNITS = Units;
-
-            /**
              * Denote base unit
              * @type {string}
              * @static
@@ -75,7 +67,6 @@ export const coin = function (config: InitConfigurations) {
              * Constructor to create a Coin
              * @param {string} amount coins amount represented as string
              * @param {Units} unit unit of the coins
-             * @param {Network} network current network configuration
              * @throws {Error} amount or unit is invalid
              * @returns {Coin}
              */
@@ -230,10 +221,6 @@ export const coin = function (config: InitConfigurations) {
                     return this.baseAmount.toString();
                 }
                 return this.baseAmount.div(Coin.ONE_CRO_IN_BASE_UNIT).toString();
-            }
-
-            isCoin(object: Object): boolean {
-                return object instanceof Coin;
             }
         },
     };
