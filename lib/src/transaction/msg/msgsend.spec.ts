@@ -7,18 +7,17 @@ import { MsgSend } from './msgsend';
 import { Msg } from '../../cosmos/v1beta1/types/msg';
 import { Secp256k1KeyPair } from '../../keypair/secp256k1';
 import { Bytes } from '../../utils/bytes/bytes';
-import { RawTransaction } from '../raw';
-import { Coin, Units } from '../../coin/coin';
-import { CroNetwork } from '../../core/cro';
+import { Units } from '../../coin/coin';
+import { CroNetwork, CroSDK } from '../../core/cro';
 
-const cro = new CroNetwork({ network: CroNetwork.Testnet });
+const cro = CroSDK({ network: CroNetwork.Testnet });
 
 describe('Testing MsgSend', function () {
     fuzzyDescribe('should throw Error when options is invalid', function (fuzzy) {
         const anyValidOptions = {
             fromAddress: 'tcro165tzcrh2yl83g8qeqxueg2g5gzgu57y3fe3kc3',
             toAddress: 'tcro184lta2lsyu47vwyp2e8zmtca3k5yq85p6c4vp3',
-            amount: cro.Coin('1000', Units.BASE),
+            amount: new cro.coin.Coin('1000', Units.BASE),
         };
         const testRunner = fuzzy(fuzzy.ObjArg(anyValidOptions));
 
@@ -31,7 +30,7 @@ describe('Testing MsgSend', function () {
     });
 
     it('Test MsgSend conversion', function () {
-        const coin: Coin = cro.Coin('12000500', Units.BASE);
+        const coin = new cro.coin.Coin('12000500', Units.BASE);
 
         const msgSend = new MsgSend({
             fromAddress: 'tcro165tzcrh2yl83g8qeqxueg2g5gzgu57y3fe3kc3',
@@ -60,7 +59,7 @@ describe('Testing MsgSend', function () {
         const anyKeyPair = Secp256k1KeyPair.fromPrivKey(
             Bytes.fromHexString('66633d18513bec30dd11a209f1ceb1787aa9e2069d5d47e590174dc9665102b3'),
         );
-        const coin: Coin = cro.Coin('12000500', Units.CRO);
+        const coin = new cro.coin.Coin('12000500', Units.CRO);
 
         const msgSend = new MsgSend({
             fromAddress: 'tcro165tzcrh2yl83g8qeqxueg2g5gzgu57y3fe3kc3',
@@ -74,7 +73,7 @@ describe('Testing MsgSend', function () {
             accountSequence: new Big(2),
         };
 
-        const rawTx = new RawTransaction({ network: CroNetwork.Testnet });
+        const rawTx = new cro.transaction.RawTransaction();
 
         const signableTx = rawTx.appendMessage(msgSend).addSigner(anySigner).toSignable();
 

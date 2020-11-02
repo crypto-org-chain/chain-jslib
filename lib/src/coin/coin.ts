@@ -15,10 +15,15 @@ export function isCoin(object: Object): boolean {
     return object.hasOwnProperty('baseAmount');
 }
 
+// Mainly used to export Coin type
+export interface ICoin {
+    toCosmosCoin(): CosmosCoin;
+}
+
 export const coin = function (config: InitConfigurations) {
     // TODO: support network
     return {
-        Coin: class Coin {
+        Coin: class Coin implements ICoin {
             /**
              * Total supply in base unit represented as string
              * @type {string}
@@ -225,6 +230,10 @@ export const coin = function (config: InitConfigurations) {
                     return this.baseAmount.toString();
                 }
                 return this.baseAmount.div(Coin.ONE_CRO_IN_BASE_UNIT).toString();
+            }
+
+            isCoin(object: Object): boolean {
+                return object instanceof Coin;
             }
         },
     };

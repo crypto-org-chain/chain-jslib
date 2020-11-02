@@ -1,15 +1,15 @@
 import ow from 'ow';
 import { Msg } from '../../cosmos/v1beta1/types/msg';
 import { Message } from './Message';
-import { Coin } from '../../coin/coin';
+import { ICoin } from '../../coin/coin';
 import { owMsgSendOptions } from './ow.types';
 
 export class MsgSend implements Message {
-    private readonly fromAddress: string;
+    public readonly fromAddress: string;
 
-    private readonly toAddress: string;
+    public readonly toAddress: string;
 
-    private amount: Coin;
+    public amount: ICoin;
 
     /**
      * Constructor to create a new MsgSend
@@ -47,8 +47,10 @@ export class MsgSend implements Message {
     }
 }
 
+/// TODO: Should now only take amount as raw value and its denom since Coin is not anymore top level accessible
+
 export type MsgSendOptions = {
     fromAddress: string;
     toAddress: string;
-    amount: Coin;
+    amount: ICoin;
 };
