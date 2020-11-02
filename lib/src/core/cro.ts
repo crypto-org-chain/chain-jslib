@@ -1,9 +1,15 @@
+import ow from 'ow';
+
 import { Network } from '../network/network';
 import { coin } from '../coin/coin';
+import { owCroSDKInitParams } from './ow.types';
 
-export const croSDK = function (config: InitConfigurations) {
+export const CroSDK = function (configs: InitConfigurations) {
+    ow(configs, 'configs', owCroSDKInitParams);
+
     return {
-        coin: coin(config),
+        coin: coin(configs),
+        options: configs,
     };
 };
 

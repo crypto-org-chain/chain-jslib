@@ -1,9 +1,9 @@
 import { expect } from 'chai';
 import { fuzzyDescribe } from '../test/mocha-fuzzy/suite';
 
-import { CroNetwork, croSDK } from '../core/cro';
+import { CroNetwork, CroSDK } from '../core/cro';
 
-const cro = croSDK({ network: CroNetwork.Testnet });
+const cro = CroSDK({ network: CroNetwork.Testnet });
 
 describe('Coin', function () {
     describe('constructor', function () {
