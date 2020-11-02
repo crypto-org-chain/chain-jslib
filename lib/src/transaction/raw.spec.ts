@@ -3,39 +3,14 @@ import { expect } from 'chai';
 import { fuzzyDescribe } from '../test/mocha-fuzzy/suite';
 import { MessageSuiteFactory, TransactionSignerFactory } from './test';
 
-import { RawTransaction, TransactionOptions } from './raw';
 import { SignableTransaction } from './signable';
-import { CroNetwork } from '../core/cro';
+import { CroNetwork, CroSDK } from '../core/cro';
 
-const cro = new CroNetwork({ network: CroNetwork.Testnet });
+const cro = CroSDK({ network: CroNetwork.Testnet });
 
-const anyTransaction: () => RawTransaction = () => cro.RawTransaction();
-
-const anyValidOptions: () => TransactionOptions = () => ({
-    network: CroNetwork.Testnet,
-});
+const anyTransaction = () => new cro.transaction.RawTransaction();
 
 describe('Transaction', function () {
-    describe('constructor', function () {
-        fuzzyDescribe('should throw Error when options is invalid', function (fuzzy) {
-            const testRunner = fuzzy(fuzzy.ObjArg(anyValidOptions()));
-            testRunner(function (options) {
-                if (options.valid) {
-                    return;
-                }
-                expect(() => new RawTransaction(options.value)).to.throw('Expected `options` to be of type `object`');
-            });
-        });
-
-        it('should return a Transaction with the provided network', function () {
-            const tx = new RawTransaction({
-                network: CroNetwork.Testnet,
-            });
-
-            expect(tx.getNetwork()).to.eq(CroNetwork.Testnet);
-        });
-    });
-
     describe('appendTxBodyMessage', function () {
         fuzzyDescribe('should throw Error when message is invalid', function (fuzzy) {
             const { message: anyMessage } = MessageSuiteFactory.build();
