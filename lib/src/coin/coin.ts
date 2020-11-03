@@ -9,7 +9,7 @@ export enum Units {
     CRO = 'cro',
 }
 
-/** Duck type check due to limitations of non exportable type for proper instance of checks * */
+// Duck type check due to limitations of non exportable type for proper instance of checks
 export function isCoin(object: Object): boolean {
     // eslint-disable-next-line no-prototype-builtins
     return object.hasOwnProperty('baseAmount');
