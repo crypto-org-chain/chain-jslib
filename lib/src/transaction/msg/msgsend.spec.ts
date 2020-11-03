@@ -17,7 +17,7 @@ describe('Testing MsgSend', function () {
         const anyValidOptions = {
             fromAddress: 'tcro165tzcrh2yl83g8qeqxueg2g5gzgu57y3fe3kc3',
             toAddress: 'tcro184lta2lsyu47vwyp2e8zmtca3k5yq85p6c4vp3',
-            amount: new cro.coin.Coin('1000', Units.BASE),
+            amount: new cro.Coin('1000', Units.BASE),
         };
         const testRunner = fuzzy(fuzzy.ObjArg(anyValidOptions));
 
@@ -30,7 +30,7 @@ describe('Testing MsgSend', function () {
     });
 
     it('Test MsgSend conversion', function () {
-        const coin = new cro.coin.Coin('12000500', Units.BASE);
+        const coin = new cro.Coin('12000500', Units.BASE);
 
         const msgSend = new MsgSend({
             fromAddress: 'tcro165tzcrh2yl83g8qeqxueg2g5gzgu57y3fe3kc3',
@@ -59,7 +59,7 @@ describe('Testing MsgSend', function () {
         const anyKeyPair = Secp256k1KeyPair.fromPrivKey(
             Bytes.fromHexString('66633d18513bec30dd11a209f1ceb1787aa9e2069d5d47e590174dc9665102b3'),
         );
-        const coin = new cro.coin.Coin('12000500', Units.CRO);
+        const coin = new cro.Coin('12000500', Units.CRO);
 
         const msgSend = new MsgSend({
             fromAddress: 'tcro165tzcrh2yl83g8qeqxueg2g5gzgu57y3fe3kc3',
@@ -73,7 +73,7 @@ describe('Testing MsgSend', function () {
             accountSequence: new Big(2),
         };
 
-        const rawTx = new cro.transaction.RawTransaction();
+        const rawTx = new cro.RawTransaction();
 
         const signableTx = rawTx.appendMessage(msgSend).addSigner(anySigner).toSignable();
 

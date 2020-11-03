@@ -23,7 +23,7 @@ describe('Testing Cro Initialization configs', function () {
                 network: CroNetwork.Testnet,
             });
 
-            expect(cro.options.network).to.eq(CroNetwork.Testnet);
+            expect(cro.Options.network).to.eq(CroNetwork.Testnet);
         });
     });
 });

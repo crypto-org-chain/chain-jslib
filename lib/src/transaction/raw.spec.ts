@@ -8,7 +8,7 @@ import { CroNetwork, CroSDK } from '../core/cro';
 
 const cro = CroSDK({ network: CroNetwork.Testnet });
 
-const anyTransaction = () => new cro.transaction.RawTransaction();
+const anyTransaction = () => new cro.RawTransaction();
 
 describe('Transaction', function () {
     describe('appendTxBodyMessage', function () {
