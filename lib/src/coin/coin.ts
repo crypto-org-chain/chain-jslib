@@ -21,7 +21,6 @@ export interface ICoin {
 }
 
 export const coin = function (config: InitConfigurations) {
-<<<<<<< HEAD
     // TODO: support network
     return class Coin implements ICoin {
         /**
@@ -79,70 +78,6 @@ export const coin = function (config: InitConfigurations) {
                 coins = new Big(amount);
             } catch (err) {
                 throw new TypeError(`Expected amount to be a base10 number represented as string, got \`${amount}\``);
-=======
-    return {
-        Coin: class Coin implements ICoin {
-            /**
-             * Total supply in base unit represented as string
-             * @type {string}
-             * @static
-             * @memberof Coin
-             */
-            public static TOTAL_SUPPLY_STRING = '10000000000000000000';
-
-            public static TOTAL_SUPPLY = new Coin(Coin.TOTAL_SUPPLY_STRING, Units.BASE);
-
-            /**
-             * One CRO in base unit represented as Big object
-             * @type {Big}
-             * @static
-             * @memberof Coin
-             */
-            public static ONE_CRO_IN_BASE_UNIT = new Big('100000000');
-
-            /**
-             * Denote base unit
-             * @type {string}
-             * @static
-             * @memberof Coin
-             */
-            public static UNIT_BASE = Units.BASE;
-
-            /**
-             * Denote CRO unit
-             * @type {string}
-             * @static
-             * @memberof Coin
-             */
-            public static UNIT_CRO = Units.CRO;
-
-            /**
-             * Coin value stored in basic unit as Big
-             */
-            public readonly baseAmount: Big;
-
-            /**
-             * Constructor to create a Coin
-             * @param {string} amount coins amount represented as string
-             * @param {Units} unit unit of the coins
-             * @throws {Error} amount or unit is invalid
-             * @returns {Coin}
-             */
-            constructor(amount: string, unit: Units) {
-                ow(amount, 'amount', ow.string);
-                ow(unit, 'unit', owCoinUnit);
-
-                let coins: Big;
-                try {
-                    coins = new Big(amount);
-                } catch (err) {
-                    throw new TypeError(
-                        `Expected amount to be a base10 number represented as string, got \`${amount}\``,
-                    );
-                }
-
-                this.baseAmount = unit === Units.BASE ? Coin.parseBaseAmount(coins) : Coin.parseCROAmount(coins);
->>>>>>> 9fa7700e1e292141d47719de860df7bef4856940
             }
 
             this.baseAmount = unit === Units.BASE ? Coin.parseBaseAmount(coins) : Coin.parseCROAmount(coins);
