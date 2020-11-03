@@ -25,9 +25,8 @@ jobs:
         cachix use crypto-com
         cd chain-main 
         cp ./config.yaml.example ./config.yaml
-        nix-shell ./. -A ci-shell --run "pystarport serve &"
-        curl --location --request GET 'localhost:26657/status'
-
+        nix-shell ./. -A ci-shell --run "pystarport serve"
+        
     - name: STEP-2 :Setup JSLIB project
       uses: actions/checkout@v2
       with:
