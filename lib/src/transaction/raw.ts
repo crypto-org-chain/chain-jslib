@@ -139,42 +139,6 @@ export const rawTransaction = function (config: InitConfigurations) {
             });
         }
 
-        // TODO:
-        // /**
-        //  * Sign the transaction of specified signer index using KeyPair
-        //  * @param {number} index index of the signer
-        //  * @param {Secp256k1KeyPair} keyPair KeyPair to sign the transaction
-        //  * @returns {RawTransaction}
-        //  * @throws {Error} when argument is invalid
-        //  * @memberof Transaction
-        //  */
-        // public sign(index: number, keyPair: Secp256k1KeyPair): RawTransaction {
-        //     ow(index, 'index', ow.number.integer.greaterThanOrEqual(0));
-        //     ow(keyPair, 'keyPair', owSecp256k1KeyPair());
-
-        //     if (!this.isIndexValid(index)) {
-        //         throw new Error(`Expected \`index\` to be within signer size, got \`${index}\``);
-        //     }
-
-        //     const pubKey = this.signerAccounts[index].publicKey;
-        //     const { accountNumber } = this.signerAccounts[index];
-        //     if (!keyPair.getPubKey().isEqual(pubKey)) {
-        //         throw new Error(
-        //             `Expected \`keyPair\` to be able to sign the public key at index \`${index}\`, but couldn't`,
-        //         );
-        //     }
-
-        //     this.prepareTxRaw();
-
-        //     const signDoc = makeSignDoc(this.txRaw!.bodyBytes, this.txRaw!.authInfoBytes, this.network, accountNumber);
-        //     const signDocBytes = sha256(signDoc);
-        //     const signature = keyPair.sign(signDocBytes);
-
-        //     this.txRaw!.signatures[index] = signature;
-
-        //     return this;
-        // }
-
         /**
          * Returns TxBody
          * @returns {TxBody}
