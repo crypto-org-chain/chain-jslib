@@ -1,0 +1,49 @@
+# This is a basic workflow to help you get started with Actions
+
+name: Integration_test_local_full_node
+
+on:
+  pull_request:
+  push:
+    branches:
+      - master
+
+jobs:
+  RPC:
+    runs-on: ubuntu-latest
+    steps:
+    - name: STEP-1 :Checkout chain-main repo
+      uses: actions/checkout@v2
+      with:
+        repository: crypto-com/chain-main
+        path: chain-main
+    - uses: cachix/install-nix-action@v10
+      with:
+       nix_path: nixpkgs=channel:nixos-unstable
+    - run: |
+        nix-env -iA cachix -f https://cachix.org/api/v1/install
+        cachix use crypto-com
+        cd chain-main 
+        cp ./config.yaml.example ./config.yaml
+        nix-shell ./. -A ci-shell --run "pystarport serve &"
+
+    - name: STEP-2 :Setup JSLIB project
+      uses: actions/checkout@v2
+      with:
+        path: jslib
+    - name: STEP-3 :Setup Node.js for nextgen-jslib
+      uses: actions/setup-node@v1
+      with:
+          node-version: 14    
+    - uses: actions/cache@v2
+      id: cache-deps
+      with:
+          path: node_modules
+          key: ${{ runner.os }}-node${{ matrix.code }}-${{ hashFiles('**/package-lock.json') }}
+    - run: |
+        sleep 5
+        curl --location --request GET 'localhost:26657/status'
+        cd jslib
+        npm install 
+        npm run test
+    
