@@ -19,7 +19,6 @@ export class MsgSend implements Message {
      */
     constructor(options: MsgSendOptions) {
         ow(options, 'options', owMsgSendOptions);
-
         this.fromAddress = options.fromAddress;
         this.toAddress = options.toAddress;
         this.amount = options.amount;
@@ -30,6 +29,7 @@ export class MsgSend implements Message {
      * @returns {Msg}
      */
     toRawMsg(): Msg {
+        this.validateAddresses();
         const cosmosCoin = this.amount.toCosmosCoin();
         return {
             typeUrl: '/cosmos.bank.v1beta1.MsgSend',
@@ -44,6 +44,19 @@ export class MsgSend implements Message {
                 ],
             },
         };
+    }
+
+    validateAddresses() {
+        const currentNetwork = this.amount.getNetwork();
+        const prefix = currentNetwork.addressPrefix;
+
+        if (!this.fromAddress.startsWith(prefix)) {
+            throw new TypeError('Provided `fromAddress` doesnt match network selected');
+        }
+
+        if (!this.toAddress.startsWith(prefix)) {
+            throw new TypeError('Provided `toAddress` doesnt match network selected');
+        }
     }
 }
 

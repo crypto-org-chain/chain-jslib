@@ -89,4 +89,23 @@ describe('Testing MsgSend', function () {
                 'b4e58087d6346c40a8f8c6c4268e2f890c100b23a548b057a26edcb095a5029994bac5a6e02a87abbd4bc272e3f24bafcedacc668c560',
         );
     });
+
+    it('Should validate MsgSend provided addresses with network config', function () {
+        const coin = new cro.Coin('12000500', Units.BASE);
+
+        const msgSend1 = new MsgSend({
+            fromAddress: 'cro165tzcrh2yl83g8qeqxueg2g5gzgu57y3fe3kc3',
+            toAddress: 'tcro184lta2lsyu47vwyp2e8zmtca3k5yq85p6c4vp3',
+            amount: coin,
+        });
+
+        const msgSend2 = new MsgSend({
+            fromAddress: 'tcro165tzcrh2yl83g8qeqxueg2g5gzgu57y3fe3kc3',
+            toAddress: 'cro184lta2lsyu47vwyp2e8zmtca3k5yq85p6c4vp3',
+            amount: coin,
+        });
+
+        expect(() => msgSend1.toRawMsg()).to.throw('Provided `fromAddress` doesnt match network selected');
+        expect(() => msgSend2.toRawMsg()).to.throw('Provided `toAddress` doesnt match network selected');
+    });
 });
