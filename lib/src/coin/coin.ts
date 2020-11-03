@@ -21,7 +21,6 @@ export interface ICoin {
 }
 
 export const coin = function (config: InitConfigurations) {
-    // TODO: support network
     return {
         Coin: class Coin implements ICoin {
             /**
