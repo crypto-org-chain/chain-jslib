@@ -1,19 +1,15 @@
 import ow from 'ow';
 import { Msg } from '../../cosmos/v1beta1/types/msg';
 import { Message } from './Message';
-import { Coin } from '../../coin/coin';
-import { Network } from '../../network/network';
+import { ICoin } from '../../coin/coin';
 import { owMsgSendOptions } from './ow.types';
 
 export class MsgSend implements Message {
-    private readonly fromAddress: string;
+    public readonly fromAddress: string;
 
-    private readonly toAddress: string;
+    public readonly toAddress: string;
 
-    private amount: Coin;
-
-    // TODO : In the future, network will be picked from a top level configuration object
-    private network: Network;
+    public amount: ICoin;
 
     /**
      * Constructor to create a new MsgSend
@@ -27,7 +23,6 @@ export class MsgSend implements Message {
         this.fromAddress = options.fromAddress;
         this.toAddress = options.toAddress;
         this.amount = options.amount;
-        this.network = options.network;
     }
 
     /**
@@ -35,7 +30,7 @@ export class MsgSend implements Message {
      * @returns {Msg}
      */
     toRawMsg(): Msg {
-        const cosmosCoin = this.amount.toCosmosCoin(this.network);
+        const cosmosCoin = this.amount.toCosmosCoin();
         return {
             typeUrl: '/cosmos.bank.v1beta1.MsgSend',
             value: {
@@ -52,9 +47,10 @@ export class MsgSend implements Message {
     }
 }
 
+/// TODO: Should now only take amount as raw value and its denom since Coin is not anymore top level accessible
+
 export type MsgSendOptions = {
     fromAddress: string;
     toAddress: string;
-    amount: Coin;
-    network: Network;
+    amount: ICoin;
 };

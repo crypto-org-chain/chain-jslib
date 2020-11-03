@@ -1,9 +1,9 @@
 import Big from 'big.js';
 
-import { Coin } from '../../../coin/coin';
 import { Bytes } from '../../../utils/bytes/bytes';
 import { cosmos } from '../codec';
 import { Msg } from './msg';
+import { ICoin } from '../../../coin/coin';
 
 export type TxBody = {
     typeUrl: '/cosmos.tx.v1beta1.TxBody';
@@ -15,7 +15,7 @@ export type TxBody = {
 export type AuthInfo = {
     signerInfos: SignerInfo[];
     fee: {
-        amount?: Coin;
+        amount?: ICoin;
         gasLimit?: Big;
         payer?: string;
         granter?: string;

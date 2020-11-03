@@ -4,12 +4,13 @@ import { Chance } from 'chance';
 
 import { account } from '../address/account';
 import { Secp256k1KeyPair } from '../keypair/secp256k1';
-import { Network, Testnet } from '../network/network';
+import { Network } from '../network/network';
 import { Msg } from '../cosmos/v1beta1/types/msg';
 import { TransactionSigner } from './raw';
 import { SignableTransaction, SignableTransactionParams } from './signable';
 import { cosmos } from '../cosmos/v1beta1/codec';
 import { TxRaw } from '../cosmos/v1beta1/types/tx';
+import { CroNetwork } from '../core/cro';
 
 const chance = new Chance();
 
@@ -19,7 +20,7 @@ export type MessageSuite = {
     message: Msg;
 };
 export const MessageSuiteFactory = new Factory<MessageSuite>()
-    .option('network', Testnet)
+    .option('network', CroNetwork.Testnet)
     .attr('keyPair', () => Secp256k1KeyPair.generateRandom())
     .attr('message', ['network', 'keyPair'], (network: Network, keyPair: Secp256k1KeyPair) => ({
         typeUrl: '/cosmos.bank.v1beta1.MsgSend',
@@ -49,7 +50,7 @@ export type SignableTransactionParamsSuite = {
     params: SignableTransactionParams;
 };
 export const SignableTransactionParamsSuiteFactory = new Factory<SignableTransactionParamsSuite>()
-    .option('network', Testnet)
+    .option('network', CroNetwork.Testnet)
     .attr('keyPair', () => Secp256k1KeyPair.generateRandom())
     .attr(
         'params',

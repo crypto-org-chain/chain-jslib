@@ -7,17 +7,17 @@ import { MsgSend } from './msgsend';
 import { Msg } from '../../cosmos/v1beta1/types/msg';
 import { Secp256k1KeyPair } from '../../keypair/secp256k1';
 import { Bytes } from '../../utils/bytes/bytes';
-import { RawTransaction } from '../raw';
-import { Testnet } from '../../network/network';
-import { Coin, Units } from '../../coin/coin';
+import { Units } from '../../coin/coin';
+import { CroNetwork, CroSDK } from '../../core/cro';
+
+const cro = CroSDK({ network: CroNetwork.Testnet });
 
 describe('Testing MsgSend', function () {
     fuzzyDescribe('should throw Error when options is invalid', function (fuzzy) {
         const anyValidOptions = {
             fromAddress: 'tcro165tzcrh2yl83g8qeqxueg2g5gzgu57y3fe3kc3',
             toAddress: 'tcro184lta2lsyu47vwyp2e8zmtca3k5yq85p6c4vp3',
-            amount: new Coin('1000', Units.BASE),
-            network: Testnet,
+            amount: new cro.Coin('1000', Units.BASE),
         };
         const testRunner = fuzzy(fuzzy.ObjArg(anyValidOptions));
 
@@ -30,13 +30,12 @@ describe('Testing MsgSend', function () {
     });
 
     it('Test MsgSend conversion', function () {
-        const coin: Coin = new Coin('12000500', Units.BASE);
+        const coin = new cro.Coin('12000500', Units.BASE);
 
         const msgSend = new MsgSend({
             fromAddress: 'tcro165tzcrh2yl83g8qeqxueg2g5gzgu57y3fe3kc3',
             toAddress: 'tcro184lta2lsyu47vwyp2e8zmtca3k5yq85p6c4vp3',
             amount: coin,
-            network: Testnet,
         });
 
         const rawMsg: Msg = {
@@ -60,28 +59,28 @@ describe('Testing MsgSend', function () {
         const anyKeyPair = Secp256k1KeyPair.fromPrivKey(
             Bytes.fromHexString('66633d18513bec30dd11a209f1ceb1787aa9e2069d5d47e590174dc9665102b3'),
         );
-        const coin: Coin = new Coin('12000500', Units.CRO);
+        const coin = new cro.Coin('12000500', Units.CRO);
 
         const msgSend = new MsgSend({
             fromAddress: 'tcro165tzcrh2yl83g8qeqxueg2g5gzgu57y3fe3kc3',
             toAddress: 'tcro184lta2lsyu47vwyp2e8zmtca3k5yq85p6c4vp3',
             amount: coin,
-            network: Testnet,
         });
+
         const anySigner = {
             publicKey: anyKeyPair.getPubKey(),
             accountNumber: new Big(0),
             accountSequence: new Big(2),
         };
 
-        const rawTx = new RawTransaction({ network: Testnet });
+        const rawTx = new cro.RawTransaction();
 
         const signableTx = rawTx.appendMessage(msgSend).addSigner(anySigner).toSignable();
 
         const signedTx = signableTx.setSignature(0, anyKeyPair.sign(signableTx.toSignDoc(0))).toSigned();
 
-        const txHex = signedTx.encode().toHexString();
-        expect(txHex).to.be.eql(
+        const signedTxHex = signedTx.encode().toHexString();
+        expect(signedTxHex).to.be.eql(
             '0a9b010a98010a1c2f636f736d6f732e62616e6b2e763162657461312e4d736753656e6412780a2b7463726f313635747a6' +
                 '3726832796c3833673871657178756567326735677a6775353779336665336b6333122b7463726f3138346c7461326c7379753437' +
                 '767779703265387a6d746361336b3579713835703663347670331a1c0a08626173657463726f12103132303030353030303030303' +

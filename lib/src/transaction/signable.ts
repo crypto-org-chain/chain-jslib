@@ -160,8 +160,8 @@ export class SignableTransaction {
 export type SignableTransactionParams = {
     txBody: TxBody;
     authInfo: AuthInfo;
-    network: Network;
     signerAccounts: SignerAccount[];
+    network: Network;
 };
 
 /**

@@ -1,5 +1,4 @@
 import Big from 'big.js';
-import { Coin } from './coin/coin';
 import { HDKey } from './hdkey/hdkey';
 import { Secp256k1KeyPair } from './keypair/secp256k1';
 import address from './address';
@@ -12,8 +11,6 @@ Big.DP = 20;
 export default {
     address,
     utils,
-
-    Coin,
     HDKey,
     Secp256k1KeyPair,
 };
