@@ -21,7 +21,6 @@ export interface ICoin {
 }
 
 export const coin = function (config: InitConfigurations) {
-    // TODO: support network
     return class Coin implements ICoin {
         /**
          * Total supply in base unit represented as string
