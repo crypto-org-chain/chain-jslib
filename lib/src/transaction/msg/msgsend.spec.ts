@@ -3,7 +3,6 @@ import { expect } from 'chai';
 import Big from 'big.js';
 
 import { fuzzyDescribe } from '../../test/mocha-fuzzy/suite';
-import { MsgSend } from './msgsend';
 import { Msg } from '../../cosmos/v1beta1/types/msg';
 import { Secp256k1KeyPair } from '../../keypair/secp256k1';
 import { Bytes } from '../../utils/bytes/bytes';
@@ -25,14 +24,14 @@ describe('Testing MsgSend', function () {
             if (options.valid) {
                 return;
             }
-            expect(() => new MsgSend(options.value)).to.throw('Expected `options` to be of type `object`');
+            expect(() => new cro.bank.MsgSend(options.value)).to.throw('Expected `options` to be of type `object`');
         });
     });
 
     it('Test MsgSend conversion', function () {
         const coin = new cro.Coin('12000500', Units.BASE);
 
-        const msgSend = new MsgSend({
+        const msgSend = new cro.bank.MsgSend({
             fromAddress: 'tcro165tzcrh2yl83g8qeqxueg2g5gzgu57y3fe3kc3',
             toAddress: 'tcro184lta2lsyu47vwyp2e8zmtca3k5yq85p6c4vp3',
             amount: coin,
@@ -61,7 +60,7 @@ describe('Testing MsgSend', function () {
         );
         const coin = new cro.Coin('12000500', Units.CRO);
 
-        const msgSend = new MsgSend({
+        const msgSend = new cro.bank.MsgSend({
             fromAddress: 'tcro165tzcrh2yl83g8qeqxueg2g5gzgu57y3fe3kc3',
             toAddress: 'tcro184lta2lsyu47vwyp2e8zmtca3k5yq85p6c4vp3',
             amount: coin,
@@ -87,6 +86,34 @@ describe('Testing MsgSend', function () {
                 '030303012580a500a460a1f2f636f736d6f732e63727970746f2e736563703235366b312e5075624b657912230a2103fd0d560b6c' +
                 '4aa1ca16721d039a192867c3457e19dad553edb98e7ba88b159c2712040a0208011802120410c09a0c1a40eb8ae5ec2c632ccc125' +
                 'b4e58087d6346c40a8f8c6c4268e2f890c100b23a548b057a26edcb095a5029994bac5a6e02a87abbd4bc272e3f24bafcedacc668c560',
+        );
+    });
+
+    it('Should validate MsgSend provided addresses with network config', function () {
+        const coin = new cro.Coin('12000500', Units.BASE);
+
+        const params1 = {
+            fromAddress: 'cro1pndm4ywdf4qtmupa0fqe75krmqed2znjyj6x8f',
+            toAddress: 'tcro184lta2lsyu47vwyp2e8zmtca3k5yq85p6c4vp3',
+            amount: coin,
+        };
+
+        const params2 = {
+            fromAddress: 'tcro165tzcrh2yl83g8qeqxueg2g5gzgu57y3fe3kc3',
+            toAddress: 'cro1pndm4ywdf4qtmupa0fqe75krmqed2znjyj6x8f',
+            amount: coin,
+        };
+
+        const params3 = {
+            fromAddress: 'tcro1pndm4ywdf4qtmupa0fqe75krmqed2znjyj6x8fzqa',
+            toAddress: 'cro184lta2lsyu47vwyp2e8zmtca3k5yq85p6c4vp3',
+            amount: coin,
+        };
+
+        expect(() => new cro.bank.MsgSend(params1)).to.throw('Provided `fromAddress` doesnt match network selected');
+        expect(() => new cro.bank.MsgSend(params2)).to.throw('Provided `toAddress` doesnt match network selected');
+        expect(() => new cro.bank.MsgSend(params3)).to.throw(
+            'Invalid checksum for tcro1pndm4ywdf4qtmupa0fqe75krmqed2znjyj6x8fzqa',
         );
     });
 });

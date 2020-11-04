@@ -37,7 +37,6 @@ export const rawTransaction = function (config: InitConfigurations) {
 
         /**
          * Constructor to create a new Transaction
-         * @param {TransactionOptions} options
          * @returns {RawTransaction}
          * @throws {Error} when options is invalid
          */
@@ -63,7 +62,7 @@ export const rawTransaction = function (config: InitConfigurations) {
         /**
          * Append Cosmos MsgSend to transaction
          * @param {Message} message one of the supported Cosmos message
-         * @returns {Transaction}
+         * @returns {RawTransaction}
          * @throws {Error} when message is invalid
          * @memberof Transaction
          */

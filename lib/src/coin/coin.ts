@@ -3,6 +3,7 @@ import ow from 'ow';
 
 import { owCoin, owCoinUnit } from './ow.types';
 import { InitConfigurations } from '../core/cro';
+import { Network } from '../network/network';
 
 export enum Units {
     BASE = 'base',
@@ -18,6 +19,8 @@ export function isCoin(object: Object): boolean {
 // Mainly used to export Coin type
 export interface ICoin {
     toCosmosCoin(): CosmosCoin;
+
+    getNetwork(): Network;
 }
 
 export const coin = function (config: InitConfigurations) {
@@ -61,6 +64,8 @@ export const coin = function (config: InitConfigurations) {
          */
         public readonly baseAmount: Big;
 
+        public readonly network: Network;
+
         /**
          * Constructor to create a Coin
          * @param {string} amount coins amount represented as string
@@ -78,8 +83,12 @@ export const coin = function (config: InitConfigurations) {
             } catch (err) {
                 throw new TypeError(`Expected amount to be a base10 number represented as string, got \`${amount}\``);
             }
-
+            this.network = config.network;
             this.baseAmount = unit === Units.BASE ? Coin.parseBaseAmount(coins) : Coin.parseCROAmount(coins);
+        }
+
+        getNetwork(): Network {
+            return this.network;
         }
 
         /**
