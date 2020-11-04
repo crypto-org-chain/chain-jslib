@@ -1,7 +1,9 @@
+import ow from 'ow';
 import { Message } from './Message';
 import { Msg } from '../../cosmos/v1beta1/types/msg';
 import { InitConfigurations } from '../../core/cro';
 import { isValidAddress } from '../../utils/address';
+import { owMsgWithdrawDelegatorRewardOptions } from './ow.types';
 
 export const msgWithdrawDelegateReward = function (config: InitConfigurations) {
     return class MsgWithdrawDelegatorReward implements Message {
@@ -11,9 +13,11 @@ export const msgWithdrawDelegateReward = function (config: InitConfigurations) {
         // Addresses with the (t)crocncl1 prefix
         public readonly validatorAddress: string;
 
-        constructor(delegatorAddress: string, validatorAddress: string) {
-            this.delegatorAddress = delegatorAddress;
-            this.validatorAddress = validatorAddress;
+        constructor(options: MsgWithdrawDelegatorRewardOptions) {
+            ow(options, 'options', owMsgWithdrawDelegatorRewardOptions);
+
+            this.delegatorAddress = options.delegatorAddress;
+            this.validatorAddress = options.validatorAddress;
 
             this.validateAddresses();
         }
@@ -38,4 +42,9 @@ export const msgWithdrawDelegateReward = function (config: InitConfigurations) {
             }
         }
     };
+};
+
+export type MsgWithdrawDelegatorRewardOptions = {
+    delegatorAddress: string;
+    validatorAddress: string;
 };

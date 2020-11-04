@@ -7,3 +7,8 @@ export const owMsgSendOptions = owStrictObject().exactShape({
     toAddress: ow.string,
     amount: owCoin(),
 });
+
+export const owMsgWithdrawDelegatorRewardOptions = owStrictObject().exactShape({
+    delegatorAddress: ow.string,
+    validatorAddress: ow.string,
+});
