@@ -1,9 +1,10 @@
 import ow from 'ow';
 import { Msg } from '../../cosmos/v1beta1/types/msg';
-import { Message } from './Message';
 import { ICoin } from '../../coin/coin';
 import { owMsgSendOptions } from './ow.types';
 import { InitConfigurations } from '../../core/cro';
+import { isValidAddress } from '../../utils/address';
+import { Message } from './Message';
 
 export const msgSend = function (config: InitConfigurations) {
     return class MsgSend implements Message {
@@ -51,14 +52,11 @@ export const msgSend = function (config: InitConfigurations) {
         }
 
         validateAddresses() {
-            const currentNetwork = config.network;
-            const prefix = currentNetwork.addressPrefix;
-
-            if (!this.fromAddress.startsWith(prefix)) {
+            if (!isValidAddress(this.fromAddress, config.network)) {
                 throw new TypeError('Provided `fromAddress` doesnt match network selected');
             }
 
-            if (!this.toAddress.startsWith(prefix)) {
+            if (!isValidAddress(this.toAddress, config.network)) {
                 throw new TypeError('Provided `toAddress` doesnt match network selected');
             }
         }
