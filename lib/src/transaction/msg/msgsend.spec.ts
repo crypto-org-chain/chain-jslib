@@ -3,7 +3,6 @@ import { expect } from 'chai';
 import Big from 'big.js';
 
 import { fuzzyDescribe } from '../../test/mocha-fuzzy/suite';
-import { MsgSend } from './msgsend';
 import { Msg } from '../../cosmos/v1beta1/types/msg';
 import { Secp256k1KeyPair } from '../../keypair/secp256k1';
 import { Bytes } from '../../utils/bytes/bytes';
@@ -25,14 +24,14 @@ describe('Testing MsgSend', function () {
             if (options.valid) {
                 return;
             }
-            expect(() => new MsgSend(options.value)).to.throw('Expected `options` to be of type `object`');
+            expect(() => new cro.bank.MsgSend(options.value)).to.throw('Expected `options` to be of type `object`');
         });
     });
 
     it('Test MsgSend conversion', function () {
         const coin = new cro.Coin('12000500', Units.BASE);
 
-        const msgSend = new MsgSend({
+        const msgSend = new cro.bank.MsgSend({
             fromAddress: 'tcro165tzcrh2yl83g8qeqxueg2g5gzgu57y3fe3kc3',
             toAddress: 'tcro184lta2lsyu47vwyp2e8zmtca3k5yq85p6c4vp3',
             amount: coin,
@@ -61,7 +60,7 @@ describe('Testing MsgSend', function () {
         );
         const coin = new cro.Coin('12000500', Units.CRO);
 
-        const msgSend = new MsgSend({
+        const msgSend = new cro.bank.MsgSend({
             fromAddress: 'tcro165tzcrh2yl83g8qeqxueg2g5gzgu57y3fe3kc3',
             toAddress: 'tcro184lta2lsyu47vwyp2e8zmtca3k5yq85p6c4vp3',
             amount: coin,
@@ -93,19 +92,19 @@ describe('Testing MsgSend', function () {
     it('Should validate MsgSend provided addresses with network config', function () {
         const coin = new cro.Coin('12000500', Units.BASE);
 
-        const msgSend1 = new MsgSend({
+        const params1 = {
             fromAddress: 'cro165tzcrh2yl83g8qeqxueg2g5gzgu57y3fe3kc3',
             toAddress: 'tcro184lta2lsyu47vwyp2e8zmtca3k5yq85p6c4vp3',
             amount: coin,
-        });
+        };
 
-        const msgSend2 = new MsgSend({
+        const params2 = {
             fromAddress: 'tcro165tzcrh2yl83g8qeqxueg2g5gzgu57y3fe3kc3',
             toAddress: 'cro184lta2lsyu47vwyp2e8zmtca3k5yq85p6c4vp3',
             amount: coin,
-        });
+        };
 
-        expect(() => msgSend1.toRawMsg()).to.throw('Provided `fromAddress` doesnt match network selected');
-        expect(() => msgSend2.toRawMsg()).to.throw('Provided `toAddress` doesnt match network selected');
+        expect(() => new cro.bank.MsgSend(params1)).to.throw('Provided `fromAddress` doesnt match network selected');
+        expect(() => new cro.bank.MsgSend(params2)).to.throw('Provided `toAddress` doesnt match network selected');
     });
 });

@@ -4,6 +4,7 @@ import { Network } from '../network/network';
 import { coin } from '../coin/coin';
 import { owCroSDKInitParams } from './ow.types';
 import { rawTransaction } from '../transaction/raw';
+import { msgSend } from '../transaction/msg/msgsend';
 
 export const CroSDK = function (configs: InitConfigurations) {
     ow(configs, 'configs', owCroSDKInitParams);
@@ -11,6 +12,9 @@ export const CroSDK = function (configs: InitConfigurations) {
     return {
         Coin: coin(configs),
         RawTransaction: rawTransaction(configs),
+        bank: {
+            MsgSend: msgSend(configs),
+        },
         Options: configs,
     };
 };

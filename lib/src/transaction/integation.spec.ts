@@ -4,7 +4,6 @@ import { expect } from 'chai';
 import { HDKey } from '../hdkey/hdkey';
 import { Secp256k1KeyPair } from '../keypair/secp256k1';
 import { CroNetwork, CroSDK } from '../core/cro';
-import { MsgSend } from './msg/msgsend';
 import { Units } from '../coin/coin';
 
 // TODO: to be removed/replaced by more proper integration tests
@@ -24,13 +23,13 @@ describe('Integration tests (to be removed)', function () {
         const cro = CroSDK({ network: CroNetwork.Testnet });
         const rawTx = new cro.RawTransaction();
 
-        const msgSend1 = new MsgSend({
+        const msgSend1 = new cro.bank.MsgSend({
             fromAddress: 'tcro165tzcrh2yl83g8qeqxueg2g5gzgu57y3fe3kc3',
             toAddress: 'tcro184lta2lsyu47vwyp2e8zmtca3k5yq85p6c4vp3',
             amount: new cro.Coin('1000', Units.BASE),
         });
 
-        const msgSend2 = new MsgSend({
+        const msgSend2 = new cro.bank.MsgSend({
             fromAddress: 'tcro184lta2lsyu47vwyp2e8zmtca3k5yq85p6c4vp3',
             toAddress: 'tcro165tzcrh2yl83g8qeqxueg2g5gzgu57y3fe3kc3',
             amount: new cro.Coin('2000', Units.BASE),
