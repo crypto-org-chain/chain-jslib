@@ -52,11 +52,11 @@ export const msgSend = function (config: InitConfigurations) {
         }
 
         validateAddresses() {
-            if (!isValidAddress(this.fromAddress, config.network)) {
+            if (!isValidAddress({ address: this.fromAddress, network: config.network, isValidator: false })) {
                 throw new TypeError('Provided `fromAddress` doesnt match network selected');
             }
 
-            if (!isValidAddress(this.toAddress, config.network)) {
+            if (!isValidAddress({ address: this.toAddress, network: config.network, isValidator: false })) {
                 throw new TypeError('Provided `toAddress` doesnt match network selected');
             }
         }

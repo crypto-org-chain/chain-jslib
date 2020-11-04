@@ -23,6 +23,7 @@ export class CroNetwork {
     public static Testnet: Network = {
         chainId: 'testnet-croeseid-1',
         addressPrefix: 'tcro',
+        validatorAddressPrefix: 'tcrocncl1',
         coin: {
             baseDenom: 'basetcro',
             croDenom: 'tcro',
