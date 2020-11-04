@@ -93,18 +93,27 @@ describe('Testing MsgSend', function () {
         const coin = new cro.Coin('12000500', Units.BASE);
 
         const params1 = {
-            fromAddress: 'cro165tzcrh2yl83g8qeqxueg2g5gzgu57y3fe3kc3',
+            fromAddress: 'cro1pndm4ywdf4qtmupa0fqe75krmqed2znjyj6x8f',
             toAddress: 'tcro184lta2lsyu47vwyp2e8zmtca3k5yq85p6c4vp3',
             amount: coin,
         };
 
         const params2 = {
             fromAddress: 'tcro165tzcrh2yl83g8qeqxueg2g5gzgu57y3fe3kc3',
+            toAddress: 'cro1pndm4ywdf4qtmupa0fqe75krmqed2znjyj6x8f',
+            amount: coin,
+        };
+
+        const params3 = {
+            fromAddress: 'tcro1pndm4ywdf4qtmupa0fqe75krmqed2znjyj6x8fzqa',
             toAddress: 'cro184lta2lsyu47vwyp2e8zmtca3k5yq85p6c4vp3',
             amount: coin,
         };
 
         expect(() => new cro.bank.MsgSend(params1)).to.throw('Provided `fromAddress` doesnt match network selected');
         expect(() => new cro.bank.MsgSend(params2)).to.throw('Provided `toAddress` doesnt match network selected');
+        expect(() => new cro.bank.MsgSend(params3)).to.throw(
+            'Invalid checksum for tcro1pndm4ywdf4qtmupa0fqe75krmqed2znjyj6x8fzqa',
+        );
     });
 });
