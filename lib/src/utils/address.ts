@@ -11,6 +11,6 @@ export function isValidAddress(props: AddressValidationProperties): boolean {
     // the decode call is done to check checksum validity, it will throw in case of invalidity
     bech32.decode(props.address);
     const { network } = props;
-    const prefix = props.isValidator ? network.addressPrefix : network.validatorAddressPrefix;
+    const prefix = props.isValidator ? network.validatorAddressPrefix : network.addressPrefix;
     return props.address.startsWith(prefix);
 }
