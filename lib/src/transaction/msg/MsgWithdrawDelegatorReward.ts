@@ -14,7 +14,7 @@ export const msgWithdrawDelegateReward = function (config: InitConfigurations) {
         public readonly validatorAddress: string;
 
         constructor(options: MsgWithdrawDelegatorRewardOptions) {
-            ow(options, 'options', owMsgWithdrawDelegatorRewardOptions);
+            ow(options, 'rewardOptions', owMsgWithdrawDelegatorRewardOptions);
 
             this.delegatorAddress = options.delegatorAddress;
             this.validatorAddress = options.validatorAddress;
