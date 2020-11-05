@@ -9,6 +9,7 @@ import { msgCreateValidator } from '../transaction/msg/MsgCreateValidator';
 import { msgEditValidator } from '../transaction/msg/MsgEditValidator';
 import { msgWithdrawDelegateReward } from '../transaction/msg/MsgWithdrawDelegatorReward';
 import { msgDelegate } from '../transaction/msg/MsgDelegate';
+import { msgUndelegate } from '../transaction/msg/MsgUndelegate';
 
 export const CroSDK = function (configs: InitConfigurations) {
     ow(configs, 'configs', owCroSDKInitParams);
@@ -22,6 +23,7 @@ export const CroSDK = function (configs: InitConfigurations) {
             MsgEditValidator: msgEditValidator(configs),
             MsgWithdrawDelegatorReward: msgWithdrawDelegateReward(configs),
             MsgDelegate: msgDelegate(configs),
+            MsgUndelegate: msgUndelegate(configs), // TODO: Move to `staking` namespace
         },
         Options: configs,
     };
