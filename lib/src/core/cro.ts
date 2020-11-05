@@ -15,7 +15,7 @@ export const CroSDK = function (configs: InitConfigurations) {
         RawTransaction: rawTransaction(configs),
         bank: {
             MsgSend: msgSend(configs),
-            MsgCreateValidator: msgCreateValidator(configs)
+            MsgCreateValidator: msgCreateValidator(configs),
         },
         Options: configs,
     };
