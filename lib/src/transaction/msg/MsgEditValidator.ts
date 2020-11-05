@@ -50,7 +50,7 @@ export const msgEditValidator = function (config: InitConfigurations) {
         validateAddresses(): void {
             const { network } = config;
 
-            if (!isValidAddress({network: network, address: this.validatorAddress, type: AddressType.VALIDATOR})) {
+            if (!isValidAddress({ network, address: this.validatorAddress, type: AddressType.VALIDATOR })) {
                 throw new TypeError('Provided `validatorAddress` doesnt match network selected');
             }
         }
