@@ -36,7 +36,7 @@ describe('Testing MsgBeginRedelegate', function () {
         const msgSend = new cro.bank.MsgBeginRedelegate({
             delegatorAddress: 'tcro1j7pej8kplem4wt50p4hfvndhuw5jprxxn5625q',
             validatorDstAddress: 'tcrocncl1j7pej8kplem4wt50p4hfvndhuw5jprxxxtenvr',
-            validatorSrcAddress: 'tcrocncl1j7pej8kplem4wt50p4hfvndhuw5jprxxxtenvr',
+            validatorSrcAddress: 'tcrocncl16mmzexp3zqfpgqtnn927m5ph560qgxrs52a3wx',
             amount: coin,
         });
 
@@ -45,7 +45,7 @@ describe('Testing MsgBeginRedelegate', function () {
             value: {
                 delegatorAddress: 'tcro1j7pej8kplem4wt50p4hfvndhuw5jprxxn5625q',
                 validatorDstAddress: 'tcrocncl1j7pej8kplem4wt50p4hfvndhuw5jprxxxtenvr',
-                validatorSrcAddress: 'tcrocncl1j7pej8kplem4wt50p4hfvndhuw5jprxxxtenvr',
+                validatorSrcAddress: 'tcrocncl16mmzexp3zqfpgqtnn927m5ph560qgxrs52a3wx',
                 amount: coin.toCosmosCoin(),
             },
         };
@@ -62,7 +62,7 @@ describe('Testing MsgBeginRedelegate', function () {
         const MsgBeginRedelegate = new cro.bank.MsgBeginRedelegate({
             delegatorAddress: 'tcro1j7pej8kplem4wt50p4hfvndhuw5jprxxn5625q',
             validatorDstAddress: 'tcrocncl1j7pej8kplem4wt50p4hfvndhuw5jprxxxtenvr',
-            validatorSrcAddress: 'tcrocncl1j7pej8kplem4wt50p4hfvndhuw5jprxxxtenvr',
+            validatorSrcAddress: 'tcrocncl16mmzexp3zqfpgqtnn927m5ph560qgxrs52a3wx',
             amount: coin,
         });
 
@@ -77,7 +77,7 @@ describe('Testing MsgBeginRedelegate', function () {
         const signedTx = signableTx.setSignature(0, anyKeyPair.sign(signableTx.toSignDoc(0))).toSigned();
         const signedTxHex = signedTx.encode().toHexString();
         expect(signedTxHex).to.be.eql(
-            '0adf010adc010a2a2f636f736d6f732e7374616b696e672e763162657461312e4d7367426567696e526564656c656761746512ad010a2b7463726f316a3770656a386b706c656d347774353070346866766e64687577356a707278786e3536323571122f7463726f636e636c316a3770656a386b706c656d347774353070346866766e64687577356a707278787874656e76721a2f7463726f636e636c316a3770656a386b706c656d347774353070346866766e64687577356a707278787874656e7672221c0a08626173657463726f12103132303030353030303030303030303012580a500a460a1f2f636f736d6f732e63727970746f2e736563703235366b312e5075624b657912230a2103fd0d560b6c4aa1ca16721d039a192867c3457e19dad553edb98e7ba88b159c2712040a0208011802120410c09a0c1a402941642c53a6ed1b1129821da87282c9b321f9fec97b87741708efd39b929da62ff56067b0d40ce0a5478c58983742361fa8d57d14828c4d51df61ae3b28095f',
+            '0adf010adc010a2a2f636f736d6f732e7374616b696e672e763162657461312e4d7367426567696e526564656c656761746512ad010a2b7463726f316a3770656a386b706c656d347774353070346866766e64687577356a707278786e3536323571122f7463726f636e636c31366d6d7a657870337a7166706771746e6e3932376d35706835363071677872733532613377781a2f7463726f636e636c316a3770656a386b706c656d347774353070346866766e64687577356a707278787874656e7672221c0a08626173657463726f12103132303030353030303030303030303012580a500a460a1f2f636f736d6f732e63727970746f2e736563703235366b312e5075624b657912230a2103fd0d560b6c4aa1ca16721d039a192867c3457e19dad553edb98e7ba88b159c2712040a0208011802120410c09a0c1a40031f10c078d57779f701e247974c24b0f236b33159629bf07a024322b3cedf583cf1e5c7afd3c2dccbf007f87bcccb3a85bcffb6dda95ef8f62b37624f88473c',
         );
     });
 
@@ -91,15 +91,25 @@ describe('Testing MsgBeginRedelegate', function () {
             amount: coin,
         };
 
-        const params3 = {
-            delegatorAddress: 'tcro1j7pej8kplem4wt50p4hfvndhuw5jprxxn5625',
+        const params2 = {
+            delegatorAddress: 'tcro1j7pej8kplem4wt50p4hfvndhuw5jprxxn5625q',
             validatorDstAddress: 'tcrocncl1j7pej8kplem4wt50p4hfvndhuw5jprxxxtenvr',
             validatorSrcAddress: 'tcrocncl1j7pej8kplem4wt50p4hfvndhuw5jprxxxtenvr',
             amount: coin,
         };
 
+        const params3 = {
+            delegatorAddress: 'tcro1j7pej8kplem4wt50p4hfvndhuw5jprxxn5625',
+            validatorDstAddress: 'tcrocncl1j7pej8kplem4wt50p4hfvndhuw5jprxxxtenvr',
+            validatorSrcAddress: 'tcrocncl16mmzexp3zqfpgqtnn927m5ph560qgxrs52a3wx',
+            amount: coin,
+        };
+
         expect(() => new cro.bank.MsgBeginRedelegate(params1)).to.throw(
             'Provided keys does not belong to same network',
+        );
+        expect(() => new cro.bank.MsgBeginRedelegate(params2)).to.throw(
+            'Source And Destination Validator addresses cannot be same.',
         );
         expect(() => new cro.bank.MsgBeginRedelegate(params3)).to.throw(
             'Invalid checksum for tcro1j7pej8kplem4wt50p4hfvndhuw5jprxxn5625',

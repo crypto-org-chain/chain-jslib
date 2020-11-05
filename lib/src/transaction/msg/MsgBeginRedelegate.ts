@@ -59,9 +59,14 @@ export const msgBeginRedelegate = function (config: InitConfigurations) {
             const { network } = config;
             if (
                 !this.delegatorAddress.startsWith(network.addressPrefix) ||
-                !this.validatorDstAddress.startsWith(network.validatorAddressPrefix)
+                !this.validatorDstAddress.startsWith(network.validatorAddressPrefix) ||
+                !this.validatorSrcAddress.startsWith(network.validatorAddressPrefix)
             ) {
                 throw new TypeError('Provided keys does not belong to same network');
+            }
+
+            if (this.validatorDstAddress === this.validatorSrcAddress) {
+                throw new TypeError('Source And Destination Validator addresses cannot be same.');
             }
 
             if (
