@@ -13,10 +13,10 @@ const cro = CroSDK({ network: CroNetwork.Testnet });
 describe('Testing MsgBeginRedelegate', function () {
     fuzzyDescribe('should throw Error when options is invalid', function (fuzzy) {
         const anyValidOptions = {
-            delegatorAddress: "tcro1j7pej8kplem4wt50p4hfvndhuw5jprxxn5625q",
-            validatorDstAddress: "tcrocncl1j7pej8kplem4wt50p4hfvndhuw5jprxxxtenvr",
-            validatorSrcAddress: "tcrocncl1j7pej8kplem4wt50p4hfvndhuw5jprxxxtenvr",
-            amount: new cro.Coin('1000', Units.BASE)
+            delegatorAddress: 'tcro1j7pej8kplem4wt50p4hfvndhuw5jprxxn5625q',
+            validatorDstAddress: 'tcrocncl1j7pej8kplem4wt50p4hfvndhuw5jprxxxtenvr',
+            validatorSrcAddress: 'tcrocncl1j7pej8kplem4wt50p4hfvndhuw5jprxxxtenvr',
+            amount: new cro.Coin('1000', Units.BASE),
         };
         const testRunner = fuzzy(fuzzy.ObjArg(anyValidOptions));
 
@@ -34,19 +34,19 @@ describe('Testing MsgBeginRedelegate', function () {
         const coin = new cro.Coin('12000500', Units.BASE);
 
         const msgSend = new cro.bank.MsgBeginRedelegate({
-            delegatorAddress: "tcro1j7pej8kplem4wt50p4hfvndhuw5jprxxn5625q",
-            validatorDstAddress: "tcrocncl1j7pej8kplem4wt50p4hfvndhuw5jprxxxtenvr",
-            validatorSrcAddress: "tcrocncl1j7pej8kplem4wt50p4hfvndhuw5jprxxxtenvr",
-            amount: coin
+            delegatorAddress: 'tcro1j7pej8kplem4wt50p4hfvndhuw5jprxxn5625q',
+            validatorDstAddress: 'tcrocncl1j7pej8kplem4wt50p4hfvndhuw5jprxxxtenvr',
+            validatorSrcAddress: 'tcrocncl1j7pej8kplem4wt50p4hfvndhuw5jprxxxtenvr',
+            amount: coin,
         });
 
         const rawMsg: Msg = {
             typeUrl: '/cosmos.staking.v1beta1.MsgBeginRedelegate',
             value: {
-                delegatorAddress: "tcro1j7pej8kplem4wt50p4hfvndhuw5jprxxn5625q",
-                validatorDstAddress: "tcrocncl1j7pej8kplem4wt50p4hfvndhuw5jprxxxtenvr",
-                validatorSrcAddress: "tcrocncl1j7pej8kplem4wt50p4hfvndhuw5jprxxxtenvr",
-                amount: coin.toCosmosCoin()
+                delegatorAddress: 'tcro1j7pej8kplem4wt50p4hfvndhuw5jprxxn5625q',
+                validatorDstAddress: 'tcrocncl1j7pej8kplem4wt50p4hfvndhuw5jprxxxtenvr',
+                validatorSrcAddress: 'tcrocncl1j7pej8kplem4wt50p4hfvndhuw5jprxxxtenvr',
+                amount: coin.toCosmosCoin(),
             },
         };
 
@@ -60,10 +60,10 @@ describe('Testing MsgBeginRedelegate', function () {
         const coin = new cro.Coin('12000500', Units.CRO);
 
         const MsgBeginRedelegate = new cro.bank.MsgBeginRedelegate({
-            delegatorAddress: "tcro1j7pej8kplem4wt50p4hfvndhuw5jprxxn5625q",
-            validatorDstAddress: "tcrocncl1j7pej8kplem4wt50p4hfvndhuw5jprxxxtenvr",
-            validatorSrcAddress: "tcrocncl1j7pej8kplem4wt50p4hfvndhuw5jprxxxtenvr",
-            amount: coin
+            delegatorAddress: 'tcro1j7pej8kplem4wt50p4hfvndhuw5jprxxn5625q',
+            validatorDstAddress: 'tcrocncl1j7pej8kplem4wt50p4hfvndhuw5jprxxxtenvr',
+            validatorSrcAddress: 'tcrocncl1j7pej8kplem4wt50p4hfvndhuw5jprxxxtenvr',
+            amount: coin,
         });
 
         const anySigner = {
@@ -85,18 +85,17 @@ describe('Testing MsgBeginRedelegate', function () {
         const coin = new cro.Coin('12000500', Units.BASE);
 
         const params1 = {
-            delegatorAddress: "tcro1j7pej8kplem4wt50p4hfvndhuw5jprxxn5625q",
-            validatorDstAddress: "crocncl1j7pej8kplem4wt50p4hfvndhuw5jprxxxtenvr",
-            validatorSrcAddress: "tcrocncl1j7pej8kplem4wt50p4hfvndhuw5jprxxxtenvr",
-            amount: coin
+            delegatorAddress: 'tcro1j7pej8kplem4wt50p4hfvndhuw5jprxxn5625q',
+            validatorDstAddress: 'crocncl1j7pej8kplem4wt50p4hfvndhuw5jprxxxtenvr',
+            validatorSrcAddress: 'tcrocncl1j7pej8kplem4wt50p4hfvndhuw5jprxxxtenvr',
+            amount: coin,
         };
 
-
         const params3 = {
-            delegatorAddress: "tcro1j7pej8kplem4wt50p4hfvndhuw5jprxxn5625",
-            validatorDstAddress: "tcrocncl1j7pej8kplem4wt50p4hfvndhuw5jprxxxtenvr",
-            validatorSrcAddress: "tcrocncl1j7pej8kplem4wt50p4hfvndhuw5jprxxxtenvr",
-            amount: coin
+            delegatorAddress: 'tcro1j7pej8kplem4wt50p4hfvndhuw5jprxxn5625',
+            validatorDstAddress: 'tcrocncl1j7pej8kplem4wt50p4hfvndhuw5jprxxxtenvr',
+            validatorSrcAddress: 'tcrocncl1j7pej8kplem4wt50p4hfvndhuw5jprxxxtenvr',
+            amount: coin,
         };
 
         expect(() => new cro.bank.MsgBeginRedelegate(params1)).to.throw(
