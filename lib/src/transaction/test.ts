@@ -2,7 +2,6 @@ import { Factory } from 'rosie';
 import Big from 'big.js';
 import { Chance } from 'chance';
 
-import { account } from '../address/account';
 import { Secp256k1KeyPair } from '../keypair/secp256k1';
 import { Network } from '../network/network';
 import { Msg } from '../cosmos/v1beta1/types/msg';
@@ -10,7 +9,7 @@ import { TransactionSigner } from './raw';
 import { SignableTransaction, SignableTransactionParams } from './signable';
 import { cosmos } from '../cosmos/v1beta1/codec';
 import { TxRaw } from '../cosmos/v1beta1/types/tx';
-import { CroNetwork } from '../core/cro';
+import { CroNetwork, CroSDK } from '../core/cro';
 
 const chance = new Chance();
 
@@ -19,13 +18,15 @@ export type MessageSuite = {
     keyPair: Secp256k1KeyPair;
     message: Msg;
 };
+const cro = CroSDK({ network: CroNetwork.Testnet });
+
 export const MessageSuiteFactory = new Factory<MessageSuite>()
     .option('network', CroNetwork.Testnet)
     .attr('keyPair', () => Secp256k1KeyPair.generateRandom())
-    .attr('message', ['network', 'keyPair'], (network: Network, keyPair: Secp256k1KeyPair) => ({
+    .attr('message', ['network', 'keyPair'], (_: Network, keyPair: Secp256k1KeyPair) => ({
         typeUrl: '/cosmos.bank.v1beta1.MsgSend',
         value: {
-            fromAddress: account(keyPair.getPubKey(), { prefix: network.addressPrefix }),
+            fromAddress: new cro.Account(keyPair.getPubKey()).getAddress(),
             toAddress: 'tcro184lta2lsyu47vwyp2e8zmtca3k5yq85p6c4vp3',
             amount: [
                 {

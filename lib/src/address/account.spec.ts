@@ -4,45 +4,26 @@ import { fuzzyDescribe } from '../test/mocha-fuzzy/suite';
 import { ANY_VALID_SECP256K1_KEY_PAIR } from '../test/assets/keypair';
 import { Secp256k1KeyPair } from '../keypair/secp256k1';
 import { Bytes } from '../utils/bytes/bytes';
+import { CroNetwork, CroSDK } from '../core/cro';
 
-import { account } from './account';
+const cro = CroSDK({ network: CroNetwork.Testnet });
+const croMainNet = CroSDK({ network: CroNetwork.Mainnet });
 
 describe('account', function () {
     fuzzyDescribe('should throw Error when argument is invalid', function (fuzzy) {
-        const testRunner = fuzzy(
-            fuzzy.ObjArg(ANY_VALID_SECP256K1_KEY_PAIR),
-            fuzzy.optional(fuzzy.Obj)({ prefix: 'cro' }),
-        );
+        const testRunner = fuzzy(fuzzy.ObjArg(ANY_VALID_SECP256K1_KEY_PAIR));
 
-        testRunner(function (keyPair, options) {
+        testRunner(function (keyPair) {
+            if (keyPair.valid) {
+                return;
+            }
             if (!keyPair.valid) {
                 const expectedErrMsg =
                     keyPair.type === fuzzy.Obj
                         ? 'Expected object `pubKeySource` to be an instance of `Secp256k1KeyPair`'
                         : 'Expected `pubKeySource` to be of type `object`';
 
-                expect(() => account(keyPair.value, options.value)).to.throw(expectedErrMsg);
-            } else if (!options.valid) {
-                expect(() => account(keyPair.value, options.value)).to.throw(
-                    'Expected `options` to be of type `object`',
-                );
-            }
-        });
-    });
-
-    fuzzyDescribe('should Error when prefix option is not a string', function (fuzzy) {
-        const anyKeyPair = ANY_VALID_SECP256K1_KEY_PAIR;
-
-        const testRunner = fuzzy(fuzzy.StringArg('cro'));
-        testRunner(function (prefix) {
-            const options = {
-                prefix: prefix.value,
-            };
-
-            if (!prefix.valid) {
-                expect(() => account(anyKeyPair, options)).to.throw(
-                    'Expected property `prefix` to be of type `string`',
-                );
+                expect(() => new cro.Account(keyPair.value)).to.throw(expectedErrMsg);
             }
         });
     });
@@ -51,12 +32,8 @@ describe('account', function () {
         const anyUncompressedPubKey = Bytes.fromHexString(
             '04a52c32db89513a187ceb00a4520b52dec06f583f2e12afcf1da78e370a5358e600c8d4ee1082543ee25647fd9b75d06cd8f0ba12bd319f116e384766dfc177cf',
         );
-        const anyOptions = {
-            prefix: 'cro',
-        };
-        expect(() => account(anyUncompressedPubKey, anyOptions)).to.throw(
-            'Expected public key to be in compressed form',
-        );
+
+        expect(() => new cro.Account(anyUncompressedPubKey)).to.throw('Expected public key to be in compressed form');
     });
 
     context('When provided with Secp256k1KeyPair', function () {
@@ -64,21 +41,16 @@ describe('account', function () {
             const anyKeyPair = Secp256k1KeyPair.fromPrivKey(
                 Bytes.fromHexString('3eddf1bca41330f352c47297ac1c7e85b14c11d373933dfdebf7e369b16a4846'),
             );
-            const anyOptions = {
-                prefix: 'cro',
-            };
-
-            expect(account(anyKeyPair, anyOptions)).to.eq('cro1pndm4ywdf4qtmupa0fqe75krmqed2znjyj6x8f');
+            expect(new croMainNet.Account(anyKeyPair).getAddress()).to.eq('cro1pndm4ywdf4qtmupa0fqe75krmqed2znjyj6x8f');
+            expect(new cro.Account(anyKeyPair).getAddress()).to.eq('tcro1pndm4ywdf4qtmupa0fqe75krmqed2znj28nz8c');
         });
     });
 
     context('When provided with compressed public key in Bytes', function () {
         it('should return account address with the provided public key and bech32 prefix', function () {
             const anyPubKey = Bytes.fromHexString('03a52c32db89513a187ceb00a4520b52dec06f583f2e12afcf1da78e370a5358e6');
-            const anyOptions = {
-                prefix: 'cro',
-            };
-            expect(account(anyPubKey, anyOptions)).to.eq('cro1pndm4ywdf4qtmupa0fqe75krmqed2znjyj6x8f');
+            expect(new croMainNet.Account(anyPubKey).getAddress()).to.eq('cro1pndm4ywdf4qtmupa0fqe75krmqed2znjyj6x8f');
+            expect(new cro.Account(anyPubKey).getAddress()).to.eq('tcro1pndm4ywdf4qtmupa0fqe75krmqed2znj28nz8c');
         });
     });
 });
