@@ -8,7 +8,7 @@ export type AddressValidationProperties = {
 };
 
 export enum AddressType {
-    NORMAL,
+    USER,
     VALIDATOR,
 }
 
@@ -18,7 +18,7 @@ export function isValidAddress(props: AddressValidationProperties): boolean {
     const { network } = props;
     let prefix;
     switch (props.addressType) {
-        case AddressType.NORMAL:
+        case AddressType.USER:
             prefix = network.addressPrefix;
             break;
         case AddressType.VALIDATOR:

@@ -56,7 +56,7 @@ export const msgSend = function (config: InitConfigurations) {
                 !isValidAddress({
                     address: this.fromAddress,
                     network: config.network,
-                    addressType: AddressType.NORMAL,
+                    addressType: AddressType.USER,
                 })
             ) {
                 throw new TypeError('Provided `fromAddress` doesnt match network selected');
@@ -66,7 +66,7 @@ export const msgSend = function (config: InitConfigurations) {
                 !isValidAddress({
                     address: this.toAddress,
                     network: config.network,
-                    addressType: AddressType.NORMAL,
+                    addressType: AddressType.USER,
                 })
             ) {
                 throw new TypeError('Provided `toAddress` doesnt match network selected');

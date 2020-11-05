@@ -9,7 +9,7 @@ describe('Validate address against network and checksums', function () {
             isValidAddress({
                 address: 'tcro165tzcrh2yl83g8qeqxueg2g5gzgu57y3fe3kc3',
                 network: CroNetwork.Testnet,
-                addressType: AddressType.NORMAL,
+                addressType: AddressType.USER,
             }),
         ).to.be.eq(true);
     });
@@ -19,7 +19,7 @@ describe('Validate address against network and checksums', function () {
             isValidAddress({
                 address: 'cro1pndm4ywdf4qtmupa0fqe75krmqed2znjyj6x8f',
                 network: CroNetwork.Testnet,
-                addressType: AddressType.NORMAL,
+                addressType: AddressType.USER,
             }),
         ).to.be.eq(false);
     });
@@ -29,7 +29,7 @@ describe('Validate address against network and checksums', function () {
             isValidAddress({
                 address: 'tcro1pndm4ywdf4qtmupa0fqe75krmqed2znjyj6x8fzqa',
                 network: CroNetwork.Testnet,
-                addressType: AddressType.NORMAL,
+                addressType: AddressType.USER,
             }),
         ).to.throw('Invalid checksum for tcro1pndm4ywdf4qtmupa0fqe75krmqed2znjyj6x8fzqa');
     });

@@ -37,7 +37,7 @@ export const msgWithdrawDelegateReward = function (config: InitConfigurations) {
                 !isValidAddress({
                     address: this.delegatorAddress,
                     network: config.network,
-                    addressType: AddressType.NORMAL,
+                    addressType: AddressType.USER,
                 })
             ) {
                 throw new TypeError('Provided `delegatorAddress` doesnt match network selected');
