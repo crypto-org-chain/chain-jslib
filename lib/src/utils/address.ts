@@ -4,10 +4,10 @@ import { Network } from '../network/network';
 export type AddressValidationProperties = {
     address: string;
     network: Network;
-    addressType: Type;
+    type: AddressType;
 };
 
-export enum Type {
+export enum AddressType {
     USER,
     VALIDATOR,
 }
@@ -17,11 +17,11 @@ export function isValidAddress(props: AddressValidationProperties): boolean {
     bech32.decode(props.address);
     const { network } = props;
     let prefix;
-    switch (props.addressType) {
-        case Type.USER:
+    switch (props.type) {
+        case AddressType.USER:
             prefix = network.addressPrefix;
             break;
-        case Type.VALIDATOR:
+        case AddressType.VALIDATOR:
             prefix = network.validatorAddressPrefix;
             break;
         default:
