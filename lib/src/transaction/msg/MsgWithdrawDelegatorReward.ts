@@ -28,6 +28,10 @@ export const msgWithdrawDelegateReward = function (config: InitConfigurations) {
             this.validateAddresses();
         }
 
+        /**
+         * Returns the raw Msg representation of MsgWithdrawDelegatorReward
+         * @returns {Msg}
+         */
         toRawMsg(): Msg {
             return {
                 typeUrl: '/cosmos.distribution.v1beta1.MsgWithdrawDelegatorReward',
