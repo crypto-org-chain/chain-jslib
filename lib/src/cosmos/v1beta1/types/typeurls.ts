@@ -11,6 +11,7 @@ export const typeUrlMappings: {
     '/cosmos.base.v1beta1.Coin': cosmos.base.v1beta1.Coin,
     '/cosmos.bank.v1beta1.MsgSend': cosmos.bank.v1beta1.MsgSend,
     '/cosmos.distribution.v1beta1.MsgWithdrawDelegatorReward': cosmos.distribution.v1beta1.MsgWithdrawDelegatorReward,
+    '/cosmos.staking.v1beta1.MsgCreateValidator': cosmos.staking.v1beta1.MsgCreateValidator,
 };
 
 export interface GeneratedType {
