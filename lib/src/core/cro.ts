@@ -28,7 +28,7 @@ export class CroNetwork {
         chainId: 'testnet-croeseid-1',
         addressPrefix: 'tcro',
         validatorAddressPrefix: 'tcrocncl',
-        validatorPubKeyPrefix: 'tcrocnclconspub1',
+        validatorPubKeyPrefix: 'tcrocnclconspub',
         coin: {
             baseDenom: 'basetcro',
             croDenom: 'tcro',
