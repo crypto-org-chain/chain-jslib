@@ -12,20 +12,16 @@ export enum AddressType {
     VALIDATOR,
 }
 
-export function isValidAddress(props: AddressValidationProperties): boolean {
-    // the decode call is done to check checksum validity, it will throw in case of invalidity
-    bech32.decode(props.address);
-    const { network } = props;
-    let prefix;
-    switch (props.type) {
+export function isValidAddress(addressProps: AddressValidationProperties): boolean {
+    const { network } = addressProps;
+    const bech32Decoded = bech32.decode(addressProps.address);
+
+    switch (addressProps.type) {
         case AddressType.USER:
-            prefix = network.addressPrefix;
-            break;
+            return bech32Decoded.prefix === network.addressPrefix;
         case AddressType.VALIDATOR:
-            prefix = network.validatorAddressPrefix;
-            break;
+            return bech32Decoded.prefix === network.validatorAddressPrefix;
         default:
-            prefix = network.addressPrefix;
+            return false;
     }
-    return props.address.startsWith(prefix);
 }

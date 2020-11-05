@@ -45,3 +45,9 @@ export const owMsgWithdrawDelegatorRewardOptions = owStrictObject().exactShape({
     delegatorAddress: ow.string,
     validatorAddress: ow.string,
 });
+
+export const owMsgDelegateOptions = owStrictObject().exactShape({
+    delegatorAddress: ow.string,
+    validatorAddress: ow.string,
+    amount: owCoin(),
+});
