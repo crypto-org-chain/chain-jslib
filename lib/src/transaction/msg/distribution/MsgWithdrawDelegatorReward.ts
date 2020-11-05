@@ -1,9 +1,9 @@
 import ow from 'ow';
-import { Message } from './Message';
-import { Msg } from '../../cosmos/v1beta1/types/msg';
-import { InitConfigurations } from '../../core/cro';
-import { AddressType, isValidAddress } from '../../utils/address';
-import { owMsgWithdrawDelegatorRewardOptions } from './ow.types';
+import { Message } from '../Message';
+import { Msg } from '../../../cosmos/v1beta1/types/msg';
+import { InitConfigurations } from '../../../core/cro';
+import { AddressType, isValidAddress } from '../../../utils/address';
+import { owMsgWithdrawDelegatorRewardOptions } from '../ow.types';
 
 export const msgWithdrawDelegateReward = function (config: InitConfigurations) {
     return class MsgWithdrawDelegatorReward implements Message {

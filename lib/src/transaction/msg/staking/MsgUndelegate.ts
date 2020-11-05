@@ -1,30 +1,30 @@
 import ow from 'ow';
-import { Msg } from '../../cosmos/v1beta1/types/msg';
-import { Message } from './Message';
-import { owMsgDelegateOptions } from './ow.types';
-import { InitConfigurations } from '../../core/cro';
-import { isValidAddress, AddressType } from '../../utils/address';
-import { ICoin } from '../../coin/coin';
+import { Msg } from '../../../cosmos/v1beta1/types/msg';
+import { Message } from '../Message';
+import { owMsgUndelegateOptions } from '../ow.types';
+import { InitConfigurations } from '../../../core/cro';
+import { isValidAddress, AddressType } from '../../../utils/address';
+import { ICoin } from '../../../coin/coin';
 
-export const msgDelegate = function (config: InitConfigurations) {
-    return class MsgDelegate implements Message {
-        /** MsgDelegate delegatorAddress. */
+export const msgUndelegate = function (config: InitConfigurations) {
+    return class MsgUndelegate implements Message {
+        /** MsgUndelegate delegatorAddress. */
         public delegatorAddress: string;
 
-        /** MsgDelegate validatorAddress. */
+        /** MsgUndelegate validatorAddress. */
         public validatorAddress: string;
 
-        /** MsgDelegate amount. */
+        /** MsgUndelegate amount. */
         public amount: ICoin;
 
         /**
          * Constructor to create a new MsgSend
-         * @param {IMsgDelegate} options
-         * @returns {MsgDelegate}
+         * @param {IMsgUndelegate} options
+         * @returns {MsgUndelegate}
          * @throws {Error} when options is invalid
          */
-        constructor(options: IMsgDelegate) {
-            ow(options, 'options', owMsgDelegateOptions);
+        constructor(options: IMsgUndelegate) {
+            ow(options, 'options', owMsgUndelegateOptions);
             this.delegatorAddress = options.delegatorAddress;
             this.validatorAddress = options.validatorAddress;
             this.amount = options.amount;
@@ -32,13 +32,13 @@ export const msgDelegate = function (config: InitConfigurations) {
         }
 
         /**
-         * Returns the raw Msg representation of MsgDelegate
+         * Returns the raw Msg representation of MsgUndelegate
          * @returns {Msg}
          */
         toRawMsg(): Msg {
             const cosmosCoin = this.amount.toCosmosCoin();
             return {
-                typeUrl: '/cosmos.staking.v1beta1.MsgDelegate',
+                typeUrl: '/cosmos.staking.v1beta1.MsgUndelegate',
                 value: {
                     delegatorAddress: this.delegatorAddress,
                     validatorAddress: this.validatorAddress,
@@ -50,6 +50,10 @@ export const msgDelegate = function (config: InitConfigurations) {
             };
         }
 
+        /**
+         * Validates the user provided addresses
+         * @returns {void}
+         */
         validateAddresses(): void {
             const { network } = config;
 
@@ -64,7 +68,7 @@ export const msgDelegate = function (config: InitConfigurations) {
     };
 };
 
-export type IMsgDelegate = {
+export type IMsgUndelegate = {
     delegatorAddress: string;
     validatorAddress: string;
     amount: ICoin;

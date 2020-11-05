@@ -2,12 +2,12 @@ import 'mocha';
 import { expect } from 'chai';
 import Big from 'big.js';
 
-import { fuzzyDescribe } from '../../test/mocha-fuzzy/suite';
-import { Msg } from '../../cosmos/v1beta1/types/msg';
-import { Secp256k1KeyPair } from '../../keypair/secp256k1';
-import { Bytes } from '../../utils/bytes/bytes';
-import { Units } from '../../coin/coin';
-import { CroNetwork, CroSDK } from '../../core/cro';
+import { fuzzyDescribe } from '../../../test/mocha-fuzzy/suite';
+import { Msg } from '../../../cosmos/v1beta1/types/msg';
+import { Secp256k1KeyPair } from '../../../keypair/secp256k1';
+import { Bytes } from '../../../utils/bytes/bytes';
+import { Units } from '../../../coin/coin';
+import { CroNetwork, CroSDK } from '../../../core/cro';
 
 const cro = CroSDK({ network: CroNetwork.Testnet });
 
@@ -24,7 +24,7 @@ describe('Testing MsgUndelegate', function () {
             if (options.valid) {
                 return;
             }
-            expect(() => new cro.bank.MsgUndelegate(options.value)).to.throw(
+            expect(() => new cro.staking.MsgUndelegate(options.value)).to.throw(
                 'Expected `options` to be of type `object`',
             );
         });
@@ -33,7 +33,7 @@ describe('Testing MsgUndelegate', function () {
     it('Test MsgUndelegate conversion', function () {
         const coin = new cro.Coin('12000500', Units.BASE);
 
-        const MsgUndelegate = new cro.bank.MsgUndelegate({
+        const MsgUndelegate = new cro.staking.MsgUndelegate({
             delegatorAddress: 'tcro165tzcrh2yl83g8qeqxueg2g5gzgu57y3fe3kc3',
             validatorAddress: 'tcrocncl1j7pej8kplem4wt50p4hfvndhuw5jprxxxtenvr',
             amount: coin,
@@ -60,7 +60,7 @@ describe('Testing MsgUndelegate', function () {
         );
         const coin = new cro.Coin('12000500', Units.CRO);
 
-        const MsgUndelegate = new cro.bank.MsgUndelegate({
+        const MsgUndelegate = new cro.staking.MsgUndelegate({
             delegatorAddress: 'tcro165tzcrh2yl83g8qeqxueg2g5gzgu57y3fe3kc3',
             validatorAddress: 'tcrocncl1j7pej8kplem4wt50p4hfvndhuw5jprxxxtenvr',
             amount: coin,
@@ -105,13 +105,13 @@ describe('Testing MsgUndelegate', function () {
             amount: coin,
         };
 
-        expect(() => new cro.bank.MsgUndelegate(params1)).to.throw(
+        expect(() => new cro.staking.MsgUndelegate(params1)).to.throw(
             'Provided `delegatorAddress` doesnt match network selected',
         );
-        expect(() => new cro.bank.MsgUndelegate(params2)).to.throw(
+        expect(() => new cro.staking.MsgUndelegate(params2)).to.throw(
             'Provided `validatorAddress` doesnt match network selected',
         );
-        expect(() => new cro.bank.MsgUndelegate(params3)).to.throw(
+        expect(() => new cro.staking.MsgUndelegate(params3)).to.throw(
             'Invalid checksum for tcro165tzcrh2yl83g8qeqxueg2g5gzgu57y3fe3kc',
         );
     });
