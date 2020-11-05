@@ -3,7 +3,7 @@ import { Msg } from '../../cosmos/v1beta1/types/msg';
 import { Message } from './Message';
 import { owMsgEditValidatorOptions } from './ow.types';
 import { InitConfigurations } from '../../core/cro';
-import { isValidValidatorAddress } from '../../utils/address';
+import { isValidAddress, AddressType } from '../../utils/address';
 import { IDescription } from '../common/interface/IDescription';
 
 export const msgEditValidator = function (config: InitConfigurations) {
@@ -50,7 +50,7 @@ export const msgEditValidator = function (config: InitConfigurations) {
         validateAddresses(): void {
             const { network } = config;
 
-            if (!isValidValidatorAddress(this.validatorAddress, network)) {
+            if (!isValidAddress({network: network, address: this.validatorAddress, type: AddressType.VALIDATOR})) {
                 throw new TypeError('Provided `validatorAddress` doesnt match network selected');
             }
         }
