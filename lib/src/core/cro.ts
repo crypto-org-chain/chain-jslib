@@ -5,6 +5,7 @@ import { coin } from '../coin/coin';
 import { owCroSDKInitParams } from './ow.types';
 import { rawTransaction } from '../transaction/raw';
 import { msgSend } from '../transaction/msg/msgsend';
+import { msgCreateValidator } from '../transaction/msg/MsgCreateValidator';
 
 export const CroSDK = function (configs: InitConfigurations) {
     ow(configs, 'configs', owCroSDKInitParams);
@@ -14,6 +15,7 @@ export const CroSDK = function (configs: InitConfigurations) {
         RawTransaction: rawTransaction(configs),
         bank: {
             MsgSend: msgSend(configs),
+            MsgCreateValidator: msgCreateValidator(configs)
         },
         Options: configs,
     };
@@ -23,6 +25,8 @@ export class CroNetwork {
     public static Testnet: Network = {
         chainId: 'testnet-croeseid-1',
         addressPrefix: 'tcro',
+        validatorAddressPrefix: 'tcrocncl',
+        validatorPubKeyPrefix: 'tcrocnclconspub1',
         coin: {
             baseDenom: 'basetcro',
             croDenom: 'tcro',
