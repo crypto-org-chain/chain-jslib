@@ -2,7 +2,7 @@ import ow from 'ow';
 import { Message } from './Message';
 import { Msg } from '../../cosmos/v1beta1/types/msg';
 import { InitConfigurations } from '../../core/cro';
-import { AddressType, isValidAddress } from '../../utils/address';
+import { AddressType, validateAddress } from '../../utils/address';
 import { owMsgWithdrawDelegatorRewardOptions } from './ow.types';
 
 export const msgWithdrawDelegateReward = function (config: InitConfigurations) {
@@ -10,9 +10,15 @@ export const msgWithdrawDelegateReward = function (config: InitConfigurations) {
         // Normal user addresses with (t)cro prefix
         public readonly delegatorAddress: string;
 
-        // Addresses with the (t)crocncl1 prefix
+        // Addresses with the (t)crocncl prefix
         public readonly validatorAddress: string;
 
+        /**
+         * Constructor to create a new MsgWithdrawDelegatorReward
+         * @param {MsgWithdrawDelegatorRewardOptions} options
+         * @returns {MsgWithdrawDelegatorReward}
+         * @throws {Error} when options is invalid
+         */
         constructor(options: MsgWithdrawDelegatorRewardOptions) {
             ow(options, 'rewardOptions', owMsgWithdrawDelegatorRewardOptions);
 
@@ -34,7 +40,7 @@ export const msgWithdrawDelegateReward = function (config: InitConfigurations) {
 
         validateAddresses() {
             if (
-                !isValidAddress({
+                !validateAddress({
                     address: this.delegatorAddress,
                     network: config.network,
                     type: AddressType.USER,
@@ -44,7 +50,7 @@ export const msgWithdrawDelegateReward = function (config: InitConfigurations) {
             }
 
             if (
-                !isValidAddress({
+                !validateAddress({
                     address: this.validatorAddress,
                     network: config.network,
                     type: AddressType.VALIDATOR,

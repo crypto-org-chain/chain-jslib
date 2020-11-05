@@ -1,12 +1,12 @@
 import 'mocha';
 import { expect } from 'chai';
-import { AddressType, isValidAddress } from './address';
+import { AddressType, validateAddress } from './address';
 import { CroNetwork } from '../core/cro';
 
 describe('Validate address against network and checksums', function () {
     it('check valid address', function () {
         expect(
-            isValidAddress({
+            validateAddress({
                 address: 'tcro165tzcrh2yl83g8qeqxueg2g5gzgu57y3fe3kc3',
                 network: CroNetwork.Testnet,
                 type: AddressType.USER,
@@ -16,7 +16,7 @@ describe('Validate address against network and checksums', function () {
 
     it('check invalid address with respect to network', function () {
         expect(
-            isValidAddress({
+            validateAddress({
                 address: 'cro1pndm4ywdf4qtmupa0fqe75krmqed2znjyj6x8f',
                 network: CroNetwork.Testnet,
                 type: AddressType.USER,
@@ -26,7 +26,7 @@ describe('Validate address against network and checksums', function () {
 
     it('check invalid address with respect to checksum', function () {
         expect(() =>
-            isValidAddress({
+            validateAddress({
                 address: 'tcro1pndm4ywdf4qtmupa0fqe75krmqed2znjyj6x8fzqa',
                 network: CroNetwork.Testnet,
                 type: AddressType.USER,
@@ -36,7 +36,7 @@ describe('Validate address against network and checksums', function () {
 
     it('check validator address', function () {
         expect(
-            isValidAddress({
+            validateAddress({
                 address: 'tcrocncl1reyshfdygf7673xm9p8v0xvtd96m6cd6canhu3',
                 network: CroNetwork.Testnet,
                 type: AddressType.VALIDATOR,
@@ -44,7 +44,7 @@ describe('Validate address against network and checksums', function () {
         ).to.be.eq(true);
 
         expect(() =>
-            isValidAddress({
+            validateAddress({
                 address: 'tcrocncl1reyshfdygf7673xm9p8v0xvtd96m6cd6canhu3xcqa',
                 network: CroNetwork.Testnet,
                 type: AddressType.VALIDATOR,

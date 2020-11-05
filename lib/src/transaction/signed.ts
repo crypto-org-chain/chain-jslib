@@ -34,7 +34,7 @@ export class SignedTransaction {
         return encodeTxRaw(this.txRaw);
     }
 
-    public hexEncoded(): string {
+    public getHexEncoded(): string {
         return this.encode().toHexString();
     }
 
