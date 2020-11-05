@@ -66,7 +66,7 @@ export const msgBeginRedelegate = function (config: InitConfigurations) {
             }
 
             if (this.validatorDstAddress === this.validatorSrcAddress) {
-                throw new TypeError('Source And Destination Validator addresses cannot be same.');
+                throw new TypeError('Source and destination validator addresses cannot be the same.');
             }
 
             if (
@@ -76,7 +76,7 @@ export const msgBeginRedelegate = function (config: InitConfigurations) {
                     type: AddressType.USER,
                 })
             ) {
-                throw new TypeError('Provided `delegatorAddress` doesnt match network selected');
+                throw new TypeError('Provided `delegatorAddress` does not match with selected network');
             }
 
             if (
@@ -86,7 +86,7 @@ export const msgBeginRedelegate = function (config: InitConfigurations) {
                     type: AddressType.VALIDATOR,
                 })
             ) {
-                throw new TypeError('Provided `validatorSrcAddress` doesnt match network selected');
+                throw new TypeError('Provided `validatorSrcAddress` does not match with selected network');
             }
             if (
                 !isValidAddress({
@@ -95,7 +95,7 @@ export const msgBeginRedelegate = function (config: InitConfigurations) {
                     type: AddressType.VALIDATOR,
                 })
             ) {
-                throw new TypeError('Provided `validatorDstAddress` doesnt match network selected');
+                throw new TypeError('Provided `validatorDstAddress` does not match with selected network');
             }
         }
     };
