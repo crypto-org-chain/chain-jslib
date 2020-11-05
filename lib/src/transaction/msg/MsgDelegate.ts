@@ -15,7 +15,7 @@ export const msgDelegate = function (config: InitConfigurations) {
         public validatorAddress: string;
 
         /** MsgDelegate amount. */
-        public amount: ICoin
+        public amount: ICoin;
 
         /**
          * Constructor to create a new MsgSend
@@ -45,7 +45,7 @@ export const msgDelegate = function (config: InitConfigurations) {
                     amount: {
                         denom: cosmosCoin.denom,
                         amount: cosmosCoin.amount,
-                    }
+                    },
                 },
             };
         }

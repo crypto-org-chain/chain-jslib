@@ -14,13 +14,13 @@ export enum AddressType {
 
 export function isValidAddress(addressProps: AddressValidationProperties): boolean {
     const { network } = addressProps;
-    let bech32Decoded = bech32.decode(addressProps.address);
+    const bech32Decoded = bech32.decode(addressProps.address);
 
     switch (addressProps.type) {
         case AddressType.USER:
-            return bech32Decoded.prefix == network.addressPrefix
+            return bech32Decoded.prefix === network.addressPrefix;
         case AddressType.VALIDATOR:
-            return bech32Decoded.prefix == network.validatorAddressPrefix;
+            return bech32Decoded.prefix === network.validatorAddressPrefix;
         default:
             return false;
     }

@@ -21,7 +21,7 @@ export const CroSDK = function (configs: InitConfigurations) {
             MsgCreateValidator: msgCreateValidator(configs),
             MsgEditValidator: msgEditValidator(configs),
             MsgWithdrawDelegatorReward: msgWithdrawDelegateReward(configs),
-            MsgDelegate: msgDelegate(configs)
+            MsgDelegate: msgDelegate(configs),
         },
         Options: configs,
     };

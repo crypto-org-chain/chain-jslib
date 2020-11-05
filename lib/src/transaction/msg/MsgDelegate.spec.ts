@@ -42,11 +42,10 @@ describe('Testing MsgDelegate', function () {
             value: {
                 delegatorAddress: 'tcro165tzcrh2yl83g8qeqxueg2g5gzgu57y3fe3kc3',
                 validatorAddress: 'tcrocncl1j7pej8kplem4wt50p4hfvndhuw5jprxxxtenvr',
-                amount:
-                {
+                amount: {
                     denom: 'basetcro',
                     amount: '12000500',
-                }
+                },
             },
         };
 
@@ -79,7 +78,7 @@ describe('Testing MsgDelegate', function () {
 
         const signedTxHex = signedTx.encode().toHexString();
         expect(signedTxHex).to.be.eql(
-            "0aa6010aa3010a232f636f736d6f732e7374616b696e672e763162657461312e4d736744656c6567617465127c0a2b7463726f313635747a63726832796c3833673871657178756567326735677a6775353779336665336b6333122f7463726f636e636c316a3770656a386b706c656d347774353070346866766e64687577356a707278787874656e76721a1c0a08626173657463726f12103132303030353030303030303030303012580a500a460a1f2f636f736d6f732e63727970746f2e736563703235366b312e5075624b657912230a2103fd0d560b6c4aa1ca16721d039a192867c3457e19dad553edb98e7ba88b159c2712040a0208011802120410c09a0c1a409700451b3ee81da5399240bfe1d1330266bc5849c49d1d2b007b814f28243d10708c09ca326e1a097c3df9ca9d83d8b253cf88504b05657085f80c6cb4e45875"
+            '0aa6010aa3010a232f636f736d6f732e7374616b696e672e763162657461312e4d736744656c6567617465127c0a2b7463726f313635747a63726832796c3833673871657178756567326735677a6775353779336665336b6333122f7463726f636e636c316a3770656a386b706c656d347774353070346866766e64687577356a707278787874656e76721a1c0a08626173657463726f12103132303030353030303030303030303012580a500a460a1f2f636f736d6f732e63727970746f2e736563703235366b312e5075624b657912230a2103fd0d560b6c4aa1ca16721d039a192867c3457e19dad553edb98e7ba88b159c2712040a0208011802120410c09a0c1a409700451b3ee81da5399240bfe1d1330266bc5849c49d1d2b007b814f28243d10708c09ca326e1a097c3df9ca9d83d8b253cf88504b05657085f80c6cb4e45875',
         );
     });
 
@@ -104,8 +103,12 @@ describe('Testing MsgDelegate', function () {
             amount: coin,
         };
 
-        expect(() => new cro.bank.MsgDelegate(params1)).to.throw('Provided `delegatorAddress` doesnt match network selected');
-        expect(() => new cro.bank.MsgDelegate(params2)).to.throw('Provided `validatorAddress` doesnt match network selected');
+        expect(() => new cro.bank.MsgDelegate(params1)).to.throw(
+            'Provided `delegatorAddress` doesnt match network selected',
+        );
+        expect(() => new cro.bank.MsgDelegate(params2)).to.throw(
+            'Provided `validatorAddress` doesnt match network selected',
+        );
         expect(() => new cro.bank.MsgDelegate(params3)).to.throw(
             'Invalid checksum for tcro165tzcrh2yl83g8qeqxueg2g5gzgu57y3fe3kc',
         );
