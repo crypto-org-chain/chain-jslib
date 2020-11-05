@@ -5,6 +5,7 @@ import { ICoin } from '../../coin/coin';
 import { owMsgBeginRedelgateOptions } from './ow.types';
 import { InitConfigurations } from '../../core/cro';
 import { isValidAddress, AddressType } from '../../utils/address';
+import { COSMOS_MSG_TYPEURL } from '../common/constants/typeurl';
 
 export const msgBeginRedelegate = function (config: InitConfigurations) {
     return class MsgBeginRedelegate implements Message {
@@ -22,9 +23,9 @@ export const msgBeginRedelegate = function (config: InitConfigurations) {
 
         /**
          * Constructor to create a new MsgSend
-         * @param {} options
-         * @returns {}
-         * @throws {Error} when options is invalid
+         * @param {IMsgBeginRedelgate} options
+         * @returns {MsgBeginRedelegate}
+         * @throws {Error} when options are invalid
          */
         constructor(options: IMsgBeginRedelgate) {
             ow(options, 'options', owMsgBeginRedelgateOptions);
@@ -40,9 +41,9 @@ export const msgBeginRedelegate = function (config: InitConfigurations) {
          * @returns {Msg}
          */
         toRawMsg(): Msg {
-            const cosmosCoin = this.amount?.toCosmosCoin();
+            const cosmosCoin = this.amount.toCosmosCoin();
             return {
-                typeUrl: '/cosmos.staking.v1beta1.MsgBeginRedelegate',
+                typeUrl: COSMOS_MSG_TYPEURL.MsgBeginRedelegate,
                 value: {
                     delegatorAddress: this.delegatorAddress,
                     validatorDstAddress: this.validatorDstAddress,
@@ -56,14 +57,6 @@ export const msgBeginRedelegate = function (config: InitConfigurations) {
         }
 
         validateAddresses(): void {
-            const { network } = config;
-            if (
-                !this.delegatorAddress.startsWith(network.addressPrefix) ||
-                !this.validatorDstAddress.startsWith(network.validatorAddressPrefix) ||
-                !this.validatorSrcAddress.startsWith(network.validatorAddressPrefix)
-            ) {
-                throw new TypeError('Provided keys does not belong to same network');
-            }
 
             if (this.validatorDstAddress === this.validatorSrcAddress) {
                 throw new TypeError('Source and destination validator addresses cannot be the same.');
@@ -100,8 +93,6 @@ export const msgBeginRedelegate = function (config: InitConfigurations) {
         }
     };
 };
-
-/// TODO: Should now only take amount as raw value and its denom since Coin is not anymore top level accessible
 
 export interface IMsgBeginRedelgate {
     /** MsgBeginRedelegate delegatorAddress */

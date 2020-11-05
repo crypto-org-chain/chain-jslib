@@ -84,13 +84,6 @@ describe('Testing MsgBeginRedelegate', function () {
     it('Should validate MsgBeginRedelegate provided addresses with network config', function () {
         const coin = new cro.Coin('12000500', Units.BASE);
 
-        const params1 = {
-            delegatorAddress: 'tcro1j7pej8kplem4wt50p4hfvndhuw5jprxxn5625q',
-            validatorDstAddress: 'crocncl1j7pej8kplem4wt50p4hfvndhuw5jprxxxtenvr',
-            validatorSrcAddress: 'tcrocncl1j7pej8kplem4wt50p4hfvndhuw5jprxxxtenvr',
-            amount: coin,
-        };
-
         const params2 = {
             delegatorAddress: 'tcro1j7pej8kplem4wt50p4hfvndhuw5jprxxn5625q',
             validatorDstAddress: 'tcrocncl1j7pej8kplem4wt50p4hfvndhuw5jprxxxtenvr',
@@ -105,11 +98,8 @@ describe('Testing MsgBeginRedelegate', function () {
             amount: coin,
         };
 
-        expect(() => new cro.bank.MsgBeginRedelegate(params1)).to.throw(
-            'Provided keys does not belong to same network',
-        );
         expect(() => new cro.bank.MsgBeginRedelegate(params2)).to.throw(
-            'Source And Destination Validator addresses cannot be same.',
+            'Source and destination validator addresses cannot be the same.',
         );
         expect(() => new cro.bank.MsgBeginRedelegate(params3)).to.throw(
             'Invalid checksum for tcro1j7pej8kplem4wt50p4hfvndhuw5jprxxn5625',
