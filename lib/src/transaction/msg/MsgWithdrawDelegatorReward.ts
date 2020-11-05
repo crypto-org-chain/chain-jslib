@@ -2,7 +2,7 @@ import ow from 'ow';
 import { Message } from './Message';
 import { Msg } from '../../cosmos/v1beta1/types/msg';
 import { InitConfigurations } from '../../core/cro';
-import { AddressType, isValidAddress } from '../../utils/address';
+import { Type, isValidAddress } from '../../utils/address';
 import { owMsgWithdrawDelegatorRewardOptions } from './ow.types';
 
 export const msgWithdrawDelegateReward = function (config: InitConfigurations) {
@@ -37,7 +37,7 @@ export const msgWithdrawDelegateReward = function (config: InitConfigurations) {
                 !isValidAddress({
                     address: this.delegatorAddress,
                     network: config.network,
-                    addressType: AddressType.USER,
+                    addressType: Type.USER,
                 })
             ) {
                 throw new TypeError('Provided `delegatorAddress` doesnt match network selected');
@@ -47,7 +47,7 @@ export const msgWithdrawDelegateReward = function (config: InitConfigurations) {
                 !isValidAddress({
                     address: this.validatorAddress,
                     network: config.network,
-                    addressType: AddressType.VALIDATOR,
+                    addressType: Type.VALIDATOR,
                 })
             ) {
                 throw new TypeError('Provided `validatorAddress` doesnt match network selected');

@@ -1,6 +1,6 @@
 import 'mocha';
 import { expect } from 'chai';
-import { AddressType, isValidAddress } from './address';
+import { Type, isValidAddress } from './address';
 import { CroNetwork } from '../core/cro';
 
 describe('Validate address against network and checksums', function () {
@@ -9,7 +9,7 @@ describe('Validate address against network and checksums', function () {
             isValidAddress({
                 address: 'tcro165tzcrh2yl83g8qeqxueg2g5gzgu57y3fe3kc3',
                 network: CroNetwork.Testnet,
-                addressType: AddressType.USER,
+                addressType: Type.USER,
             }),
         ).to.be.eq(true);
     });
@@ -19,7 +19,7 @@ describe('Validate address against network and checksums', function () {
             isValidAddress({
                 address: 'cro1pndm4ywdf4qtmupa0fqe75krmqed2znjyj6x8f',
                 network: CroNetwork.Testnet,
-                addressType: AddressType.USER,
+                addressType: Type.USER,
             }),
         ).to.be.eq(false);
     });
@@ -29,7 +29,7 @@ describe('Validate address against network and checksums', function () {
             isValidAddress({
                 address: 'tcro1pndm4ywdf4qtmupa0fqe75krmqed2znjyj6x8fzqa',
                 network: CroNetwork.Testnet,
-                addressType: AddressType.USER,
+                addressType: Type.USER,
             }),
         ).to.throw('Invalid checksum for tcro1pndm4ywdf4qtmupa0fqe75krmqed2znjyj6x8fzqa');
     });
@@ -39,7 +39,7 @@ describe('Validate address against network and checksums', function () {
             isValidAddress({
                 address: 'tcrocncl1reyshfdygf7673xm9p8v0xvtd96m6cd6canhu3',
                 network: CroNetwork.Testnet,
-                addressType: AddressType.VALIDATOR,
+                addressType: Type.VALIDATOR,
             }),
         ).to.be.eq(true);
 
@@ -47,7 +47,7 @@ describe('Validate address against network and checksums', function () {
             isValidAddress({
                 address: 'tcrocncl1reyshfdygf7673xm9p8v0xvtd96m6cd6canhu3xcqa',
                 network: CroNetwork.Testnet,
-                addressType: AddressType.VALIDATOR,
+                addressType: Type.VALIDATOR,
             }),
         ).to.throw('Invalid checksum for tcrocncl1reyshfdygf7673xm9p8v0xvtd96m6cd6canhu3xcqa');
     });
