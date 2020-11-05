@@ -5,10 +5,11 @@ import { ICoin } from '../../coin/coin';
 import { owMsgCreateValidatorOptions } from './ow.types';
 import { InitConfigurations } from '../../core/cro';
 import { isValidAddress, isValidValidatorAddress } from '../../utils/address';
+import { IDescription } from '../common/interface/IDescription';
 
 export const msgCreateValidator = function (config: InitConfigurations) {
     return class MsgCreateValidator implements Message {
-        public readonly description: CreateValidatorDescription;
+        public readonly description: IDescription;
 
         public readonly commission: CreateValidatorCommission;
 
@@ -87,21 +88,13 @@ export const msgCreateValidator = function (config: InitConfigurations) {
 /// TODO: Should now only take amount as raw value and its denom since Coin is not anymore top level accessible
 
 export type MsgCreateValidatorOptions = {
-    description: CreateValidatorDescription;
+    description: IDescription;
     commission: CreateValidatorCommission;
     minSelfDelegation: string;
     delegatorAddress: string;
     validatorAddress: string;
     pubkey: string;
     value: ICoin;
-};
-
-export type CreateValidatorDescription = {
-    moniker: string;
-    identity?: string;
-    website?: string;
-    securityContact?: string;
-    details?: string;
 };
 
 export type CreateValidatorCommission = {

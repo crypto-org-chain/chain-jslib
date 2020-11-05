@@ -27,3 +27,16 @@ export const owMsgCreateValidatorOptions = owStrictObject().exactShape({
     pubkey: ow.string,
     value: owCoin(),
 });
+
+export const owMsgEditValidatorOptions = owStrictObject().exactShape({
+    description: {
+        moniker: ow.string,
+        identity: ow.string,
+        website: ow.string,
+        securityContact: ow.string,
+        details: ow.string,
+    },
+    validatorAddress: ow.string,
+    commissionRate: ow.string,
+    minSelfDelegation: ow.string,
+});
