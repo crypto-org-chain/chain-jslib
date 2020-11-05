@@ -11,10 +11,10 @@ export const owMsgSendOptions = owStrictObject().exactShape({
 export const owMsgCreateValidatorOptions = owStrictObject().exactShape({
     description: {
         moniker: ow.string,
-        identity: ow.string,
-        website: ow.string,
-        securityContact: ow.string,
-        details: ow.string,
+        identity: ow.optional.string,
+        website: ow.optional.string,
+        securityContact: ow.optional.string,
+        details: ow.optional.string,
     },
     commission: {
         rate: ow.string,
@@ -30,11 +30,11 @@ export const owMsgCreateValidatorOptions = owStrictObject().exactShape({
 
 export const owMsgEditValidatorOptions = owStrictObject().exactShape({
     description: {
-        moniker: ow.string,
-        identity: ow.string,
-        website: ow.string,
-        securityContact: ow.string,
-        details: ow.string,
+        moniker: ow.optional.string,
+        identity: ow.optional.string,
+        website: ow.optional.string,
+        securityContact: ow.optional.string,
+        details: ow.optional.string,
     },
     validatorAddress: ow.string,
     commissionRate: ow.string,
