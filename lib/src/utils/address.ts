@@ -11,7 +11,6 @@ export enum AddressType {
     USER,
     VALIDATOR,
 }
-
 // https://stackoverflow.com/questions/49434751/how-to-declare-a-function-that-throws-an-error-in-typescript
 /**
  * Check address validity against its type and provided network
