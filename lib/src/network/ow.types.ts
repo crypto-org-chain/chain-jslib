@@ -5,6 +5,7 @@ export const owNetwork = () =>
     owStrictObject().exactShape({
         chainId: ow.string,
         addressPrefix: ow.string,
+        validatorAddressPrefix: ow.string,
         coin: owStrictObject().exactShape({
             baseDenom: ow.string,
             croDenom: ow.string,
