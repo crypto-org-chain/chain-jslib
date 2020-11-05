@@ -9,6 +9,7 @@ import { msgCreateValidator } from '../transaction/msg/MsgCreateValidator';
 import { msgEditValidator } from '../transaction/msg/MsgEditValidator';
 import { msgWithdrawDelegateReward } from '../transaction/msg/MsgWithdrawDelegatorReward';
 import { msgDelegate } from '../transaction/msg/MsgDelegate';
+import { msgWithdrawValidatorCommission } from '../transaction/msg/MsgWithdrawValidatorCommission';
 
 export const CroSDK = function (configs: InitConfigurations) {
     ow(configs, 'configs', owCroSDKInitParams);
@@ -20,8 +21,11 @@ export const CroSDK = function (configs: InitConfigurations) {
             MsgSend: msgSend(configs),
             MsgCreateValidator: msgCreateValidator(configs),
             MsgEditValidator: msgEditValidator(configs),
-            MsgWithdrawDelegatorReward: msgWithdrawDelegateReward(configs),
             MsgDelegate: msgDelegate(configs),
+        },
+        distribution: {
+            MsgWithdrawValidatorCommission: msgWithdrawValidatorCommission(configs),
+            MsgWithdrawDelegatorReward: msgWithdrawDelegateReward(configs),
         },
         Options: configs,
     };
