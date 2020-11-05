@@ -1,7 +1,7 @@
 import ow from 'ow';
 import { Msg } from '../../cosmos/v1beta1/types/msg';
 import { Message } from './Message';
-import { owMsgEditValidatorOptions } from './ow.types';
+import { owMsgDelegateOptions } from './ow.types';
 import { InitConfigurations } from '../../core/cro';
 import { isValidAddress, AddressType } from '../../utils/address';
 import { ICoin } from '../../coin/coin';
@@ -24,7 +24,7 @@ export const msgDelegate = function (config: InitConfigurations) {
          * @throws {Error} when options is invalid
          */
         constructor(options: IMsgDelegate) {
-            ow(options, 'options', owMsgEditValidatorOptions);
+            ow(options, 'options', owMsgDelegateOptions);
             this.delegatorAddress = options.delegatorAddress;
             this.validatorAddress = options.validatorAddress;
             this.amount = options.amount;
