@@ -57,7 +57,6 @@ export const msgBeginRedelegate = function (config: InitConfigurations) {
         }
 
         validateAddresses(): void {
-
             if (this.validatorDstAddress === this.validatorSrcAddress) {
                 throw new TypeError('Source and destination validator addresses cannot be the same.');
             }
