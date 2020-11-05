@@ -19,7 +19,7 @@ describe('Testing MsgWithdrawDelegatorReward', function () {
             if (options.valid) {
                 return;
             }
-            expect(() => new cro.bank.MsgWithdrawDelegatorReward(options.value)).to.throw(
+            expect(() => new cro.distribution.MsgWithdrawDelegatorReward(options.value)).to.throw(
                 'Expected `rewardOptions` to be of type `object`',
             );
         });
@@ -30,7 +30,7 @@ describe('Testing MsgWithdrawDelegatorReward', function () {
             Bytes.fromHexString('66633d18513bec30dd11a209f1ceb1787aa9e2069d5d47e590174dc9665102b3'),
         );
 
-        const msgWithdrawDelegatorReward = new cro.bank.MsgWithdrawDelegatorReward({
+        const msgWithdrawDelegatorReward = new cro.distribution.MsgWithdrawDelegatorReward({
             delegatorAddress: 'tcro165tzcrh2yl83g8qeqxueg2g5gzgu57y3fe3kc3',
             validatorAddress: 'tcrocncl1reyshfdygf7673xm9p8v0xvtd96m6cd6canhu3',
         });

@@ -14,6 +14,8 @@ export const typeUrlMappings: {
     '/cosmos.staking.v1beta1.MsgCreateValidator': cosmos.staking.v1beta1.MsgCreateValidator,
     '/cosmos.staking.v1beta1.MsgEditValidator': cosmos.staking.v1beta1.MsgEditValidator,
     '/cosmos.staking.v1beta1.MsgDelegate': cosmos.staking.v1beta1.MsgDelegate,
+    '/cosmos.distribution.v1beta1.MsgWithdrawValidatorCommission':
+        cosmos.distribution.v1beta1.MsgWithdrawValidatorCommission,
 };
 
 export interface GeneratedType {
