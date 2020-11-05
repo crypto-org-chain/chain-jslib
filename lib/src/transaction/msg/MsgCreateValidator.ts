@@ -74,11 +74,23 @@ export const msgCreateValidator = function (config: InitConfigurations) {
                 throw new TypeError('Provided keys does not belong to same network');
             }
 
-            if (!isValidAddress({ network, address: this.delegatorAddress, type: AddressType.USER })) {
+            if (
+                !isValidAddress({
+                    address: this.delegatorAddress,
+                    network: config.network,
+                    type: AddressType.USER,
+                })
+            ) {
                 throw new TypeError('Provided `delegatorAddress` doesnt match network selected');
             }
 
-            if (!isValidAddress({ network, address: this.validatorAddress, type: AddressType.VALIDATOR })) {
+            if (
+                !isValidAddress({
+                    address: this.validatorAddress,
+                    network: config.network,
+                    type: AddressType.VALIDATOR,
+                })
+            ) {
                 throw new TypeError('Provided `validatorAddress` doesnt match network selected');
             }
         }

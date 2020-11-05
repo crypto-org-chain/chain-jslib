@@ -13,10 +13,10 @@ describe('Testing MsgEditValidator', function () {
     fuzzyDescribe('should throw Error when options is invalid', function (fuzzy) {
         const anyValidOptions = {
             description: {
-                moniker: '[do-not-modify]',
-                identity: '[do-not-modify]',
-                website: '[do-not-modify]',
-                security_contact: '[do-not-modify]',
+                moniker: 'moniker',
+                identity: 'identity',
+                website: 'website.com',
+                security_contact: 'security@contact.com',
                 details: 'HiteshTest',
             },
             validator_address: 'tcrocncl16mmzexp3zqfpgqtnn927m5ph560qgxrs52a3wx',
@@ -38,10 +38,10 @@ describe('Testing MsgEditValidator', function () {
     it('Test MsgEditValidator conversion', function () {
         const msgSend = new cro.bank.MsgEditValidator({
             description: {
-                moniker: '[do-not-modify]',
-                identity: '[do-not-modify]',
-                website: '[do-not-modify]',
-                securityContact: '[do-not-modify]',
+                moniker: 'moniker',
+                identity: 'identity',
+                website: 'website.com',
+                securityContact: 'security@contact.com',
                 details: 'HiteshTest',
             },
             validatorAddress: 'tcrocncl16mmzexp3zqfpgqtnn927m5ph560qgxrs52a3wx',
@@ -53,10 +53,10 @@ describe('Testing MsgEditValidator', function () {
             typeUrl: '/cosmos.staking.v1beta1.MsgEditValidator',
             value: {
                 description: {
-                    moniker: '[do-not-modify]',
-                    identity: '[do-not-modify]',
-                    website: '[do-not-modify]',
-                    securityContact: '[do-not-modify]',
+                    moniker: 'moniker',
+                    identity: 'identity',
+                    website: 'website.com',
+                    securityContact: 'security@contact.com',
                     details: 'HiteshTest',
                 },
                 validatorAddress: 'tcrocncl16mmzexp3zqfpgqtnn927m5ph560qgxrs52a3wx',
@@ -104,10 +104,10 @@ describe('Testing MsgEditValidator', function () {
     it('Should validate MsgEditValidator provided addresses with network config', function () {
         const params1 = {
             description: {
-                moniker: '[do-not-modify]',
-                identity: '[do-not-modify]',
-                website: '[do-not-modify]',
-                securityContact: '[do-not-modify]',
+                moniker: 'moniker',
+                identity: 'identity',
+                website: 'website.com',
+                securityContact: 'security@contact.com',
                 details: 'HiteshTest',
             },
             validatorAddress: 'tcro1j7pej8kplem4wt50p4hfvndhuw5jprxxn5625q',
@@ -117,10 +117,10 @@ describe('Testing MsgEditValidator', function () {
 
         const params2 = {
             description: {
-                moniker: '[do-not-modify]',
-                identity: '[do-not-modify]',
-                website: '[do-not-modify]',
-                securityContact: '[do-not-modify]',
+                moniker: 'moniker',
+                identity: 'identity',
+                website: 'website.com',
+                securityContact: 'security@contact.com',
                 details: 'HiteshTest',
             },
             validatorAddress: 'tcrocncl16mmzexp3zqfpgqtnn927m5ph560qgxrs52a3w',
