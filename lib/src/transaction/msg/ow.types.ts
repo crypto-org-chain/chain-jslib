@@ -27,3 +27,8 @@ export const owMsgCreateValidatorOptions = owStrictObject().exactShape({
     pubkey: ow.string,
     value: owCoin(),
 });
+
+export const owMsgWithdrawDelegatorRewardOptions = owStrictObject().exactShape({
+    delegatorAddress: ow.string,
+    validatorAddress: ow.string,
+});

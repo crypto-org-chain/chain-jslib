@@ -6,6 +6,7 @@ import { owCroSDKInitParams } from './ow.types';
 import { rawTransaction } from '../transaction/raw';
 import { msgSend } from '../transaction/msg/msgsend';
 import { msgCreateValidator } from '../transaction/msg/MsgCreateValidator';
+import { msgWithdrawDelegateReward } from '../transaction/msg/MsgWithdrawDelegatorReward';
 
 export const CroSDK = function (configs: InitConfigurations) {
     ow(configs, 'configs', owCroSDKInitParams);
@@ -16,6 +17,7 @@ export const CroSDK = function (configs: InitConfigurations) {
         bank: {
             MsgSend: msgSend(configs),
             MsgCreateValidator: msgCreateValidator(configs),
+            MsgWithdrawDelegatorReward: msgWithdrawDelegateReward(configs),
         },
         Options: configs,
     };

@@ -4,7 +4,7 @@ import { Message } from './Message';
 import { ICoin } from '../../coin/coin';
 import { owMsgCreateValidatorOptions } from './ow.types';
 import { InitConfigurations } from '../../core/cro';
-import { isValidAddress, isValidValidatorAddress } from '../../utils/address';
+import { isValidAddress, AddressType } from '../../utils/address';
 
 export const msgCreateValidator = function (config: InitConfigurations) {
     return class MsgCreateValidator implements Message {
@@ -73,11 +73,23 @@ export const msgCreateValidator = function (config: InitConfigurations) {
                 throw new TypeError('Provided keys does not belong to same network');
             }
 
-            if (!isValidAddress(this.delegatorAddress, network)) {
+            if (
+                !isValidAddress({
+                    address: this.delegatorAddress,
+                    network: config.network,
+                    type: AddressType.USER,
+                })
+            ) {
                 throw new TypeError('Provided `delegatorAddress` doesnt match network selected');
             }
 
-            if (!isValidValidatorAddress(this.validatorAddress, network)) {
+            if (
+                !isValidAddress({
+                    address: this.validatorAddress,
+                    network: config.network,
+                    type: AddressType.VALIDATOR,
+                })
+            ) {
                 throw new TypeError('Provided `validatorAddress` doesnt match network selected');
             }
         }

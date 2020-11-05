@@ -3,7 +3,7 @@ import { Msg } from '../../cosmos/v1beta1/types/msg';
 import { ICoin } from '../../coin/coin';
 import { owMsgSendOptions } from './ow.types';
 import { InitConfigurations } from '../../core/cro';
-import { isValidAddress } from '../../utils/address';
+import { AddressType, isValidAddress } from '../../utils/address';
 import { Message } from './Message';
 
 export const msgSend = function (config: InitConfigurations) {
@@ -52,11 +52,23 @@ export const msgSend = function (config: InitConfigurations) {
         }
 
         validateAddresses() {
-            if (!isValidAddress(this.fromAddress, config.network)) {
+            if (
+                !isValidAddress({
+                    address: this.fromAddress,
+                    network: config.network,
+                    type: AddressType.USER,
+                })
+            ) {
                 throw new TypeError('Provided `fromAddress` doesnt match network selected');
             }
 
-            if (!isValidAddress(this.toAddress, config.network)) {
+            if (
+                !isValidAddress({
+                    address: this.toAddress,
+                    network: config.network,
+                    type: AddressType.USER,
+                })
+            ) {
                 throw new TypeError('Provided `toAddress` doesnt match network selected');
             }
         }
