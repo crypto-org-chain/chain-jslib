@@ -1,11 +1,11 @@
 import ow from 'ow';
-import { Msg } from '../../cosmos/v1beta1/types/msg';
-import { Message } from './Message';
-import { ICoin } from '../../coin/coin';
-import { owMsgCreateValidatorOptions } from './ow.types';
-import { InitConfigurations } from '../../core/cro';
-import { validateAddress, AddressType } from '../../utils/address';
-import { IDescription } from '../common/interface/IDescription';
+import { Msg } from '../../../cosmos/v1beta1/types/msg';
+import { Message } from '../Message';
+import { ICoin } from '../../../coin/coin';
+import { owMsgCreateValidatorOptions } from '../ow.types';
+import { InitConfigurations } from '../../../core/cro';
+import { validateAddress, AddressType } from '../../../utils/address';
+import { IDescription } from '../../common/interface/IDescription';
 
 export const msgCreateValidator = function (config: InitConfigurations) {
     return class MsgCreateValidator implements Message {

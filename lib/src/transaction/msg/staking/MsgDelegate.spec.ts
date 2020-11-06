@@ -2,12 +2,12 @@ import 'mocha';
 import { expect } from 'chai';
 import Big from 'big.js';
 
-import { fuzzyDescribe } from '../../test/mocha-fuzzy/suite';
-import { Msg } from '../../cosmos/v1beta1/types/msg';
-import { Secp256k1KeyPair } from '../../keypair/secp256k1';
-import { Bytes } from '../../utils/bytes/bytes';
-import { Units } from '../../coin/coin';
-import { CroNetwork, CroSDK } from '../../core/cro';
+import { fuzzyDescribe } from '../../../test/mocha-fuzzy/suite';
+import { Msg } from '../../../cosmos/v1beta1/types/msg';
+import { Secp256k1KeyPair } from '../../../keypair/secp256k1';
+import { Bytes } from '../../../utils/bytes/bytes';
+import { Units } from '../../../coin/coin';
+import { CroNetwork, CroSDK } from '../../../core/cro';
 
 const cro = CroSDK({ network: CroNetwork.Testnet });
 
