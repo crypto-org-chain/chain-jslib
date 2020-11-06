@@ -5,6 +5,7 @@ import { owMsgEditValidatorOptions } from '../ow.types';
 import { InitConfigurations } from '../../../core/cro';
 import { validateAddress, AddressType } from '../../../utils/address';
 import { IDescription } from '../../common/interface/IDescription';
+import { COSMOS_MSG_TYPEURL } from '../../common/constants/typeurl';
 
 export const msgEditValidator = function (config: InitConfigurations) {
     return class MsgEditValidator implements Message {
@@ -37,7 +38,7 @@ export const msgEditValidator = function (config: InitConfigurations) {
          */
         toRawMsg(): Msg {
             return {
-                typeUrl: '/cosmos.staking.v1beta1.MsgEditValidator',
+                typeUrl: COSMOS_MSG_TYPEURL.MsgEditValidator,
                 value: {
                     description: this.description,
                     commissionRate: this.commissionRate,

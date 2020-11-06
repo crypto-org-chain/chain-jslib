@@ -10,9 +10,9 @@ import { msgWithdrawDelegateReward } from '../transaction/msg/distribution/MsgWi
 import { msgDelegate } from '../transaction/msg/staking/MsgDelegate';
 import { msgEditValidator } from '../transaction/msg/staking/MsgEditValidator';
 import { msgUndelegate } from '../transaction/msg/staking/MsgUndelegate';
-import { msgBeginRedelegate } from '../transaction/msg/MsgBeginRedelegate';
-import { msgWithdrawValidatorCommission } from '../transaction/msg/MsgWithdrawValidatorCommission';
+import { msgBeginRedelegate } from '../transaction/msg/staking/MsgBeginRedelegate';
 import { userAddress } from '../address/address';
+import { msgWithdrawValidatorCommission } from '../transaction/msg/distribution/MsgWithdrawValidatorCommission';
 
 export const CroSDK = function (configs: InitConfigurations) {
     ow(configs, 'configs', owCroSDKInitParams);

@@ -5,6 +5,7 @@ import { owMsgDelegateOptions } from '../ow.types';
 import { InitConfigurations } from '../../../core/cro';
 import { validateAddress, AddressType } from '../../../utils/address';
 import { ICoin } from '../../../coin/coin';
+import { COSMOS_MSG_TYPEURL } from '../../common/constants/typeurl';
 
 export const msgDelegate = function (config: InitConfigurations) {
     return class MsgDelegate implements Message {
@@ -38,7 +39,7 @@ export const msgDelegate = function (config: InitConfigurations) {
         toRawMsg(): Msg {
             const cosmosCoin = this.amount.toCosmosCoin();
             return {
-                typeUrl: '/cosmos.staking.v1beta1.MsgDelegate',
+                typeUrl: COSMOS_MSG_TYPEURL.MsgDelegate,
                 value: {
                     delegatorAddress: this.delegatorAddress,
                     validatorAddress: this.validatorAddress,

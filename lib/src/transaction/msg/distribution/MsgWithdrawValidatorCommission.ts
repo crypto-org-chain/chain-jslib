@@ -1,9 +1,10 @@
 import ow from 'ow';
-import { InitConfigurations } from '../../core/cro';
-import { Message } from './Message';
-import { Msg } from '../../cosmos/v1beta1/types/msg';
-import { AddressType, validateAddress } from '../../utils/address';
-import { owMsgWithdrawValidatorCommissionOptions } from './ow.types';
+import { InitConfigurations } from '../../../core/cro';
+import { Message } from '../Message';
+import { Msg } from '../../../cosmos/v1beta1/types/msg';
+import { AddressType, validateAddress } from '../../../utils/address';
+import { owMsgWithdrawValidatorCommissionOptions } from '../ow.types';
+import { COSMOS_MSG_TYPEURL } from '../../common/constants/typeurl';
 
 export const msgWithdrawValidatorCommission = function (config: InitConfigurations) {
     return class MsgWithdrawValidatorCommission implements Message {
@@ -28,7 +29,7 @@ export const msgWithdrawValidatorCommission = function (config: InitConfiguratio
          */
         public toRawMsg(): Msg {
             return {
-                typeUrl: '/cosmos.distribution.v1beta1.MsgWithdrawValidatorCommission',
+                typeUrl: COSMOS_MSG_TYPEURL.MsgWithdrawValidatorCommission,
                 value: {
                     validatorAddress: this.validatorAddress,
                 },

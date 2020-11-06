@@ -1,11 +1,11 @@
 import ow from 'ow';
-import { Msg } from '../../cosmos/v1beta1/types/msg';
-import { Message } from './Message';
-import { ICoin } from '../../coin/coin';
-import { owMsgBeginRedelgateOptions } from './ow.types';
-import { InitConfigurations } from '../../core/cro';
-import { validateAddress, AddressType } from '../../utils/address';
-import { COSMOS_MSG_TYPEURL } from '../common/constants/typeurl';
+import { Msg } from '../../../cosmos/v1beta1/types/msg';
+import { Message } from '../Message';
+import { ICoin } from '../../../coin/coin';
+import { owMsgBeginRedelgateOptions } from '../ow.types';
+import { InitConfigurations } from '../../../core/cro';
+import { validateAddress, AddressType } from '../../../utils/address';
+import { COSMOS_MSG_TYPEURL } from '../../common/constants/typeurl';
 
 export const msgBeginRedelegate = function (config: InitConfigurations) {
     return class MsgBeginRedelegate implements Message {
