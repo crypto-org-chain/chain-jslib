@@ -4,7 +4,7 @@ import { Message } from '../Message';
 import { ICoin } from '../../../coin/coin';
 import { owMsgCreateValidatorOptions } from '../ow.types';
 import { InitConfigurations } from '../../../core/cro';
-import { isValidAddress, AddressType } from '../../../utils/address';
+import { validateAddress, AddressType } from '../../../utils/address';
 import { IDescription } from '../../common/interface/IDescription';
 
 export const msgCreateValidator = function (config: InitConfigurations) {
@@ -75,7 +75,7 @@ export const msgCreateValidator = function (config: InitConfigurations) {
             }
 
             if (
-                !isValidAddress({
+                !validateAddress({
                     address: this.delegatorAddress,
                     network: config.network,
                     type: AddressType.USER,
@@ -85,7 +85,7 @@ export const msgCreateValidator = function (config: InitConfigurations) {
             }
 
             if (
-                !isValidAddress({
+                !validateAddress({
                     address: this.validatorAddress,
                     network: config.network,
                     type: AddressType.VALIDATOR,
