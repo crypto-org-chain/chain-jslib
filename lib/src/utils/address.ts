@@ -12,7 +12,14 @@ export enum AddressType {
     VALIDATOR,
 }
 
-export function isValidAddress(addressProps: AddressValidationProperties): boolean {
+// https://stackoverflow.com/questions/49434751/how-to-declare-a-function-that-throws-an-error-in-typescript
+/**
+ * Check address validity against its type and provided network
+ * @param {AddressValidationProperties} addressProps
+ * @returns {boolean}
+ * @throws {Error} when Bech32 encoding is not correct
+ */
+export function validateAddress(addressProps: AddressValidationProperties): boolean | never {
     const { network } = addressProps;
     const bech32Decoded = bech32.decode(addressProps.address);
 

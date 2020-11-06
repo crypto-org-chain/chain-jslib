@@ -37,7 +37,7 @@ describe('Testing MsgCreateValidator', function () {
             if (options.valid) {
                 return;
             }
-            expect(() => new cro.bank.MsgCreateValidator(options.value)).to.throw(
+            expect(() => new cro.staking.MsgCreateValidator(options.value)).to.throw(
                 'Expected `options` to be of type `object`',
             );
         });
@@ -46,7 +46,7 @@ describe('Testing MsgCreateValidator', function () {
     it('Test MsgCreateValidator conversion', function () {
         const coin = new cro.Coin('12000500', Units.BASE);
 
-        const msgSend = new cro.bank.MsgCreateValidator({
+        const msgSend = new cro.staking.MsgCreateValidator({
             description: {
                 moniker: 'hiteshTest',
                 identity: '',
@@ -98,7 +98,7 @@ describe('Testing MsgCreateValidator', function () {
         );
         const coin = new cro.Coin('12000500', Units.CRO);
 
-        const msgCreateValidator = new cro.bank.MsgCreateValidator({
+        const msgCreateValidator = new cro.staking.MsgCreateValidator({
             description: {
                 moniker: 'hiteshTest',
                 identity: '',
@@ -195,13 +195,13 @@ describe('Testing MsgCreateValidator', function () {
             validatorAddress: 'tcrocncl1j7pej8kplem4wt50p4hfvndhuw5jprxxxtenr',
             value: coin,
         };
-        expect(() => new cro.bank.MsgCreateValidator(params1)).to.throw(
+        expect(() => new cro.staking.MsgCreateValidator(params1)).to.throw(
             'Provided keys does not belong to same network',
         );
-        expect(() => new cro.bank.MsgCreateValidator(params2)).to.throw(
+        expect(() => new cro.staking.MsgCreateValidator(params2)).to.throw(
             'Provided keys does not belong to same network',
         );
-        expect(() => new cro.bank.MsgCreateValidator(params3)).to.throw(
+        expect(() => new cro.staking.MsgCreateValidator(params3)).to.throw(
             'Invalid checksum for tcrocncl1j7pej8kplem4wt50p4hfvndhuw5jprxxxtenr',
         );
     });
