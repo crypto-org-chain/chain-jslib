@@ -24,14 +24,16 @@ describe('Testing MsgDelegate', function () {
             if (options.valid) {
                 return;
             }
-            expect(() => new cro.bank.MsgDelegate(options.value)).to.throw('Expected `options` to be of type `object`');
+            expect(() => new cro.staking.MsgDelegate(options.value)).to.throw(
+                'Expected `options` to be of type `object`',
+            );
         });
     });
 
     it('Test MsgDelegate conversion', function () {
         const coin = new cro.Coin('12000500', Units.BASE);
 
-        const MsgDelegate = new cro.bank.MsgDelegate({
+        const MsgDelegate = new cro.staking.MsgDelegate({
             delegatorAddress: 'tcro165tzcrh2yl83g8qeqxueg2g5gzgu57y3fe3kc3',
             validatorAddress: 'tcrocncl1j7pej8kplem4wt50p4hfvndhuw5jprxxxtenvr',
             amount: coin,
@@ -58,7 +60,7 @@ describe('Testing MsgDelegate', function () {
         );
         const coin = new cro.Coin('12000500', Units.CRO);
 
-        const MsgDelegate = new cro.bank.MsgDelegate({
+        const MsgDelegate = new cro.staking.MsgDelegate({
             delegatorAddress: 'tcro165tzcrh2yl83g8qeqxueg2g5gzgu57y3fe3kc3',
             validatorAddress: 'tcrocncl1j7pej8kplem4wt50p4hfvndhuw5jprxxxtenvr',
             amount: coin,
@@ -103,13 +105,13 @@ describe('Testing MsgDelegate', function () {
             amount: coin,
         };
 
-        expect(() => new cro.bank.MsgDelegate(params1)).to.throw(
+        expect(() => new cro.staking.MsgDelegate(params1)).to.throw(
             'Provided `delegatorAddress` doesnt match network selected',
         );
-        expect(() => new cro.bank.MsgDelegate(params2)).to.throw(
+        expect(() => new cro.staking.MsgDelegate(params2)).to.throw(
             'Provided `validatorAddress` doesnt match network selected',
         );
-        expect(() => new cro.bank.MsgDelegate(params3)).to.throw(
+        expect(() => new cro.staking.MsgDelegate(params3)).to.throw(
             'Invalid checksum for tcro165tzcrh2yl83g8qeqxueg2g5gzgu57y3fe3kc',
         );
     });

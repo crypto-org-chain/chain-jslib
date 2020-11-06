@@ -29,14 +29,14 @@ describe('Testing MsgEditValidator', function () {
             if (options.valid) {
                 return;
             }
-            expect(() => new cro.bank.MsgEditValidator(options.value)).to.throw(
+            expect(() => new cro.staking.MsgEditValidator(options.value)).to.throw(
                 'Expected `options` to be of type `object`',
             );
         });
     });
 
     it('Test MsgEditValidator conversion', function () {
-        const msgSend = new cro.bank.MsgEditValidator({
+        const msgSend = new cro.staking.MsgEditValidator({
             description: {
                 moniker: 'moniker',
                 identity: 'identity',
@@ -73,7 +73,7 @@ describe('Testing MsgEditValidator', function () {
             Bytes.fromHexString('66633d18513bec30dd11a209f1ceb1787aa9e2069d5d47e590174dc9665102b3'),
         );
 
-        const MsgEditValidator = new cro.bank.MsgEditValidator({
+        const MsgEditValidator = new cro.staking.MsgEditValidator({
             description: {
                 moniker: 'hiteshTest',
                 identity: '',
@@ -128,10 +128,10 @@ describe('Testing MsgEditValidator', function () {
             minSelfDelegation: '2',
         };
 
-        expect(() => new cro.bank.MsgEditValidator(params1)).to.throw(
+        expect(() => new cro.staking.MsgEditValidator(params1)).to.throw(
             'Provided `validatorAddress` doesnt match network selected',
         );
-        expect(() => new cro.bank.MsgEditValidator(params2)).to.throw(
+        expect(() => new cro.staking.MsgEditValidator(params2)).to.throw(
             'Invalid checksum for tcrocncl16mmzexp3zqfpgqtnn927m5ph560qgxrs52a3w',
         );
     });

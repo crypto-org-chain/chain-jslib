@@ -10,6 +10,7 @@ import { msgEditValidator } from '../transaction/msg/MsgEditValidator';
 import { msgWithdrawDelegateReward } from '../transaction/msg/MsgWithdrawDelegatorReward';
 import { msgDelegate } from '../transaction/msg/MsgDelegate';
 import { msgWithdrawValidatorCommission } from '../transaction/msg/MsgWithdrawValidatorCommission';
+import { msgBeginRedelegate } from '../transaction/msg/MsgBeginRedelegate';
 
 export const CroSDK = function (configs: InitConfigurations) {
     ow(configs, 'configs', owCroSDKInitParams);
@@ -19,9 +20,12 @@ export const CroSDK = function (configs: InitConfigurations) {
         RawTransaction: rawTransaction(configs),
         bank: {
             MsgSend: msgSend(configs),
+        },
+        staking: {
             MsgCreateValidator: msgCreateValidator(configs),
             MsgEditValidator: msgEditValidator(configs),
             MsgDelegate: msgDelegate(configs),
+            MsgBeginRedelegate: msgBeginRedelegate(configs),
         },
         distribution: {
             MsgWithdrawValidatorCommission: msgWithdrawValidatorCommission(configs),
