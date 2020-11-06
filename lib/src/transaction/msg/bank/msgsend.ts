@@ -1,10 +1,10 @@
 import ow from 'ow';
-import { Msg } from '../../cosmos/v1beta1/types/msg';
-import { ICoin } from '../../coin/coin';
-import { owMsgSendOptions } from './ow.types';
-import { InitConfigurations } from '../../core/cro';
-import { AddressType, validateAddress } from '../../utils/address';
-import { Message } from './Message';
+import { Msg } from '../../../cosmos/v1beta1/types/msg';
+import { ICoin } from '../../../coin/coin';
+import { owMsgSendOptions } from '../ow.types';
+import { InitConfigurations } from '../../../core/cro';
+import { AddressType, validateAddress } from '../../../utils/address';
+import { Message } from '../Message';
 
 export const msgSend = function (config: InitConfigurations) {
     return class MsgSend implements Message {

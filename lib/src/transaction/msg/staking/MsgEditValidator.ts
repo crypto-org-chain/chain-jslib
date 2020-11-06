@@ -1,10 +1,10 @@
 import ow from 'ow';
-import { Msg } from '../../cosmos/v1beta1/types/msg';
-import { Message } from './Message';
-import { owMsgEditValidatorOptions } from './ow.types';
-import { InitConfigurations } from '../../core/cro';
-import { validateAddress, AddressType } from '../../utils/address';
-import { IDescription } from '../common/interface/IDescription';
+import { Msg } from '../../../cosmos/v1beta1/types/msg';
+import { Message } from '../Message';
+import { owMsgEditValidatorOptions } from '../ow.types';
+import { InitConfigurations } from '../../../core/cro';
+import { validateAddress, AddressType } from '../../../utils/address';
+import { IDescription } from '../../common/interface/IDescription';
 
 export const msgEditValidator = function (config: InitConfigurations) {
     return class MsgEditValidator implements Message {
