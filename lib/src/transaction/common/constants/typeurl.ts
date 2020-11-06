@@ -7,5 +7,5 @@ export const COSMOS_MSG_TYPEURL = {
     MsgEditValidator: '/cosmos.staking.v1beta1.MsgEditValidator',
     MsgDelegate: '/cosmos.staking.v1beta1.MsgDelegate',
     MsgUndelegate: '/cosmos.staking.v1beta1.MsgUndelegate',
-    MsgWithdrawValidatorCommission: '/cosmos.distribution.v1beta1.MsgWithdrawValidatorCommission'
+    MsgWithdrawValidatorCommission: '/cosmos.distribution.v1beta1.MsgWithdrawValidatorCommission',
 };
