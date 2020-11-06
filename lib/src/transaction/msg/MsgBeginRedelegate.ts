@@ -4,7 +4,7 @@ import { Message } from './Message';
 import { ICoin } from '../../coin/coin';
 import { owMsgBeginRedelgateOptions } from './ow.types';
 import { InitConfigurations } from '../../core/cro';
-import { isValidAddress, AddressType } from '../../utils/address';
+import { validateAddress, AddressType } from '../../utils/address';
 import { COSMOS_MSG_TYPEURL } from '../common/constants/typeurl';
 
 export const msgBeginRedelegate = function (config: InitConfigurations) {
@@ -62,7 +62,7 @@ export const msgBeginRedelegate = function (config: InitConfigurations) {
             }
 
             if (
-                !isValidAddress({
+                !validateAddress({
                     address: this.delegatorAddress,
                     network: config.network,
                     type: AddressType.USER,
@@ -72,7 +72,7 @@ export const msgBeginRedelegate = function (config: InitConfigurations) {
             }
 
             if (
-                !isValidAddress({
+                !validateAddress({
                     address: this.validatorSrcAddress,
                     network: config.network,
                     type: AddressType.VALIDATOR,
@@ -81,7 +81,7 @@ export const msgBeginRedelegate = function (config: InitConfigurations) {
                 throw new TypeError('Provided `validatorSrcAddress` does not match with selected network');
             }
             if (
-                !isValidAddress({
+                !validateAddress({
                     address: this.validatorDstAddress,
                     network: config.network,
                     type: AddressType.VALIDATOR,

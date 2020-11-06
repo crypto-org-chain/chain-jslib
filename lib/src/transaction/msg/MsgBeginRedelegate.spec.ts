@@ -24,7 +24,7 @@ describe('Testing MsgBeginRedelegate', function () {
             if (options.valid) {
                 return;
             }
-            expect(() => new cro.bank.MsgBeginRedelegate(options.value)).to.throw(
+            expect(() => new cro.staking.MsgBeginRedelegate(options.value)).to.throw(
                 'Expected `options` to be of type `object`',
             );
         });
@@ -33,7 +33,7 @@ describe('Testing MsgBeginRedelegate', function () {
     it('Test MsgBeginRedelegate conversion', function () {
         const coin = new cro.Coin('12000500', Units.BASE);
 
-        const msgSend = new cro.bank.MsgBeginRedelegate({
+        const msgSend = new cro.staking.MsgBeginRedelegate({
             delegatorAddress: 'tcro1j7pej8kplem4wt50p4hfvndhuw5jprxxn5625q',
             validatorDstAddress: 'tcrocncl1j7pej8kplem4wt50p4hfvndhuw5jprxxxtenvr',
             validatorSrcAddress: 'tcrocncl16mmzexp3zqfpgqtnn927m5ph560qgxrs52a3wx',
@@ -59,7 +59,7 @@ describe('Testing MsgBeginRedelegate', function () {
         );
         const coin = new cro.Coin('12000500', Units.CRO);
 
-        const MsgBeginRedelegate = new cro.bank.MsgBeginRedelegate({
+        const MsgBeginRedelegate = new cro.staking.MsgBeginRedelegate({
             delegatorAddress: 'tcro1j7pej8kplem4wt50p4hfvndhuw5jprxxn5625q',
             validatorDstAddress: 'tcrocncl1j7pej8kplem4wt50p4hfvndhuw5jprxxxtenvr',
             validatorSrcAddress: 'tcrocncl16mmzexp3zqfpgqtnn927m5ph560qgxrs52a3wx',
@@ -98,10 +98,10 @@ describe('Testing MsgBeginRedelegate', function () {
             amount: coin,
         };
 
-        expect(() => new cro.bank.MsgBeginRedelegate(params2)).to.throw(
+        expect(() => new cro.staking.MsgBeginRedelegate(params2)).to.throw(
             'Source and destination validator addresses cannot be the same.',
         );
-        expect(() => new cro.bank.MsgBeginRedelegate(params3)).to.throw(
+        expect(() => new cro.staking.MsgBeginRedelegate(params3)).to.throw(
             'Invalid checksum for tcro1j7pej8kplem4wt50p4hfvndhuw5jprxxn5625',
         );
     });

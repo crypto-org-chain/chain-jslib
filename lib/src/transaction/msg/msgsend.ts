@@ -3,7 +3,7 @@ import { Msg } from '../../cosmos/v1beta1/types/msg';
 import { ICoin } from '../../coin/coin';
 import { owMsgSendOptions } from './ow.types';
 import { InitConfigurations } from '../../core/cro';
-import { AddressType, isValidAddress } from '../../utils/address';
+import { AddressType, validateAddress } from '../../utils/address';
 import { Message } from './Message';
 
 export const msgSend = function (config: InitConfigurations) {
@@ -53,7 +53,7 @@ export const msgSend = function (config: InitConfigurations) {
 
         validateAddresses() {
             if (
-                !isValidAddress({
+                !validateAddress({
                     address: this.fromAddress,
                     network: config.network,
                     type: AddressType.USER,
@@ -63,7 +63,7 @@ export const msgSend = function (config: InitConfigurations) {
             }
 
             if (
-                !isValidAddress({
+                !validateAddress({
                     address: this.toAddress,
                     network: config.network,
                     type: AddressType.USER,

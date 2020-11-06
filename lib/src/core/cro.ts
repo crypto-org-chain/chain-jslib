@@ -8,8 +8,9 @@ import { msgSend } from '../transaction/msg/msgsend';
 import { msgCreateValidator } from '../transaction/msg/MsgCreateValidator';
 import { msgEditValidator } from '../transaction/msg/MsgEditValidator';
 import { msgWithdrawDelegateReward } from '../transaction/msg/MsgWithdrawDelegatorReward';
-import { msgBeginRedelegate } from '../transaction/msg/MsgBeginRedelegate';
 import { msgDelegate } from '../transaction/msg/MsgDelegate';
+import { msgWithdrawValidatorCommission } from '../transaction/msg/MsgWithdrawValidatorCommission';
+import { msgBeginRedelegate } from '../transaction/msg/MsgBeginRedelegate';
 
 export const CroSDK = function (configs: InitConfigurations) {
     ow(configs, 'configs', owCroSDKInitParams);
@@ -19,11 +20,16 @@ export const CroSDK = function (configs: InitConfigurations) {
         RawTransaction: rawTransaction(configs),
         bank: {
             MsgSend: msgSend(configs),
+        },
+        staking: {
             MsgCreateValidator: msgCreateValidator(configs),
             MsgEditValidator: msgEditValidator(configs),
-            MsgWithdrawDelegatorReward: msgWithdrawDelegateReward(configs),
-            MsgBeginRedelegate: msgBeginRedelegate(configs),
             MsgDelegate: msgDelegate(configs),
+            MsgBeginRedelegate: msgBeginRedelegate(configs),
+        },
+        distribution: {
+            MsgWithdrawValidatorCommission: msgWithdrawValidatorCommission(configs),
+            MsgWithdrawDelegatorReward: msgWithdrawDelegateReward(configs),
         },
         Options: configs,
     };
