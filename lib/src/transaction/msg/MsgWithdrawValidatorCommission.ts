@@ -10,7 +10,7 @@ export const msgWithdrawValidatorCommission = function (config: InitConfiguratio
         public readonly validatorAddress: string;
 
         /**
-         * Constructor to create a new MsgWithdrawDelegatorReward
+         * Constructor to create a new MsgWithdrawValidatorCommission
          * @param {MsgWithdrawValidatorCommissionOptions} options
          * @returns {MsgWithdrawValidatorCommission}
          * @throws {Error} when options is invalid
@@ -24,8 +24,9 @@ export const msgWithdrawValidatorCommission = function (config: InitConfiguratio
         /**
          * Returns the raw Msg representation of MsgWithdrawValidatorCommission
          * @returns {Msg}
+         * @memberof MsgWithdrawValidatorCommission
          */
-        toRawMsg(): Msg {
+        public toRawMsg(): Msg {
             return {
                 typeUrl: '/cosmos.distribution.v1beta1.MsgWithdrawValidatorCommission',
                 value: {
@@ -34,6 +35,10 @@ export const msgWithdrawValidatorCommission = function (config: InitConfiguratio
             };
         }
 
+        /**
+         * Validate address
+         * @throws {Error} when the validatorAddress is invalid
+         */
         validateAddresses() {
             if (
                 !validateAddress({
