@@ -7,8 +7,8 @@ import { hash160 } from '../utils/hash';
 import { Bytes } from '../utils/bytes/bytes';
 import { InitConfigurations } from '../core/cro';
 
-export const userAccount = function (config: InitConfigurations) {
-    return class Account {
+export const userAddress = function (config: InitConfigurations) {
+    return class Address {
         public readonly pubKeyDigest: Bytes;
 
         /**
@@ -34,10 +34,10 @@ export const userAccount = function (config: InitConfigurations) {
         }
 
         /**
-         * Returns the address corresponding to the Secp256k1KeyPair or pubKeySource provided
+         * Returns the address string corresponding to the Secp256k1KeyPair or pubKeySource provided
          * @return {string}
          */
-        public getAddress(): string {
+        public account(): string {
             const words = bech32.toWords(this.pubKeyDigest.toUint8Array());
             return bech32.encode(config.network.addressPrefix, words);
         }

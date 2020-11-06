@@ -41,16 +41,16 @@ describe('account', function () {
             const anyKeyPair = Secp256k1KeyPair.fromPrivKey(
                 Bytes.fromHexString('3eddf1bca41330f352c47297ac1c7e85b14c11d373933dfdebf7e369b16a4846'),
             );
-            expect(new croMainNet.Account(anyKeyPair).getAddress()).to.eq('cro1pndm4ywdf4qtmupa0fqe75krmqed2znjyj6x8f');
-            expect(new cro.Account(anyKeyPair).getAddress()).to.eq('tcro1pndm4ywdf4qtmupa0fqe75krmqed2znj28nz8c');
+            expect(new croMainNet.Account(anyKeyPair).account()).to.eq('cro1pndm4ywdf4qtmupa0fqe75krmqed2znjyj6x8f');
+            expect(new cro.Account(anyKeyPair).account()).to.eq('tcro1pndm4ywdf4qtmupa0fqe75krmqed2znj28nz8c');
         });
     });
 
     context('When provided with compressed public key in Bytes', function () {
         it('should return account address with the provided public key and bech32 prefix', function () {
             const anyPubKey = Bytes.fromHexString('03a52c32db89513a187ceb00a4520b52dec06f583f2e12afcf1da78e370a5358e6');
-            expect(new croMainNet.Account(anyPubKey).getAddress()).to.eq('cro1pndm4ywdf4qtmupa0fqe75krmqed2znjyj6x8f');
-            expect(new cro.Account(anyPubKey).getAddress()).to.eq('tcro1pndm4ywdf4qtmupa0fqe75krmqed2znj28nz8c');
+            expect(new croMainNet.Account(anyPubKey).account()).to.eq('cro1pndm4ywdf4qtmupa0fqe75krmqed2znjyj6x8f');
+            expect(new cro.Account(anyPubKey).account()).to.eq('tcro1pndm4ywdf4qtmupa0fqe75krmqed2znj28nz8c');
         });
     });
 });

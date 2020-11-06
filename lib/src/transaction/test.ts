@@ -26,7 +26,7 @@ export const MessageSuiteFactory = new Factory<MessageSuite>()
     .attr('message', ['network', 'keyPair'], (_: Network, keyPair: Secp256k1KeyPair) => ({
         typeUrl: '/cosmos.bank.v1beta1.MsgSend',
         value: {
-            fromAddress: new cro.Account(keyPair.getPubKey()).getAddress(),
+            fromAddress: new cro.Account(keyPair.getPubKey()).account(),
             toAddress: 'tcro184lta2lsyu47vwyp2e8zmtca3k5yq85p6c4vp3',
             amount: [
                 {
