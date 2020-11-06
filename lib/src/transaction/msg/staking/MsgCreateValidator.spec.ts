@@ -92,6 +92,49 @@ describe('Testing MsgCreateValidator', function () {
         expect(msgSend.toRawMsg()).to.eqls(rawMsg);
     });
 
+    it('should accept MsgCreateValidator with optional fields ', function () {
+        const coin = new cro.Coin('12000500', Units.BASE);
+
+        const msgSend = new cro.staking.MsgCreateValidator({
+            description: {
+                moniker: 'hiteshTest',
+                securityContact: 'hitesh.goel@crypto.com',
+            },
+            commission: {
+                rate: '0.100000000000000000',
+                maxRate: '0.200000000000000000',
+                maxChangeRate: '0.010000000000000000',
+            },
+            pubkey: 'tcrocnclconspub1zcjduepqzp60e9aq8ek2zjedejhg0ncj00ncmcnqu37k09r5fmstlyfaakhsyqw3rc',
+            minSelfDelegation: '1.0',
+            delegatorAddress: 'tcro165tzcrh2yl83g8qeqxueg2g5gzgu57y3fe3kc3',
+            validatorAddress: 'tcrocncl1j7pej8kplem4wt50p4hfvndhuw5jprxxxtenvr',
+            value: coin,
+        });
+
+        const rawMsg: Msg = {
+            typeUrl: '/cosmos.staking.v1beta1.MsgCreateValidator',
+            value: {
+                description: {
+                    moniker: 'hiteshTest',
+                    securityContact: 'hitesh.goel@crypto.com',
+                },
+                commission: {
+                    rate: '0.100000000000000000',
+                    maxRate: '0.200000000000000000',
+                    maxChangeRate: '0.010000000000000000',
+                },
+                pubkey: 'tcrocnclconspub1zcjduepqzp60e9aq8ek2zjedejhg0ncj00ncmcnqu37k09r5fmstlyfaakhsyqw3rc',
+                minSelfDelegation: '1.0',
+                delegatorAddress: 'tcro165tzcrh2yl83g8qeqxueg2g5gzgu57y3fe3kc3',
+                validatorAddress: 'tcrocncl1j7pej8kplem4wt50p4hfvndhuw5jprxxxtenvr',
+                value: coin.toCosmosCoin(),
+            },
+        };
+
+        expect(msgSend.toRawMsg()).to.eqls(rawMsg);
+    });
+
     it('Test appendTxBody MsgCreateValidator Tx signing', function () {
         const anyKeyPair = Secp256k1KeyPair.fromPrivKey(
             Bytes.fromHexString('66633d18513bec30dd11a209f1ceb1787aa9e2069d5d47e590174dc9665102b3'),
@@ -135,47 +178,6 @@ describe('Testing MsgCreateValidator', function () {
 
     it('Should validate MsgCreateValidator provided addresses with network config', function () {
         const coin = new cro.Coin('12000500', Units.BASE);
-
-        const params1 = {
-            description: {
-                moniker: 'hiteshTest',
-                identity: '',
-                website: '',
-                securityContact: 'hitesh.goel@crypto.com',
-                details: '',
-            },
-            commission: {
-                rate: '0.100000000000000000',
-                maxRate: '0.200000000000000000',
-                maxChangeRate: '0.010000000000000000',
-            },
-            pubkey: 'tcrocnclconspub1zcjduepqzp60e9aq8ek2zjedejhg0ncj00ncmcnqu37k09r5fmstlyfaakhsyqw3rc',
-            minSelfDelegation: '1.0',
-            delegatorAddress: 'cro1pndm4ywdf4qtmupa0fqe75krmqed2znjyj6x8f',
-            validatorAddress: 'cro1pndm4ywdf4qtmupa0fqe75krmqed2znjyj6x8f',
-            value: coin,
-        };
-
-        const params2 = {
-            description: {
-                moniker: 'hiteshTest',
-                identity: '',
-                website: '',
-                securityContact: 'hitesh.goel@crypto.com',
-                details: '',
-            },
-            commission: {
-                rate: '0.100000000000000000',
-                maxRate: '0.200000000000000000',
-                maxChangeRate: '0.010000000000000000',
-            },
-            pubkey: 'tcrocnclconspub1zcjduepqzp60e9aq8ek2zjedejhg0ncj00ncmcnqu37k09r5fmstlyfaakhsyqw3rc',
-            minSelfDelegation: '1.0',
-            delegatorAddress: 'cro1pndm4ywdf4qtmupa0fqe75krmqed2znjyj6x8f',
-            validatorAddress: 'cro1pndm4ywdf4qtmupa0fqe75krmqed2znjyj6x8f',
-            value: coin,
-        };
-
         const params3 = {
             description: {
                 moniker: 'hiteshTest',
@@ -195,12 +197,6 @@ describe('Testing MsgCreateValidator', function () {
             validatorAddress: 'tcrocncl1j7pej8kplem4wt50p4hfvndhuw5jprxxxtenr',
             value: coin,
         };
-        expect(() => new cro.staking.MsgCreateValidator(params1)).to.throw(
-            'Provided keys does not belong to same network',
-        );
-        expect(() => new cro.staking.MsgCreateValidator(params2)).to.throw(
-            'Provided keys does not belong to same network',
-        );
         expect(() => new cro.staking.MsgCreateValidator(params3)).to.throw(
             'Invalid checksum for tcrocncl1j7pej8kplem4wt50p4hfvndhuw5jprxxxtenr',
         );

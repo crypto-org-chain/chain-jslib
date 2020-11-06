@@ -65,15 +65,6 @@ export const msgCreateValidator = function (config: InitConfigurations) {
         }
 
         validateAddresses(): void {
-            const { network } = config;
-            if (
-                !this.delegatorAddress.startsWith(network.addressPrefix) ||
-                !this.validatorAddress.startsWith(network.validatorAddressPrefix) ||
-                !this.pubkey.startsWith(network.validatorPubKeyPrefix)
-            ) {
-                throw new TypeError('Provided keys does not belong to same network');
-            }
-
             if (
                 !validateAddress({
                     address: this.delegatorAddress,
