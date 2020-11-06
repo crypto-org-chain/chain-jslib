@@ -11,6 +11,7 @@ import { msgDelegate } from '../transaction/msg/staking/MsgDelegate';
 import { msgEditValidator } from '../transaction/msg/staking/MsgEditValidator';
 import { msgBeginRedelegate } from '../transaction/msg/MsgBeginRedelegate';
 import { msgWithdrawValidatorCommission } from '../transaction/msg/MsgWithdrawValidatorCommission';
+import { userAddress } from '../address/address';
 
 export const CroSDK = function (configs: InitConfigurations) {
     ow(configs, 'configs', owCroSDKInitParams);
@@ -18,6 +19,7 @@ export const CroSDK = function (configs: InitConfigurations) {
     return {
         Coin: coin(configs),
         RawTransaction: rawTransaction(configs),
+        Address: userAddress(configs),
         bank: {
             MsgSend: msgSend(configs),
         },
@@ -44,6 +46,21 @@ export class CroNetwork {
         coin: {
             baseDenom: 'basetcro',
             croDenom: 'tcro',
+        },
+        bip44Path: {
+            coinType: 1,
+            account: 0,
+        },
+    };
+
+    public static Mainnet: Network = {
+        chainId: 'croeseid-1',
+        addressPrefix: 'cro',
+        validatorAddressPrefix: 'crocncl',
+        validatorPubKeyPrefix: 'crocnclconspub',
+        coin: {
+            baseDenom: 'basecro',
+            croDenom: 'cro',
         },
         bip44Path: {
             coinType: 1,
