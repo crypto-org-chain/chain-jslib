@@ -3,7 +3,7 @@ import { Msg } from '../../../cosmos/v1beta1/types/msg';
 import { Message } from '../Message';
 import { owMsgDelegateOptions } from '../ow.types';
 import { InitConfigurations } from '../../../core/cro';
-import { isValidAddress, AddressType } from '../../../utils/address';
+import { validateAddress, AddressType } from '../../../utils/address';
 import { ICoin } from '../../../coin/coin';
 
 export const msgDelegate = function (config: InitConfigurations) {
@@ -53,11 +53,11 @@ export const msgDelegate = function (config: InitConfigurations) {
         validateAddresses(): void {
             const { network } = config;
 
-            if (!isValidAddress({ network, address: this.validatorAddress, type: AddressType.VALIDATOR })) {
+            if (!validateAddress({ network, address: this.validatorAddress, type: AddressType.VALIDATOR })) {
                 throw new TypeError('Provided `validatorAddress` doesnt match network selected');
             }
 
-            if (!isValidAddress({ network, address: this.delegatorAddress, type: AddressType.USER })) {
+            if (!validateAddress({ network, address: this.delegatorAddress, type: AddressType.USER })) {
                 throw new TypeError('Provided `delegatorAddress` doesnt match network selected');
             }
         }
