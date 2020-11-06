@@ -9,6 +9,7 @@ import { msgCreateValidator } from '../transaction/msg/staking/MsgCreateValidato
 import { msgWithdrawDelegateReward } from '../transaction/msg/distribution/MsgWithdrawDelegatorReward';
 import { msgDelegate } from '../transaction/msg/staking/MsgDelegate';
 import { msgEditValidator } from '../transaction/msg/staking/MsgEditValidator';
+import { msgUndelegate } from '../transaction/msg/staking/MsgUndelegate';
 import { msgBeginRedelegate } from '../transaction/msg/MsgBeginRedelegate';
 import { msgWithdrawValidatorCommission } from '../transaction/msg/MsgWithdrawValidatorCommission';
 import { userAddress } from '../address/address';
@@ -27,6 +28,7 @@ export const CroSDK = function (configs: InitConfigurations) {
             MsgCreateValidator: msgCreateValidator(configs),
             MsgEditValidator: msgEditValidator(configs),
             MsgDelegate: msgDelegate(configs),
+            MsgUndelegate: msgUndelegate(configs),
             MsgBeginRedelegate: msgBeginRedelegate(configs),
         },
         distribution: {
