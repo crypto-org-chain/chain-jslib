@@ -33,6 +33,10 @@ export const userAccount = function (config: InitConfigurations) {
             this.pubKeyDigest = hash160(pubKey);
         }
 
+        /**
+         * Returns the address corresponding to the Secp256k1KeyPair or pubKeySource provided
+         * @return {string}
+         */
         public getAddress(): string {
             const words = bech32.toWords(this.pubKeyDigest.toUint8Array());
             return bech32.encode(config.network.addressPrefix, words);
