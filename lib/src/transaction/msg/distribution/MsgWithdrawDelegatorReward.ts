@@ -4,6 +4,7 @@ import { Msg } from '../../../cosmos/v1beta1/types/msg';
 import { InitConfigurations } from '../../../core/cro';
 import { AddressType, validateAddress } from '../../../utils/address';
 import { owMsgWithdrawDelegatorRewardOptions } from '../ow.types';
+import { COSMOS_MSG_TYPEURL } from '../../common/constants/typeurl';
 
 export const msgWithdrawDelegateReward = function (config: InitConfigurations) {
     return class MsgWithdrawDelegatorReward implements Message {
@@ -34,7 +35,7 @@ export const msgWithdrawDelegateReward = function (config: InitConfigurations) {
          */
         toRawMsg(): Msg {
             return {
-                typeUrl: '/cosmos.distribution.v1beta1.MsgWithdrawDelegatorReward',
+                typeUrl: COSMOS_MSG_TYPEURL.MsgWithdrawDelegatorReward,
                 value: {
                     delegatorAddress: this.delegatorAddress,
                     validatorAddress: this.validatorAddress,

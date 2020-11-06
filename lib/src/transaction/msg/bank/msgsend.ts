@@ -5,6 +5,7 @@ import { owMsgSendOptions } from '../ow.types';
 import { InitConfigurations } from '../../../core/cro';
 import { AddressType, validateAddress } from '../../../utils/address';
 import { Message } from '../Message';
+import { COSMOS_MSG_TYPEURL } from '../../common/constants/typeurl';
 
 export const msgSend = function (config: InitConfigurations) {
     return class MsgSend implements Message {
@@ -37,7 +38,7 @@ export const msgSend = function (config: InitConfigurations) {
         toRawMsg(): Msg {
             const cosmosCoin = this.amount.toCosmosCoin();
             return {
-                typeUrl: '/cosmos.bank.v1beta1.MsgSend',
+                typeUrl: COSMOS_MSG_TYPEURL.MsgSend,
                 value: {
                     fromAddress: this.fromAddress,
                     toAddress: this.toAddress,
