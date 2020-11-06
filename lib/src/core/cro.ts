@@ -4,13 +4,13 @@ import { Network } from '../network/network';
 import { coin } from '../coin/coin';
 import { owCroSDKInitParams } from './ow.types';
 import { rawTransaction } from '../transaction/raw';
-import { msgSend } from '../transaction/msg/msgsend';
-import { msgCreateValidator } from '../transaction/msg/MsgCreateValidator';
-import { msgEditValidator } from '../transaction/msg/MsgEditValidator';
-import { msgWithdrawDelegateReward } from '../transaction/msg/MsgWithdrawDelegatorReward';
-import { msgDelegate } from '../transaction/msg/MsgDelegate';
-import { msgWithdrawValidatorCommission } from '../transaction/msg/MsgWithdrawValidatorCommission';
+import { msgSend } from '../transaction/msg/bank/msgsend';
+import { msgCreateValidator } from '../transaction/msg/staking/MsgCreateValidator';
+import { msgWithdrawDelegateReward } from '../transaction/msg/distribution/MsgWithdrawDelegatorReward';
+import { msgDelegate } from '../transaction/msg/staking/MsgDelegate';
+import { msgEditValidator } from '../transaction/msg/staking/MsgEditValidator';
 import { msgBeginRedelegate } from '../transaction/msg/MsgBeginRedelegate';
+import { msgWithdrawValidatorCommission } from '../transaction/msg/MsgWithdrawValidatorCommission';
 
 export const CroSDK = function (configs: InitConfigurations) {
     ow(configs, 'configs', owCroSDKInitParams);

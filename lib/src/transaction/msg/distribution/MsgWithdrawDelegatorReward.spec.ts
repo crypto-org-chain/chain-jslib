@@ -1,9 +1,9 @@
 import { expect } from 'chai';
 import Big from 'big.js';
-import { fuzzyDescribe } from '../../test/mocha-fuzzy/suite';
-import { CroNetwork, CroSDK } from '../../core/cro';
-import { Secp256k1KeyPair } from '../../keypair/secp256k1';
-import { Bytes } from '../../utils/bytes/bytes';
+import { fuzzyDescribe } from '../../../test/mocha-fuzzy/suite';
+import { CroNetwork, CroSDK } from '../../../core/cro';
+import { Secp256k1KeyPair } from '../../../keypair/secp256k1';
+import { Bytes } from '../../../utils/bytes/bytes';
 
 const cro = CroSDK({ network: CroNetwork.Testnet });
 
