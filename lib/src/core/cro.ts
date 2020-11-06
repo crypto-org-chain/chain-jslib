@@ -19,7 +19,7 @@ export const CroSDK = function (configs: InitConfigurations) {
     return {
         Coin: coin(configs),
         RawTransaction: rawTransaction(configs),
-        Account: userAddress(configs),
+        Address: userAddress(configs),
         bank: {
             MsgSend: msgSend(configs),
         },
