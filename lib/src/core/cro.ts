@@ -54,7 +54,7 @@ export class CroNetwork {
     };
 
     public static Mainnet: Network = {
-        chainId: 'not_known',
+        chainId: 'croeseid-1',
         addressPrefix: 'cro',
         validatorAddressPrefix: 'crocncl',
         validatorPubKeyPrefix: 'crocnclconspub',
