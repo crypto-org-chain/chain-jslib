@@ -1,14 +1,14 @@
 import 'mocha';
 import Big from 'big.js';
 import { expect } from 'chai';
+import { StargateClient, assertIsBroadcastTxSuccess } from '@cosmjs/stargate';
 import { HDKey } from '../hdkey/hdkey';
 import { Secp256k1KeyPair } from '../keypair/secp256k1';
 import { CroSDK } from '../core/cro';
 import { Units } from '../coin/coin';
-import { StargateClient, assertIsBroadcastTxSuccess } from '@cosmjs/stargate';
 import { Network } from '../network/network';
 
-let customNetwork: Network = {
+const customNetwork: Network = {
     chainId: 'chainmaind',
     addressPrefix: 'cro',
     validatorAddressPrefix: 'crocncl',
@@ -66,12 +66,12 @@ describe('Integration test suite', function () {
             .addSigner({
                 publicKey: keyPair.getPubKey(),
                 accountNumber: new Big(account1!.accountNumber),
-                accountSequence: new Big(account1!.sequence)
+                accountSequence: new Big(account1!.sequence),
             })
             .addSigner({
                 publicKey: keyPair2.getPubKey(),
                 accountNumber: new Big(account2!.accountNumber),
-                accountSequence: new Big(account2!.sequence)
+                accountSequence: new Big(account2!.sequence),
             })
             .toSignable();
 
@@ -83,12 +83,11 @@ describe('Integration test suite', function () {
         expect(msgSend1.fromAddress).to.eq(account1!.address);
         expect(msgSend1.toAddress).to.eq(account2!.address);
 
-        const broadcastResult = await client.broadcastTx(signedTx.encode().toUint8Array())
+        const broadcastResult = await client.broadcastTx(signedTx.encode().toUint8Array());
         assertIsBroadcastTxSuccess(broadcastResult);
 
         const { rawLog, transactionHash } = broadcastResult;
         expect(rawLog).to.match(/{"key":"amount","value":"100000basecro"}/);
         expect(transactionHash).to.match(/^[0-9A-F]{64}$/);
-
     });
 });
