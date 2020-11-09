@@ -7,6 +7,19 @@ import { CroNetwork, CroSDK } from '../core/cro';
 import { Units } from '../coin/coin';
 
 describe('Testing Tx signing with custom parameters', function () {
+    it('test passing custom properties', function () {
+        const cro = CroSDK({ network: CroNetwork.Testnet });
+        const rawTx = new cro.RawTransaction();
+
+        expect(() => rawTx.setGasLimit('1234009AXS')).to.throw(
+            'Expected gasLimit value to be a base10 number represented as string, got `1234009AXS`',
+        );
+
+        expect(() => rawTx.setFee(new cro.Coin('1-6500', Units.BASE))).to.throw(
+            'Expected amount to be a base10 number represented as string, got `1-6500`',
+        );
+    });
+
     it('test tx when memo, timeout height, gasLimit and fee were set', function () {
         const hdKey = HDKey.fromMnemonic(
             'curtain maid fetch push pilot frozen speak motion island pigeon habit suffer gap purse royal hollow among orange pluck mutual eager cement void panther',
