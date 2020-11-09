@@ -202,6 +202,13 @@ const encodeTxBodyMessage = (message: Msg): Uint8Array => {
     return Uint8Array.from(type.encode(created).finish());
 };
 
+const getGasLimit = (authInfo: AuthInfo): Long.Long => {
+    const defaultGasLimit = Long.fromNumber(200000);
+    return authInfo.fee.gasLimit !== undefined && authInfo.fee.gasLimit !== null
+        ? Long.fromNumber(authInfo.fee.gasLimit.toNumber())
+        : defaultGasLimit;
+};
+
 /**
  * Encode AuthInfo message to protobuf binary
  */
@@ -215,11 +222,11 @@ const encodeAuthInfo = (authInfo: AuthInfo): Bytes => {
             }),
         ),
         fee: {
-            // TODO:
-            // amount: feeAmount,
-            gasLimit: Long.fromNumber(200000),
+            amount: authInfo.fee.amount !== undefined ? [authInfo.fee.amount.toCosmosCoin()] : [],
+            gasLimit: getGasLimit(authInfo),
         },
     };
+
     return Bytes.fromUint8Array(cosmos.tx.v1beta1.AuthInfo.encode(encodableAuthInfo).finish());
 };
 

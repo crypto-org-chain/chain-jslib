@@ -10,8 +10,8 @@ export type TxBody = {
 
     value: {
         messages: Msg[];
-        memo: string;
-        timeoutHeight: number;
+        memo?: string;
+        timeoutHeight?: number;
     };
 };
 
