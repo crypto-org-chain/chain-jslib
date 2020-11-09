@@ -18,6 +18,7 @@
     "lint": "eslint 'lib/**'",
     "test:watch": "nodemon",
     "test": "NODE_ENV=test mocha --require ./node_modules/ts-node/register --exit --color --recursive 'lib/src/**/*.spec.ts'",
+    "integration-test": "NODE_ENV=test mocha --require ./node_modules/ts-node/register --exit --color ./lib/src/transaction/integration.test.ts",
     "preget-proto": "rm -rf proto",
     "get-proto": "REF=v0.40.0-rc1 ./lib/src/cosmos/v1beta1/scripts/get-proto.sh",
     "predefine-proto": "./lib/src/cosmos/v1beta1/scripts/predefine-proto.sh",
@@ -25,6 +26,8 @@
     "postdefine-proto": "./lib/src/cosmos/v1beta1/scripts/postdefine-proto.sh"
   },
   "dependencies": {
+    "@cosmjs/stargate": "^0.24.0-alpha.1",
+    "@types/debug": "^4.1.5",
     "@types/lodash": "^4.14.162",
     "bech32": "1.1.4",
     "big.js": "6.0.0",
