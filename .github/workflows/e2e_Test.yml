@@ -42,8 +42,17 @@ jobs:
           key: ${{ runner.os }}-node${{ matrix.code }}-${{ hashFiles('**/package-lock.json') }}
     - run: |
         sleep 5
-        curl --location --request GET 'localhost:26657/status'
+        curl --location --request GET 'localhost:26657/status' | grep network
+        ## TRANSFER 50CRO to TEST ACCOUNT 1
+        nix-shell ./. -A ci-shell --run "pystarport cli - transfer $(nix-shell ./. -A ci-shell --run "pystarport cli - address ecosystem") cro165tzcrh2yl83g8qeqxueg2g5gzgu57y38vcjcq 5000000000basecro"
+        nix-shell ./. -A ci-shell --run "pystarport cli - balance cro165tzcrh2yl83g8qeqxueg2g5gzgu57y38vcjcq" | grep 500000000
+
+        ## TRANSFER 50CRO to TEST ACCOUNT 2
+        nix-shell ./. -A ci-shell --run "pystarport cli - transfer $(nix-shell ./. -A ci-shell --run "pystarport cli - address ecosystem") cro184lta2lsyu47vwyp2e8zmtca3k5yq85p5dugpq 5000000000basecro"
+        nix-shell ./. -A ci-shell --run "pystarport cli - balance cro184lta2lsyu47vwyp2e8zmtca3k5yq85p5dugpq" | grep 500000000
+
+        ## RUN INTEGRATION TEST
         cd jslib
-        npm install 
-        npm run test
+        npm install
+        npm run integration-test
     
