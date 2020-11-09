@@ -74,7 +74,7 @@ export const rawTransaction = function (config: InitConfigurations) {
 
         /**
          * Set a memo value to the raw tx body
-         * @param {string} memo one of the supported Cosmos message
+         * @param {string} memo to be set to the raw tx body
          * @throws {Error} when memo type is invalid is invalid
          * @memberof Transaction
          */
@@ -85,7 +85,7 @@ export const rawTransaction = function (config: InitConfigurations) {
 
         /**
          * Set a timeout param to tx body
-         * @param {number} timeoutHeight one of the supported Cosmos message
+         * @param {number} timeoutHeight to best to the broad-casted tx
          * @throws {Error} when timeoutHeight type is invalid is invalid
          * @memberof Transaction
          */
