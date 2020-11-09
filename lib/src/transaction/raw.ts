@@ -77,7 +77,7 @@ export const rawTransaction = function (config: InitConfigurations) {
         /**
          * Set a memo value to the raw tx body
          * @param {string} memo to be set to the raw tx body
-         * @throws {Error} when memo type is invalid is invalid
+         * @throws {Error} when memo is invalid
          * @memberof Transaction
          */
         public setMemo(memo: string) {
@@ -88,7 +88,7 @@ export const rawTransaction = function (config: InitConfigurations) {
         /**
          * Set gas limit value to tx
          * @param {string} gasLimit to be set to the raw tx body, default value is 200_000
-         * @throws {Error} when memo type is invalid is invalid
+         * @throws {Error} when gasLimit set is invalid
          * @memberof Transaction
          */
         public setGasLimit(gasLimit: string) {
@@ -105,7 +105,7 @@ export const rawTransaction = function (config: InitConfigurations) {
         /**
          * Set fee to the raw tx
          * @param {ICoin} fee to be set to the raw tx body
-         * @throws {Error} when memo type is invalid is invalid
+         * @throws {Error} when fee set is invalid
          * @memberof Transaction
          */
         public setFee(fee: ICoin) {
@@ -116,7 +116,7 @@ export const rawTransaction = function (config: InitConfigurations) {
         /**
          * Set a timeout param to tx body
          * @param {number} timeoutHeight to best to the broad-casted tx
-         * @throws {Error} when timeoutHeight type is invalid is invalid
+         * @throws {Error} when timeoutHeight set is invalid
          * @memberof Transaction
          */
         public setTimeOutHeight(timeoutHeight: number) {
