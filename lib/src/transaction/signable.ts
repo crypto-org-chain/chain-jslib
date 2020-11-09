@@ -202,8 +202,9 @@ const encodeTxBodyMessage = (message: Msg): Uint8Array => {
     return Uint8Array.from(type.encode(created).finish());
 };
 
+const DEFAULT_GAS_LIMIT = 200_000;
 const getGasLimit = (authInfo: AuthInfo): Long.Long => {
-    const defaultGasLimit = Long.fromNumber(200000);
+    const defaultGasLimit = Long.fromNumber(DEFAULT_GAS_LIMIT);
     return authInfo.fee.gasLimit !== undefined && authInfo.fee.gasLimit !== null
         ? Long.fromNumber(authInfo.fee.gasLimit.toNumber())
         : defaultGasLimit;
