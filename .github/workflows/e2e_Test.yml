@@ -12,47 +12,51 @@ jobs:
   RPC:
     runs-on: ubuntu-latest
     steps:
-    - name: STEP-1 :Checkout chain-main repo
-      uses: actions/checkout@v2
-      with:
-        repository: crypto-com/chain-main
-        path: chain-main
-    - uses: cachix/install-nix-action@v10
-      with:
-       nix_path: nixpkgs=channel:nixos-unstable
-    - run: |
-        nix-env -iA cachix -f https://cachix.org/api/v1/install
-        cachix use crypto-com
-        cd chain-main 
-        cp ./config.yaml.example ./config.yaml
-        nix-shell ./. -A ci-shell --run "pystarport serve &"
+      - name: STEP-1 :Checkout chain-main repo
+        uses: actions/checkout@v2
+        with:
+          repository: crypto-com/chain-main
+          path: chain-main
+      - uses: cachix/install-nix-action@v10
+        with:
+          nix_path: nixpkgs=channel:nixos-unstable
+      - run: |
+          nix-env -iA cachix -f https://cachix.org/api/v1/install
+          cachix use crypto-com
+          cd chain-main 
+          cp ./config.yaml.example ./config.yaml
+          nix-shell ./. -A ci-shell --run "pystarport serve &"
 
-    - name: STEP-2 :Setup JSLIB project
-      uses: actions/checkout@v2
-      with:
-        path: jslib
-    - name: STEP-3 :Setup Node.js for nextgen-jslib
-      uses: actions/setup-node@v1
-      with:
-          node-version: 14    
-    - uses: actions/cache@v2
-      id: cache-deps
-      with:
+      - name: Transfer funds to Test accounts
+        run: |
+          ## Sleep 5 Seconds
+          sleep 5
+          curl --location --request GET 'localhost:26657/status' | grep network
+          cd chain-main
+          ## TRANSFER 50CRO to TEST ACCOUNT 1
+          nix-shell ./. -A ci-shell --run "pystarport cli - transfer $(nix-shell ./. -A ci-shell --run "pystarport cli - address ecosystem") cro165tzcrh2yl83g8qeqxueg2g5gzgu57y38vcjcq 5000000000basecro"
+          nix-shell ./. -A ci-shell --run "pystarport cli - balance cro165tzcrh2yl83g8qeqxueg2g5gzgu57y38vcjcq" | grep 500000000
+
+          ## TRANSFER 50CRO to TEST ACCOUNT 2
+          nix-shell ./. -A ci-shell --run "pystarport cli - transfer $(nix-shell ./. -A ci-shell --run "pystarport cli - address ecosystem") cro184lta2lsyu47vwyp2e8zmtca3k5yq85p5dugpq 5000000000basecro"
+          nix-shell ./. -A ci-shell --run "pystarport cli - balance cro184lta2lsyu47vwyp2e8zmtca3k5yq85p5dugpq" | grep 500000000
+
+      - name: STEP-2 :Setup JSLIB project
+        uses: actions/checkout@v2
+        with:
+          path: jslib
+      - name: STEP-3 :Setup Node.js for nextgen-jslib
+        uses: actions/setup-node@v1
+        with:
+          node-version: 14
+      - uses: actions/cache@v2
+        id: cache-deps
+        with:
           path: node_modules
           key: ${{ runner.os }}-node${{ matrix.code }}-${{ hashFiles('**/package-lock.json') }}
-    - run: |
-        sleep 5
-        curl --location --request GET 'localhost:26657/status' | grep network
-        ## TRANSFER 50CRO to TEST ACCOUNT 1
-        nix-shell ./. -A ci-shell --run "pystarport cli - transfer $(nix-shell ./. -A ci-shell --run "pystarport cli - address ecosystem") cro165tzcrh2yl83g8qeqxueg2g5gzgu57y38vcjcq 5000000000basecro"
-        nix-shell ./. -A ci-shell --run "pystarport cli - balance cro165tzcrh2yl83g8qeqxueg2g5gzgu57y38vcjcq" | grep 500000000
-
-        ## TRANSFER 50CRO to TEST ACCOUNT 2
-        nix-shell ./. -A ci-shell --run "pystarport cli - transfer $(nix-shell ./. -A ci-shell --run "pystarport cli - address ecosystem") cro184lta2lsyu47vwyp2e8zmtca3k5yq85p5dugpq 5000000000basecro"
-        nix-shell ./. -A ci-shell --run "pystarport cli - balance cro184lta2lsyu47vwyp2e8zmtca3k5yq85p5dugpq" | grep 500000000
-
-        ## RUN INTEGRATION TEST
-        cd jslib
-        npm install
-        npm run integration-test
-    
+      - name: Run Integration test suite
+        run: |
+          ## RUN INTEGRATION TEST
+          cd jslib
+          npm install
+          npm run integration-test
