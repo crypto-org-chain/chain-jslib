@@ -14,6 +14,8 @@ import { SignableTransaction } from './signable';
 import { cloneDeep } from '../utils/clone';
 import { Message } from './msg/Message';
 import { InitConfigurations } from '../core/cro';
+import { ICoin } from '../coin/coin';
+import { owCoin } from '../coin/ow.types';
 
 export const rawTransaction = function (config: InitConfigurations) {
     return class RawTransaction {
@@ -81,6 +83,34 @@ export const rawTransaction = function (config: InitConfigurations) {
         public setMemo(memo: string) {
             ow(memo, 'memo', ow.string);
             this.txBody.value.memo = memo;
+        }
+
+        /**
+         * Set gas limit value to tx
+         * @param {string} gasLimit to be set to the raw tx body, default value is 200_000
+         * @throws {Error} when memo type is invalid is invalid
+         * @memberof Transaction
+         */
+        public setGasLimit(gasLimit: string) {
+            ow(gasLimit, 'gasLimit', ow.string);
+            try {
+                this.authInfo.fee.gasLimit = new Big(gasLimit);
+            } catch (err) {
+                throw new TypeError(
+                    `Expected gasLimit value to be a base10 number represented as string, got \`${gasLimit}\``,
+                );
+            }
+        }
+
+        /**
+         * Set fee to the raw tx
+         * @param {ICoin} fee to be set to the raw tx body
+         * @throws {Error} when memo type is invalid is invalid
+         * @memberof Transaction
+         */
+        public setFee(fee: ICoin) {
+            ow(fee, 'fee', owCoin());
+            this.authInfo.fee.amount = fee;
         }
 
         /**
