@@ -120,7 +120,7 @@ export const rawTransaction = function (config: InitConfigurations) {
          * @memberof Transaction
          */
         public setTimeOutHeight(timeoutHeight: number) {
-            ow(timeoutHeight, 'timeoutHeight', ow.number.positive);
+            ow(timeoutHeight, 'timeoutHeight', ow.number.greaterThanOrEqual(0));
             this.txBody.value.timeoutHeight = timeoutHeight;
         }
 
@@ -227,12 +227,6 @@ export const rawTransaction = function (config: InitConfigurations) {
         public getSignerAccounts(): Readonly<SignerAccount[]> {
             return this.signerAccounts;
         }
-
-        // TODO: Coin needs to support network
-        // public setFee(coin: Coin): Transaction {}
-
-        // TODO:
-        // public setGasLimit()
     };
 };
 
