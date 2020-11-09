@@ -21,6 +21,8 @@ export const rawTransaction = function (config: InitConfigurations) {
             typeUrl: '/cosmos.tx.v1beta1.TxBody',
             value: {
                 messages: [],
+                memo: '',
+                timeoutHeight: 0,
             },
         };
 
@@ -68,6 +70,28 @@ export const rawTransaction = function (config: InitConfigurations) {
          */
         public appendMessage(message: Message): RawTransaction {
             return this.addMessage(message.toRawMsg());
+        }
+
+        /**
+         * Set a memo value to the raw tx body
+         * @param {string} memo one of the supported Cosmos message
+         * @throws {Error} when memo type is invalid is invalid
+         * @memberof Transaction
+         */
+        public setMemo(memo: string) {
+            ow(memo, 'memo', ow.string);
+            this.txBody.value.memo = memo;
+        }
+
+        /**
+         * Set a timeout param to tx body
+         * @param {number} timeoutHeight one of the supported Cosmos message
+         * @throws {Error} when timeoutHeight type is invalid is invalid
+         * @memberof Transaction
+         */
+        public setTimeOutHeight(timeoutHeight: number) {
+            ow(timeoutHeight, 'timeoutHeight', ow.number);
+            this.txBody.value.timeoutHeight = timeoutHeight;
         }
 
         /**
@@ -180,10 +204,6 @@ export const rawTransaction = function (config: InitConfigurations) {
         // TODO:
         // public setGasLimit()
     };
-};
-
-export type TransactionOptions = {
-    network: Network;
 };
 
 export type TransactionSigner = {

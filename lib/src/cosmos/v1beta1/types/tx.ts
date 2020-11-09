@@ -7,8 +7,11 @@ import { ICoin } from '../../../coin/coin';
 
 export type TxBody = {
     typeUrl: '/cosmos.tx.v1beta1.TxBody';
+
     value: {
         messages: Msg[];
+        memo: string;
+        timeoutHeight: number;
     };
 };
 

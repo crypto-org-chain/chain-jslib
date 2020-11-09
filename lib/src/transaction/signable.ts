@@ -179,6 +179,14 @@ const encodeTxBody = (txBody: TxBody): Bytes => {
         ...txBody,
         messages: wrappedMessages,
     });
+
+    if (txBody.value.memo) {
+        txBodyProto.memo = txBody.value.memo;
+    }
+
+    if (txBody.value.timeoutHeight) {
+        txBodyProto.timeoutHeight = Long.fromNumber(txBody.value.timeoutHeight, false);
+    }
     return Bytes.fromUint8Array(cosmos.tx.v1beta1.TxBody.encode(txBodyProto).finish());
 };
 
