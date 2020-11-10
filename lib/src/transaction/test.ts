@@ -70,6 +70,8 @@ export const SignableTransactionParamsSuiteFactory = new Factory<SignableTransac
                     typeUrl: '/cosmos.tx.v1beta1.TxBody',
                     value: {
                         messages: [message],
+                        memo: '',
+                        timeoutHeight: 0,
                     },
                 },
                 authInfo: {

@@ -14,6 +14,8 @@ import { SignableTransaction } from './signable';
 import { cloneDeep } from '../utils/clone';
 import { Message } from './msg/Message';
 import { InitConfigurations } from '../core/cro';
+import { ICoin } from '../coin/coin';
+import { owCoin } from '../coin/ow.types';
 
 export const rawTransaction = function (config: InitConfigurations) {
     return class RawTransaction {
@@ -21,6 +23,8 @@ export const rawTransaction = function (config: InitConfigurations) {
             typeUrl: '/cosmos.tx.v1beta1.TxBody',
             value: {
                 messages: [],
+                memo: '',
+                timeoutHeight: 0,
             },
         };
 
@@ -68,6 +72,56 @@ export const rawTransaction = function (config: InitConfigurations) {
          */
         public appendMessage(message: Message): RawTransaction {
             return this.addMessage(message.toRawMsg());
+        }
+
+        /**
+         * Set a memo value to the raw tx body
+         * @param {string} memo to be set to the raw tx body
+         * @throws {Error} when memo is invalid
+         * @memberof Transaction
+         */
+        public setMemo(memo: string) {
+            ow(memo, 'memo', ow.string);
+            this.txBody.value.memo = memo;
+        }
+
+        /**
+         * Set gas limit value to tx
+         * @param {string} gasLimit to be set to the raw tx body, default value is 200_000
+         * @throws {Error} when gasLimit set is invalid
+         * @memberof Transaction
+         */
+        public setGasLimit(gasLimit: string) {
+            ow(gasLimit, 'gasLimit', ow.string);
+            try {
+                this.authInfo.fee.gasLimit = new Big(gasLimit);
+            } catch (err) {
+                throw new TypeError(
+                    `Expected gasLimit value to be a base10 number represented as string, got \`${gasLimit}\``,
+                );
+            }
+        }
+
+        /**
+         * Set fee to the raw tx
+         * @param {ICoin} fee to be set to the raw tx body
+         * @throws {Error} when fee set is invalid
+         * @memberof Transaction
+         */
+        public setFee(fee: ICoin) {
+            ow(fee, 'fee', owCoin());
+            this.authInfo.fee.amount = fee;
+        }
+
+        /**
+         * Set a timeout param to tx body
+         * @param {number} timeoutHeight to best to the broad-casted tx
+         * @throws {Error} when timeoutHeight set is invalid
+         * @memberof Transaction
+         */
+        public setTimeOutHeight(timeoutHeight: number) {
+            ow(timeoutHeight, 'timeoutHeight', ow.number.integer.greaterThanOrEqual(0));
+            this.txBody.value.timeoutHeight = timeoutHeight;
         }
 
         /**
@@ -173,17 +227,7 @@ export const rawTransaction = function (config: InitConfigurations) {
         public getSignerAccounts(): Readonly<SignerAccount[]> {
             return this.signerAccounts;
         }
-
-        // TODO: Coin needs to support network
-        // public setFee(coin: Coin): Transaction {}
-
-        // TODO:
-        // public setGasLimit()
     };
-};
-
-export type TransactionOptions = {
-    network: Network;
 };
 
 export type TransactionSigner = {
