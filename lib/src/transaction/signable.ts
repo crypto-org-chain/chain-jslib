@@ -179,6 +179,14 @@ const encodeTxBody = (txBody: TxBody): Bytes => {
         ...txBody,
         messages: wrappedMessages,
     });
+
+    if (txBody.value.memo) {
+        txBodyProto.memo = txBody.value.memo;
+    }
+
+    if (txBody.value.timeoutHeight) {
+        txBodyProto.timeoutHeight = Long.fromNumber(txBody.value.timeoutHeight, false);
+    }
     return Bytes.fromUint8Array(cosmos.tx.v1beta1.TxBody.encode(txBodyProto).finish());
 };
 
@@ -194,6 +202,14 @@ const encodeTxBodyMessage = (message: Msg): Uint8Array => {
     return Uint8Array.from(type.encode(created).finish());
 };
 
+const DEFAULT_GAS_LIMIT = 200_000;
+const getGasLimit = (authInfo: AuthInfo): Long.Long => {
+    const defaultGasLimit = Long.fromNumber(DEFAULT_GAS_LIMIT);
+    return authInfo.fee.gasLimit !== undefined && authInfo.fee.gasLimit !== null
+        ? Long.fromNumber(authInfo.fee.gasLimit.toNumber())
+        : defaultGasLimit;
+};
+
 /**
  * Encode AuthInfo message to protobuf binary
  */
@@ -207,11 +223,11 @@ const encodeAuthInfo = (authInfo: AuthInfo): Bytes => {
             }),
         ),
         fee: {
-            // TODO:
-            // amount: feeAmount,
-            gasLimit: Long.fromNumber(200000),
+            amount: authInfo.fee.amount !== undefined ? [authInfo.fee.amount.toCosmosCoin()] : [],
+            gasLimit: getGasLimit(authInfo),
         },
     };
+
     return Bytes.fromUint8Array(cosmos.tx.v1beta1.AuthInfo.encode(encodableAuthInfo).finish());
 };
 
