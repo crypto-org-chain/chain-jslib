@@ -11,6 +11,8 @@ export const owTxBody = () =>
         typeUrl: ow.string.equals('/cosmos.tx.v1beta1.TxBody'),
         value: owStrictObject().exactShape({
             messages: ow.array.ofType(owMsg()),
+            memo: ow.string,
+            timeoutHeight: ow.number.integer.greaterThanOrEqual(0), // Note that 0 is the default value when not set
         }),
     });
 
