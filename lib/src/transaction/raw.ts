@@ -120,7 +120,7 @@ export const rawTransaction = function (config: InitConfigurations) {
          * @memberof Transaction
          */
         public setTimeOutHeight(timeoutHeight: number) {
-            ow(timeoutHeight, 'timeoutHeight', ow.number.greaterThanOrEqual(0));
+            ow(timeoutHeight, 'timeoutHeight', ow.number.integer.greaterThanOrEqual(0));
             this.txBody.value.timeoutHeight = timeoutHeight;
         }
 
