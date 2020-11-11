@@ -8,7 +8,7 @@
 npm install chain-jslib
 ```
 
-### 1.1. Working with private key and key pairs 🔐
+### 1.1. Working with private keys and key pairs 🔐
 
 ```
 const sdk = require("chain-jslib");
@@ -25,6 +25,12 @@ let randomHDKey = HDKey.generateMnemonic(12);
 const importedHDKey = HDKey.fromMnemonic(
   "curtain maid fetch push pilot frozen speak motion island pigeon habit suffer gap purse royal hollow among orange pluck mutual eager cement void panther"
 );
+
+// Derive a private key from an HDKey at the specified path
+const privateKey = importedHDKey.derivePrivKey("m/44'/1'/0'/0/0");
+
+// Getting a keyPair from a private key
+const keyPair = Secp256k1KeyPair.fromPrivKey(privateKey);
 
 ```
 
