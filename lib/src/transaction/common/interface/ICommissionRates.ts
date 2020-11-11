@@ -1,5 +1,5 @@
-export type ICommissionRates = {
+export interface ICommissionRates {
     rate: string;
     maxRate: string;
     maxChangeRate: string;
-};
+}
