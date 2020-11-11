@@ -61,7 +61,7 @@ export const msgCreateValidator = function (config: InitConfigurations) {
                     validatorAddress: this.validatorAddress,
                     pubkey: {
                         type_url: this.pubkey.type_url,
-                        value: this.pubkey.value
+                        value: this.pubkey.value,
                     },
                     value: {
                         denom: cosmosCoin.denom,
@@ -94,7 +94,6 @@ export const msgCreateValidator = function (config: InitConfigurations) {
         }
     };
 };
-
 
 export type MsgCreateValidatorParams = {
     description: IDescription;

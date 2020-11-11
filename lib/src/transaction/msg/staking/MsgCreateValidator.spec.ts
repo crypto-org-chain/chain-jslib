@@ -8,8 +8,6 @@ import { Bytes } from '../../../utils/bytes/bytes';
 import { Units } from '../../../coin/coin';
 import { CroNetwork, CroSDK } from '../../../core/cro';
 import { protoEncodeEd25519PubKey } from './MsgCreateValidator';
-import debug from 'debug';
-const log = debug('server');
 
 const cro = CroSDK({ network: CroNetwork.Testnet });
 
@@ -17,7 +15,7 @@ describe('Testing MsgCreateValidator', function () {
     fuzzyDescribe('should throw Error when options is invalid', function (fuzzy) {
         const anyValidOptions = {
             description: {
-                moniker: 'hiteshTest'
+                moniker: 'hiteshTest',
             },
             commission: {
                 rate: '0.1',
@@ -61,7 +59,6 @@ describe('Testing MsgCreateValidator', function () {
             validatorAddress: 'tcrocncl1j7pej8kplem4wt50p4hfvndhuw5jprxxxtenvr',
             value: coin,
         });
-        log(msgSend)
         const rawMsg: Msg = {
             typeUrl: '/cosmos.staking.v1beta1.MsgCreateValidator',
             value: {
@@ -74,7 +71,9 @@ describe('Testing MsgCreateValidator', function () {
                     maxRate: '0.2',
                     maxChangeRate: '0.01',
                 },
-                pubkey: protoEncodeEd25519PubKey(Bytes.fromBase64String('ykxjs+cxozHiNuptXIHESIVKQcj1Dwgo7swOXs3HaTM=')),
+                pubkey: protoEncodeEd25519PubKey(
+                    Bytes.fromBase64String('ykxjs+cxozHiNuptXIHESIVKQcj1Dwgo7swOXs3HaTM='),
+                ),
                 minSelfDelegation: '1',
                 delegatorAddress: 'tcro165tzcrh2yl83g8qeqxueg2g5gzgu57y3fe3kc3',
                 validatorAddress: 'tcrocncl1j7pej8kplem4wt50p4hfvndhuw5jprxxxtenvr',
@@ -87,7 +86,7 @@ describe('Testing MsgCreateValidator', function () {
 
     it('should accept MsgCreateValidator with optional fields ', function () {
         const coin = new cro.Coin('12000500', Units.BASE);
-        let pubkey = protoEncodeEd25519PubKey(Bytes.fromBase64String('ykxjs+cxozHiNuptXIHESIVKQcj1Dwgo7swOXs3HaTM='));
+        const pubkey = protoEncodeEd25519PubKey(Bytes.fromBase64String('ykxjs+cxozHiNuptXIHESIVKQcj1Dwgo7swOXs3HaTM='));
         const msgSend = new cro.staking.MsgCreateValidator({
             description: {
                 moniker: 'hiteshTest',
@@ -119,7 +118,7 @@ describe('Testing MsgCreateValidator', function () {
                 },
                 pubkey: {
                     type_url: pubkey.type_url,
-                    value: pubkey.value
+                    value: pubkey.value,
                 },
                 minSelfDelegation: '1',
                 delegatorAddress: 'tcro165tzcrh2yl83g8qeqxueg2g5gzgu57y3fe3kc3',
@@ -167,7 +166,6 @@ describe('Testing MsgCreateValidator', function () {
         const signableTx = rawTx.appendMessage(msgCreateValidator).addSigner(anySigner).toSignable();
         const signedTx = signableTx.setSignature(0, anyKeyPair.sign(signableTx.toSignDoc(0))).toSigned();
         const signedTxHex = signedTx.encode().toHexString();
-
 
         expect(signedTxHex).to.be.eql(
             '0ab4020ab1020a2a2f636f736d6f732e7374616b696e672e763162657461312e4d736743726561746556616c696461746f721282020a2a0a0a6869746573685465737412001a0022166869746573682e676f656c4063727970746f2e636f6d2a0012100a03302e311203302e321a04302e30311a0131222b7463726f313635747a63726832796c3833673871657178756567326735677a6775353779336665336b63332a2f7463726f636e636c316a3770656a386b706c656d347774353070346866766e64687577356a707278787874656e767232430a1d2f636f736d6f732e63727970746f2e656432353531392e5075624b657912220a20ca4c63b3e731a331e236ea6d5c81c448854a41c8f50f0828eecc0e5ecdc769333a1c0a08626173657463726f12103132303030353030303030303030303012580a500a460a1f2f636f736d6f732e63727970746f2e736563703235366b312e5075624b657912230a2103fd0d560b6c4aa1ca16721d039a192867c3457e19dad553edb98e7ba88b159c2712040a0208011802120410c09a0c1a40f7c73e8d20cc5f52b05720514e2784bb8140e9fc3c8a447f94677b687c1d47117bfa8da2e00e60ab5e870de169bf5e6496289c5ef1b7fd8162ba1c50546dc0ba',
