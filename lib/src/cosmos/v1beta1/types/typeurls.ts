@@ -16,8 +16,8 @@ export const typeUrlMappings: {
     '/cosmos.staking.v1beta1.MsgEditValidator': cosmos.staking.v1beta1.MsgEditValidator,
     '/cosmos.staking.v1beta1.MsgDelegate': cosmos.staking.v1beta1.MsgDelegate,
     '/cosmos.staking.v1beta1.MsgUndelegate': cosmos.staking.v1beta1.MsgUndelegate,
-    '/cosmos.distribution.v1beta1.MsgWithdrawValidatorCommission':
-        cosmos.distribution.v1beta1.MsgWithdrawValidatorCommission,
+    '/cosmos.distribution.v1beta1.MsgWithdrawValidatorCommission': cosmos.distribution.v1beta1.MsgWithdrawValidatorCommission,
+    '/cosmos.crypto.ed25519.PubKey': cosmos.crypto.ed25519.PubKey
 };
 
 export interface GeneratedType {

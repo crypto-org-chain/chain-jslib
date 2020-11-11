@@ -7,12 +7,15 @@ import { InitConfigurations } from '../../../core/cro';
 import { validateAddress, AddressType } from '../../../utils/address';
 import { IDescription } from '../../common/interface/IDescription';
 import { COSMOS_MSG_TYPEURL } from '../../common/constants/typeurl';
+import { ICommissionRates } from '../../common/interface/ICommissionRates';
+import { google, cosmos } from '../../../cosmos/v1beta1/codec';
+import { Bytes } from '../../../utils/bytes/bytes';
 
 export const msgCreateValidator = function (config: InitConfigurations) {
     return class MsgCreateValidator implements Message {
         public readonly description: IDescription;
 
-        public readonly commission: CreateValidatorCommission;
+        public readonly commission: ICommissionRates;
 
         public minSelfDelegation: string;
 
@@ -20,17 +23,17 @@ export const msgCreateValidator = function (config: InitConfigurations) {
 
         public validatorAddress: string;
 
-        public pubkey: string;
+        public pubkey: google.protobuf.IAny;
 
         public value: ICoin;
 
         /**
          * Constructor to create a new MsgSend
-         * @param {MsgCreateValidatorOptions} options
+         * @param {MsgCreateValidatorParams} options
          * @returns {MsgCreateValidator}
          * @throws {Error} when options is invalid
          */
-        constructor(options: MsgCreateValidatorOptions) {
+        constructor(options: MsgCreateValidatorParams) {
             ow(options, 'options', owMsgCreateValidatorOptions);
             this.description = options.description;
             this.commission = options.commission;
@@ -56,7 +59,10 @@ export const msgCreateValidator = function (config: InitConfigurations) {
                     minSelfDelegation: this.minSelfDelegation,
                     delegatorAddress: this.delegatorAddress,
                     validatorAddress: this.validatorAddress,
-                    pubkey: this.pubkey,
+                    pubkey: {
+                        type_url: this.pubkey.type_url,
+                        value: this.pubkey.value
+                    },
                     value: {
                         denom: cosmosCoin.denom,
                         amount: cosmosCoin.amount,
@@ -89,20 +95,23 @@ export const msgCreateValidator = function (config: InitConfigurations) {
     };
 };
 
-/// TODO: Should now only take amount as raw value and its denom since Coin is not anymore top level accessible
 
-export type MsgCreateValidatorOptions = {
+export type MsgCreateValidatorParams = {
     description: IDescription;
-    commission: CreateValidatorCommission;
+    commission: ICommissionRates;
     minSelfDelegation: string;
     delegatorAddress: string;
     validatorAddress: string;
-    pubkey: string;
+    pubkey: google.protobuf.IAny;
     value: ICoin;
 };
 
-export type CreateValidatorCommission = {
-    rate: string;
-    maxRate: string;
-    maxChangeRate: string;
+export const protoEncodeEd25519PubKey = (pubKey: Bytes): google.protobuf.IAny => {
+    const pubKeyProto = cosmos.crypto.ed25519.PubKey.create({
+        key: pubKey.toUint8Array(),
+    });
+    return google.protobuf.Any.create({
+        type_url: COSMOS_MSG_TYPEURL.PubKey.ed25519,
+        value: Uint8Array.from(cosmos.crypto.ed25519.PubKey.encode(pubKeyProto).finish()),
+    });
 };
