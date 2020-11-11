@@ -9,7 +9,7 @@ import { Units } from './coin/coin';
 // By default it is 20. Here we explicitly set it to 20 for correctness.
 Big.DP = 20;
 
-export default {
+const _ = {
     utils,
     HDKey,
     Secp256k1KeyPair,
@@ -17,3 +17,5 @@ export default {
     CroNetwork,
     Units,
 };
+
+export = _;
