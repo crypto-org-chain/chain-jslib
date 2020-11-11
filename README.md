@@ -4,13 +4,13 @@
 
 ### 1.0. Installing the library ⬇️
 
-```
+```bash
 npm install chain-jslib
 ```
 
 ### 1.1. Working with private keys and key pairs 🔐
 
-```
+```javascript
 // Imports
 const sdk = require("chain-jslib");
 const HDKey = sdk.HDKey;
@@ -39,7 +39,7 @@ const keyPair = Secp256k1KeyPair.fromPrivKey(privateKey);
 
 ### 1.2. Generating an address 🔖
 
-```
+```javascript
 // Initializing the library configurations with TestNet config
 const cro = sdk.CroSDK({ network: sdk.CroNetwork.Testnet });
 
@@ -57,7 +57,7 @@ console.log(address); // tcro1sxe3v6gka3u8j7d2xhl8rmfyjnmggqlh6e82hq
 
 ### 1.3. Build and Sign a transfer transaction ✅
 
-```
+```javascript
 // Imports
 
 const sdk = require("chain-jslib");
