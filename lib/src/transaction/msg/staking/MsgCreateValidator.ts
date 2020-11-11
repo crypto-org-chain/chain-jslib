@@ -23,7 +23,7 @@ export const msgCreateValidator = function (config: InitConfigurations) {
 
         public validatorAddress: string;
 
-        public pubkey: google.protobuf.IAny;
+        public pubkey: string;
 
         public value: ICoin;
 
@@ -51,6 +51,7 @@ export const msgCreateValidator = function (config: InitConfigurations) {
          */
         toRawMsg(): Msg {
             const cosmosCoin = this.value.toCosmosCoin();
+            const pubkeyEncoded = protoEncodeEd25519PubKey(Bytes.fromBase64String(this.pubkey));
             return {
                 typeUrl: COSMOS_MSG_TYPEURL.MsgCreateValidator,
                 value: {
@@ -59,10 +60,7 @@ export const msgCreateValidator = function (config: InitConfigurations) {
                     minSelfDelegation: this.minSelfDelegation,
                     delegatorAddress: this.delegatorAddress,
                     validatorAddress: this.validatorAddress,
-                    pubkey: {
-                        type_url: this.pubkey.type_url,
-                        value: this.pubkey.value,
-                    },
+                    pubkey: pubkeyEncoded,
                     value: {
                         denom: cosmosCoin.denom,
                         amount: cosmosCoin.amount,
@@ -101,7 +99,7 @@ export type MsgCreateValidatorParams = {
     minSelfDelegation: string;
     delegatorAddress: string;
     validatorAddress: string;
-    pubkey: google.protobuf.IAny;
+    pubkey: string;
     value: ICoin;
 };
 

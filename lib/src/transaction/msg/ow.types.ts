@@ -24,7 +24,7 @@ export const owMsgCreateValidatorOptions = owStrictObject().exactShape({
     minSelfDelegation: ow.string,
     delegatorAddress: ow.string,
     validatorAddress: ow.string,
-    pubkey: ow.optional.object,
+    pubkey: ow.string,
     value: owCoin(),
 });
 
