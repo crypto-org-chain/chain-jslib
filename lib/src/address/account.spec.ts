@@ -1,4 +1,4 @@
-import 'mocha';
+import { it } from 'mocha';
 import { expect } from 'chai';
 import { fuzzyDescribe } from '../test/mocha-fuzzy/suite';
 import { ANY_VALID_SECP256K1_KEY_PAIR } from '../test/assets/keypair';
@@ -43,6 +43,7 @@ describe('account', function () {
             );
             expect(new croMainNet.Address(anyKeyPair).account()).to.eq('cro1pndm4ywdf4qtmupa0fqe75krmqed2znjyj6x8f');
             expect(new cro.Address(anyKeyPair).account()).to.eq('tcro1pndm4ywdf4qtmupa0fqe75krmqed2znj28nz8c');
+            expect(new cro.Address(anyKeyPair).validator()).to.eq('tcrocncl1pndm4ywdf4qtmupa0fqe75krmqed2znjlcsmlm');
         });
     });
 
@@ -50,7 +51,12 @@ describe('account', function () {
         it('should return account address with the provided public key and bech32 prefix', function () {
             const anyPubKey = Bytes.fromHexString('03a52c32db89513a187ceb00a4520b52dec06f583f2e12afcf1da78e370a5358e6');
             expect(new croMainNet.Address(anyPubKey).account()).to.eq('cro1pndm4ywdf4qtmupa0fqe75krmqed2znjyj6x8f');
+            expect(new croMainNet.Address(anyPubKey).validator()).to.eq(
+                'crocncl1pndm4ywdf4qtmupa0fqe75krmqed2znj8le094',
+            );
+
             expect(new cro.Address(anyPubKey).account()).to.eq('tcro1pndm4ywdf4qtmupa0fqe75krmqed2znj28nz8c');
+            expect(new cro.Address(anyPubKey).validator()).to.eq('tcrocncl1pndm4ywdf4qtmupa0fqe75krmqed2znjlcsmlm');
         });
     });
 });
