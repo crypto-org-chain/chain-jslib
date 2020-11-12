@@ -5,7 +5,7 @@
 ### 1.0. Installing the library ⬇️
 
 ```bash
-npm install chain-jslib
+npm install @crypto-com/chain-jslib
 ```
 
 ### 1.1. Working with private keys and key pairs 🔐
@@ -142,4 +142,3 @@ console.log(signedTx.getHexEncoded());
     In this example it is adding `bank` module support, replace the paths with the modules and its protbuf files accordingly.
 
 2. edit `lib/src/cosmos/v1beta1/types/typeurls.ts` to add the protobuf type URLs to JS definitions mapping
-
