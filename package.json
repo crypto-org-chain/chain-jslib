@@ -36,7 +36,6 @@
     "create-hash": "1.2.0",
     "lodash": "^4.17.20",
     "long": "4.0.0",
-    "noble-ed25519": "^1.0.2",
     "ow": "0.17.0",
     "protobufjs": "6.10.1",
     "randombytes": "2.1.0",
