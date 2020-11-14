@@ -2122,7 +2122,7 @@ export namespace cosmos {
                 operatorAddress?: string | null;
 
                 /** Validator consensusPubkey */
-                consensusPubkey?: string | null;
+                consensusPubkey?: google.protobuf.IAny | null;
 
                 /** Validator jailed */
                 jailed?: boolean | null;
@@ -2164,7 +2164,7 @@ export namespace cosmos {
                 public operatorAddress: string;
 
                 /** Validator consensusPubkey. */
-                public consensusPubkey: string;
+                public consensusPubkey?: google.protobuf.IAny | null;
 
                 /** Validator jailed. */
                 public jailed: boolean;
@@ -3263,7 +3263,7 @@ export namespace cosmos {
                 validatorAddress?: string | null;
 
                 /** MsgCreateValidator pubkey */
-                pubkey?: string | null;
+                pubkey?: google.protobuf.IAny | null;
 
                 /** MsgCreateValidator value */
                 value?: cosmos.base.v1beta1.ICoin | null;
@@ -3293,7 +3293,7 @@ export namespace cosmos {
                 public validatorAddress: string;
 
                 /** MsgCreateValidator pubkey. */
-                public pubkey: string;
+                public pubkey?: google.protobuf.IAny | null;
 
                 /** MsgCreateValidator value. */
                 public value?: cosmos.base.v1beta1.ICoin | null;
@@ -4220,6 +4220,95 @@ export namespace cosmos {
                 public static decode(r: $protobuf.Reader | Uint8Array, l?: number): cosmos.crypto.secp256k1.PrivKey;
             }
         }
+
+        /** Namespace ed25519. */
+        namespace ed25519 {
+            /** Properties of a PubKey. */
+            interface IPubKey {
+                /** PubKey key */
+                key?: Uint8Array | null;
+            }
+
+            /** Represents a PubKey. */
+            class PubKey implements IPubKey {
+                /**
+                 * Constructs a new PubKey.
+                 * @param [p] Properties to set
+                 */
+                constructor(p?: cosmos.crypto.ed25519.IPubKey);
+
+                /** PubKey key. */
+                public key: Uint8Array;
+
+                /**
+                 * Creates a new PubKey instance using the specified properties.
+                 * @param [properties] Properties to set
+                 * @returns PubKey instance
+                 */
+                public static create(properties?: cosmos.crypto.ed25519.IPubKey): cosmos.crypto.ed25519.PubKey;
+
+                /**
+                 * Encodes the specified PubKey message. Does not implicitly {@link cosmos.crypto.ed25519.PubKey.verify|verify} messages.
+                 * @param m PubKey message or plain object to encode
+                 * @param [w] Writer to encode to
+                 * @returns Writer
+                 */
+                public static encode(m: cosmos.crypto.ed25519.IPubKey, w?: $protobuf.Writer): $protobuf.Writer;
+
+                /**
+                 * Decodes a PubKey message from the specified reader or buffer.
+                 * @param r Reader or buffer to decode from
+                 * @param [l] Message length if known beforehand
+                 * @returns PubKey
+                 * @throws {Error} If the payload is not a reader or valid buffer
+                 * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                 */
+                public static decode(r: $protobuf.Reader | Uint8Array, l?: number): cosmos.crypto.ed25519.PubKey;
+            }
+
+            /** Properties of a PrivKey. */
+            interface IPrivKey {
+                /** PrivKey key */
+                key?: Uint8Array | null;
+            }
+
+            /** Represents a PrivKey. */
+            class PrivKey implements IPrivKey {
+                /**
+                 * Constructs a new PrivKey.
+                 * @param [p] Properties to set
+                 */
+                constructor(p?: cosmos.crypto.ed25519.IPrivKey);
+
+                /** PrivKey key. */
+                public key: Uint8Array;
+
+                /**
+                 * Creates a new PrivKey instance using the specified properties.
+                 * @param [properties] Properties to set
+                 * @returns PrivKey instance
+                 */
+                public static create(properties?: cosmos.crypto.ed25519.IPrivKey): cosmos.crypto.ed25519.PrivKey;
+
+                /**
+                 * Encodes the specified PrivKey message. Does not implicitly {@link cosmos.crypto.ed25519.PrivKey.verify|verify} messages.
+                 * @param m PrivKey message or plain object to encode
+                 * @param [w] Writer to encode to
+                 * @returns Writer
+                 */
+                public static encode(m: cosmos.crypto.ed25519.IPrivKey, w?: $protobuf.Writer): $protobuf.Writer;
+
+                /**
+                 * Decodes a PrivKey message from the specified reader or buffer.
+                 * @param r Reader or buffer to decode from
+                 * @param [l] Message length if known beforehand
+                 * @returns PrivKey
+                 * @throws {Error} If the payload is not a reader or valid buffer
+                 * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                 */
+                public static decode(r: $protobuf.Reader | Uint8Array, l?: number): cosmos.crypto.ed25519.PrivKey;
+            }
+        }
     }
 
     /** Namespace tx. */
@@ -5098,53 +5187,53 @@ export namespace cosmos {
 export namespace google {
     /** Namespace protobuf. */
     namespace protobuf {
-        /** Properties of a Timestamp. */
-        interface ITimestamp {
-            /** Timestamp seconds */
-            seconds?: Long | null;
+        /** Properties of an Any. */
+        interface IAny {
+            /** Any type_url */
+            type_url?: string | null;
 
-            /** Timestamp nanos */
-            nanos?: number | null;
+            /** Any value */
+            value?: Uint8Array | null;
         }
 
-        /** Represents a Timestamp. */
-        class Timestamp implements ITimestamp {
+        /** Represents an Any. */
+        class Any implements IAny {
             /**
-             * Constructs a new Timestamp.
+             * Constructs a new Any.
              * @param [p] Properties to set
              */
-            constructor(p?: google.protobuf.ITimestamp);
+            constructor(p?: google.protobuf.IAny);
 
-            /** Timestamp seconds. */
-            public seconds: Long;
+            /** Any type_url. */
+            public type_url: string;
 
-            /** Timestamp nanos. */
-            public nanos: number;
+            /** Any value. */
+            public value: Uint8Array;
 
             /**
-             * Creates a new Timestamp instance using the specified properties.
+             * Creates a new Any instance using the specified properties.
              * @param [properties] Properties to set
-             * @returns Timestamp instance
+             * @returns Any instance
              */
-            public static create(properties?: google.protobuf.ITimestamp): google.protobuf.Timestamp;
+            public static create(properties?: google.protobuf.IAny): google.protobuf.Any;
 
             /**
-             * Encodes the specified Timestamp message. Does not implicitly {@link google.protobuf.Timestamp.verify|verify} messages.
-             * @param m Timestamp message or plain object to encode
+             * Encodes the specified Any message. Does not implicitly {@link google.protobuf.Any.verify|verify} messages.
+             * @param m Any message or plain object to encode
              * @param [w] Writer to encode to
              * @returns Writer
              */
-            public static encode(m: google.protobuf.ITimestamp, w?: $protobuf.Writer): $protobuf.Writer;
+            public static encode(m: google.protobuf.IAny, w?: $protobuf.Writer): $protobuf.Writer;
 
             /**
-             * Decodes a Timestamp message from the specified reader or buffer.
+             * Decodes an Any message from the specified reader or buffer.
              * @param r Reader or buffer to decode from
              * @param [l] Message length if known beforehand
-             * @returns Timestamp
+             * @returns Any
              * @throws {Error} If the payload is not a reader or valid buffer
              * @throws {$protobuf.util.ProtocolError} If required fields are missing
              */
-            public static decode(r: $protobuf.Reader | Uint8Array, l?: number): google.protobuf.Timestamp;
+            public static decode(r: $protobuf.Reader | Uint8Array, l?: number): google.protobuf.Any;
         }
 
         /** Properties of a Duration. */
@@ -5196,53 +5285,53 @@ export namespace google {
             public static decode(r: $protobuf.Reader | Uint8Array, l?: number): google.protobuf.Duration;
         }
 
-        /** Properties of an Any. */
-        interface IAny {
-            /** Any type_url */
-            type_url?: string | null;
+        /** Properties of a Timestamp. */
+        interface ITimestamp {
+            /** Timestamp seconds */
+            seconds?: Long | null;
 
-            /** Any value */
-            value?: Uint8Array | null;
+            /** Timestamp nanos */
+            nanos?: number | null;
         }
 
-        /** Represents an Any. */
-        class Any implements IAny {
+        /** Represents a Timestamp. */
+        class Timestamp implements ITimestamp {
             /**
-             * Constructs a new Any.
+             * Constructs a new Timestamp.
              * @param [p] Properties to set
              */
-            constructor(p?: google.protobuf.IAny);
+            constructor(p?: google.protobuf.ITimestamp);
 
-            /** Any type_url. */
-            public type_url: string;
+            /** Timestamp seconds. */
+            public seconds: Long;
 
-            /** Any value. */
-            public value: Uint8Array;
+            /** Timestamp nanos. */
+            public nanos: number;
 
             /**
-             * Creates a new Any instance using the specified properties.
+             * Creates a new Timestamp instance using the specified properties.
              * @param [properties] Properties to set
-             * @returns Any instance
+             * @returns Timestamp instance
              */
-            public static create(properties?: google.protobuf.IAny): google.protobuf.Any;
+            public static create(properties?: google.protobuf.ITimestamp): google.protobuf.Timestamp;
 
             /**
-             * Encodes the specified Any message. Does not implicitly {@link google.protobuf.Any.verify|verify} messages.
-             * @param m Any message or plain object to encode
+             * Encodes the specified Timestamp message. Does not implicitly {@link google.protobuf.Timestamp.verify|verify} messages.
+             * @param m Timestamp message or plain object to encode
              * @param [w] Writer to encode to
              * @returns Writer
              */
-            public static encode(m: google.protobuf.IAny, w?: $protobuf.Writer): $protobuf.Writer;
+            public static encode(m: google.protobuf.ITimestamp, w?: $protobuf.Writer): $protobuf.Writer;
 
             /**
-             * Decodes an Any message from the specified reader or buffer.
+             * Decodes a Timestamp message from the specified reader or buffer.
              * @param r Reader or buffer to decode from
              * @param [l] Message length if known beforehand
-             * @returns Any
+             * @returns Timestamp
              * @throws {Error} If the payload is not a reader or valid buffer
              * @throws {$protobuf.util.ProtocolError} If required fields are missing
              */
-            public static decode(r: $protobuf.Reader | Uint8Array, l?: number): google.protobuf.Any;
+            public static decode(r: $protobuf.Reader | Uint8Array, l?: number): google.protobuf.Timestamp;
         }
     }
 }
@@ -6519,6 +6608,9 @@ export namespace tendermint {
         interface IPublicKey {
             /** PublicKey ed25519 */
             ed25519?: Uint8Array | null;
+
+            /** PublicKey secp256k1 */
+            secp256k1?: Uint8Array | null;
         }
 
         /** Represents a PublicKey. */
@@ -6532,8 +6624,11 @@ export namespace tendermint {
             /** PublicKey ed25519. */
             public ed25519: Uint8Array;
 
+            /** PublicKey secp256k1. */
+            public secp256k1: Uint8Array;
+
             /** PublicKey sum. */
-            public sum?: 'ed25519';
+            public sum?: 'ed25519' | 'secp256k1';
 
             /**
              * Creates a new PublicKey instance using the specified properties.
