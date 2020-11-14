@@ -41,6 +41,15 @@ export const userAddress = function (config: InitConfigurations) {
             const words = bech32.toWords(this.pubKeyDigest.toUint8Array());
             return bech32.encode(config.network.addressPrefix, words);
         }
+
+        /**
+         * Returns the validator address corresponding to the Secp256k1KeyPair or pubKeySource provided
+         * @return {string}
+         */
+        public validator(): string {
+            const words = bech32.toWords(this.pubKeyDigest.toUint8Array());
+            return bech32.encode(config.network.validatorAddressPrefix, words);
+        }
     };
 };
 
