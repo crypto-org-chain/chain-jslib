@@ -105,7 +105,7 @@ describe('Testing MsgEditValidator', function () {
             },
         };
 
-        expect(msgSend.toRawMsg()).to.eqls(rawMsg);
+        expect(msgEditValidator.toRawMsg()).to.eqls(rawMsg);
     });
 
     it('Test appendTxBody MsgEditValidator Tx signing', function () {
