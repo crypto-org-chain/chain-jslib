@@ -90,7 +90,7 @@ describe('Testing MsgEditValidator', function () {
     });
 
     it('should pass MsgEditValidator has null comminssionRate field', function () {
-        const msgSend = new cro.staking.MsgEditValidator({
+        const msgEditValidator = new cro.staking.MsgEditValidator({
             description: {},
             validatorAddress: 'tcrocncl16mmzexp3zqfpgqtnn927m5ph560qgxrs52a3wx',
         });
