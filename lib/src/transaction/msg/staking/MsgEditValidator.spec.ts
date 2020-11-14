@@ -89,6 +89,25 @@ describe('Testing MsgEditValidator', function () {
         expect(msgSend.toRawMsg()).to.eqls(rawMsg);
     });
 
+    it('should pass MsgEditValidator has null comminssionRate field', function () {
+        const msgSend = new cro.staking.MsgEditValidator({
+            description: {},
+            validatorAddress: 'tcrocncl16mmzexp3zqfpgqtnn927m5ph560qgxrs52a3wx',
+        });
+
+        const rawMsg: Msg = {
+            typeUrl: '/cosmos.staking.v1beta1.MsgEditValidator',
+            value: {
+                description: {},
+                validatorAddress: 'tcrocncl16mmzexp3zqfpgqtnn927m5ph560qgxrs52a3wx',
+                commissionRate: null,
+                minSelfDelegation: null,
+            },
+        };
+
+        expect(msgSend.toRawMsg()).to.eqls(rawMsg);
+    });
+
     it('Test appendTxBody MsgEditValidator Tx signing', function () {
         const anyKeyPair = Secp256k1KeyPair.fromPrivKey(
             Bytes.fromHexString('66633d18513bec30dd11a209f1ceb1787aa9e2069d5d47e590174dc9665102b3'),

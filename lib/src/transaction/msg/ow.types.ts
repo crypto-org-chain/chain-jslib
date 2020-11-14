@@ -36,9 +36,9 @@ export const owMsgEditValidatorOptions = owStrictObject().exactShape({
         securityContact: ow.optional.string,
         details: ow.optional.string,
     },
-    validatorAddress: ow.string,
-    commissionRate: ow.string,
-    minSelfDelegation: ow.string,
+    validatorAddress: ow.string.nonEmpty,
+    commissionRate: ow.any(ow.string.nonEmpty, ow.nullOrUndefined),
+    minSelfDelegation: ow.any(ow.string.nonEmpty, ow.nullOrUndefined),
 });
 
 export const owMsgWithdrawDelegatorRewardOptions = owStrictObject().exactShape({

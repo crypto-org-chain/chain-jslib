@@ -9,11 +9,11 @@ import { COSMOS_MSG_TYPEURL } from '../../common/constants/typeurl';
 
 export const msgEditValidator = function (config: InitConfigurations) {
     return class MsgEditValidator implements Message {
-        public readonly description: IDescription;
+        public readonly description?: IDescription | null;
 
-        public minSelfDelegation: string;
+        public minSelfDelegation?: string | null;
 
-        public commissionRate: string;
+        public commissionRate?: string | null;
 
         public validatorAddress: string;
 
@@ -41,8 +41,8 @@ export const msgEditValidator = function (config: InitConfigurations) {
                 typeUrl: COSMOS_MSG_TYPEURL.MsgEditValidator,
                 value: {
                     description: this.description,
-                    commissionRate: this.commissionRate,
-                    minSelfDelegation: this.minSelfDelegation,
+                    commissionRate: this.commissionRate || null,
+                    minSelfDelegation: this.minSelfDelegation || null,
                     validatorAddress: this.validatorAddress,
                 },
             };
@@ -59,8 +59,8 @@ export const msgEditValidator = function (config: InitConfigurations) {
 };
 
 export type MsgCreateEditOptions = {
-    description: IDescription;
-    commissionRate: string;
-    minSelfDelegation: string;
+    description?: IDescription | null;
+    commissionRate?: string | null;
+    minSelfDelegation?: string | null;
     validatorAddress: string;
 };
