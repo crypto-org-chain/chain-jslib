@@ -248,6 +248,7 @@ const protoEncodePubKey = (pubKey: Bytes): google.protobuf.IAny => {
  * Generate SignDoc binary bytes ready to be signed
  */
 const makeSignDoc = (txBodyBytes: Bytes, authInfoBytes: Bytes, chainId: string, accountNumber: Big): Bytes => {
+    //TODO: try difference Long creation for accountNumber 
     const signDoc = omitDefaults({
         bodyBytes: txBodyBytes.toUint8Array(),
         authInfoBytes: authInfoBytes.toUint8Array(),

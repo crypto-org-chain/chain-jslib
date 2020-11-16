@@ -13,7 +13,11 @@ import { isNonNullObject, isUint8Array } from '../../utils/typechecks';
 export function omitDefault<T>(input: T): T | null {
     if (input === undefined || input === null) return null;
 
-    if (typeof input === 'number' || typeof input === 'boolean' || typeof input === 'string') {
+    if (typeof input === 'number' ) {
+        return ((input == null) || (input==undefined))? null : input;
+    }
+
+    if (typeof input === 'boolean' || typeof input === 'string') {
         return input || null;
     }
 

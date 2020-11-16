@@ -24,12 +24,12 @@ describe('adr27', function () {
 
         it('works for integers', function () {
             expect(omitDefault(123)).to.eq(123);
-            expect(omitDefault(0)).to.eq(null);
+            expect(omitDefault(0)).to.eq(0);
         });
 
         it('works for floats', function () {
             expect(omitDefault(1.234)).to.eq(1.234);
-            expect(omitDefault(0.0)).to.eq(null);
+            expect(omitDefault(0.0)).to.eq(0);
         });
 
         it('works for booleans', function () {
@@ -56,7 +56,7 @@ describe('adr27', function () {
             // eslint-disable-next-line @typescript-eslint/naming-convention
             const Review = parse(proto).root.lookupEnum('blog.Review');
             expect(omitDefault(Review.values.ACCEPTED)).to.eq(Review.values.ACCEPTED);
-            expect(omitDefault(Review.values.UNSPECIFIED)).to.eq(null);
+            expect(omitDefault(Review.values.UNSPECIFIED)).to.eq(0);
         });
 
         it('works for unset', function () {
@@ -77,10 +77,10 @@ describe('adr27', function () {
             expect(omitDefaults(Bytes.fromHexString('').toUint8Array())).to.eq(null);
 
             expect(omitDefaults(123)).to.eq(123);
-            expect(omitDefaults(0)).to.eq(null);
+            expect(omitDefaults(0)).to.eq(0);
 
             expect(omitDefaults(1.234)).to.eq(1.234);
-            expect(omitDefaults(0.0)).to.eq(null);
+            expect(omitDefaults(0.0)).to.eq(0);
 
             expect(omitDefaults(true)).to.eq(true);
             expect(omitDefaults(false)).to.eq(null);
@@ -105,7 +105,7 @@ describe('adr27', function () {
             // eslint-disable-next-line @typescript-eslint/naming-convention
             const Review = parse(proto).root.lookupEnum('blog.Review');
             expect(omitDefaults(Review.values.ACCEPTED)).to.eq(Review.values.ACCEPTED);
-            expect(omitDefaults(Review.values.UNSPECIFIED)).to.eq(null);
+            expect(omitDefaults(Review.values.UNSPECIFIED)).to.eq(0);
         });
 
         it('works for unset', function () {
@@ -130,7 +130,7 @@ describe('adr27', function () {
                 a: 'foo',
                 b: null,
                 c: 100,
-                d: null,
+                d: 0,
             });
 
             // nested
@@ -158,7 +158,7 @@ describe('adr27', function () {
                     x: {
                         o: 1.2,
                         p: null,
-                        q: null,
+                        q: 0,
                     },
                 },
             });
