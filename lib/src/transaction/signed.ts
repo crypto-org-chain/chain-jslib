@@ -34,6 +34,11 @@ export class SignedTransaction {
         return encodeTxRaw(this.txRaw);
     }
 
+    /**
+     * Returns hex encoded signed transaction ready to be broadcasted
+     * @returns {string}
+     * @memberof SignedTransaction
+     */
     public getHexEncoded(): string {
         return this.encode().toHexString();
     }

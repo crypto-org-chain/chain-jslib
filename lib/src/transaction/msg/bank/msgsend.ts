@@ -76,8 +76,6 @@ export const msgSend = function (config: InitConfigurations) {
     };
 };
 
-/// TODO: Should now only take amount as raw value and its denom since Coin is not anymore top level accessible
-
 export type MsgSendOptions = {
     fromAddress: string;
     toAddress: string;
