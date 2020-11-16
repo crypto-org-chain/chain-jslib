@@ -140,6 +140,11 @@ export class SignableTransaction {
         return this.network;
     }
 
+    /**
+     * Return signed version of the transaction
+     * @returns {SignedTransaction}
+     * @memberof Transaction
+     */
     public toSigned(): SignedTransaction {
         if (!this.isCompletelySigned()) {
             throw new Error('Transaction is not completed signed');
