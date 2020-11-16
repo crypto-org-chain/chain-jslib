@@ -1,0 +1,76 @@
+<!doctype html>
+<html class="default no-js">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="HandheldFriendly" content="True" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"
+    />
+    <title>{{#ifCond model.name '==' project.name}}Crypto.com Chain Node.js Library {{project.name}}{{else}}{{model.name}} | Crypto.com Chain Node.js Library {{project.name}}{{/ifCond}}</title>
+    <meta name="theme-color" content="#f7f9fa" />
+    <meta name="title" content="Crypto.com Chain" />
+    <meta name="author" content="Crypto.com Chain" />
+    <meta name="publisher" content="Crypto.com Chain" />
+    <meta property="og:title" content="Crypto.com Chain" />
+    <meta
+      property="og:description"
+      content="Crypto.com Chain is a privacy-protecting public blockchain that empowers the future of payments in cryptocurrency. It powers the QR Code payment solution of Crypto.com Pay and drives the mass adoption of cryptocurrency worldwide. View the whitepaper and documentation via our open-sourced Github organization."
+    />
+    <meta property="og:site_name" content="Crypto.com Chain" />
+    <meta property="og:image" content="https://chain.crypto.com/crypto-com-chain.png" />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://chain.crypto.com" />
+    <meta property="og:locale" content="en" />
+    <link rel="icon" href="{{relativeURL "assets/images/favicon.png"}}" type="image/x-icon" />
+    <link rel="stylesheet" href="{{relativeURL "assets/css/main.css"}}">
+    <script src="https://use.typekit.net/hsd5gjn.js"></script>
+</head>
+<body>
+
+<div class="root">
+    {{> header}}
+
+    <main>
+        <div class="container container-main">
+            <div class="row">
+                <div class="col-3 col-menu menu-sticky-wrap menu-highlight">
+                    <div class="project">
+                        <div class="name">Node.js Library</div>
+                        <div class="version">{{getVersion project.name}}</div>
+                    </div>
+                    <nav class="tsd-navigation primary">
+                        <ul>
+                            {{#each navigation.children}}
+                                {{> navigation}}
+                            {{/each}}
+                        </ul>
+                    </nav>
+
+                    <nav class="tsd-navigation secondary menu-sticky">
+                        <ul class="before-current">
+                            {{#each toc.children}}
+                                {{> toc.root}}
+                            {{/each}}
+                        </ul>
+                    </nav>
+                </div>
+                <div class="col-9 col-content">
+                    {{{contents}}}
+                </div>
+            </div>
+        </div>
+    </main>
+
+    {{> footer}}
+
+    <div class="overlay"></div>
+    <script src="{{relativeURL "assets/js/main.js"}}"></script>
+
+    {{> analytics}}
+</div>
+
+</body>
+</html>

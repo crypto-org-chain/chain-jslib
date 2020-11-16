@@ -1,0 +1,47 @@
+<header>
+    <div class="tsd-page-toolbar">
+        <div class="container">
+            <div id="tsd-search" data-index="{{relativeURL "assets/js/search.json"}}" data-base="{{relativeURL "./"}}">
+                <a href="{{relativeURL "index.html"}}" class="title">
+                    <img src="{{relativeURL "assets/images/logo.svg"}}" alt="Crypto.com Chain" class="non-desktop-hide" />
+                    <img src="{{relativeURL "assets/images/logo-icon.svg"}}" alt="Crypto.com Chain" class="desktop-hide">
+                </a>
+
+                <div class="tsd-search-input">
+                    <input id="tsd-search-field" type="text" autocomplete="off" />
+                </div>
+                <ul class="results">
+                    <li class="state loading">Preparing search index...</li>
+                    <li class="state failure">The search index is not available</li>
+                </ul>
+
+                <a href="#" class="tsd-widget menu no-caption" data-toggle="menu">Menu</a>
+            </div>
+        </div>
+    </div>
+    <div class="tsd-page-title">
+        <div class="container">
+            <div class="row">
+                <div class="col-3 col-placeholder">
+                </div>
+                <div class="col-9 col-content">
+                    <ul class="tsd-breadcrumb">
+                        {{#with model}}{{> breadcrumb}}{{/with}}
+                    </ul>
+                    <h1>{{#compact}}
+                        {{model.kindString}}&nbsp;
+                        {{model.name}}
+                        {{#if model.typeParameters}}
+                            &lt;
+                            {{#each model.typeParameters}}
+                                {{#if @index}},&nbsp;{{/if}}
+                                {{name}}
+                            {{/each}}
+                            &gt;
+                        {{/if}}
+                    {{/compact}}</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
