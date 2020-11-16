@@ -7,7 +7,7 @@ import { owBase64String, owHexString } from './ow.types';
  * Immutable Bytes value
  */
 export class Bytes {
-    private value: Uint8Array;
+    private readonly value: Uint8Array;
 
     /**
      * Constructor to create Bytes from Uint8Array value
@@ -35,7 +35,7 @@ export class Bytes {
 
     /**
      * Create Bytes from Buffer value
-     * @param {Buffer} buf the buffer
+     * @param {Buffer} value the buffer
      * @throws {Error} value is invalid
      * @returns {Bytes}
      */
@@ -49,7 +49,7 @@ export class Bytes {
 
     /**
      * Create Bytes from hexadecimal string
-     * @param {Buffer} buf the buffer
+     * @param {Buffer} value the buffer
      * @throws {Error} value is invalid
      * @returns {Bytes}
      */
