@@ -33,7 +33,9 @@ const env = {
     mnemonic: {
         preFilledAccount_1: process.env.ACCOUNT_1_MNEMONIC || 'play release domain walnut sword reason few fish sketch radio fancy since zebra exhibit boring army green suggest behind correct neither useful cruel type',
         preFilledAccount_2: process.env.ACCOUNT_2_MNEMONIC || 'improve speak symbol relax eyebrow vintage load grief huge wild doctor novel use borrow inch sweet symptom script nuclear drastic green corn phrase razor',
-        ecosystemAccount: process.env.ECOSYSTEM_ACCOUNT_MNEMONIC || 'rubber rocket snack author mad ship core physical arrange language enrich story lamp move dynamic into game marine ramp trap anchor beyond mystery gun'
+        ecosystemAccount: process.env.ECOSYSTEM_ACCOUNT_MNEMONIC || 'rubber rocket snack author mad ship core physical arrange language enrich story lamp move dynamic into game marine ramp trap anchor beyond mystery gun',
+        validatorAccount: process.env.VALIDATOR_ACCOUNT_MNEMONIC || 'whale dry improve icon perfect sauce lesson wire oblige gadget exhaust toast spin enforce labor logic giraffe feed project weasel absent build reject life',
+
     }
 }
 describe('Integration test suite', function () {
@@ -166,6 +168,49 @@ describe('Integration test suite', function () {
             };
             const rawTx = new cro.RawTransaction();
             const signableTx = rawTx.appendMessage(MsgUndelegate).addSigner(anySigner).toSignable();
+            const signedTx = signableTx.setSignature(0, keyPair.sign(signableTx.toSignDoc(0))).toSigned();
+            const broadcastResult = await client.broadcastTx(signedTx.encode().toUint8Array());
+            assertIsBroadcastTxSuccess(broadcastResult);
+            const { transactionHash } = broadcastResult;
+            expect(transactionHash).to.match(/^[0-9A-F]{64}$/);
+            expect(broadcastResult.data).to.be.not.undefined;
+        }
+    });
+    xit('Creates, signs and broadasts a `MsgEditValidator` Tx', async () => {
+        {
+            const hdKey = HDKey.fromMnemonic(
+                env.mnemonic.validatorAccount
+            );
+            const privKey = hdKey.derivePrivKey(`m/44'/${customNetwork.bip44Path.coinType}'/0'/0/0`);
+
+            const keyPair = Secp256k1KeyPair.fromPrivKey(privKey);
+
+            const cro = CroSDK({ network: customNetwork });
+            const address1 = new cro.Address(keyPair.getPubKey());
+            const MsgEditValidator = new cro.staking.MsgEditValidator({
+                validatorAddress: env.validatorOperatorAddress,
+                description: {
+                    moniker: 'Random',
+                    securityContact: '[do-not-modify]',
+                    details: '[do-not-modify]',
+                    identity: '[do-not-modify]',
+                    website: '[do-not-modify]'
+                },
+                commissionRate: '1',
+                minSelfDelegation: '1'
+            });
+
+            const client = await StargateClient.connect(`${testNode.httpEndpoint}:${testNode.httpPort}`);
+
+            expect(client).to.be.not.undefined;
+            let account = await client.getAccount(address1.account());
+            const anySigner = {
+                publicKey: keyPair.getPubKey(),
+                accountNumber: new Big(account!.accountNumber),
+                accountSequence: new Big(account!.sequence),
+            };
+            const rawTx = new cro.RawTransaction();
+            const signableTx = rawTx.appendMessage(MsgEditValidator).addSigner(anySigner).toSignable();
             const signedTx = signableTx.setSignature(0, keyPair.sign(signableTx.toSignDoc(0))).toSigned();
             const broadcastResult = await client.broadcastTx(signedTx.encode().toUint8Array());
             assertIsBroadcastTxSuccess(broadcastResult);
