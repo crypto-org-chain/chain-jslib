@@ -24,28 +24,32 @@ const customNetwork: Network = {
 };
 
 const testNode = {
-    httpEndpoint: "localhost",
-    httpPort: "26657"
+    httpEndpoint: 'localhost',
+    httpPort: '26657',
 };
 
 const env = {
-    validatorOperatorAddress: process.env.VALIDATOR_OPERATOR_ADDRESS || 'tcrocncl1rm0etys4apkaa4v3w462q72rr74he8tru85f3s',
+    validatorOperatorAddress:
+        process.env.VALIDATOR_OPERATOR_ADDRESS || 'tcrocncl1rm0etys4apkaa4v3w462q72rr74he8tru85f3s',
     mnemonic: {
-        preFilledAccount_1: process.env.ACCOUNT_1_MNEMONIC || 'play release domain walnut sword reason few fish sketch radio fancy since zebra exhibit boring army green suggest behind correct neither useful cruel type',
-        preFilledAccount_2: process.env.ACCOUNT_2_MNEMONIC || 'improve speak symbol relax eyebrow vintage load grief huge wild doctor novel use borrow inch sweet symptom script nuclear drastic green corn phrase razor',
-        ecosystemAccount: process.env.ECOSYSTEM_ACCOUNT_MNEMONIC || 'rubber rocket snack author mad ship core physical arrange language enrich story lamp move dynamic into game marine ramp trap anchor beyond mystery gun',
-        validatorAccount: process.env.VALIDATOR_ACCOUNT_MNEMONIC || 'whale dry improve icon perfect sauce lesson wire oblige gadget exhaust toast spin enforce labor logic giraffe feed project weasel absent build reject life',
-
-    }
-}
+        preFilledAccount_1:
+            process.env.ACCOUNT_1_MNEMONIC ||
+            'play release domain walnut sword reason few fish sketch radio fancy since zebra exhibit boring army green suggest behind correct neither useful cruel type',
+        preFilledAccount_2:
+            process.env.ACCOUNT_2_MNEMONIC ||
+            'improve speak symbol relax eyebrow vintage load grief huge wild doctor novel use borrow inch sweet symptom script nuclear drastic green corn phrase razor',
+        ecosystemAccount:
+            process.env.ECOSYSTEM_ACCOUNT_MNEMONIC ||
+            'rubber rocket snack author mad ship core physical arrange language enrich story lamp move dynamic into game marine ramp trap anchor beyond mystery gun',
+        validatorAccount:
+            process.env.VALIDATOR_ACCOUNT_MNEMONIC ||
+            'whale dry improve icon perfect sauce lesson wire oblige gadget exhaust toast spin enforce labor logic giraffe feed project weasel absent build reject life',
+    },
+};
 describe('Integration test suite', function () {
     it('creates a MsgSend Type Transaction and Broadcasts it.', async function () {
-        const hdKey = HDKey.fromMnemonic(
-            env.mnemonic.preFilledAccount_1
-        );
-        const hdKey2 = HDKey.fromMnemonic(
-            env.mnemonic.preFilledAccount_2
-        );
+        const hdKey = HDKey.fromMnemonic(env.mnemonic.preFilledAccount_1);
+        const hdKey2 = HDKey.fromMnemonic(env.mnemonic.preFilledAccount_2);
         const privKey = hdKey.derivePrivKey(`m/44'/${customNetwork.bip44Path.coinType}'/0'/0/0`);
         const privKey2 = hdKey2.derivePrivKey(`m/44'/${customNetwork.bip44Path.coinType}'/0'/0/0`);
         const keyPair = Secp256k1KeyPair.fromPrivKey(privKey);
@@ -104,11 +108,9 @@ describe('Integration test suite', function () {
         const { transactionHash } = broadcastResult;
         expect(transactionHash).to.match(/^[0-9A-F]{64}$/);
     });
-    it('Creates, signs and broadasts a `MsgDelegate` Tx', async () => {
+    it('Creates, signs and broadasts a `MsgDelegate` Tx', async function () {
         {
-            const hdKey = HDKey.fromMnemonic(
-                env.mnemonic.ecosystemAccount
-            );
+            const hdKey = HDKey.fromMnemonic(env.mnemonic.ecosystemAccount);
             const privKey = hdKey.derivePrivKey(`m/44'/${customNetwork.bip44Path.coinType}'/0'/0/0`);
 
             const keyPair = Secp256k1KeyPair.fromPrivKey(privKey);
@@ -118,13 +120,13 @@ describe('Integration test suite', function () {
             const MsgDelegate = new cro.staking.MsgDelegate({
                 amount: new cro.Coin('100000000', Units.BASE),
                 validatorAddress: env.validatorOperatorAddress,
-                delegatorAddress: address1.account()
+                delegatorAddress: address1.account(),
             });
 
             const client = await StargateClient.connect(`${testNode.httpEndpoint}:${testNode.httpPort}`);
 
             expect(client).to.be.not.undefined;
-            let account = await client.getAccount(address1.account());
+            const account = await client.getAccount(address1.account());
             const anySigner = {
                 publicKey: keyPair.getPubKey(),
                 accountNumber: new Big(account!.accountNumber),
@@ -140,11 +142,9 @@ describe('Integration test suite', function () {
             expect(broadcastResult.data).to.be.not.undefined;
         }
     });
-    it('Creates, signs and broadasts a `MsgUndelegate` Tx', async () => {
+    it('Creates, signs and broadasts a `MsgUndelegate` Tx', async function () {
         {
-            const hdKey = HDKey.fromMnemonic(
-                env.mnemonic.ecosystemAccount
-            );
+            const hdKey = HDKey.fromMnemonic(env.mnemonic.ecosystemAccount);
             const privKey = hdKey.derivePrivKey(`m/44'/${customNetwork.bip44Path.coinType}'/0'/0/0`);
 
             const keyPair = Secp256k1KeyPair.fromPrivKey(privKey);
@@ -154,13 +154,13 @@ describe('Integration test suite', function () {
             const MsgUndelegate = new cro.staking.MsgUndelegate({
                 amount: new cro.Coin('10000000', Units.BASE),
                 validatorAddress: env.validatorOperatorAddress,
-                delegatorAddress: address1.account()
+                delegatorAddress: address1.account(),
             });
 
             const client = await StargateClient.connect(`${testNode.httpEndpoint}:${testNode.httpPort}`);
 
             expect(client).to.be.not.undefined;
-            let account = await client.getAccount(address1.account());
+            const account = await client.getAccount(address1.account());
             const anySigner = {
                 publicKey: keyPair.getPubKey(),
                 accountNumber: new Big(account!.accountNumber),
@@ -176,11 +176,9 @@ describe('Integration test suite', function () {
             expect(broadcastResult.data).to.be.not.undefined;
         }
     });
-    xit('Creates, signs and broadasts a `MsgEditValidator` Tx', async () => {
+    xit('Creates, signs and broadasts a `MsgEditValidator` Tx', async function () {
         {
-            const hdKey = HDKey.fromMnemonic(
-                env.mnemonic.validatorAccount
-            );
+            const hdKey = HDKey.fromMnemonic(env.mnemonic.validatorAccount);
             const privKey = hdKey.derivePrivKey(`m/44'/${customNetwork.bip44Path.coinType}'/0'/0/0`);
 
             const keyPair = Secp256k1KeyPair.fromPrivKey(privKey);
@@ -194,16 +192,16 @@ describe('Integration test suite', function () {
                     securityContact: '[do-not-modify]',
                     details: '[do-not-modify]',
                     identity: '[do-not-modify]',
-                    website: '[do-not-modify]'
+                    website: '[do-not-modify]',
                 },
                 commissionRate: '1',
-                minSelfDelegation: '1'
+                minSelfDelegation: '1',
             });
 
             const client = await StargateClient.connect(`${testNode.httpEndpoint}:${testNode.httpPort}`);
 
             expect(client).to.be.not.undefined;
-            let account = await client.getAccount(address1.account());
+            const account = await client.getAccount(address1.account());
             const anySigner = {
                 publicKey: keyPair.getPubKey(),
                 accountNumber: new Big(account!.accountNumber),
