@@ -44,27 +44,32 @@ const env = {
         validatorAccount:
             process.env.VALIDATOR_ACCOUNT_MNEMONIC ||
             'whale dry improve icon perfect sauce lesson wire oblige gadget exhaust toast spin enforce labor logic giraffe feed project weasel absent build reject life',
+        randomEmptyAccount:
+            HDKey.generateMnemonic(12),
     },
 };
 describe('Integration test suite', function () {
     it('creates a MsgSend Type Transaction and Broadcasts it.', async function () {
         const hdKey = HDKey.fromMnemonic(env.mnemonic.preFilledAccount_1);
         const hdKey2 = HDKey.fromMnemonic(env.mnemonic.preFilledAccount_2);
+        const hdKey3 = HDKey.fromMnemonic(env.mnemonic.randomEmptyAccount);
         const privKey = hdKey.derivePrivKey(`m/44'/${customNetwork.bip44Path.coinType}'/0'/0/0`);
         const privKey2 = hdKey2.derivePrivKey(`m/44'/${customNetwork.bip44Path.coinType}'/0'/0/0`);
+        const randomPrivKey = hdKey3.derivePrivKey(`m/44'/${customNetwork.bip44Path.coinType}'/0'/0/0`);
         const keyPair = Secp256k1KeyPair.fromPrivKey(privKey);
         const keyPair2 = Secp256k1KeyPair.fromPrivKey(privKey2);
+        const randomKeyPair = Secp256k1KeyPair.fromPrivKey(randomPrivKey);
 
         const cro = CroSDK({ network: customNetwork });
         const rawTx = new cro.RawTransaction();
         const address1 = new cro.Address(keyPair.getPubKey());
         const address2 = new cro.Address(keyPair2.getPubKey());
-
+        const randomAddress = new cro.Address(randomKeyPair.getPubKey());
         const client = await StargateClient.connect(`${testNode.httpEndpoint}:${testNode.httpPort}`);
 
         const msgSend1 = new cro.bank.MsgSend({
             fromAddress: address1.account(),
-            toAddress: address2.account(),
+            toAddress: randomAddress.account(),
             amount: new cro.Coin('100000', Units.BASE),
         });
 
@@ -101,7 +106,7 @@ describe('Integration test suite', function () {
             .toSigned();
 
         expect(msgSend1.fromAddress).to.eq(account1!.address);
-        expect(msgSend1.toAddress).to.eq(account2!.address);
+        expect(msgSend1.toAddress).to.eq(randomAddress.account());
         const broadcastResult = await client.broadcastTx(signedTx.encode().toUint8Array());
         assertIsBroadcastTxSuccess(broadcastResult);
 
@@ -209,6 +214,54 @@ describe('Integration test suite', function () {
             };
             const rawTx = new cro.RawTransaction();
             const signableTx = rawTx.appendMessage(MsgEditValidator).addSigner(anySigner).toSignable();
+            const signedTx = signableTx.setSignature(0, keyPair.sign(signableTx.toSignDoc(0))).toSigned();
+            const broadcastResult = await client.broadcastTx(signedTx.encode().toUint8Array());
+            assertIsBroadcastTxSuccess(broadcastResult);
+            const { transactionHash } = broadcastResult;
+            expect(transactionHash).to.match(/^[0-9A-F]{64}$/);
+            expect(broadcastResult.data).to.be.not.undefined;
+        }
+    });
+    it('Creates, signs and broadasts a `MsgCreateValidator` Tx', async function () {
+        {
+            const hdKey = HDKey.fromMnemonic(env.mnemonic.randomEmptyAccount);
+            const privKey = hdKey.derivePrivKey(`m/44'/${customNetwork.bip44Path.coinType}'/0'/0/0`);
+
+            const keyPair = Secp256k1KeyPair.fromPrivKey(privKey);
+            const pubkey = '3GAZ/aIuvckfS9duB2+4cBxabkPAd/UegRokT6kZg68=';
+            const cro = CroSDK({ network: customNetwork });
+            const addressAccount = new cro.Address(keyPair.getPubKey());
+            const MsgCreateValidator = new cro.staking.MsgCreateValidator({
+                validatorAddress: addressAccount.validator(),
+                description: {
+                    moniker: 'Random',
+                    securityContact: '[do-not-modify]',
+                    details: '[do-not-modify]',
+                    identity: '[do-not-modify]',
+                    website: '[do-not-modify]',
+                },
+                commission: {
+                    rate: '10',
+                    maxChangeRate: '1',
+                    maxRate: '25'
+                },
+                minSelfDelegation: '1',
+                delegatorAddress: addressAccount.account(),
+                pubkey,
+                value: new cro.Coin('10000', Units.BASE)
+            });
+
+            const client = await StargateClient.connect(`${testNode.httpEndpoint}:${testNode.httpPort}`);
+
+            expect(client).to.be.not.undefined;
+            const account = await client.getAccount(addressAccount.account());
+            const anySigner = {
+                publicKey: keyPair.getPubKey(),
+                accountNumber: new Big(account!.accountNumber),
+                accountSequence: new Big(account!.sequence),
+            };
+            const rawTx = new cro.RawTransaction();
+            const signableTx = rawTx.appendMessage(MsgCreateValidator).addSigner(anySigner).toSignable();
             const signedTx = signableTx.setSignature(0, keyPair.sign(signableTx.toSignDoc(0))).toSigned();
             const broadcastResult = await client.broadcastTx(signedTx.encode().toUint8Array());
             assertIsBroadcastTxSuccess(broadcastResult);
