@@ -9,29 +9,43 @@ import { Units } from '../coin/coin';
 import { Network } from '../network/network';
 
 const customNetwork: Network = {
-    chainId: 'chainmaind',
-    addressPrefix: 'cro',
-    validatorAddressPrefix: 'crocncl',
-    validatorPubKeyPrefix: 'crocnclconspub',
+    chainId: 'testnet',
+    addressPrefix: 'tcro',
+    validatorAddressPrefix: 'tcrocncl',
+    validatorPubKeyPrefix: 'tcrocnclconspub',
     coin: {
-        baseDenom: 'basecro',
-        croDenom: 'cro',
+        baseDenom: 'basetcro',
+        croDenom: 'tcro',
     },
     bip44Path: {
         coinType: 1,
         account: 0,
     },
 };
+
+const testNode = {
+    httpEndpoint: "localhost",
+    httpPort: "26657"
+};
+
+const env = {
+    validatorOperatorAddress: process.env.VALIDATOR_OPERATOR_ADDRESS || 'tcrocncl1rm0etys4apkaa4v3w462q72rr74he8tru85f3s',
+    mnemonic: {
+        preFilledAccount_1: process.env.ACCOUNT_1_MNEMONIC || 'play release domain walnut sword reason few fish sketch radio fancy since zebra exhibit boring army green suggest behind correct neither useful cruel type',
+        preFilledAccount_2: process.env.ACCOUNT_2_MNEMONIC || 'improve speak symbol relax eyebrow vintage load grief huge wild doctor novel use borrow inch sweet symptom script nuclear drastic green corn phrase razor',
+        ecosystemAccount: process.env.ECOSYSTEM_ACCOUNT_MNEMONIC || 'rubber rocket snack author mad ship core physical arrange language enrich story lamp move dynamic into game marine ramp trap anchor beyond mystery gun'
+    }
+}
 describe('Integration test suite', function () {
     it('creates a MsgSend Type Transaction and Broadcasts it.', async function () {
         const hdKey = HDKey.fromMnemonic(
-            'cattle brisk menu chat roast asthma brisk seat whisper prevent town bomb test minimum coconut rent orbit wish caught embody clever turtle track duck',
+            env.mnemonic.preFilledAccount_1
         );
         const hdKey2 = HDKey.fromMnemonic(
-            'curtain maid fetch push pilot frozen speak motion island pigeon habit suffer gap purse royal hollow among orange pluck mutual eager cement void panther',
+            env.mnemonic.preFilledAccount_2
         );
-        const privKey = hdKey.derivePrivKey("m/44'/1'/0'/0/0");
-        const privKey2 = hdKey2.derivePrivKey("m/44'/1'/0'/0/0");
+        const privKey = hdKey.derivePrivKey(`m/44'/${customNetwork.bip44Path.coinType}'/0'/0/0`);
+        const privKey2 = hdKey2.derivePrivKey(`m/44'/${customNetwork.bip44Path.coinType}'/0'/0/0`);
         const keyPair = Secp256k1KeyPair.fromPrivKey(privKey);
         const keyPair2 = Secp256k1KeyPair.fromPrivKey(privKey2);
 
@@ -40,7 +54,7 @@ describe('Integration test suite', function () {
         const address1 = new cro.Address(keyPair.getPubKey());
         const address2 = new cro.Address(keyPair2.getPubKey());
 
-        const client = await StargateClient.connect('localhost:26657');
+        const client = await StargateClient.connect(`${testNode.httpEndpoint}:${testNode.httpPort}`);
 
         const msgSend1 = new cro.bank.MsgSend({
             fromAddress: address1.account(),
@@ -82,12 +96,46 @@ describe('Integration test suite', function () {
 
         expect(msgSend1.fromAddress).to.eq(account1!.address);
         expect(msgSend1.toAddress).to.eq(account2!.address);
-
         const broadcastResult = await client.broadcastTx(signedTx.encode().toUint8Array());
         assertIsBroadcastTxSuccess(broadcastResult);
 
-        const { rawLog, transactionHash } = broadcastResult;
-        expect(rawLog).to.match(/{"key":"amount","value":"100000basecro"}/);
+        const { transactionHash } = broadcastResult;
         expect(transactionHash).to.match(/^[0-9A-F]{64}$/);
+    });
+    it('Creates, signs and broadasts a `MsgDelegate` Tx', async () => {
+        {
+            const hdKey = HDKey.fromMnemonic(
+                env.mnemonic.ecosystemAccount
+            );
+            const privKey = hdKey.derivePrivKey(`m/44'/${customNetwork.bip44Path.coinType}'/0'/0/0`);
+
+            const keyPair = Secp256k1KeyPair.fromPrivKey(privKey);
+
+            const cro = CroSDK({ network: customNetwork });
+            const address1 = new cro.Address(keyPair.getPubKey());
+            const MsgDelegate = new cro.staking.MsgDelegate({
+                amount: new cro.Coin('100000000', Units.BASE),
+                validatorAddress: env.validatorOperatorAddress,
+                delegatorAddress: address1.account()
+            });
+
+            const client = await StargateClient.connect(`${testNode.httpEndpoint}:${testNode.httpPort}`);
+
+            expect(client).to.be.not.undefined;
+            let account = await client.getAccount(address1.account());
+            const anySigner = {
+                publicKey: keyPair.getPubKey(),
+                accountNumber: new Big(account!.accountNumber),
+                accountSequence: new Big(account!.sequence),
+            };
+            const rawTx = new cro.RawTransaction();
+            const signableTx = rawTx.appendMessage(MsgDelegate).addSigner(anySigner).toSignable();
+            const signedTx = signableTx.setSignature(0, keyPair.sign(signableTx.toSignDoc(0))).toSigned();
+            const broadcastResult = await client.broadcastTx(signedTx.encode().toUint8Array());
+            assertIsBroadcastTxSuccess(broadcastResult);
+            const { transactionHash } = broadcastResult;
+            expect(transactionHash).to.match(/^[0-9A-F]{64}$/);
+            expect(broadcastResult.data).to.be.not.undefined;
+        }
     });
 });
