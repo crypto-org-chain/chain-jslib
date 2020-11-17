@@ -103,6 +103,10 @@ export type MsgCreateValidatorParams = {
     value: ICoin;
 };
 
+/**
+ * Encode public key bytes to corresponding proto model
+ * @returns {IAny}
+ */
 export const protoEncodeEd25519PubKey = (pubKey: Bytes): google.protobuf.IAny => {
     const pubKeyProto = cosmos.crypto.ed25519.PubKey.create({
         key: pubKey.toUint8Array(),
