@@ -44,8 +44,7 @@ const env = {
         validatorAccount:
             process.env.VALIDATOR_ACCOUNT_MNEMONIC ||
             'whale dry improve icon perfect sauce lesson wire oblige gadget exhaust toast spin enforce labor logic giraffe feed project weasel absent build reject life',
-        randomEmptyAccount:
-            HDKey.generateMnemonic(12),
+        randomEmptyAccount: HDKey.generateMnemonic(12),
     },
 };
 describe('Integration test suite', function () {
@@ -243,12 +242,12 @@ describe('Integration test suite', function () {
                 commission: {
                     rate: '10',
                     maxChangeRate: '1',
-                    maxRate: '25'
+                    maxRate: '25',
                 },
                 minSelfDelegation: '1',
                 delegatorAddress: addressAccount.account(),
                 pubkey,
-                value: new cro.Coin('10000', Units.BASE)
+                value: new cro.Coin('10000', Units.BASE),
             });
 
             const client = await StargateClient.connect(`${testNode.httpEndpoint}:${testNode.httpPort}`);
