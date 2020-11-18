@@ -41,3 +41,4 @@ tmp/
 
 .idea
 .nyc_output
+coverage
