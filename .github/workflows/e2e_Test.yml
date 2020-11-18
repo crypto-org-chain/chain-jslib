@@ -17,10 +17,9 @@ jobs:
         with:
           repository: crypto-com/chain-main
           path: chain-main
-        run: 
-          sudo apt-get install jq
       - name: Build & Start ChainMaind
         run: |
+          sudo apt-get install jq
           cd chain-main 
           rm -rf $HOME/.chain-maind
           NETWORK=testnet make install 
