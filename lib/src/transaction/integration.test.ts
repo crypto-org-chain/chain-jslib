@@ -197,7 +197,7 @@ describe('Integration test suite', function () {
             const MsgEditValidator = new cro.staking.MsgEditValidator({
                 validatorAddress: address1.validator(),
                 description: {
-                    moniker: 'Random1' + Date.now()
+                    moniker: `Random1${Date.now()}`,
                 },
                 commissionRate: null,
                 minSelfDelegation: null,
