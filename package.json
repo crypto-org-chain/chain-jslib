@@ -14,7 +14,7 @@
   },
   "homepage": "https://github.com/crypto-com/chain-jslib-nextgen#readme",
   "scripts": {
-    "prebuild": "mkdir -p lib/dist/cosmos/v1beta1/codec/ && cp -a lib/src/cosmos/v1beta1/codec/generated/  lib/dist/cosmos/v1beta1/codec/",
+    "prebuild": "mkdir -p lib/dist/cosmos/v1beta1/codec/generated/ && cp -a lib/src/cosmos/v1beta1/codec/generated/.  lib/dist/cosmos/v1beta1/codec/generated/",
     "build": "tsc",
     "lint": "eslint 'lib/**'",
     "test:watch": "nodemon",
