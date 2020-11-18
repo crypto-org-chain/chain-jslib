@@ -1,0 +1,16 @@
+name: Codecov
+
+on:
+  pull_request:
+  push:
+    branches:
+      - master
+jobs:
+  unit:
+    name: Running codecov report
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@master
+      - uses: codecov/codecov-action@v1
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
