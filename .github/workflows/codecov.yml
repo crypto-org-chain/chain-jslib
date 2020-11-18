@@ -12,9 +12,12 @@ jobs:
     steps:
       - uses: actions/checkout@master
       - name: Generate coverage report
-        run: |
-          npm install codecov -g
-          codecov
+        uses: actions/setup-node@v1
+        with:
+          node-version: '12'
+      - run: npm install codecov -g
+      - run: codecov
+
       - uses: codecov/codecov-action@v1
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
