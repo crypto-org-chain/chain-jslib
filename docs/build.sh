@@ -30,7 +30,7 @@ VERSION=$(node -e 'console.log(require("./package.json").version)')
 echo "Generating documentation for version ${VERSION}"
 
 if [[ $FORCE == 1 ]]; then
-    npm run typedoc:build:force -- --name "Node.js Library v${VERSION}" --gaID "${GA_ID}" "$@"
+    npm run typedoc:build:force -- --name "JavaScript Library v${VERSION}" --gaID "${GA_ID}" "$@"
 else
     npm run typedoc:build -- --name "JavaScript Library v${VERSION}" --gaID "${GA_ID}" "$@"
 
