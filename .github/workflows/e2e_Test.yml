@@ -3,7 +3,7 @@
 name: Integration_test_local_full_node
 
 on:
-  [workflow_action]
+  [workflow_dispatch]
   # pull_request:
   # push:
     # branches:
