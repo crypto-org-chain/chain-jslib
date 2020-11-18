@@ -3,11 +3,10 @@
 name: Integration_test_local_full_node
 
 on:
-  [workflow_dispatch]
-  # pull_request:
-  # push:
-    # branches:
-      # - master
+   pull_request:
+   push:
+     branches:
+       - master
 
 jobs:
   RPC:
@@ -17,7 +16,6 @@ jobs:
         uses: actions/checkout@v2
         with:
           repository: crypto-com/chain-main
-          token: 'bogud'
           path: chain-main
       - run: |
           cd chain-main 
