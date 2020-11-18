@@ -17,6 +17,7 @@ jobs:
           node-version: '12'
       - run: npm install
       - run: npm run test-coverage
+      - run: npm run generated-report
 
       - uses: codecov/codecov-action@v1
         with:

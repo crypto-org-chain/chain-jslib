@@ -24,7 +24,8 @@
     "predefine-proto": "./lib/src/cosmos/v1beta1/scripts/predefine-proto.sh",
     "define-proto": "./lib/src/cosmos/v1beta1/scripts/define-proto.sh",
     "postdefine-proto": "./lib/src/cosmos/v1beta1/scripts/postdefine-proto.sh",
-    "test-coverage": "nyc npm run test"
+    "test-coverage": "nyc npm run test",
+    "generated-report": "nyc report --reporter=json > coverage/coverage.json"
   },
   "dependencies": {
     "@types/debug": "^4.1.5",
