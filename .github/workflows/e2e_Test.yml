@@ -19,10 +19,10 @@ jobs:
           path: chain-main
       - uses: actions/cache@v2
         with:
-        path: ~/go/pkg/mod
-        key: ${{ runner.os }}-go-${{ hashFiles('**/go.sum') }}
-        restore-keys: |
-          ${{ runner.os }}-go-
+          path: ~/go/pkg/mod
+          key: ${{ runner.os }}-go-${{ hashFiles('**/go.sum') }}
+          restore-keys: |
+            ${{ runner.os }}-go-
       - name: Build & Start ChainMaind
         run: |
           sudo apt-get install jq
