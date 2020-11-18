@@ -52,10 +52,9 @@ jobs:
         run: |
           ## Sleep 5 Seconds
           sleep 5
-          curl --location --request GET 'localhost:26657/status' | jq '.network'
-          
-          cd chain-main
-          
+          curl --location --request GET 'localhost:26657/status' | jq
+        
+          cd chain-main  
           ./build/chain-maind keys show validator --bech val --keyring-backend test --output json | jq >> ./validatorDetails.json
           
           ## TRANSFER 100CRO FROM "ecosystem" to "launch"
