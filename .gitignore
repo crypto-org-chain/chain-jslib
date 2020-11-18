@@ -40,3 +40,4 @@ proto/
 tmp/
 
 .idea
+.nyc_output
