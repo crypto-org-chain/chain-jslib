@@ -2,12 +2,12 @@ import 'mocha';
 import Big from 'big.js';
 import { expect } from 'chai';
 import { StargateClient, assertIsBroadcastTxSuccess } from '@cosmjs/stargate';
+import axios from 'axios';
 import { HDKey } from '../hdkey/hdkey';
 import { Secp256k1KeyPair } from '../keypair/secp256k1';
 import { CroSDK } from '../core/cro';
 import { Units } from '../coin/coin';
 import { Network } from '../network/network';
-import axios from 'axios';
 
 const customNetwork: Network = {
     chainId: 'testnet',
@@ -53,7 +53,7 @@ const env = {
     },
 };
 describe('Integration test suite', function () {
-    xit('[BANK] creates a MsgSend Type Transaction and Broadcasts it.', async function () {
+    it('[BANK] creates a MsgSend Type Transaction and Broadcasts it.', async function () {
         const hdKey = HDKey.fromMnemonic(env.mnemonic.preFilledAccount_1);
         const hdKey2 = HDKey.fromMnemonic(env.mnemonic.preFilledAccount_2);
         const hdKey3 = HDKey.fromMnemonic(env.mnemonic.randomEmptyAccount);
@@ -117,7 +117,7 @@ describe('Integration test suite', function () {
         const { transactionHash } = broadcastResult;
         expect(transactionHash).to.match(/^[0-9A-F]{64}$/);
     });
-    xit('[STAKING] Creates, signs and broadasts a `MsgDelegate` Tx', async function () {
+    it('[STAKING] Creates, signs and broadasts a `MsgDelegate` Tx', async function () {
         {
             const hdKey = HDKey.fromMnemonic(env.mnemonic.ecosystemAccount);
             const privKey = hdKey.derivePrivKey(`m/44'/${customNetwork.bip44Path.coinType}'/0'/0/0`);
@@ -151,7 +151,7 @@ describe('Integration test suite', function () {
             expect(broadcastResult.data).to.be.not.undefined;
         }
     });
-    xit('[STAKING] Creates, signs and broadasts a `MsgUndelegate` Tx', async function () {
+    it('[STAKING] Creates, signs and broadasts a `MsgUndelegate` Tx', async function () {
         {
             const hdKey = HDKey.fromMnemonic(env.mnemonic.ecosystemAccount);
             const privKey = hdKey.derivePrivKey(`m/44'/${customNetwork.bip44Path.coinType}'/0'/0/0`);
@@ -226,7 +226,7 @@ describe('Integration test suite', function () {
             expect(broadcastResult.data).to.be.not.undefined;
         }
     });
-    xit('[STAKING] Creates, signs and broadasts a `MsgCreateValidator` Tx', async function () {
+    it('[STAKING] Creates, signs and broadasts a `MsgCreateValidator` Tx', async function () {
         {
             const hdKey = HDKey.fromMnemonic(env.mnemonic.randomEmptyAccount);
             const privKey = hdKey.derivePrivKey(`m/44'/${customNetwork.bip44Path.coinType}'/0'/0/0`);
@@ -274,7 +274,7 @@ describe('Integration test suite', function () {
             expect(broadcastResult.data).to.be.not.undefined;
         }
     });
-    xit('[DISTRIBUTION] Creates, signs and broadasts a `MsgWithdrawDelegatorReward` Tx', async function () {
+    it('[DISTRIBUTION] Creates, signs and broadasts a `MsgWithdrawDelegatorReward` Tx', async function () {
         {
             const hdKey = HDKey.fromMnemonic(env.mnemonic.ecosystemAccount);
             const privKey = hdKey.derivePrivKey(`m/44'/${customNetwork.bip44Path.coinType}'/0'/0/0`);
@@ -332,10 +332,13 @@ describe('Integration test suite', function () {
             const rawTx = new cro.RawTransaction();
             const signableTx = rawTx.appendMessage(MsgWithdrawValidatorCommission).addSigner(anySigner).toSignable();
             const signedTx = signableTx.setSignature(0, keyPair.sign(signableTx.toSignDoc(0))).toSigned();
-            let broadcast = await axios.get('broadcast_tx_commit', { baseURL: axiosConfig.url, params: { tx: '0x' + signedTx.getHexEncoded() } });
+            const broadcast = await axios.get('broadcast_tx_commit', {
+                baseURL: axiosConfig.url,
+                params: { tx: `0x${signedTx.getHexEncoded()}` },
+            });
             expect(broadcast.status).to.eq(200);
             expect(broadcast.data).to.be.not.undefined;
-            assertIsBroadcastTxSuccess(broadcast.data)
+            assertIsBroadcastTxSuccess(broadcast.data);
         }
     });
 });
