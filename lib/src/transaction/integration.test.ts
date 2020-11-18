@@ -274,6 +274,42 @@ describe('Integration test suite', function () {
             expect(broadcastResult.data).to.be.not.undefined;
         }
     });
+    it('[STAKING] Creates, signs and broadasts a `MsgBeginRedelegate` Tx', async function () {
+        {
+            const hdKey = HDKey.fromMnemonic(env.mnemonic.ecosystemAccount);
+            const privKey = hdKey.derivePrivKey(`m/44'/${customNetwork.bip44Path.coinType}'/0'/0/0`);
+
+            const keyPair = Secp256k1KeyPair.fromPrivKey(privKey);
+
+            const cro = CroSDK({ network: customNetwork });
+            const address1 = new cro.Address(keyPair.getPubKey());
+            const MsgBeginRedelegate = new cro.staking.MsgBeginRedelegate({
+                amount: new cro.Coin('10000000', Units.BASE),
+                validatorDstAddress: env.validatorOperatorAddress,
+                validatorSrcAddress: address1.validator(),
+                delegatorAddress: address1.account(),
+            });
+
+            const client = await StargateClient.connect(`${testNode.httpEndpoint}:${testNode.httpPort}`);
+
+            expect(client).to.be.not.undefined;
+            const account = await client.getAccount(address1.account());
+            const anySigner = {
+                publicKey: keyPair.getPubKey(),
+                accountNumber: new Big(account!.accountNumber),
+                accountSequence: new Big(account!.sequence),
+            };
+            const rawTx = new cro.RawTransaction();
+            rawTx.setGasLimit('300000');
+            const signableTx = rawTx.appendMessage(MsgBeginRedelegate).addSigner(anySigner).toSignable();
+            const signedTx = signableTx.setSignature(0, keyPair.sign(signableTx.toSignDoc(0))).toSigned();
+            const broadcastResult = await client.broadcastTx(signedTx.encode().toUint8Array());
+            assertIsBroadcastTxSuccess(broadcastResult);
+            const { transactionHash } = broadcastResult;
+            expect(transactionHash).to.match(/^[0-9A-F]{64}$/);
+            expect(broadcastResult.data).to.be.not.undefined;
+        }
+    });
     it('[DISTRIBUTION] Creates, signs and broadasts a `MsgWithdrawDelegatorReward` Tx', async function () {
         {
             const hdKey = HDKey.fromMnemonic(env.mnemonic.ecosystemAccount);
