@@ -81,10 +81,12 @@ jobs:
           ls -lrt
           ## RUN INTEGRATION TEST
           cd jslib
-          npm install --no-progress --silent
+          npm install --no-progress --silent --quiet
           echo "*************"
-          echo $(cat ../chain-main/validatorDetails.json | jq '.address')
-          echo $(cat ../chain-main/community.json | jq '.mnemonic')
-          cat ../chain-main/community.json | jq '.'
+          VALIDATOR_OPERATOR_ADDRESS=$(cat ../chain-main/validatorDetails.json | jq '.address') COMMUNITY_ACCOUNT_MNEMONIC=$(cat ../chain-main/community.json | jq '.mnemonic') RESERVE_ACCOUNT_MNEMONIC=$(cat ../chain-main/reserve.json | jq '.mnemonic') ECOSYSTEM_ACCOUNT_MNEMONIC=$(cat ../chain-main/ecosystem.json | jq '.mnemonic') 
+          echo $VALIDATOR_OPERATOR_ADDRESS
+          echo $COMMUNITY_ACCOUNT_MNEMONIC
+          echo $RESERVE_ACCOUNT_MNEMONIC
+          echo $ECOSYSTEM_ACCOUNT_MNEMONIC
           echo "*************"
           VALIDATOR_OPERATOR_ADDRESS=$(cat ../chain-main/validatorDetails.json | jq '.address') COMMUNITY_ACCOUNT_MNEMONIC=$(cat ../chain-main/community.json | jq '.mnemonic') RESERVE_ACCOUNT_MNEMONIC=$(cat ../chain-main/reserve.json | jq '.mnemonic') ECOSYSTEM_ACCOUNT_MNEMONIC=$(cat ../chain-main/ecosystem.json | jq '.mnemonic') npm run integration-test
