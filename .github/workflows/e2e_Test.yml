@@ -52,16 +52,16 @@ jobs:
         run: |
           ## Sleep 5 Seconds
           sleep 5
-          curl --location --request GET 'localhost:26657/status' | jq
+          curl --location --request GET 'localhost:26657/status' | jq '.'
         
           cd chain-main  
-          ./build/chain-maind keys show validator --bech val --keyring-backend test --output json | jq >> ./validatorDetails.json
+          ./build/chain-maind keys show validator --bech val --keyring-backend test --output json | jq '.'>> ./validatorDetails.json
           
           ## TRANSFER 100CRO FROM "ecosystem" to "launch"
-          ./build/chain-maind tx bank send $(cat ./ecosystem.json | jq '.address') $(cat ./launch.json | jq '.address') 100tcro --keyring-backend test --chain-id testnet -y | jq 
+          ./build/chain-maind tx bank send $(cat ./ecosystem.json | jq '.address') $(cat ./launch.json | jq '.address') 100tcro --keyring-backend test --chain-id testnet -y | jq '.'
 
           ## TRANSFER 10CRO FROM "launch" to "ecosystem"
-          ./build/chain-maind tx bank send $(cat ./launch.json | jq '.address') $(cat ./ecosystem.json | jq '.address') 10tcro --keyring-backend test --chain-id testnet -y | jq
+          ./build/chain-maind tx bank send $(cat ./launch.json | jq '.address') $(cat ./ecosystem.json | jq '.address') 10tcro --keyring-backend test --chain-id testnet -y | jq '.'
 
       - name: STEP-2 :Setup JSLIB project
         uses: actions/checkout@v2
