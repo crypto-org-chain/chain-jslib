@@ -3,10 +3,10 @@
 name: Integration_test_local_full_node
 
 on:
-   pull_request:
-   push:
-     branches:
-       - master
+  pull_request:
+  push:
+    branches:
+      - master
 
 jobs:
   RPC:
@@ -17,6 +17,12 @@ jobs:
         with:
           repository: crypto-com/chain-main
           path: chain-main
+      - uses: actions/cache@v2
+        with:
+        path: ~/go/pkg/mod
+        key: ${{ runner.os }}-go-${{ hashFiles('**/go.sum') }}
+        restore-keys: |
+          ${{ runner.os }}-go-
       - name: Build & Start ChainMaind
         run: |
           sudo apt-get install jq
@@ -47,16 +53,16 @@ jobs:
 
           ./build/chain-maind validate-genesis
 
-          ./build/chain-maind start --trace & 
+          ./build/chain-maind start --trace &
       - name: Transfer funds to Test accounts
         run: |
           ## Sleep 5 Seconds
           sleep 5
           curl --location --request GET 'localhost:26657/status' | jq '.'
-        
+
           cd chain-main  
           ./build/chain-maind keys show validator --bech val --keyring-backend test --output json | jq '.'>> ./validatorDetails.json
-          
+
           ## TRANSFER 100CRO FROM "ecosystem" to "launch"
           ./build/chain-maind tx bank send $(./build/chain-maind keys show ecosystem -a --keyring-backend test) $(./build/chain-maind keys show launch -a --keyring-backend test) 100tcro --keyring-backend test --chain-id testnet -y | jq '.'
 
@@ -89,4 +95,4 @@ jobs:
           echo $RESERVE_ACCOUNT_MNEMONIC
           echo $ECOSYSTEM_ACCOUNT_MNEMONIC
           echo "*************"
-          VALIDATOR_OPERATOR_ADDRESS=$(cat ../chain-main/validatorDetails.json | jq '.address') COMMUNITY_ACCOUNT_MNEMONIC=$(cat ../chain-main/community.json | jq '.mnemonic') RESERVE_ACCOUNT_MNEMONIC=$(cat ../chain-main/reserve.json | jq '.mnemonic') ECOSYSTEM_ACCOUNT_MNEMONIC=$(cat ../chain-main/ecosystem.json | jq '.mnemonic') npm run integration-test
+          VALIDATOR_OPERATOR_ADDRESS=$VALIDATOR_OPERATOR_ADDRESS COMMUNITY_ACCOUNT_MNEMONIC=$COMMUNITY_ACCOUNT_MNEMONIC RESERVE_ACCOUNT_MNEMONIC=$RESERVE_ACCOUNT_MNEMONIC ECOSYSTEM_ACCOUNT_MNEMONIC=$ECOSYSTEM_ACCOUNT_MNEMONIC npm run integration-test
