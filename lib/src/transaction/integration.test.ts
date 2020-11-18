@@ -7,6 +7,7 @@ import { Secp256k1KeyPair } from '../keypair/secp256k1';
 import { CroSDK } from '../core/cro';
 import { Units } from '../coin/coin';
 import { Network } from '../network/network';
+import axios from 'axios';
 
 const customNetwork: Network = {
     chainId: 'testnet',
@@ -28,6 +29,10 @@ const testNode = {
     httpPort: '26657',
 };
 
+const axiosConfig = {
+    method: 'get',
+    url: `http://${testNode.httpEndpoint}:${testNode.httpPort}`,
+};
 const env = {
     validatorOperatorAddress:
         process.env.VALIDATOR_OPERATOR_ADDRESS || 'tcrocncl1rm0etys4apkaa4v3w462q72rr74he8tru85f3s',
@@ -48,7 +53,7 @@ const env = {
     },
 };
 describe('Integration test suite', function () {
-    it('[BANK] creates a MsgSend Type Transaction and Broadcasts it.', async function () {
+    xit('[BANK] creates a MsgSend Type Transaction and Broadcasts it.', async function () {
         const hdKey = HDKey.fromMnemonic(env.mnemonic.preFilledAccount_1);
         const hdKey2 = HDKey.fromMnemonic(env.mnemonic.preFilledAccount_2);
         const hdKey3 = HDKey.fromMnemonic(env.mnemonic.randomEmptyAccount);
@@ -112,7 +117,7 @@ describe('Integration test suite', function () {
         const { transactionHash } = broadcastResult;
         expect(transactionHash).to.match(/^[0-9A-F]{64}$/);
     });
-    it('[STAKING] Creates, signs and broadasts a `MsgDelegate` Tx', async function () {
+    xit('[STAKING] Creates, signs and broadasts a `MsgDelegate` Tx', async function () {
         {
             const hdKey = HDKey.fromMnemonic(env.mnemonic.ecosystemAccount);
             const privKey = hdKey.derivePrivKey(`m/44'/${customNetwork.bip44Path.coinType}'/0'/0/0`);
@@ -146,7 +151,7 @@ describe('Integration test suite', function () {
             expect(broadcastResult.data).to.be.not.undefined;
         }
     });
-    it('[STAKING] Creates, signs and broadasts a `MsgUndelegate` Tx', async function () {
+    xit('[STAKING] Creates, signs and broadasts a `MsgUndelegate` Tx', async function () {
         {
             const hdKey = HDKey.fromMnemonic(env.mnemonic.ecosystemAccount);
             const privKey = hdKey.derivePrivKey(`m/44'/${customNetwork.bip44Path.coinType}'/0'/0/0`);
@@ -221,7 +226,7 @@ describe('Integration test suite', function () {
             expect(broadcastResult.data).to.be.not.undefined;
         }
     });
-    it('[STAKING] Creates, signs and broadasts a `MsgCreateValidator` Tx', async function () {
+    xit('[STAKING] Creates, signs and broadasts a `MsgCreateValidator` Tx', async function () {
         {
             const hdKey = HDKey.fromMnemonic(env.mnemonic.randomEmptyAccount);
             const privKey = hdKey.derivePrivKey(`m/44'/${customNetwork.bip44Path.coinType}'/0'/0/0`);
@@ -269,7 +274,7 @@ describe('Integration test suite', function () {
             expect(broadcastResult.data).to.be.not.undefined;
         }
     });
-    it('[DISTRIBUTION] Creates, signs and broadasts a `MsgWithdrawDelegatorReward` Tx', async function () {
+    xit('[DISTRIBUTION] Creates, signs and broadasts a `MsgWithdrawDelegatorReward` Tx', async function () {
         {
             const hdKey = HDKey.fromMnemonic(env.mnemonic.ecosystemAccount);
             const privKey = hdKey.derivePrivKey(`m/44'/${customNetwork.bip44Path.coinType}'/0'/0/0`);
@@ -300,6 +305,37 @@ describe('Integration test suite', function () {
             const { transactionHash } = broadcastResult;
             expect(transactionHash).to.match(/^[0-9A-F]{64}$/);
             expect(broadcastResult.data).to.be.not.undefined;
+        }
+    });
+    it('[DISTRIBUTION] Creates, signs and broadasts a `MsgWithdrawValidatorCommission` Tx', async function () {
+        {
+            const hdKey = HDKey.fromMnemonic(env.mnemonic.ecosystemAccount);
+            const privKey = hdKey.derivePrivKey(`m/44'/${customNetwork.bip44Path.coinType}'/0'/0/0`);
+
+            const keyPair = Secp256k1KeyPair.fromPrivKey(privKey);
+
+            const cro = CroSDK({ network: customNetwork });
+            const address1 = new cro.Address(keyPair.getPubKey());
+            const MsgWithdrawValidatorCommission = new cro.distribution.MsgWithdrawValidatorCommission({
+                validatorAddress: address1.validator(),
+            });
+
+            const client = await StargateClient.connect(`${testNode.httpEndpoint}:${testNode.httpPort}`);
+
+            expect(client).to.be.not.undefined;
+            const account = await client.getAccount(address1.account());
+            const anySigner = {
+                publicKey: keyPair.getPubKey(),
+                accountNumber: new Big(account!.accountNumber),
+                accountSequence: new Big(account!.sequence),
+            };
+            const rawTx = new cro.RawTransaction();
+            const signableTx = rawTx.appendMessage(MsgWithdrawValidatorCommission).addSigner(anySigner).toSignable();
+            const signedTx = signableTx.setSignature(0, keyPair.sign(signableTx.toSignDoc(0))).toSigned();
+            let broadcast = await axios.get('broadcast_tx_commit', { baseURL: axiosConfig.url, params: { tx: '0x' + signedTx.getHexEncoded() } });
+            expect(broadcast.status).to.eq(200);
+            expect(broadcast.data).to.be.not.undefined;
+            assertIsBroadcastTxSuccess(broadcast.data)
         }
     });
 });
