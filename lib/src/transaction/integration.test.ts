@@ -185,9 +185,9 @@ describe('Integration test suite', function () {
             expect(broadcastResult.data).to.be.not.undefined;
         }
     });
-    xit('[STAKING] Creates, signs and broadasts a `MsgEditValidator` Tx', async function () {
+    it('[STAKING] Creates, signs and broadasts a `MsgEditValidator` Tx', async function () {
         {
-            const hdKey = HDKey.fromMnemonic(env.mnemonic.validatorAccount);
+            const hdKey = HDKey.fromMnemonic(env.mnemonic.ecosystemAccount);
             const privKey = hdKey.derivePrivKey(`m/44'/${customNetwork.bip44Path.coinType}'/0'/0/0`);
 
             const keyPair = Secp256k1KeyPair.fromPrivKey(privKey);
@@ -195,16 +195,12 @@ describe('Integration test suite', function () {
             const cro = CroSDK({ network: customNetwork });
             const address1 = new cro.Address(keyPair.getPubKey());
             const MsgEditValidator = new cro.staking.MsgEditValidator({
-                validatorAddress: env.validatorOperatorAddress,
+                validatorAddress: address1.validator(),
                 description: {
-                    moniker: 'Random',
-                    securityContact: '[do-not-modify]',
-                    details: '[do-not-modify]',
-                    identity: '[do-not-modify]',
-                    website: '[do-not-modify]',
+                    moniker: 'Random1' + Date.now()
                 },
-                commissionRate: '1',
-                minSelfDelegation: '1',
+                commissionRate: null,
+                minSelfDelegation: null,
             });
 
             const client = await StargateClient.connect(`${testNode.httpEndpoint}:${testNode.httpPort}`);
