@@ -15,8 +15,7 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: '12'
-      - run: npm install codecov -g
-      - run: codecov
+      - run: npm run test-coverage
 
       - uses: codecov/codecov-action@v1
         with:

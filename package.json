@@ -23,7 +23,8 @@
     "get-proto": "REF=v0.40.0-rc3 ./lib/src/cosmos/v1beta1/scripts/get-proto.sh",
     "predefine-proto": "./lib/src/cosmos/v1beta1/scripts/predefine-proto.sh",
     "define-proto": "./lib/src/cosmos/v1beta1/scripts/define-proto.sh",
-    "postdefine-proto": "./lib/src/cosmos/v1beta1/scripts/postdefine-proto.sh"
+    "postdefine-proto": "./lib/src/cosmos/v1beta1/scripts/postdefine-proto.sh",
+    "test-coverage": "nyc npm run test"
   },
   "dependencies": {
     "@types/debug": "^4.1.5",
@@ -70,6 +71,7 @@
     "eslint-plugin-prettier": "3.1.4",
     "mocha": "8.1.3",
     "nodemon": "2.0.4",
+    "nyc": "^15.1.0",
     "prettier": "2.1.2",
     "rosie": "^2.0.1",
     "ts-node": "9.0.0",
