@@ -18,7 +18,7 @@
     "lint": "eslint 'lib/**'",
     "test:watch": "nodemon",
     "test": "NODE_ENV=test mocha --timeout 10000 --require ./node_modules/ts-node/register --exit --color --recursive 'lib/src/**/*.spec.ts'",
-    "integration-test": "VALIDATOR_OPERATOR_ADDRESS=${VALIDATOR_OPERATOR_ADDRESS} COMMUNITY_ACCOUNT_MNEMONIC=${COMMUNITY_ACCOUNT_MNEMONIC} RESERVE_ACCOUNT_MNEMONIC=${RESERVE_ACCOUNT_MNEMONIC} ECOSYSTEM_ACCOUNT_MNEMONIC=${ECOSYSTEM_ACCOUNT_MNEMONIC} NODE_ENV=test mocha --timeout 10000 --require ./node_modules/ts-node/register --exit --color ./lib/src/transaction/integration.test.ts",
+    "integration-test": "env VALIDATOR_OPERATOR_ADDRESS=${VALIDATOR_OPERATOR_ADDRESS} COMMUNITY_ACCOUNT_MNEMONIC=${COMMUNITY_ACCOUNT_MNEMONIC} RESERVE_ACCOUNT_MNEMONIC=${RESERVE_ACCOUNT_MNEMONIC} ECOSYSTEM_ACCOUNT_MNEMONIC=${ECOSYSTEM_ACCOUNT_MNEMONIC} NODE_ENV=test mocha --timeout 10000 --require ./node_modules/ts-node/register --exit --color ./lib/src/transaction/integration.test.ts",
     "preget-proto": "rm -rf proto",
     "get-proto": "REF=v0.40.0-rc3 ./lib/src/cosmos/v1beta1/scripts/get-proto.sh",
     "predefine-proto": "./lib/src/cosmos/v1beta1/scripts/predefine-proto.sh",
