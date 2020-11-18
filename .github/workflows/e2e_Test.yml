@@ -17,7 +17,10 @@ jobs:
         with:
           repository: crypto-com/chain-main
           path: chain-main
-      - run: |
+        run: 
+          sudo apt-get install jq
+      - name: Build & Start ChainMaind
+        run: |
           cd chain-main 
           rm -rf $HOME/.chain-maind
           NETWORK=testnet make install 
@@ -50,15 +53,17 @@ jobs:
         run: |
           ## Sleep 5 Seconds
           sleep 5
-          curl --location --request GET 'localhost:26657/status' | grep network
+          curl --location --request GET 'localhost:26657/status' | jq '.network'
+          
           cd chain-main
-          ## TRANSFER 50CRO to TEST ACCOUNT 1
-          # nix-shell ./. -A ci-shell --run "pystarport cli - transfer $(nix-shell ./. -A ci-shell --run "pystarport cli - address ecosystem") cro165tzcrh2yl83g8qeqxueg2g5gzgu57y38vcjcq 5000000000basecro"
-          # nix-shell ./. -A ci-shell --run "pystarport cli - balance cro165tzcrh2yl83g8qeqxueg2g5gzgu57y38vcjcq" | grep 500000000
+          
+          ./build/chain-maind keys show validator --bech val --keyring-backend test --output json | jq >> ./validatorDetails.json
+          
+          ## TRANSFER 100CRO FROM "ecosystem" to "launch"
+          ./build/chain-maind tx bank send $(cat ./ecosystem.json | jq '.address') $(cat ./launch.json | jq '.address') 100tcro --keyring-backend test --chain-id testnet -y | jq 
 
-          ## TRANSFER 50CRO to TEST ACCOUNT 2
-          # nix-shell ./. -A ci-shell --run "pystarport cli - transfer $(nix-shell ./. -A ci-shell --run "pystarport cli - address ecosystem") cro184lta2lsyu47vwyp2e8zmtca3k5yq85p5dugpq 5000000000basecro"
-          # nix-shell ./. -A ci-shell --run "pystarport cli - balance cro184lta2lsyu47vwyp2e8zmtca3k5yq85p5dugpq" | grep 500000000
+          ## TRANSFER 10CRO FROM "launch" to "ecosystem"
+          ./build/chain-maind tx bank send $(cat ./launch.json | jq '.address') $(cat ./ecosystem.json | jq '.address') 10tcro --keyring-backend test --chain-id testnet -y | jq
 
       - name: STEP-2 :Setup JSLIB project
         uses: actions/checkout@v2
@@ -75,7 +80,8 @@ jobs:
           key: ${{ runner.os }}-node${{ matrix.code }}-${{ hashFiles('**/package-lock.json') }}
       - name: Run Integration test suite
         run: |
+          ls -lrt
           ## RUN INTEGRATION TEST
           cd jslib
           npm install
-          # npm run integration-test
+          VALIDATOR_OPERATOR_ADDRESS=$(cat ../chain-main/validatorDetails.json | jq '.address') COMMUNITY_ACCOUNT_MNEMONIC=$(cat ../chain-main/community.json | jq '.mnemonic') RESERVE_ACCOUNT_MNEMONIC=$(cat ../chain-main/reserve.json | jq '.mnemonic') ECOSYSTEM_ACCOUNT_MNEMONIC=$(cat ../chain-main/ecosystem.json | jq '.mnemonic') npm run integration-test

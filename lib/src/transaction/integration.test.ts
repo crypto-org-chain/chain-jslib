@@ -37,11 +37,11 @@ const env = {
     validatorOperatorAddress:
         process.env.VALIDATOR_OPERATOR_ADDRESS || 'tcrocncl1rm0etys4apkaa4v3w462q72rr74he8tru85f3s',
     mnemonic: {
-        preFilledAccount_1:
-            process.env.ACCOUNT_1_MNEMONIC ||
+        communityAccount:
+            process.env.COMMUNITY_ACCOUNT_MNEMONIC ||
             'play release domain walnut sword reason few fish sketch radio fancy since zebra exhibit boring army green suggest behind correct neither useful cruel type',
-        preFilledAccount_2:
-            process.env.ACCOUNT_2_MNEMONIC ||
+        reserveAccount:
+            process.env.RESERVE_ACCOUNT_MNEMONIC ||
             'improve speak symbol relax eyebrow vintage load grief huge wild doctor novel use borrow inch sweet symptom script nuclear drastic green corn phrase razor',
         ecosystemAccount:
             process.env.ECOSYSTEM_ACCOUNT_MNEMONIC ||
@@ -54,8 +54,8 @@ const env = {
 };
 describe('Integration test suite', function () {
     it('[BANK] creates a MsgSend Type Transaction and Broadcasts it.', async function () {
-        const hdKey = HDKey.fromMnemonic(env.mnemonic.preFilledAccount_1);
-        const hdKey2 = HDKey.fromMnemonic(env.mnemonic.preFilledAccount_2);
+        const hdKey = HDKey.fromMnemonic(env.mnemonic.communityAccount);
+        const hdKey2 = HDKey.fromMnemonic(env.mnemonic.reserveAccount);
         const hdKey3 = HDKey.fromMnemonic(env.mnemonic.randomEmptyAccount);
         const privKey = hdKey.derivePrivKey(`m/44'/${customNetwork.bip44Path.coinType}'/0'/0/0`);
         const privKey2 = hdKey2.derivePrivKey(`m/44'/${customNetwork.bip44Path.coinType}'/0'/0/0`);
