@@ -40,6 +40,8 @@ proto/
 tmp/
 
 .idea
+.nyc_output
+coverage
 
 # Generated docs file
 docs/dist/
