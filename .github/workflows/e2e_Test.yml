@@ -86,7 +86,7 @@ jobs:
           cd jslib
           npm install --no-progress --silent --quiet
           echo "*************"
-          VALIDATOR_OPERATOR_ADDRESS=$(./build/chain-maind keys show validator --bech val --keyring-backend test) COMMUNITY_ACCOUNT_MNEMONIC=$(cat ../chain-main/community.json | jq '.mnemonic') RESERVE_ACCOUNT_MNEMONIC=$(cat ../chain-main/reserve.json | jq '.mnemonic') ECOSYSTEM_ACCOUNT_MNEMONIC=$(cat ../chain-main/ecosystem.json | jq '.mnemonic') 
+          VALIDATOR_OPERATOR_ADDRESS=$(../chain-main/build/chain-maind keys show validator --bech val --keyring-backend test) COMMUNITY_ACCOUNT_MNEMONIC=$(cat ../chain-main/community.json | jq '.mnemonic') RESERVE_ACCOUNT_MNEMONIC=$(cat ../chain-main/reserve.json | jq '.mnemonic') ECOSYSTEM_ACCOUNT_MNEMONIC=$(cat ../chain-main/ecosystem.json | jq '.mnemonic') 
           echo $VALIDATOR_OPERATOR_ADDRESS
           echo $COMMUNITY_ACCOUNT_MNEMONIC
           echo $RESERVE_ACCOUNT_MNEMONIC
