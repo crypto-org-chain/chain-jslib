@@ -67,7 +67,6 @@ describe('Testing edge case Txs with 0 account numbers or 0 sequence', function 
         const keyPair = Secp256k1KeyPair.fromPrivKey(privKey);
         const rawTx = new cro.RawTransaction();
 
-        console.log('address >> ', new cro.Address(keyPair).account());
         rawTx.setMemo('Hello Test Memo');
 
         const msgSend1 = new cro.bank.MsgSend({

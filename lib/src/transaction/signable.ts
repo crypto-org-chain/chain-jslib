@@ -190,7 +190,7 @@ const encodeTxBody = (txBody: TxBody): Bytes => {
     }
 
     if (txBody.value.timeoutHeight) {
-        txBodyProto.timeoutHeight = Long.fromNumber(txBody.value.timeoutHeight, false);
+        txBodyProto.timeoutHeight = Long.fromNumber(txBody.value.timeoutHeight, true);
     }
     return Bytes.fromUint8Array(cosmos.tx.v1beta1.TxBody.encode(txBodyProto).finish());
 };
@@ -260,7 +260,7 @@ const makeSignDoc = (txBodyBytes: Bytes, authInfoBytes: Bytes, chainId: string, 
     });
 
     if (accountNumber.toNumber()) {
-        signDoc.accountNumber = Long.fromNumber(accountNumber.toNumber(), false);
+        signDoc.accountNumber = Long.fromNumber(accountNumber.toNumber(), true);
     }
     const signDocProto = cosmos.tx.v1beta1.SignDoc.create(signDoc);
     return Bytes.fromUint8Array(cosmos.tx.v1beta1.SignDoc.encode(signDocProto).finish());
