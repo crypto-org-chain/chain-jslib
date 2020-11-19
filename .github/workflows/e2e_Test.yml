@@ -17,12 +17,7 @@ jobs:
         with:
           repository: crypto-com/chain-main
           path: chain-main
-      - uses: actions/cache@v2
-        with:
-          path: ~/go/pkg/mod
-          key: ${{ runner.os }}-go-${{ hashFiles('**/go.sum') }}
-          restore-keys: |
-            ${{ runner.os }}-go-
+
       - name: Build & Start ChainMaind
         run: |
           sudo apt-get install jq
@@ -63,11 +58,11 @@ jobs:
           cd chain-main  
           ./build/chain-maind keys show validator --bech val --keyring-backend test --output json | jq '.'>> ./validatorDetails.json
 
-          ## TRANSFER 100CRO FROM "ecosystem" to "launch"
-          ./build/chain-maind tx bank send $(./build/chain-maind keys show ecosystem -a --keyring-backend test) $(./build/chain-maind keys show launch -a --keyring-backend test) 100tcro --keyring-backend test --chain-id testnet -y | jq '.'
+          ## TRANSFER 100CRO FROM "ecosystem" to "tcro1n0jfe772qx5svnme9y2gl75u85luxfjnhkacy0"
+          ./build/chain-maind tx bank send $(./build/chain-maind keys show ecosystem -a --keyring-backend test) tcro1n0jfe772qx5svnme9y2gl75u85luxfjnhkacy0 100tcro --keyring-backend test --chain-id testnet -y | jq '.'
 
-          ## TRANSFER 10CRO FROM "launch" to "ecosystem"
-          ./build/chain-maind tx bank send $(./build/chain-maind keys show launch -a --keyring-backend test) $(./build/chain-maind keys show ecosystem -a --keyring-backend test) 10tcro --keyring-backend test --chain-id testnet -y | jq '.'
+          ## TRANSFER 10CRO FROM "reserve" to "tcro1c5nd9l5ylh8udw5lsfs0hlvzxwrlymxqlnl266"
+          ./build/chain-maind tx bank send $(./build/chain-maind keys show reserve -a --keyring-backend test) tcro1c5nd9l5ylh8udw5lsfs0hlvzxwrlymxqlnl266 100tcro --keyring-backend test --chain-id testnet -y | jq '.'
 
       - name: STEP-2 :Setup JSLIB project
         uses: actions/checkout@v2
@@ -84,7 +79,6 @@ jobs:
           key: ${{ runner.os }}-node${{ matrix.code }}-${{ hashFiles('**/package-lock.json') }}
       - name: Run Integration test suite
         run: |
-          ls -lrt
           ## RUN INTEGRATION TEST
           cd jslib
           npm install --no-progress --silent --quiet
@@ -95,4 +89,5 @@ jobs:
           echo $RESERVE_ACCOUNT_MNEMONIC
           echo $ECOSYSTEM_ACCOUNT_MNEMONIC
           echo "*************"
-          VALIDATOR_OPERATOR_ADDRESS=$VALIDATOR_OPERATOR_ADDRESS COMMUNITY_ACCOUNT_MNEMONIC=$COMMUNITY_ACCOUNT_MNEMONIC RESERVE_ACCOUNT_MNEMONIC=$RESERVE_ACCOUNT_MNEMONIC ECOSYSTEM_ACCOUNT_MNEMONIC=$ECOSYSTEM_ACCOUNT_MNEMONIC npm run integration-test
+          # VALIDATOR_OPERATOR_ADDRESS=$VALIDATOR_OPERATOR_ADDRESS COMMUNITY_ACCOUNT_MNEMONIC=$COMMUNITY_ACCOUNT_MNEMONIC RESERVE_ACCOUNT_MNEMONIC=$RESERVE_ACCOUNT_MNEMONIC ECOSYSTEM_ACCOUNT_MNEMONIC=$ECOSYSTEM_ACCOUNT_MNEMONIC
+          npm run integration-test
