@@ -1,6 +1,9 @@
 name: Upload library to jFrog artifactory
 
 on:
+  # For now this upload action will run on feature branches,
+  # But once it's working as expected, it will be removed to only run on master pushes
+  pull_request:
   push:
     branches:
       - master
