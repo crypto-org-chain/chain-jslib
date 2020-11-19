@@ -1,0 +1,29 @@
+name: Upload library to jFrog artifactory
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  upload:
+    name: Upload lib to artifactory
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/setup-node@v1
+        with:
+          node-version: 12
+
+      - uses: actions/checkout@v2
+      - name: build lib
+        run: |
+          npm install
+          npm run build
+
+      - name: install jfrog
+        run: curl -fL https://getcli.jfrog.io | sh
+
+      - name: upload to jfrog
+        run: ./jfrog rt config --url "$ARTIFACTORY_URL" --user "$ARTIFACTORY_USER" --password "$ARTIFACTORY_PASSWORD" --interactive=false &&
+          ./jfrog rt npmi --build-name=GithubActions --build-number=${{ github.run_id }} "$ARTIFACTORY_NAME" &&
+          ./jfrog rt npmp --build-name=GithubActions --build-number=${{ github.run_id }} "$ARTIFACTORY_NAME"
