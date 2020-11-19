@@ -1,0 +1,18 @@
+{
+  "inputFiles": ["./lib/src"],
+  "mode": "modules",
+  "exclude": [
+    "**/*.spec.ts",
+    "**/index.ts"
+  ],
+  "excludeNotExported": true,
+  "excludePrivate": true,
+  "excludeProtected": true,
+  "stripInternal": true,
+
+  "out": "./docs/dist",
+  "readme": "none",
+  "hideGenerator": true,
+
+  "theme": "docs/themes/bin/default"
+}
