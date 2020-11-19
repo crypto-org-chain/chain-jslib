@@ -22,7 +22,7 @@ const PystaportTestNet: Network = {
     },
 };
 
-describe('Testing Edge case Txs with 0 account numbers and 0 sequence', function () {
+describe('Testing edge case Txs with 0 account numbers or 0 sequence', function () {
     it('test tx with 0 account number', function () {
         const hdKey = HDKey.fromMnemonic(
             'ramp sock spice enrich exhibit skate empower process kit pudding olive mesh friend camp labor coconut devote shell argue system pig then provide nose',
