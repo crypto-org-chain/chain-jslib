@@ -1,0 +1,25 @@
+name: Test coverage runner
+
+on:
+  pull_request:
+  push:
+    branches:
+      - master
+jobs:
+  unit:
+    name: Running codecov report
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@master
+      - name: Generate coverage report
+        uses: actions/setup-node@v1
+        with:
+          node-version: '12'
+      - run: npm install
+      - run: npm run run-coverage
+      - run: npm run generate-report
+
+      - uses: codecov/codecov-action@v1
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          verbose: true
