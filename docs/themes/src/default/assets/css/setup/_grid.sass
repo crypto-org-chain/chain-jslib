@@ -1,0 +1,70 @@
+=size-xs
+    @media (max-width: 640px)
+        &
+            @content
+
+=size-sm
+    @media (min-width: 641px) and (max-width: 900px)
+        &
+            @content
+
+=size-md
+    @media (min-width: 901px) and (max-width: 1024px)
+        &
+            @content
+
+=size-lg
+    @media (min-width: 1025px)
+        &
+            @content
+
+=size-xs-sm
+    @media (max-width: 900px)
+        &
+            @content
+
+=size-md-lg
+    @media (min-width: 901px)
+        &
+            @content
+
+.root
+    display: flex
+    flex-direction: column
+    min-height: 100vh
+    padding: 0
+
+.container
+    max-width: 1376px
+    margin: 0 auto
+    padding: 0
+
+    +size-xs-sm
+        padding: 0 20px
+
+main
+    flex: auto
+    width: 100%
+
+.container-main
+    padding-bottom: 200px
+
+.row
+    +clearfix
+    display: flex
+    position: relative
+    margin: 0 -10px
+
+.col
+    @extend %prevent-children-margin
+    box-sizing: border-box
+    float: left
+    padding: 0 10px
+
+@for $width from 1 to 12
+    .col-#{$width}
+        @extend .col
+        width: $width / 12 * 100%
+
+    .offset-#{$width}
+        margin-left: $width / 12 * 100%

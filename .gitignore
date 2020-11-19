@@ -40,3 +40,6 @@ proto/
 tmp/
 
 .idea
+
+# Generated docs file
+docs/dist/
