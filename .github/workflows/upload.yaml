@@ -31,8 +31,10 @@ jobs:
           echo $ARTIFACTORY_URL
           echo "$ARTIFACTORY_URL"
           echo ${{ github.run_id }}
+          echo ${{ github.ARTIFACTORY_URL }}
+          echo ${{ secrets.ARTIFACTORY_URL }}
 
       - name: upload to jfrog
-        run: ./jfrog rt config --url "$ARTIFACTORY_URL" --user "$ARTIFACTORY_USER" --password "$ARTIFACTORY_PASSWORD" --interactive=false &&
+        run: ./jfrog rt config --url "ARTIFACTORY_URL" --user "$ARTIFACTORY_USER" --password "$ARTIFACTORY_PASSWORD" --interactive=false &&
           ./jfrog rt npmi --build-name=GithubActions --build-number=${{ github.run_id }} "$ARTIFACTORY_NAME" &&
           ./jfrog rt npmp --build-name=GithubActions --build-number=${{ github.run_id }} "$ARTIFACTORY_NAME"
