@@ -27,6 +27,6 @@ jobs:
         run: curl -fL https://getcli.jfrog.io | sh
 
       - name: upload to jfrog
-        run: ./jfrog rt config --url "ARTIFACTORY_URL" --user "${{ secrets.ARTIFACTORY_URL }}" --password "${{ secrets.ARTIFACTORY_PASSWORD }}" --interactive=false &&
+        run: ./jfrog rt config --url "${{ secrets.ARTIFACTORY_URL }}" --user "${{ secrets.ARTIFACTORY_USER }}" --password "${{ secrets.ARTIFACTORY_PASSWORD }}" --interactive=false &&
           ./jfrog rt npmi --build-name=GithubActions --build-number=${{ github.run_id }} "${{ secrets.ARTIFACTORY_NAME }}" &&
           ./jfrog rt npmp --build-name=GithubActions --build-number=${{ github.run_id }} "${{ secrets.ARTIFACTORY_NAME }}"
