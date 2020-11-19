@@ -35,7 +35,7 @@ const axiosConfig = {
 };
 const env = {
     validatorOperatorAddress:
-        process.env.VALIDATOR_OPERATOR_ADDRESS || 'tcrocncl1rm0etys4apkaa4v3w462q72rr74he8tru85f3s',
+        process.env.VALIDATOR_OPERATOR_ADDRESS || '',
     mnemonic: {
         communityAccount:
             process.env.COMMUNITY_ACCOUNT_MNEMONIC ||
