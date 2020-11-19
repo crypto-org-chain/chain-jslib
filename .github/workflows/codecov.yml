@@ -1,4 +1,4 @@
-name: Codecov
+name: Test coverage runner
 
 on:
   pull_request:
@@ -22,3 +22,4 @@ jobs:
       - uses: codecov/codecov-action@v1
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
+          verbose: true
