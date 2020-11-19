@@ -26,6 +26,12 @@ jobs:
       - name: install jfrog
         run: curl -fL https://getcli.jfrog.io | sh
 
+      - name : debug output env values
+        run: |
+          echo $ARTIFACTORY_URL
+          echo "$ARTIFACTORY_URL"
+          echo ${{ github.run_id }}
+
       - name: upload to jfrog
         run: ./jfrog rt config --url "$ARTIFACTORY_URL" --user "$ARTIFACTORY_USER" --password "$ARTIFACTORY_PASSWORD" --interactive=false &&
           ./jfrog rt npmi --build-name=GithubActions --build-number=${{ github.run_id }} "$ARTIFACTORY_NAME" &&
