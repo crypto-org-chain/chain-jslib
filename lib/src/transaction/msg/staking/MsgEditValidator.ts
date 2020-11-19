@@ -11,9 +11,9 @@ export const msgEditValidator = function (config: InitConfigurations) {
     return class MsgEditValidator implements Message {
         public readonly description: IDescription;
 
-        public minSelfDelegation: string;
+        public minSelfDelegation: string | null;
 
-        public commissionRate: string;
+        public commissionRate: string | null;
 
         public validatorAddress: string;
 
@@ -60,7 +60,7 @@ export const msgEditValidator = function (config: InitConfigurations) {
 
 export type MsgCreateEditOptions = {
     description: IDescription;
-    commissionRate: string;
-    minSelfDelegation: string;
+    commissionRate: string | null;
+    minSelfDelegation: string | null;
     validatorAddress: string;
 };

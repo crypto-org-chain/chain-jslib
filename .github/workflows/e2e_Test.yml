@@ -17,29 +17,55 @@ jobs:
         with:
           repository: crypto-com/chain-main
           path: chain-main
-      - uses: cachix/install-nix-action@v10
-        with:
-          nix_path: nixpkgs=channel:nixos-unstable
-      - run: |
-          nix-env -iA cachix -f https://cachix.org/api/v1/install
-          cachix use crypto-com
-          cd chain-main 
-          cp ./config.yaml.example ./config.yaml
-          nix-shell ./. -A ci-shell --run "pystarport serve &"
 
+      - name: Build & Start ChainMaind
+        run: |
+          sudo apt-get install jq
+          cd chain-main 
+          rm -rf $HOME/.chain-maind
+          NETWORK=testnet make install 
+          NETWORK=testnet make build
+
+          ./build/chain-maind unsafe-reset-all
+
+          ./build/chain-maind init testnode --chain-id testnet -o
+
+          ./build/chain-maind keys add validator --keyring-backend test --output json >> ./validator.json
+          ./build/chain-maind keys add ecosystem --keyring-backend test --output json >> ./ecosystem.json
+          ./build/chain-maind keys add launch --keyring-backend test --output json >> ./launch.json
+          ./build/chain-maind keys add community --keyring-backend test --output json >> ./community.json
+          ./build/chain-maind keys add reserve --keyring-backend test --output json >> ./reserve.json
+
+          ./build/chain-maind add-genesis-account $(./build/chain-maind keys show validator -a --keyring-backend test) 200tcro
+          ./build/chain-maind add-genesis-account $(./build/chain-maind keys show ecosystem -a --keyring-backend test) 200tcro
+          ./build/chain-maind add-genesis-account $(./build/chain-maind keys show launch -a --keyring-backend test) 200tcro
+          ./build/chain-maind add-genesis-account $(./build/chain-maind keys show community -a --keyring-backend test) 200tcro
+          ./build/chain-maind add-genesis-account $(./build/chain-maind keys show reserve -a --keyring-backend test) 200tcro
+
+          ./build/chain-maind gentx validator --amount 100tcro --keyring-backend test  --chain-id testnet
+
+          ./build/chain-maind collect-gentxs
+
+          ./build/chain-maind validate-genesis
+
+          ./build/chain-maind start --trace &
       - name: Transfer funds to Test accounts
         run: |
           ## Sleep 5 Seconds
           sleep 5
-          curl --location --request GET 'localhost:26657/status' | grep network
-          cd chain-main
-          ## TRANSFER 50CRO to TEST ACCOUNT 1
-          nix-shell ./. -A ci-shell --run "pystarport cli - transfer $(nix-shell ./. -A ci-shell --run "pystarport cli - address ecosystem") cro165tzcrh2yl83g8qeqxueg2g5gzgu57y38vcjcq 5000000000basecro"
-          nix-shell ./. -A ci-shell --run "pystarport cli - balance cro165tzcrh2yl83g8qeqxueg2g5gzgu57y38vcjcq" | grep 500000000
+          curl --location --request GET 'localhost:26657/status' | jq '.'
 
-          ## TRANSFER 50CRO to TEST ACCOUNT 2
-          nix-shell ./. -A ci-shell --run "pystarport cli - transfer $(nix-shell ./. -A ci-shell --run "pystarport cli - address ecosystem") cro184lta2lsyu47vwyp2e8zmtca3k5yq85p5dugpq 5000000000basecro"
-          nix-shell ./. -A ci-shell --run "pystarport cli - balance cro184lta2lsyu47vwyp2e8zmtca3k5yq85p5dugpq" | grep 500000000
+          cd chain-main  
+          ./build/chain-maind keys show validator --bech val --keyring-backend test --output json | jq '.'>> ./validatorDetails.json
+
+          ## TRANSFER 100CRO FROM "ecosystem" to "tcro1n0jfe772qx5svnme9y2gl75u85luxfjnhkacy0"
+          ./build/chain-maind tx bank send $(./build/chain-maind keys show ecosystem -a --keyring-backend test) tcro1n0jfe772qx5svnme9y2gl75u85luxfjnhkacy0 100tcro --keyring-backend test --chain-id testnet -y | jq '.'
+      
+          ## TRANSFER 100CRO FROM "ecosystem" to "tcro17c6rn92lnw0d8ct37mlycdaeau4f9hm569ef9s"
+          ./build/chain-maind tx bank send $(./build/chain-maind keys show ecosystem -a --keyring-backend test) tcro17c6rn92lnw0d8ct37mlycdaeau4f9hm569ef9s 100tcro --keyring-backend test --chain-id testnet -y | jq '.'
+      
+          ## TRANSFER 10CRO FROM "reserve" to "tcro1c5nd9l5ylh8udw5lsfs0hlvzxwrlymxqlnl266"
+          ./build/chain-maind tx bank send $(./build/chain-maind keys show reserve -a --keyring-backend test) tcro1c5nd9l5ylh8udw5lsfs0hlvzxwrlymxqlnl266 100tcro --keyring-backend test --chain-id testnet -y | jq '.'
 
       - name: STEP-2 :Setup JSLIB project
         uses: actions/checkout@v2
@@ -58,5 +84,13 @@ jobs:
         run: |
           ## RUN INTEGRATION TEST
           cd jslib
-          npm install
-          npm run integration-test
+          npm install --no-progress --silent --quiet
+          echo "*************"
+          VALIDATOR_OPERATOR_ADDRESS=$(../chain-main/build/chain-maind keys show validator -a --bech val --keyring-backend test) COMMUNITY_ACCOUNT_MNEMONIC=$(cat ../chain-main/community.json | jq '.mnemonic') RESERVE_ACCOUNT_MNEMONIC=$(cat ../chain-main/reserve.json | jq '.mnemonic') ECOSYSTEM_ACCOUNT_MNEMONIC=$(cat ../chain-main/ecosystem.json | jq '.mnemonic') 
+          echo $VALIDATOR_OPERATOR_ADDRESS
+          echo $COMMUNITY_ACCOUNT_MNEMONIC
+          echo $RESERVE_ACCOUNT_MNEMONIC
+          echo $ECOSYSTEM_ACCOUNT_MNEMONIC
+          # COMMUNITY_ACCOUNT_MNEMONIC=$COMMUNITY_ACCOUNT_MNEMONIC RESERVE_ACCOUNT_MNEMONIC=$RESERVE_ACCOUNT_MNEMONIC ECOSYSTEM_ACCOUNT_MNEMONIC=$ECOSYSTEM_ACCOUNT_MNEMONIC
+          echo "*************"
+           VALIDATOR_OPERATOR_ADDRESS=$VALIDATOR_OPERATOR_ADDRESS npm run integration-test
