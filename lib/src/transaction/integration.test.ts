@@ -34,8 +34,7 @@ const axiosConfig = {
     url: `http://${testNode.httpEndpoint}:${testNode.httpPort}`,
 };
 const env = {
-    validatorOperatorAddress:
-        process.env.VALIDATOR_OPERATOR_ADDRESS || '',
+    validatorOperatorAddress: process.env.VALIDATOR_OPERATOR_ADDRESS || '',
     mnemonic: {
         communityAccount:
             process.env.COMMUNITY_ACCOUNT_MNEMONIC ||
