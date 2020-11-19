@@ -257,8 +257,11 @@ const makeSignDoc = (txBodyBytes: Bytes, authInfoBytes: Bytes, chainId: string, 
         bodyBytes: txBodyBytes.toUint8Array(),
         authInfoBytes: authInfoBytes.toUint8Array(),
         chainId,
-        accountNumber: Long.fromString(accountNumber.toString()),
     });
+
+    if (accountNumber.toNumber()) {
+        signDoc.accountNumber = Long.fromNumber(accountNumber.toNumber(), false);
+    }
     const signDocProto = cosmos.tx.v1beta1.SignDoc.create(signDoc);
     return Bytes.fromUint8Array(cosmos.tx.v1beta1.SignDoc.encode(signDocProto).finish());
 };
