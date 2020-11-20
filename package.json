@@ -5,6 +5,13 @@
   "author": "Crypto.com <chain@crypto.com>",
   "license": "Apache-2.0",
   "main": "lib/dist/index.js",
+  "files": [
+    "lib/dist",
+    "CHANGELOG.md",
+    "LICENSE",
+    "README.md",
+    "SECURITY.md"
+  ],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/crypto-com/chain-jslib-nextgen.git"
