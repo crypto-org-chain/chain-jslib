@@ -1,5 +1,5 @@
 {
-  "name": "chain-jslib",
+  "name": "@crypto-com/chain-jslib",
   "version": "0.0.2",
   "description": "Crypto.com Chain JavaScript library",
   "author": "Crypto.com <chain@crypto.com>",
