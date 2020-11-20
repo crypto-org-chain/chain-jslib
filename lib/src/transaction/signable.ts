@@ -259,6 +259,8 @@ const makeSignDoc = (txBodyBytes: Bytes, authInfoBytes: Bytes, chainId: string, 
         chainId,
     });
 
+    // Omit encoding the Long value when it's either 0, null or undefined to keep it consistent with backend encoding
+    // https://github.com/protobufjs/protobuf.js/issues/1138
     if (accountNumber.toNumber()) {
         signDoc.accountNumber = Long.fromNumber(accountNumber.toNumber(), true);
     }
