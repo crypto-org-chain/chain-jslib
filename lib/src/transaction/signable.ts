@@ -190,7 +190,7 @@ const encodeTxBody = (txBody: TxBody): Bytes => {
     }
 
     if (txBody.value.timeoutHeight) {
-        txBodyProto.timeoutHeight = Long.fromNumber(txBody.value.timeoutHeight, false);
+        txBodyProto.timeoutHeight = Long.fromNumber(txBody.value.timeoutHeight, true);
     }
     return Bytes.fromUint8Array(cosmos.tx.v1beta1.TxBody.encode(txBodyProto).finish());
 };
@@ -257,8 +257,13 @@ const makeSignDoc = (txBodyBytes: Bytes, authInfoBytes: Bytes, chainId: string, 
         bodyBytes: txBodyBytes.toUint8Array(),
         authInfoBytes: authInfoBytes.toUint8Array(),
         chainId,
-        accountNumber: Long.fromString(accountNumber.toString()),
     });
+
+    // Omit encoding the Long value when it's either 0, null or undefined to keep it consistent with backend encoding
+    // https://github.com/protobufjs/protobuf.js/issues/1138
+    if (accountNumber.toNumber()) {
+        signDoc.accountNumber = Long.fromNumber(accountNumber.toNumber(), true);
+    }
     const signDocProto = cosmos.tx.v1beta1.SignDoc.create(signDoc);
     return Bytes.fromUint8Array(cosmos.tx.v1beta1.SignDoc.encode(signDocProto).finish());
 };
