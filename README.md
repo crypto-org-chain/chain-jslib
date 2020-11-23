@@ -21,8 +21,8 @@ const Bytes = sdk.utils.Bytes;
 // Initializing the library configurations with TestNet config
 const cro = sdk.CroSDK({ network: sdk.CroNetwork.Testnet });
 
-// Generating a random HD Key
-let randomHDKey = HDKey.generateMnemonic(12);
+// Generating a random mnemonic phrase
+let randomPhrase = HDKey.generateMnemonic(12); // This returns a 12 words mnemonic phrase
 
 // Import an HDKey from a previous mnemonic phrase
 const importedHDKey = HDKey.fromMnemonic(
