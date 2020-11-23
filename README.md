@@ -12,7 +12,7 @@ npm install @crypto-com/chain-jslib
 
 ```javascript
 // Imports
-const sdk = require("chain-jslib");
+const sdk = require("@crypto-com/chain-jslib");
 const HDKey = sdk.HDKey;
 const Secp256k1KeyPair = sdk.Secp256k1KeyPair;
 const Bytes = sdk.utils.Bytes;
@@ -60,7 +60,7 @@ console.log(address); // tcro1sxe3v6gka3u8j7d2xhl8rmfyjnmggqlh6e82hq
 ```javascript
 // Imports
 
-const sdk = require("chain-jslib");
+const sdk = require("@crypto-com/chain-jslib");
 const HDKey = sdk.HDKey;
 const Secp256k1KeyPair = sdk.Secp256k1KeyPair;
 const Units = sdk.Units;
