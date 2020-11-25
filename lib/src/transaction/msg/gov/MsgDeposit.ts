@@ -35,7 +35,12 @@ export const msgDeposit = function (config: InitConfigurations) {
                 value: {
                     proposalId: proposal,
                     depositor: this.depositor,
-                    amount: cosmosAmount,
+                    amount: [
+                        {
+                            denom: cosmosAmount.denom,
+                            amount: cosmosAmount.amount,
+                        },
+                    ],
                 },
             };
         }
