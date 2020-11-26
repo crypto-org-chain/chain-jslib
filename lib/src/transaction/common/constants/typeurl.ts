@@ -9,6 +9,7 @@ export const COSMOS_MSG_TYPEURL = {
     MsgUndelegate: '/cosmos.staking.v1beta1.MsgUndelegate',
     MsgWithdrawValidatorCommission: '/cosmos.distribution.v1beta1.MsgWithdrawValidatorCommission',
     MsgDeposit: '/cosmos.gov.v1beta1.MsgDeposit',
+    MsgSubmitProposal: '/cosmos.gov.v1beta1.MsgSubmitProposal',
     PubKey: {
         ed25519: '/cosmos.crypto.ed25519.PubKey',
     },
