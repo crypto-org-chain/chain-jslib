@@ -5181,6 +5181,891 @@ export namespace cosmos {
             }
         }
     }
+
+    /** Namespace gov. */
+    namespace gov {
+        /** Namespace v1beta1. */
+        namespace v1beta1 {
+            /** Represents a Msg */
+            class Msg extends $protobuf.rpc.Service {
+                /**
+                 * Constructs a new Msg service.
+                 * @param rpcImpl RPC implementation
+                 * @param [requestDelimited=false] Whether requests are length-delimited
+                 * @param [responseDelimited=false] Whether responses are length-delimited
+                 */
+                constructor(rpcImpl: $protobuf.RPCImpl, requestDelimited?: boolean, responseDelimited?: boolean);
+
+                /**
+                 * Creates new Msg service using the specified rpc implementation.
+                 * @param rpcImpl RPC implementation
+                 * @param [requestDelimited=false] Whether requests are length-delimited
+                 * @param [responseDelimited=false] Whether responses are length-delimited
+                 * @returns RPC service. Useful where requests and/or responses are streamed.
+                 */
+                public static create(
+                    rpcImpl: $protobuf.RPCImpl,
+                    requestDelimited?: boolean,
+                    responseDelimited?: boolean,
+                ): Msg;
+
+                /**
+                 * Calls SubmitProposal.
+                 * @param request MsgSubmitProposal message or plain object
+                 * @param callback Node-style callback called with the error, if any, and MsgSubmitProposalResponse
+                 */
+                public submitProposal(
+                    request: cosmos.gov.v1beta1.IMsgSubmitProposal,
+                    callback: cosmos.gov.v1beta1.Msg.SubmitProposalCallback,
+                ): void;
+
+                /**
+                 * Calls SubmitProposal.
+                 * @param request MsgSubmitProposal message or plain object
+                 * @returns Promise
+                 */
+                public submitProposal(
+                    request: cosmos.gov.v1beta1.IMsgSubmitProposal,
+                ): Promise<cosmos.gov.v1beta1.MsgSubmitProposalResponse>;
+
+                /**
+                 * Calls Vote.
+                 * @param request MsgVote message or plain object
+                 * @param callback Node-style callback called with the error, if any, and MsgVoteResponse
+                 */
+                public vote(request: cosmos.gov.v1beta1.IMsgVote, callback: cosmos.gov.v1beta1.Msg.VoteCallback): void;
+
+                /**
+                 * Calls Vote.
+                 * @param request MsgVote message or plain object
+                 * @returns Promise
+                 */
+                public vote(request: cosmos.gov.v1beta1.IMsgVote): Promise<cosmos.gov.v1beta1.MsgVoteResponse>;
+
+                /**
+                 * Calls Deposit.
+                 * @param request MsgDeposit message or plain object
+                 * @param callback Node-style callback called with the error, if any, and MsgDepositResponse
+                 */
+                public deposit(
+                    request: cosmos.gov.v1beta1.IMsgDeposit,
+                    callback: cosmos.gov.v1beta1.Msg.DepositCallback,
+                ): void;
+
+                /**
+                 * Calls Deposit.
+                 * @param request MsgDeposit message or plain object
+                 * @returns Promise
+                 */
+                public deposit(request: cosmos.gov.v1beta1.IMsgDeposit): Promise<cosmos.gov.v1beta1.MsgDepositResponse>;
+            }
+
+            namespace Msg {
+                /**
+                 * Callback as used by {@link cosmos.gov.v1beta1.Msg#submitProposal}.
+                 * @param error Error, if any
+                 * @param [response] MsgSubmitProposalResponse
+                 */
+                type SubmitProposalCallback = (
+                    error: Error | null,
+                    response?: cosmos.gov.v1beta1.MsgSubmitProposalResponse,
+                ) => void;
+
+                /**
+                 * Callback as used by {@link cosmos.gov.v1beta1.Msg#vote}.
+                 * @param error Error, if any
+                 * @param [response] MsgVoteResponse
+                 */
+                type VoteCallback = (error: Error | null, response?: cosmos.gov.v1beta1.MsgVoteResponse) => void;
+
+                /**
+                 * Callback as used by {@link cosmos.gov.v1beta1.Msg#deposit}.
+                 * @param error Error, if any
+                 * @param [response] MsgDepositResponse
+                 */
+                type DepositCallback = (error: Error | null, response?: cosmos.gov.v1beta1.MsgDepositResponse) => void;
+            }
+
+            /** Properties of a MsgSubmitProposal. */
+            interface IMsgSubmitProposal {
+                /** MsgSubmitProposal content */
+                content?: google.protobuf.IAny | null;
+
+                /** MsgSubmitProposal initialDeposit */
+                initialDeposit?: cosmos.base.v1beta1.ICoin[] | null;
+
+                /** MsgSubmitProposal proposer */
+                proposer?: string | null;
+            }
+
+            /** Represents a MsgSubmitProposal. */
+            class MsgSubmitProposal implements IMsgSubmitProposal {
+                /**
+                 * Constructs a new MsgSubmitProposal.
+                 * @param [p] Properties to set
+                 */
+                constructor(p?: cosmos.gov.v1beta1.IMsgSubmitProposal);
+
+                /** MsgSubmitProposal content. */
+                public content?: google.protobuf.IAny | null;
+
+                /** MsgSubmitProposal initialDeposit. */
+                public initialDeposit: cosmos.base.v1beta1.ICoin[];
+
+                /** MsgSubmitProposal proposer. */
+                public proposer: string;
+
+                /**
+                 * Creates a new MsgSubmitProposal instance using the specified properties.
+                 * @param [properties] Properties to set
+                 * @returns MsgSubmitProposal instance
+                 */
+                public static create(
+                    properties?: cosmos.gov.v1beta1.IMsgSubmitProposal,
+                ): cosmos.gov.v1beta1.MsgSubmitProposal;
+
+                /**
+                 * Encodes the specified MsgSubmitProposal message. Does not implicitly {@link cosmos.gov.v1beta1.MsgSubmitProposal.verify|verify} messages.
+                 * @param m MsgSubmitProposal message or plain object to encode
+                 * @param [w] Writer to encode to
+                 * @returns Writer
+                 */
+                public static encode(m: cosmos.gov.v1beta1.IMsgSubmitProposal, w?: $protobuf.Writer): $protobuf.Writer;
+
+                /**
+                 * Decodes a MsgSubmitProposal message from the specified reader or buffer.
+                 * @param r Reader or buffer to decode from
+                 * @param [l] Message length if known beforehand
+                 * @returns MsgSubmitProposal
+                 * @throws {Error} If the payload is not a reader or valid buffer
+                 * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                 */
+                public static decode(
+                    r: $protobuf.Reader | Uint8Array,
+                    l?: number,
+                ): cosmos.gov.v1beta1.MsgSubmitProposal;
+            }
+
+            /** Properties of a MsgSubmitProposalResponse. */
+            interface IMsgSubmitProposalResponse {
+                /** MsgSubmitProposalResponse proposalId */
+                proposalId?: Long | null;
+            }
+
+            /** Represents a MsgSubmitProposalResponse. */
+            class MsgSubmitProposalResponse implements IMsgSubmitProposalResponse {
+                /**
+                 * Constructs a new MsgSubmitProposalResponse.
+                 * @param [p] Properties to set
+                 */
+                constructor(p?: cosmos.gov.v1beta1.IMsgSubmitProposalResponse);
+
+                /** MsgSubmitProposalResponse proposalId. */
+                public proposalId: Long;
+
+                /**
+                 * Creates a new MsgSubmitProposalResponse instance using the specified properties.
+                 * @param [properties] Properties to set
+                 * @returns MsgSubmitProposalResponse instance
+                 */
+                public static create(
+                    properties?: cosmos.gov.v1beta1.IMsgSubmitProposalResponse,
+                ): cosmos.gov.v1beta1.MsgSubmitProposalResponse;
+
+                /**
+                 * Encodes the specified MsgSubmitProposalResponse message. Does not implicitly {@link cosmos.gov.v1beta1.MsgSubmitProposalResponse.verify|verify} messages.
+                 * @param m MsgSubmitProposalResponse message or plain object to encode
+                 * @param [w] Writer to encode to
+                 * @returns Writer
+                 */
+                public static encode(
+                    m: cosmos.gov.v1beta1.IMsgSubmitProposalResponse,
+                    w?: $protobuf.Writer,
+                ): $protobuf.Writer;
+
+                /**
+                 * Decodes a MsgSubmitProposalResponse message from the specified reader or buffer.
+                 * @param r Reader or buffer to decode from
+                 * @param [l] Message length if known beforehand
+                 * @returns MsgSubmitProposalResponse
+                 * @throws {Error} If the payload is not a reader or valid buffer
+                 * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                 */
+                public static decode(
+                    r: $protobuf.Reader | Uint8Array,
+                    l?: number,
+                ): cosmos.gov.v1beta1.MsgSubmitProposalResponse;
+            }
+
+            /** Properties of a MsgVote. */
+            interface IMsgVote {
+                /** MsgVote proposalId */
+                proposalId?: Long | null;
+
+                /** MsgVote voter */
+                voter?: string | null;
+
+                /** MsgVote option */
+                option?: cosmos.gov.v1beta1.VoteOption | null;
+            }
+
+            /** Represents a MsgVote. */
+            class MsgVote implements IMsgVote {
+                /**
+                 * Constructs a new MsgVote.
+                 * @param [p] Properties to set
+                 */
+                constructor(p?: cosmos.gov.v1beta1.IMsgVote);
+
+                /** MsgVote proposalId. */
+                public proposalId: Long;
+
+                /** MsgVote voter. */
+                public voter: string;
+
+                /** MsgVote option. */
+                public option: cosmos.gov.v1beta1.VoteOption;
+
+                /**
+                 * Creates a new MsgVote instance using the specified properties.
+                 * @param [properties] Properties to set
+                 * @returns MsgVote instance
+                 */
+                public static create(properties?: cosmos.gov.v1beta1.IMsgVote): cosmos.gov.v1beta1.MsgVote;
+
+                /**
+                 * Encodes the specified MsgVote message. Does not implicitly {@link cosmos.gov.v1beta1.MsgVote.verify|verify} messages.
+                 * @param m MsgVote message or plain object to encode
+                 * @param [w] Writer to encode to
+                 * @returns Writer
+                 */
+                public static encode(m: cosmos.gov.v1beta1.IMsgVote, w?: $protobuf.Writer): $protobuf.Writer;
+
+                /**
+                 * Decodes a MsgVote message from the specified reader or buffer.
+                 * @param r Reader or buffer to decode from
+                 * @param [l] Message length if known beforehand
+                 * @returns MsgVote
+                 * @throws {Error} If the payload is not a reader or valid buffer
+                 * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                 */
+                public static decode(r: $protobuf.Reader | Uint8Array, l?: number): cosmos.gov.v1beta1.MsgVote;
+            }
+
+            /** Properties of a MsgVoteResponse. */
+            interface IMsgVoteResponse {}
+
+            /** Represents a MsgVoteResponse. */
+            class MsgVoteResponse implements IMsgVoteResponse {
+                /**
+                 * Constructs a new MsgVoteResponse.
+                 * @param [p] Properties to set
+                 */
+                constructor(p?: cosmos.gov.v1beta1.IMsgVoteResponse);
+
+                /**
+                 * Creates a new MsgVoteResponse instance using the specified properties.
+                 * @param [properties] Properties to set
+                 * @returns MsgVoteResponse instance
+                 */
+                public static create(
+                    properties?: cosmos.gov.v1beta1.IMsgVoteResponse,
+                ): cosmos.gov.v1beta1.MsgVoteResponse;
+
+                /**
+                 * Encodes the specified MsgVoteResponse message. Does not implicitly {@link cosmos.gov.v1beta1.MsgVoteResponse.verify|verify} messages.
+                 * @param m MsgVoteResponse message or plain object to encode
+                 * @param [w] Writer to encode to
+                 * @returns Writer
+                 */
+                public static encode(m: cosmos.gov.v1beta1.IMsgVoteResponse, w?: $protobuf.Writer): $protobuf.Writer;
+
+                /**
+                 * Decodes a MsgVoteResponse message from the specified reader or buffer.
+                 * @param r Reader or buffer to decode from
+                 * @param [l] Message length if known beforehand
+                 * @returns MsgVoteResponse
+                 * @throws {Error} If the payload is not a reader or valid buffer
+                 * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                 */
+                public static decode(r: $protobuf.Reader | Uint8Array, l?: number): cosmos.gov.v1beta1.MsgVoteResponse;
+            }
+
+            /** Properties of a MsgDeposit. */
+            interface IMsgDeposit {
+                /** MsgDeposit proposalId */
+                proposalId?: Long | null;
+
+                /** MsgDeposit depositor */
+                depositor?: string | null;
+
+                /** MsgDeposit amount */
+                amount?: cosmos.base.v1beta1.ICoin[] | null;
+            }
+
+            /** Represents a MsgDeposit. */
+            class MsgDeposit implements IMsgDeposit {
+                /**
+                 * Constructs a new MsgDeposit.
+                 * @param [p] Properties to set
+                 */
+                constructor(p?: cosmos.gov.v1beta1.IMsgDeposit);
+
+                /** MsgDeposit proposalId. */
+                public proposalId: Long;
+
+                /** MsgDeposit depositor. */
+                public depositor: string;
+
+                /** MsgDeposit amount. */
+                public amount: cosmos.base.v1beta1.ICoin[];
+
+                /**
+                 * Creates a new MsgDeposit instance using the specified properties.
+                 * @param [properties] Properties to set
+                 * @returns MsgDeposit instance
+                 */
+                public static create(properties?: cosmos.gov.v1beta1.IMsgDeposit): cosmos.gov.v1beta1.MsgDeposit;
+
+                /**
+                 * Encodes the specified MsgDeposit message. Does not implicitly {@link cosmos.gov.v1beta1.MsgDeposit.verify|verify} messages.
+                 * @param m MsgDeposit message or plain object to encode
+                 * @param [w] Writer to encode to
+                 * @returns Writer
+                 */
+                public static encode(m: cosmos.gov.v1beta1.IMsgDeposit, w?: $protobuf.Writer): $protobuf.Writer;
+
+                /**
+                 * Decodes a MsgDeposit message from the specified reader or buffer.
+                 * @param r Reader or buffer to decode from
+                 * @param [l] Message length if known beforehand
+                 * @returns MsgDeposit
+                 * @throws {Error} If the payload is not a reader or valid buffer
+                 * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                 */
+                public static decode(r: $protobuf.Reader | Uint8Array, l?: number): cosmos.gov.v1beta1.MsgDeposit;
+            }
+
+            /** Properties of a MsgDepositResponse. */
+            interface IMsgDepositResponse {}
+
+            /** Represents a MsgDepositResponse. */
+            class MsgDepositResponse implements IMsgDepositResponse {
+                /**
+                 * Constructs a new MsgDepositResponse.
+                 * @param [p] Properties to set
+                 */
+                constructor(p?: cosmos.gov.v1beta1.IMsgDepositResponse);
+
+                /**
+                 * Creates a new MsgDepositResponse instance using the specified properties.
+                 * @param [properties] Properties to set
+                 * @returns MsgDepositResponse instance
+                 */
+                public static create(
+                    properties?: cosmos.gov.v1beta1.IMsgDepositResponse,
+                ): cosmos.gov.v1beta1.MsgDepositResponse;
+
+                /**
+                 * Encodes the specified MsgDepositResponse message. Does not implicitly {@link cosmos.gov.v1beta1.MsgDepositResponse.verify|verify} messages.
+                 * @param m MsgDepositResponse message or plain object to encode
+                 * @param [w] Writer to encode to
+                 * @returns Writer
+                 */
+                public static encode(m: cosmos.gov.v1beta1.IMsgDepositResponse, w?: $protobuf.Writer): $protobuf.Writer;
+
+                /**
+                 * Decodes a MsgDepositResponse message from the specified reader or buffer.
+                 * @param r Reader or buffer to decode from
+                 * @param [l] Message length if known beforehand
+                 * @returns MsgDepositResponse
+                 * @throws {Error} If the payload is not a reader or valid buffer
+                 * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                 */
+                public static decode(
+                    r: $protobuf.Reader | Uint8Array,
+                    l?: number,
+                ): cosmos.gov.v1beta1.MsgDepositResponse;
+            }
+
+            /** VoteOption enum. */
+            enum VoteOption {
+                VOTE_OPTION_UNSPECIFIED = 0,
+                VOTE_OPTION_YES = 1,
+                VOTE_OPTION_ABSTAIN = 2,
+                VOTE_OPTION_NO = 3,
+                VOTE_OPTION_NO_WITH_VETO = 4,
+            }
+
+            /** Properties of a TextProposal. */
+            interface ITextProposal {
+                /** TextProposal title */
+                title?: string | null;
+
+                /** TextProposal description */
+                description?: string | null;
+            }
+
+            /** Represents a TextProposal. */
+            class TextProposal implements ITextProposal {
+                /**
+                 * Constructs a new TextProposal.
+                 * @param [p] Properties to set
+                 */
+                constructor(p?: cosmos.gov.v1beta1.ITextProposal);
+
+                /** TextProposal title. */
+                public title: string;
+
+                /** TextProposal description. */
+                public description: string;
+
+                /**
+                 * Creates a new TextProposal instance using the specified properties.
+                 * @param [properties] Properties to set
+                 * @returns TextProposal instance
+                 */
+                public static create(properties?: cosmos.gov.v1beta1.ITextProposal): cosmos.gov.v1beta1.TextProposal;
+
+                /**
+                 * Encodes the specified TextProposal message. Does not implicitly {@link cosmos.gov.v1beta1.TextProposal.verify|verify} messages.
+                 * @param m TextProposal message or plain object to encode
+                 * @param [w] Writer to encode to
+                 * @returns Writer
+                 */
+                public static encode(m: cosmos.gov.v1beta1.ITextProposal, w?: $protobuf.Writer): $protobuf.Writer;
+
+                /**
+                 * Decodes a TextProposal message from the specified reader or buffer.
+                 * @param r Reader or buffer to decode from
+                 * @param [l] Message length if known beforehand
+                 * @returns TextProposal
+                 * @throws {Error} If the payload is not a reader or valid buffer
+                 * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                 */
+                public static decode(r: $protobuf.Reader | Uint8Array, l?: number): cosmos.gov.v1beta1.TextProposal;
+            }
+
+            /** Properties of a Deposit. */
+            interface IDeposit {
+                /** Deposit proposalId */
+                proposalId?: Long | null;
+
+                /** Deposit depositor */
+                depositor?: string | null;
+
+                /** Deposit amount */
+                amount?: cosmos.base.v1beta1.ICoin[] | null;
+            }
+
+            /** Represents a Deposit. */
+            class Deposit implements IDeposit {
+                /**
+                 * Constructs a new Deposit.
+                 * @param [p] Properties to set
+                 */
+                constructor(p?: cosmos.gov.v1beta1.IDeposit);
+
+                /** Deposit proposalId. */
+                public proposalId: Long;
+
+                /** Deposit depositor. */
+                public depositor: string;
+
+                /** Deposit amount. */
+                public amount: cosmos.base.v1beta1.ICoin[];
+
+                /**
+                 * Creates a new Deposit instance using the specified properties.
+                 * @param [properties] Properties to set
+                 * @returns Deposit instance
+                 */
+                public static create(properties?: cosmos.gov.v1beta1.IDeposit): cosmos.gov.v1beta1.Deposit;
+
+                /**
+                 * Encodes the specified Deposit message. Does not implicitly {@link cosmos.gov.v1beta1.Deposit.verify|verify} messages.
+                 * @param m Deposit message or plain object to encode
+                 * @param [w] Writer to encode to
+                 * @returns Writer
+                 */
+                public static encode(m: cosmos.gov.v1beta1.IDeposit, w?: $protobuf.Writer): $protobuf.Writer;
+
+                /**
+                 * Decodes a Deposit message from the specified reader or buffer.
+                 * @param r Reader or buffer to decode from
+                 * @param [l] Message length if known beforehand
+                 * @returns Deposit
+                 * @throws {Error} If the payload is not a reader or valid buffer
+                 * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                 */
+                public static decode(r: $protobuf.Reader | Uint8Array, l?: number): cosmos.gov.v1beta1.Deposit;
+            }
+
+            /** Properties of a Proposal. */
+            interface IProposal {
+                /** Proposal proposalId */
+                proposalId?: Long | null;
+
+                /** Proposal content */
+                content?: google.protobuf.IAny | null;
+
+                /** Proposal status */
+                status?: cosmos.gov.v1beta1.ProposalStatus | null;
+
+                /** Proposal finalTallyResult */
+                finalTallyResult?: cosmos.gov.v1beta1.ITallyResult | null;
+
+                /** Proposal submitTime */
+                submitTime?: google.protobuf.ITimestamp | null;
+
+                /** Proposal depositEndTime */
+                depositEndTime?: google.protobuf.ITimestamp | null;
+
+                /** Proposal totalDeposit */
+                totalDeposit?: cosmos.base.v1beta1.ICoin[] | null;
+
+                /** Proposal votingStartTime */
+                votingStartTime?: google.protobuf.ITimestamp | null;
+
+                /** Proposal votingEndTime */
+                votingEndTime?: google.protobuf.ITimestamp | null;
+            }
+
+            /** Represents a Proposal. */
+            class Proposal implements IProposal {
+                /**
+                 * Constructs a new Proposal.
+                 * @param [p] Properties to set
+                 */
+                constructor(p?: cosmos.gov.v1beta1.IProposal);
+
+                /** Proposal proposalId. */
+                public proposalId: Long;
+
+                /** Proposal content. */
+                public content?: google.protobuf.IAny | null;
+
+                /** Proposal status. */
+                public status: cosmos.gov.v1beta1.ProposalStatus;
+
+                /** Proposal finalTallyResult. */
+                public finalTallyResult?: cosmos.gov.v1beta1.ITallyResult | null;
+
+                /** Proposal submitTime. */
+                public submitTime?: google.protobuf.ITimestamp | null;
+
+                /** Proposal depositEndTime. */
+                public depositEndTime?: google.protobuf.ITimestamp | null;
+
+                /** Proposal totalDeposit. */
+                public totalDeposit: cosmos.base.v1beta1.ICoin[];
+
+                /** Proposal votingStartTime. */
+                public votingStartTime?: google.protobuf.ITimestamp | null;
+
+                /** Proposal votingEndTime. */
+                public votingEndTime?: google.protobuf.ITimestamp | null;
+
+                /**
+                 * Creates a new Proposal instance using the specified properties.
+                 * @param [properties] Properties to set
+                 * @returns Proposal instance
+                 */
+                public static create(properties?: cosmos.gov.v1beta1.IProposal): cosmos.gov.v1beta1.Proposal;
+
+                /**
+                 * Encodes the specified Proposal message. Does not implicitly {@link cosmos.gov.v1beta1.Proposal.verify|verify} messages.
+                 * @param m Proposal message or plain object to encode
+                 * @param [w] Writer to encode to
+                 * @returns Writer
+                 */
+                public static encode(m: cosmos.gov.v1beta1.IProposal, w?: $protobuf.Writer): $protobuf.Writer;
+
+                /**
+                 * Decodes a Proposal message from the specified reader or buffer.
+                 * @param r Reader or buffer to decode from
+                 * @param [l] Message length if known beforehand
+                 * @returns Proposal
+                 * @throws {Error} If the payload is not a reader or valid buffer
+                 * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                 */
+                public static decode(r: $protobuf.Reader | Uint8Array, l?: number): cosmos.gov.v1beta1.Proposal;
+            }
+
+            /** ProposalStatus enum. */
+            enum ProposalStatus {
+                PROPOSAL_STATUS_UNSPECIFIED = 0,
+                PROPOSAL_STATUS_DEPOSIT_PERIOD = 1,
+                PROPOSAL_STATUS_VOTING_PERIOD = 2,
+                PROPOSAL_STATUS_PASSED = 3,
+                PROPOSAL_STATUS_REJECTED = 4,
+                PROPOSAL_STATUS_FAILED = 5,
+            }
+
+            /** Properties of a TallyResult. */
+            interface ITallyResult {
+                /** TallyResult yes */
+                yes?: string | null;
+
+                /** TallyResult abstain */
+                abstain?: string | null;
+
+                /** TallyResult no */
+                no?: string | null;
+
+                /** TallyResult noWithVeto */
+                noWithVeto?: string | null;
+            }
+
+            /** Represents a TallyResult. */
+            class TallyResult implements ITallyResult {
+                /**
+                 * Constructs a new TallyResult.
+                 * @param [p] Properties to set
+                 */
+                constructor(p?: cosmos.gov.v1beta1.ITallyResult);
+
+                /** TallyResult yes. */
+                public yes: string;
+
+                /** TallyResult abstain. */
+                public abstain: string;
+
+                /** TallyResult no. */
+                public no: string;
+
+                /** TallyResult noWithVeto. */
+                public noWithVeto: string;
+
+                /**
+                 * Creates a new TallyResult instance using the specified properties.
+                 * @param [properties] Properties to set
+                 * @returns TallyResult instance
+                 */
+                public static create(properties?: cosmos.gov.v1beta1.ITallyResult): cosmos.gov.v1beta1.TallyResult;
+
+                /**
+                 * Encodes the specified TallyResult message. Does not implicitly {@link cosmos.gov.v1beta1.TallyResult.verify|verify} messages.
+                 * @param m TallyResult message or plain object to encode
+                 * @param [w] Writer to encode to
+                 * @returns Writer
+                 */
+                public static encode(m: cosmos.gov.v1beta1.ITallyResult, w?: $protobuf.Writer): $protobuf.Writer;
+
+                /**
+                 * Decodes a TallyResult message from the specified reader or buffer.
+                 * @param r Reader or buffer to decode from
+                 * @param [l] Message length if known beforehand
+                 * @returns TallyResult
+                 * @throws {Error} If the payload is not a reader or valid buffer
+                 * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                 */
+                public static decode(r: $protobuf.Reader | Uint8Array, l?: number): cosmos.gov.v1beta1.TallyResult;
+            }
+
+            /** Properties of a Vote. */
+            interface IVote {
+                /** Vote proposalId */
+                proposalId?: Long | null;
+
+                /** Vote voter */
+                voter?: string | null;
+
+                /** Vote option */
+                option?: cosmos.gov.v1beta1.VoteOption | null;
+            }
+
+            /** Represents a Vote. */
+            class Vote implements IVote {
+                /**
+                 * Constructs a new Vote.
+                 * @param [p] Properties to set
+                 */
+                constructor(p?: cosmos.gov.v1beta1.IVote);
+
+                /** Vote proposalId. */
+                public proposalId: Long;
+
+                /** Vote voter. */
+                public voter: string;
+
+                /** Vote option. */
+                public option: cosmos.gov.v1beta1.VoteOption;
+
+                /**
+                 * Creates a new Vote instance using the specified properties.
+                 * @param [properties] Properties to set
+                 * @returns Vote instance
+                 */
+                public static create(properties?: cosmos.gov.v1beta1.IVote): cosmos.gov.v1beta1.Vote;
+
+                /**
+                 * Encodes the specified Vote message. Does not implicitly {@link cosmos.gov.v1beta1.Vote.verify|verify} messages.
+                 * @param m Vote message or plain object to encode
+                 * @param [w] Writer to encode to
+                 * @returns Writer
+                 */
+                public static encode(m: cosmos.gov.v1beta1.IVote, w?: $protobuf.Writer): $protobuf.Writer;
+
+                /**
+                 * Decodes a Vote message from the specified reader or buffer.
+                 * @param r Reader or buffer to decode from
+                 * @param [l] Message length if known beforehand
+                 * @returns Vote
+                 * @throws {Error} If the payload is not a reader or valid buffer
+                 * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                 */
+                public static decode(r: $protobuf.Reader | Uint8Array, l?: number): cosmos.gov.v1beta1.Vote;
+            }
+
+            /** Properties of a DepositParams. */
+            interface IDepositParams {
+                /** DepositParams minDeposit */
+                minDeposit?: cosmos.base.v1beta1.ICoin[] | null;
+
+                /** DepositParams maxDepositPeriod */
+                maxDepositPeriod?: google.protobuf.IDuration | null;
+            }
+
+            /** Represents a DepositParams. */
+            class DepositParams implements IDepositParams {
+                /**
+                 * Constructs a new DepositParams.
+                 * @param [p] Properties to set
+                 */
+                constructor(p?: cosmos.gov.v1beta1.IDepositParams);
+
+                /** DepositParams minDeposit. */
+                public minDeposit: cosmos.base.v1beta1.ICoin[];
+
+                /** DepositParams maxDepositPeriod. */
+                public maxDepositPeriod?: google.protobuf.IDuration | null;
+
+                /**
+                 * Creates a new DepositParams instance using the specified properties.
+                 * @param [properties] Properties to set
+                 * @returns DepositParams instance
+                 */
+                public static create(properties?: cosmos.gov.v1beta1.IDepositParams): cosmos.gov.v1beta1.DepositParams;
+
+                /**
+                 * Encodes the specified DepositParams message. Does not implicitly {@link cosmos.gov.v1beta1.DepositParams.verify|verify} messages.
+                 * @param m DepositParams message or plain object to encode
+                 * @param [w] Writer to encode to
+                 * @returns Writer
+                 */
+                public static encode(m: cosmos.gov.v1beta1.IDepositParams, w?: $protobuf.Writer): $protobuf.Writer;
+
+                /**
+                 * Decodes a DepositParams message from the specified reader or buffer.
+                 * @param r Reader or buffer to decode from
+                 * @param [l] Message length if known beforehand
+                 * @returns DepositParams
+                 * @throws {Error} If the payload is not a reader or valid buffer
+                 * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                 */
+                public static decode(r: $protobuf.Reader | Uint8Array, l?: number): cosmos.gov.v1beta1.DepositParams;
+            }
+
+            /** Properties of a VotingParams. */
+            interface IVotingParams {
+                /** VotingParams votingPeriod */
+                votingPeriod?: google.protobuf.IDuration | null;
+            }
+
+            /** Represents a VotingParams. */
+            class VotingParams implements IVotingParams {
+                /**
+                 * Constructs a new VotingParams.
+                 * @param [p] Properties to set
+                 */
+                constructor(p?: cosmos.gov.v1beta1.IVotingParams);
+
+                /** VotingParams votingPeriod. */
+                public votingPeriod?: google.protobuf.IDuration | null;
+
+                /**
+                 * Creates a new VotingParams instance using the specified properties.
+                 * @param [properties] Properties to set
+                 * @returns VotingParams instance
+                 */
+                public static create(properties?: cosmos.gov.v1beta1.IVotingParams): cosmos.gov.v1beta1.VotingParams;
+
+                /**
+                 * Encodes the specified VotingParams message. Does not implicitly {@link cosmos.gov.v1beta1.VotingParams.verify|verify} messages.
+                 * @param m VotingParams message or plain object to encode
+                 * @param [w] Writer to encode to
+                 * @returns Writer
+                 */
+                public static encode(m: cosmos.gov.v1beta1.IVotingParams, w?: $protobuf.Writer): $protobuf.Writer;
+
+                /**
+                 * Decodes a VotingParams message from the specified reader or buffer.
+                 * @param r Reader or buffer to decode from
+                 * @param [l] Message length if known beforehand
+                 * @returns VotingParams
+                 * @throws {Error} If the payload is not a reader or valid buffer
+                 * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                 */
+                public static decode(r: $protobuf.Reader | Uint8Array, l?: number): cosmos.gov.v1beta1.VotingParams;
+            }
+
+            /** Properties of a TallyParams. */
+            interface ITallyParams {
+                /** TallyParams quorum */
+                quorum?: Uint8Array | null;
+
+                /** TallyParams threshold */
+                threshold?: Uint8Array | null;
+
+                /** TallyParams vetoThreshold */
+                vetoThreshold?: Uint8Array | null;
+            }
+
+            /** Represents a TallyParams. */
+            class TallyParams implements ITallyParams {
+                /**
+                 * Constructs a new TallyParams.
+                 * @param [p] Properties to set
+                 */
+                constructor(p?: cosmos.gov.v1beta1.ITallyParams);
+
+                /** TallyParams quorum. */
+                public quorum: Uint8Array;
+
+                /** TallyParams threshold. */
+                public threshold: Uint8Array;
+
+                /** TallyParams vetoThreshold. */
+                public vetoThreshold: Uint8Array;
+
+                /**
+                 * Creates a new TallyParams instance using the specified properties.
+                 * @param [properties] Properties to set
+                 * @returns TallyParams instance
+                 */
+                public static create(properties?: cosmos.gov.v1beta1.ITallyParams): cosmos.gov.v1beta1.TallyParams;
+
+                /**
+                 * Encodes the specified TallyParams message. Does not implicitly {@link cosmos.gov.v1beta1.TallyParams.verify|verify} messages.
+                 * @param m TallyParams message or plain object to encode
+                 * @param [w] Writer to encode to
+                 * @returns Writer
+                 */
+                public static encode(m: cosmos.gov.v1beta1.ITallyParams, w?: $protobuf.Writer): $protobuf.Writer;
+
+                /**
+                 * Decodes a TallyParams message from the specified reader or buffer.
+                 * @param r Reader or buffer to decode from
+                 * @param [l] Message length if known beforehand
+                 * @returns TallyParams
+                 * @throws {Error} If the payload is not a reader or valid buffer
+                 * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                 */
+                public static decode(r: $protobuf.Reader | Uint8Array, l?: number): cosmos.gov.v1beta1.TallyParams;
+            }
+        }
+    }
 }
 
 /** Namespace google. */
