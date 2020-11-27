@@ -201,10 +201,10 @@ describe('Secp256k1KeyPair', function () {
                 '0xab0b3706f0ec0fd6963fa5fecf2651bd67196ffdd3050da3886851a135e61860',
             ];
 
-            prefixedHexKeys.forEach((prefixedKey) => {
-                const prefixedKeyPair = Secp256k1KeyPair.fromPrivKey(Bytes.fromHexString(prefixedKey));
+            prefixedHexKeys.forEach((prefixedHexKey) => {
+                const prefixedKeyPair = Secp256k1KeyPair.fromPrivKey(Bytes.fromHexString(prefixedHexKey));
                 const keyPairNonPrefixed = Secp256k1KeyPair.fromPrivKey(
-                    Bytes.fromHexString(prefixedKey.replace('0x', '')),
+                    Bytes.fromHexString(prefixedHexKey.replace('0x', '')),
                 );
                 expect(prefixedKeyPair.getPrivKey()).to.be.eql(keyPairNonPrefixed.getPrivKey());
             });
