@@ -4,7 +4,7 @@ import { owOptionalStrictObject, owStrictObject } from '../../ow.types';
 import { Bytes } from './bytes';
 
 export const owHexString = ow.string.validate((val: string) => ({
-    validator: val.length % 2 === 0 && /^[0-9a-fA-F]*$/.test(val),
+    validator: val.length % 2 === 0 && /^(0x)?[0-9a-fA-F]*$/.test(val),
     message: (label: string) =>
         `Expected ${label} to be hexadecimal string of even length, got \`${JSON.stringify(val)}\``,
 }));
