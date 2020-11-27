@@ -5,7 +5,6 @@ import Big from 'big.js';
 import { fuzzyDescribe } from '../../../test/mocha-fuzzy/suite';
 import { Units } from '../../../coin/coin';
 import { CroSDK } from '../../../core/cro';
-import { Msg } from '../../../cosmos/v1beta1/types/msg';
 import { HDKey } from '../../../hdkey/hdkey';
 import { Secp256k1KeyPair } from '../../../keypair/secp256k1';
 import { Network } from '../../../network/network';
@@ -42,42 +41,6 @@ describe('Testing MsgSubmitProposal', function () {
                 'Expected `options` to be of type `object`',
             );
         });
-    });
-
-    it('Test MsgSubmitProposal conversion', function () {
-        const coin = new cro.Coin('12000500', Units.BASE);
-
-        const communityPoolSpentContent = new cro.gov.proposal.CommunityPoolSpendProposal({
-            title: 'Make new cosmos version backward compatible with pre release',
-            description: 'Lorem Ipsum ... A great proposal to increate backward compatibility and initial work on IBC',
-            recipient: 'tcro1nhe3qasy0ayhje95mtsvppyg67d3zswf04sda8',
-            amount: coin,
-        });
-
-        const msgSubmitProposal = new cro.gov.MsgSubmitProposal({
-            proposer: 'tcro184lta2lsyu47vwyp2e8zmtca3k5yq85p6c4vp3',
-            initialDeposit: coin,
-            content: communityPoolSpentContent,
-        });
-
-        const rawMsg: Msg = {
-            typeUrl: '/cosmos.gov.v1beta1.MsgSubmitProposal',
-            value: {
-                proposer: 'tcro184lta2lsyu47vwyp2e8zmtca3k5yq85p6c4vp3',
-                content: {
-                    title: 'Make new cosmos version backward compatible with pre release',
-                    description:
-                        'Lorem Ipsum ... A great proposal to increate backward compatibility and initial work on IBC',
-                },
-                initialDeposit: [
-                    {
-                        denom: 'basetcro',
-                        amount: '12000500',
-                    },
-                ],
-            },
-        };
-        expect(msgSubmitProposal.toRawMsg()).to.eqls(rawMsg);
     });
 
     it('Test appendTxBody MsgSubmitProposal Tx signing', function () {

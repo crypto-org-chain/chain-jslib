@@ -7,6 +7,10 @@ import { google } from '../../../cosmos/v1beta1/codec';
 // software-upgrade        Submit a software upgrade proposal
 
 export interface IMsgProposalContent {
+    /**
+     * Returns the proto encoding representation of any IMsgProposalContent implementation
+     * @returns {google.protobuf.Any}
+     */
     getEncoded(): google.protobuf.Any;
 }
 
