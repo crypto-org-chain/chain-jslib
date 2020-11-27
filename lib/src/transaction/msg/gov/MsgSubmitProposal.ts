@@ -6,6 +6,7 @@ import { ICoin } from '../../../coin/coin';
 import { COSMOS_MSG_TYPEURL } from '../../common/constants/typeurl';
 import { AddressType, validateAddress } from '../../../utils/address';
 import { owMsgSubmitProposalOptions } from '../ow.types';
+import { cosmos, google } from '../../../cosmos/v1beta1/codec';
 
 export const msgSubmitProposal = function (config: InitConfigurations) {
     return class MsgSubmitProposal implements Message {
@@ -41,10 +42,7 @@ export const msgSubmitProposal = function (config: InitConfigurations) {
                 typeUrl: COSMOS_MSG_TYPEURL.MsgSubmitProposal,
                 value: {
                     proposer: this.proposer,
-                    content: {
-                        title: this.title,
-                        description: this.description,
-                    },
+                    content: this.encodeContent(),
                     initialDeposit: [
                         {
                             denom: cosmosAmount.denom,
@@ -53,6 +51,34 @@ export const msgSubmitProposal = function (config: InitConfigurations) {
                     ],
                 },
             };
+        }
+
+        // cancel-software-upgrade Cancel the current software upgrade proposal
+        // community-pool-spend    Submit a community pool spend proposal
+        // param-change            Submit a parameter change proposal
+        // software-upgrade        Submit a software upgrade proposal
+
+        public encodeContent() {
+            const cosmosAmount = this.initialDeposit.toCosmosCoin();
+
+            const poolSpend = {
+                title: this.title,
+                description: this.description,
+                recipient: this.proposer,
+                amount: [
+                    {
+                        denom: cosmosAmount.denom,
+                        amount: cosmosAmount.amount,
+                    },
+                ],
+            };
+
+            const spendProposal = cosmos.distribution.v1beta1.CommunityPoolSpendProposal.create(poolSpend);
+
+            return google.protobuf.Any.create({
+                type_url: '/cosmos.distribution.v1beta1.CommunityPoolSpendProposal',
+                value: cosmos.distribution.v1beta1.CommunityPoolSpendProposal.encode(spendProposal).finish(),
+            });
         }
 
         validate() {
