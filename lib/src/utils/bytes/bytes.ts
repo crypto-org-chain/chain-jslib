@@ -59,8 +59,17 @@ export class Bytes {
         if (value.length === 0) {
             return Bytes.fromUint8Array(new Uint8Array());
         }
-        const arr = new Uint8Array(value.match(/.{2}/g)!.map((v) => parseInt(v, 16)));
+        const hexString = this.clean0x(value);
+        const arr = new Uint8Array(hexString.match(/.{2}/g)!.map((v) => parseInt(v, 16)));
         return Bytes.fromUint8Array(arr);
+    }
+
+    private static clean0x(value: string) {
+        let hexString = value;
+        if (hexString.startsWith('0x')) {
+            hexString = value.replace('0x', '');
+        }
+        return hexString;
     }
 
     /**
