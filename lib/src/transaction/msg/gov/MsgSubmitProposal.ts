@@ -16,6 +16,12 @@ export const msgSubmitProposal = function (config: InitConfigurations) {
 
         public readonly initialDeposit: ICoin;
 
+        /**
+         * Constructor to create a new MsgDeposit
+         * @param {ProposalOptions} options
+         * @returns {MsgSubmitProposal}
+         * @throws {Error} when options is invalid
+         */
         constructor(options: ProposalOptions) {
             // TODO : ow validation
 
@@ -25,14 +31,20 @@ export const msgSubmitProposal = function (config: InitConfigurations) {
             this.initialDeposit = options.initialDeposit;
         }
 
+        /**
+         * Returns the raw Msg representation of MsgSubmitProposal
+         * @returns {Msg}
+         */
         toRawMsg(): Msg {
             const cosmosAmount = this.initialDeposit.toCosmosCoin();
             return {
                 typeUrl: COSMOS_MSG_TYPEURL.MsgSubmitProposal,
                 value: {
-                    title: this.title,
-                    description: this.description,
                     proposer: this.proposer,
+                    content: {
+                        title: this.title,
+                        description: this.description,
+                    },
                     initialDeposit: [
                         {
                             denom: cosmosAmount.denom,
