@@ -61,7 +61,6 @@ export class Bytes {
         if (value.length === 0) {
             return Bytes.fromUint8Array(new Uint8Array());
         }
-
         const hexValue = this.clean0x(value);
         const arr = new Uint8Array(hexValue.match(/.{2}/g)!.map((v) => parseInt(v, 16)));
         return Bytes.fromUint8Array(arr);
