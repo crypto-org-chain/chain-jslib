@@ -1,6 +1,14 @@
 import ow from 'ow';
 import { owCoin } from '../../coin/ow.types';
 import { owBig, owStrictObject } from '../../ow.types';
+import { VoteOptions } from './gov/MsgVote';
+
+const voteOptionValidator = (val: string) => ({
+    validator: Object.values(VoteOptions).includes(val as any),
+    message: (label: string) => `Expected ${label} to be one of the Vote options, got \`${val}\``,
+});
+
+export const owVoteOption = () => ow.string.validate(voteOptionValidator);
 
 export const owMsgSendOptions = owStrictObject().exactShape({
     fromAddress: ow.string,
@@ -12,6 +20,12 @@ export const owMsgDepositOptions = owStrictObject().exactShape({
     depositor: ow.string,
     proposalId: owBig(),
     amount: owCoin(),
+});
+
+export const owMsgVoteOptions = owStrictObject().exactShape({
+    voter: ow.string,
+    proposalId: owBig(),
+    option: owVoteOption(),
 });
 
 export const owMsgCreateValidatorOptions = owStrictObject().exactShape({
