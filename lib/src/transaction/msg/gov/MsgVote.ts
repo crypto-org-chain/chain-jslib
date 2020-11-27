@@ -12,7 +12,7 @@ export enum VoteOptions {
     YES = 'Yes',
     ABSTAIN = 'Abstain',
     NO = 'No',
-    NO_WITH_Veto = 'NoWithVeto'
+    NO_WITH_VETO = 'NoWithVeto',
 }
 
 export const msgVote = function (config: InitConfigurations) {
@@ -40,7 +40,7 @@ export const msgVote = function (config: InitConfigurations) {
                 value: {
                     proposalId: proposal,
                     voter: this.voter,
-                    option: this.option
+                    option: this.option,
                 },
             };
         }
