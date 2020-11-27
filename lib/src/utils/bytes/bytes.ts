@@ -9,6 +9,8 @@ import { owBase64String, owHexString } from './ow.types';
 export class Bytes {
     private readonly value: Uint8Array;
 
+    private static readonly PREFIX_OX = '0x';
+
     /**
      * Constructor to create Bytes from Uint8Array value
      * @param {Uint8Array} value
@@ -59,17 +61,17 @@ export class Bytes {
         if (value.length === 0) {
             return Bytes.fromUint8Array(new Uint8Array());
         }
-        const hexString = this.clean0x(value);
-        const arr = new Uint8Array(hexString.match(/.{2}/g)!.map((v) => parseInt(v, 16)));
+
+        const hexValue = this.clean0x(value);
+        const arr = new Uint8Array(hexValue.match(/.{2}/g)!.map((v) => parseInt(v, 16)));
         return Bytes.fromUint8Array(arr);
     }
 
     private static clean0x(value: string) {
-        let hexString = value;
-        if (hexString.startsWith('0x')) {
-            hexString = value.replace('0x', '');
+        if (value.startsWith(this.PREFIX_OX)) {
+            return value.replace(this.PREFIX_OX, '');
         }
-        return hexString;
+        return value;
     }
 
     /**
