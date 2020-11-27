@@ -133,10 +133,10 @@ describe('Bytes', function () {
         });
 
         it('should not throw Error when hex strings are prefixed with 0x', function () {
-            const anyHexString = `0x${'01'.repeat(31)}`;
+            const anyHexString = `0x${'01'.repeat(32)}`;
             const bytes = Bytes.fromHexString(anyHexString);
 
-            const expectedUint8Array = new Uint8Array(32).fill(0).fill(1, 1);
+            const expectedUint8Array = new Uint8Array(32).fill(1);
             expect(bytes.toUint8Array()).to.deep.eq(expectedUint8Array);
         });
     });

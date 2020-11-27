@@ -190,5 +190,24 @@ describe('Secp256k1KeyPair', function () {
                 ),
             ).to.be.true;
         });
+
+        it('should not crash on 0x prefixed keys import and prefixed should be similar to unprefixed', function () {
+            const prefixedHexKeys = [
+                '0xf1de6bdadc6db4631c1586cb382ee9ff7d0bf01409ddf3d9ac1acf60d9e76a4f',
+                '0x9f821dd809b2f739d8c0f2cbe9b509af56053a59288802bb3e12644015a04062',
+                '0x392d282180a5e4f2470d5ef47be91b06aabed88873e33286fd85527a8b7508c4',
+                '0x96cf28df58c5c11e5badf42332ff0dce4343b651511028428c3bda6f525d392f',
+                '0x5e6142308a989b069fabf1623101a9b2dec2c90d3bbd9485416cdaa9a41d1685',
+                '0xab0b3706f0ec0fd6963fa5fecf2651bd67196ffdd3050da3886851a135e61860',
+            ];
+
+            prefixedHexKeys.forEach((prefixedHexKey) => {
+                const prefixedKeyPair = Secp256k1KeyPair.fromPrivKey(Bytes.fromHexString(prefixedHexKey));
+                const keyPairNonPrefixed = Secp256k1KeyPair.fromPrivKey(
+                    Bytes.fromHexString(prefixedHexKey.replace('0x', '')),
+                );
+                expect(prefixedKeyPair.getPrivKey()).to.be.eql(keyPairNonPrefixed.getPrivKey());
+            });
+        });
     });
 });
