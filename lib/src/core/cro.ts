@@ -14,6 +14,7 @@ import { msgBeginRedelegate } from '../transaction/msg/staking/MsgBeginRedelegat
 import { userAddress } from '../address/address';
 import { msgWithdrawValidatorCommission } from '../transaction/msg/distribution/MsgWithdrawValidatorCommission';
 import { msgDeposit } from '../transaction/msg/gov/MsgDeposit';
+import { msgSubmitProposal } from '../transaction/msg/gov/MsgSubmitProposal';
 
 export const CroSDK = function (configs: InitConfigurations) {
     ow(configs, 'configs', owCroSDKInitParams);
@@ -24,6 +25,7 @@ export const CroSDK = function (configs: InitConfigurations) {
         Address: userAddress(configs),
         gov: {
             MsgDeposit: msgDeposit(configs),
+            MsgSubmitProposal: msgSubmitProposal(configs),
         },
         bank: {
             MsgSend: msgSend(configs),

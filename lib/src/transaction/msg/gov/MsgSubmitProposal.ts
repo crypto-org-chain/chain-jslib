@@ -1,11 +1,12 @@
+import ow from 'ow';
 import { InitConfigurations } from '../../../core/cro';
 import { Message } from '../Message';
 import { Msg } from '../../../cosmos/v1beta1/types/msg';
 import { ICoin } from '../../../coin/coin';
 import { COSMOS_MSG_TYPEURL } from '../../common/constants/typeurl';
 import { AddressType, validateAddress } from '../../../utils/address';
+import { owMsgSubmitProposalOptions } from '../ow.types';
 
-// https://github.com/cosmos/cosmos-sdk/blob/8de96d16f9f72afb576af7bf6d9351d37cd1d828/x/gov/types/gov.pb.go#L122
 export const msgSubmitProposal = function (config: InitConfigurations) {
     return class MsgSubmitProposal implements Message {
         public readonly title: string;
@@ -23,8 +24,7 @@ export const msgSubmitProposal = function (config: InitConfigurations) {
          * @throws {Error} when options is invalid
          */
         constructor(options: ProposalOptions) {
-            // TODO : ow validation
-
+            ow(options, 'options', owMsgSubmitProposalOptions);
             this.title = options.title;
             this.description = options.description;
             this.proposer = options.proposer;

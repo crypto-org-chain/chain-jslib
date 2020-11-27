@@ -8,6 +8,13 @@ export const owMsgSendOptions = owStrictObject().exactShape({
     amount: owCoin(),
 });
 
+export const owMsgSubmitProposalOptions = owStrictObject().exactShape({
+    title: ow.string,
+    description: ow.string,
+    proposer: ow.string,
+    initialDeposit: owCoin(),
+});
+
 export const owMsgDepositOptions = owStrictObject().exactShape({
     depositor: ow.string,
     proposalId: owBig(),
