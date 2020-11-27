@@ -56,7 +56,7 @@ describe('Testing MsgSend', function () {
 
     it('Test appendTxBody MsgSend Tx signing', function () {
         const anyKeyPair = Secp256k1KeyPair.fromPrivKey(
-            Bytes.fromHexString('0x66633d18513bec30dd11a209f1ceb1787aa9e2069d5d47e590174dc9665102b3'),
+            Bytes.fromHexString('66633d18513bec30dd11a209f1ceb1787aa9e2069d5d47e590174dc9665102b3'),
         );
         const coin = new cro.Coin('12000500', Units.CRO);
 
