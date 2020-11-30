@@ -17,6 +17,7 @@ import { msgDeposit } from '../transaction/msg/gov/MsgDeposit';
 import { msgVote } from '../transaction/msg/gov/MsgVote';
 import { msgSubmitProposal } from '../transaction/msg/gov/MsgSubmitProposal';
 import { communityPoolSpendProposal } from '../transaction/msg/gov/CommunityPoolSpendProposal';
+import { paramChangeProposal } from '../transaction/msg/gov/ParamChangeProposal';
 
 export const CroSDK = function (configs: InitConfigurations) {
     ow(configs, 'configs', owCroSDKInitParams);
@@ -31,6 +32,7 @@ export const CroSDK = function (configs: InitConfigurations) {
             MsgSubmitProposal: msgSubmitProposal(configs),
             proposal: {
                 CommunityPoolSpendProposal: communityPoolSpendProposal(configs),
+                ParamChangeProposal: paramChangeProposal(),
                 // TODO : More type of proposals to be added here
             },
         },
