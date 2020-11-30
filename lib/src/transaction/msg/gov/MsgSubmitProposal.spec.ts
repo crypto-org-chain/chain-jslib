@@ -51,7 +51,7 @@ describe('Testing MsgSubmitProposal and its content types', function () {
         });
     });
 
-    fuzzyDescribe('should throw Error when CommunityPoolSpendProposal options is invalid', function (fuzzy) {
+    fuzzyDescribe('should throw Error when ParamChangeProposal options is invalid', function (fuzzy) {
         const anyValidCommunityPoolSpendProposal = {
             title: 'Make new cosmos version backward compatible with pre release',
             description: 'Lorem Ipsum ... A great proposal to ...',
@@ -65,6 +65,30 @@ describe('Testing MsgSubmitProposal and its content types', function () {
                 return;
             }
             expect(() => new cro.gov.proposal.CommunityPoolSpendProposal(options.value)).to.throw(
+                'Expected `options` to be of type `object`',
+            );
+        });
+    });
+
+    fuzzyDescribe('should throw Error when CommunityPoolSpendProposal options is invalid', function (fuzzy) {
+        const anyValidParamChangeProposal = new cro.gov.proposal.ParamChangeProposal({
+            title: 'Change a param to something more optimized',
+            description: 'Lorem Ipsum ... The param should be changed to something more optimized',
+            paramChanges: [
+                {
+                    subspace: 'staking',
+                    key: 'MaxValidators',
+                    value: '12',
+                },
+            ],
+        });
+        const testRunner = fuzzy(fuzzy.ObjArg(anyValidParamChangeProposal));
+
+        testRunner(function (options) {
+            if (options.valid) {
+                return;
+            }
+            expect(() => new cro.gov.proposal.ParamChangeProposal(options.value)).to.throw(
                 'Expected `options` to be of type `object`',
             );
         });
