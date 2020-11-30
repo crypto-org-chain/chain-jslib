@@ -53,7 +53,7 @@ export const msgVote = function (config: InitConfigurations) {
                     type: AddressType.USER,
                 })
             ) {
-                throw new TypeError('Provided `depositor` doesnt match network selected');
+                throw new TypeError('Provided `voter` doesnt match network selected');
             }
         }
     };
