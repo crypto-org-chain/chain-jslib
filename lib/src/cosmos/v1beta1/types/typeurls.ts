@@ -21,6 +21,7 @@ export const typeUrlMappings: {
     '/cosmos.crypto.ed25519.PubKey': cosmos.crypto.ed25519.PubKey,
     '/cosmos.gov.v1beta1.MsgDeposit': cosmos.gov.v1beta1.MsgDeposit,
     '/cosmos.gov.v1beta1.MsgVote': cosmos.gov.v1beta1.MsgVote,
+    '/cosmos.gov.v1beta1.MsgSubmitProposal': cosmos.gov.v1beta1.MsgSubmitProposal,
 };
 
 export interface GeneratedType {

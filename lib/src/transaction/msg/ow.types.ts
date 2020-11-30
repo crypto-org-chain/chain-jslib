@@ -2,6 +2,7 @@ import ow from 'ow';
 import { owCoin } from '../../coin/ow.types';
 import { owBig, owStrictObject } from '../../ow.types';
 import { VoteOptions } from './gov/MsgVote';
+import { isMsgProposalContent } from './gov/IMsgProposalContent';
 
 const voteOptionValidator = (val: string) => ({
     validator: Object.values(VoteOptions).includes(val as any),
@@ -14,6 +15,19 @@ export const owMsgSendOptions = owStrictObject().exactShape({
     fromAddress: ow.string,
     toAddress: ow.string,
     amount: owCoin(),
+});
+
+const proposalContentValidatorFn = (val: object) => ({
+    validator: isMsgProposalContent(val),
+    message: (label: string) => `Expected ${label} to be an instance of \`IMsgProposalContent\`, got \`${val}\``,
+});
+
+const owContent = () => owStrictObject().validate(proposalContentValidatorFn);
+
+export const owMsgSubmitProposalOptions = owStrictObject().exactShape({
+    proposer: ow.string,
+    initialDeposit: owCoin(),
+    content: owContent(),
 });
 
 export const owMsgDepositOptions = owStrictObject().exactShape({
