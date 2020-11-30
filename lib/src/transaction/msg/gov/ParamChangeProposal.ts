@@ -1,5 +1,7 @@
+import ow from 'ow';
 import { cosmos, google } from '../../../cosmos/v1beta1/codec';
 import { IMsgProposalContent } from './IMsgProposalContent';
+import { owParamChangeProposalOptions } from './ow.types';
 
 export const paramChangeProposal = function () {
     return class ParamChangeProposal implements IMsgProposalContent {
@@ -12,7 +14,7 @@ export const paramChangeProposal = function () {
         public readonly paramChanges: ParamChange[];
 
         constructor(options: ParamChangeProposalOptions) {
-            // TODO : Validate ow() params
+            ow(options, 'options', owParamChangeProposalOptions);
 
             this.title = options.title;
             this.description = options.description;

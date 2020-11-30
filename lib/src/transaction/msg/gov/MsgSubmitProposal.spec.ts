@@ -26,12 +26,12 @@ const PystaportTestNet: Network = {
 const cro = CroSDK({ network: PystaportTestNet });
 
 describe('Testing MsgSubmitProposal', function () {
-    fuzzyDescribe('should throw Error when options is invalid', function (fuzzy) {
-        const anyValidOptions = {
+    fuzzyDescribe('should throw Error when MsgSubmitProposal options is invalid', function (fuzzy) {
+        const anyValidProposalSubmission = {
             proposer: 'tcro184lta2lsyu47vwyp2e8zmtca3k5yq85p6c4vp3',
             initialDeposit: new cro.Coin('1200', Units.BASE),
         };
-        const testRunner = fuzzy(fuzzy.ObjArg(anyValidOptions));
+        const testRunner = fuzzy(fuzzy.ObjArg(anyValidProposalSubmission));
 
         testRunner(function (options) {
             if (options.valid) {
@@ -43,7 +43,7 @@ describe('Testing MsgSubmitProposal', function () {
         });
     });
 
-    it('Test appendTxBody MsgSubmitProposal Tx signing', function () {
+    it('Test Signing MsgSubmitProposal of CommunityPoolSpendProposal Type', function () {
         const hdKey = HDKey.fromMnemonic(
             'guilt shield sting fluid wet east video business fold agree capital galaxy rapid almost melt piano taste guide spoil pull pigeon wood fit escape',
         );
