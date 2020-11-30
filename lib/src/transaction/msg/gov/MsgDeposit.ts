@@ -17,6 +17,12 @@ export const msgDeposit = function (config: InitConfigurations) {
 
         public amount: ICoin;
 
+        /**
+         * Constructor to create a new MsgDeposit
+         * @param {MsgDepositOptions} options
+         * @returns {MsgDeposit}
+         * @throws {Error} when options is invalid
+         */
         constructor(options: MsgDepositOptions) {
             ow(options, 'options', owMsgDepositOptions);
 
@@ -27,6 +33,10 @@ export const msgDeposit = function (config: InitConfigurations) {
             this.validate();
         }
 
+        /**
+         * Returns the raw Msg representation of MsgDeposit
+         * @returns {Msg}
+         */
         toRawMsg(): Msg {
             const cosmosAmount = this.amount.toCosmosCoin();
             const proposal = Long.fromNumber(this.proposalId.toNumber(), true);
