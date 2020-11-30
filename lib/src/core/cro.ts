@@ -14,6 +14,7 @@ import { msgBeginRedelegate } from '../transaction/msg/staking/MsgBeginRedelegat
 import { userAddress } from '../address/address';
 import { msgWithdrawValidatorCommission } from '../transaction/msg/distribution/MsgWithdrawValidatorCommission';
 import { msgDeposit } from '../transaction/msg/gov/MsgDeposit';
+import { msgVote } from '../transaction/msg/gov/MsgVote';
 import { msgSubmitProposal } from '../transaction/msg/gov/MsgSubmitProposal';
 import { communityPoolSpendProposal } from '../transaction/msg/gov/CommunityPoolSpendProposal';
 
@@ -26,6 +27,7 @@ export const CroSDK = function (configs: InitConfigurations) {
         Address: userAddress(configs),
         gov: {
             MsgDeposit: msgDeposit(configs),
+            MsgVote: msgVote(configs),
             MsgSubmitProposal: msgSubmitProposal(configs),
             proposal: {
                 CommunityPoolSpendProposal: communityPoolSpendProposal(configs),
