@@ -70,7 +70,7 @@ describe('Testing MsgSubmitProposal and its content types', function () {
         });
     });
 
-    fuzzyDescribe('should throw Error when CommunityPoolSpendProposal options is invalid', function (fuzzy) {
+    fuzzyDescribe('should throw Error when ParamChangeProposal options is invalid', function (fuzzy) {
         const anyValidParamChangeProposal = new cro.gov.proposal.ParamChangeProposal({
             title: 'Change a param to something more optimized',
             description: 'Lorem Ipsum ... The param should be changed to something more optimized',
