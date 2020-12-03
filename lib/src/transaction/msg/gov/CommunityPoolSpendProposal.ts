@@ -1,8 +1,10 @@
+import ow from 'ow';
 import { ICoin } from '../../../coin/coin';
 import { cosmos, google } from '../../../cosmos/v1beta1/codec';
 import { IMsgProposalContent } from './IMsgProposalContent';
 import { InitConfigurations } from '../../../core/cro';
 import { AddressType, validateAddress } from '../../../utils/address';
+import { owCommunityPoolSpendProposalOptions } from './ow.types';
 
 export const communityPoolSpendProposal = function (config: InitConfigurations) {
     return class CommunityPoolSpendProposal implements IMsgProposalContent {
@@ -19,6 +21,8 @@ export const communityPoolSpendProposal = function (config: InitConfigurations) 
         public amount: ICoin;
 
         constructor(options: CommunityPoolSpendProposalOptions) {
+            ow(options, 'options', owCommunityPoolSpendProposalOptions);
+
             this.title = options.title;
             this.description = options.description;
             this.recipient = options.recipient;
