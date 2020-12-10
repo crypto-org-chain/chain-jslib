@@ -2,15 +2,16 @@ import Big from 'big.js';
 import Long from 'long';
 import ow from 'ow';
 import { InitConfigurations } from '../../../core/cro';
-import { Message } from '../Message';
+import { CosmosMsg } from '../cosmosMsg';
 import { Msg } from '../../../cosmos/v1beta1/types/msg';
 import { ICoin } from '../../../coin/coin';
 import { AddressType, validateAddress } from '../../../utils/address';
 import { COSMOS_MSG_TYPEURL } from '../../common/constants/typeurl';
 import { owMsgDepositOptions } from '../ow.types';
+import * as legacyAmino from '../../../cosmos/amino';
 
 export const msgDeposit = function (config: InitConfigurations) {
-    return class MsgDeposit implements Message {
+    return class MsgDeposit implements CosmosMsg {
         public proposalId: Big;
 
         public depositor: string;
@@ -31,6 +32,11 @@ export const msgDeposit = function (config: InitConfigurations) {
             this.amount = options.amount;
 
             this.validate();
+        }
+
+        // eslint-disable-next-line class-methods-use-this
+        toRawAminoMsg(): legacyAmino.Msg {
+            throw new Error('Method not implemented.');
         }
 
         /**

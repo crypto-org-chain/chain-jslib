@@ -4,38 +4,38 @@ import { Chance } from 'chance';
 
 import { Secp256k1KeyPair } from '../keypair/secp256k1';
 import { Network } from '../network/network';
-import { Msg } from '../cosmos/v1beta1/types/msg';
 import { TransactionSigner } from './raw';
 import { SignableTransaction, SignableTransactionParams } from './signable';
 import { cosmos } from '../cosmos/v1beta1/codec';
 import { TxRaw } from '../cosmos/v1beta1/types/tx';
 import { CroNetwork, CroSDK } from '../core/cro';
+import { CosmosMsg } from './msg/cosmosMsg';
+import { SIGN_MODE } from './types';
 
 const chance = new Chance();
 
 export type MessageSuite = {
     network: Network; // option
     keyPair: Secp256k1KeyPair;
-    message: Msg;
+    toAddress: string;
+    message: CosmosMsg;
 };
 const cro = CroSDK({ network: CroNetwork.Testnet });
 
-export const MessageSuiteFactory = new Factory<MessageSuite>()
+export const CosmosMsgSuiteFactory = new Factory<MessageSuite>()
     .option('network', CroNetwork.Testnet)
     .attr('keyPair', () => Secp256k1KeyPair.generateRandom())
-    .attr('message', ['network', 'keyPair'], (_: Network, keyPair: Secp256k1KeyPair) => ({
-        typeUrl: '/cosmos.bank.v1beta1.MsgSend',
-        value: {
-            fromAddress: new cro.Address(keyPair.getPubKey()).account(),
-            toAddress: 'tcro184lta2lsyu47vwyp2e8zmtca3k5yq85p6c4vp3',
-            amount: [
-                {
-                    denom: 'basetcro',
-                    amount: chance.integer().toString(),
-                },
-            ],
-        },
-    }));
+    .attr('toAddress', 'tcro184lta2lsyu47vwyp2e8zmtca3k5yq85p6c4vp3')
+    .attr(
+        'message',
+        ['network', 'keyPair', 'toAddress'],
+        (_: Network, keyPair: Secp256k1KeyPair, toAddress: string): CosmosMsg =>
+            new cro.bank.MsgSend({
+                fromAddress: new cro.Address(keyPair.getPubKey()).account(),
+                toAddress,
+                amount: cro.Coin.fromBaseUnit(chance.integer({ min: 0 }).toString()),
+            }),
+    );
 
 export const TransactionSignerFactory = new Factory<TransactionSigner & { keyPair: Secp256k1KeyPair }>()
     .option('keyPair', () => Secp256k1KeyPair.generateRandom())
@@ -57,7 +57,7 @@ export const SignableTransactionParamsSuiteFactory = new Factory<SignableTransac
         'params',
         ['network', 'keyPair'],
         (network: Network, keyPair: Secp256k1KeyPair): SignableTransactionParams => {
-            const { message } = MessageSuiteFactory.build(
+            const { message } = CosmosMsgSuiteFactory.build(
                 {},
                 {
                     keyPair,
@@ -95,6 +95,7 @@ export const SignableTransactionParamsSuiteFactory = new Factory<SignableTransac
                     {
                         publicKey: pubKey,
                         accountNumber: new Big(chance.integer({ min: 0 })),
+                        signMode: SIGN_MODE.DIRECT,
                     },
                 ],
             };

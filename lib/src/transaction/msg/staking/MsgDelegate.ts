@@ -1,14 +1,15 @@
 import ow from 'ow';
 import { Msg } from '../../../cosmos/v1beta1/types/msg';
-import { Message } from '../Message';
+import { CosmosMsg } from '../cosmosMsg';
 import { owMsgDelegateOptions } from '../ow.types';
 import { InitConfigurations } from '../../../core/cro';
 import { validateAddress, AddressType } from '../../../utils/address';
 import { ICoin } from '../../../coin/coin';
 import { COSMOS_MSG_TYPEURL } from '../../common/constants/typeurl';
+import * as legacyAmino from '../../../cosmos/amino';
 
 export const msgDelegate = function (config: InitConfigurations) {
-    return class MsgDelegate implements Message {
+    return class MsgDelegate implements CosmosMsg {
         /** MsgDelegate delegatorAddress. */
         public delegatorAddress: string;
 
@@ -30,6 +31,11 @@ export const msgDelegate = function (config: InitConfigurations) {
             this.validatorAddress = options.validatorAddress;
             this.amount = options.amount;
             this.validateAddresses();
+        }
+
+        // eslint-disable-next-line class-methods-use-this
+        toRawAminoMsg(): legacyAmino.Msg {
+            throw new Error('Method not implemented.');
         }
 
         /**

@@ -1,7 +1,7 @@
 import 'mocha';
 import { expect } from 'chai';
 import { fuzzyDescribe } from '../test/mocha-fuzzy/suite';
-import { MessageSuiteFactory, TransactionSignerFactory } from './test';
+import { CosmosMsgSuiteFactory, TransactionSignerFactory } from './test';
 
 import { SignableTransaction } from './signable';
 import { CroNetwork, CroSDK } from '../core/cro';
@@ -13,7 +13,7 @@ const anyTransaction = () => new cro.RawTransaction();
 describe('Transaction', function () {
     describe('appendTxBodyMessage', function () {
         fuzzyDescribe('should throw Error when message is invalid', function (fuzzy) {
-            const { message: anyMessage } = MessageSuiteFactory.build();
+            const { message: anyMessage } = CosmosMsgSuiteFactory.build();
             const testRunner = fuzzy(fuzzy.ObjArg(anyMessage));
 
             testRunner(function (msg) {
@@ -26,7 +26,7 @@ describe('Transaction', function () {
         });
 
         it('should append message to txBody', function () {
-            const { message: anyMessage } = MessageSuiteFactory.build();
+            const { message: anyMessage } = CosmosMsgSuiteFactory.build();
             const tx = anyTransaction();
             tx.addMessage(anyMessage);
 
@@ -34,7 +34,7 @@ describe('Transaction', function () {
             expect(actualMessages.length).to.eq(1);
             expect(actualMessages[0]).to.deep.eq(anyMessage);
 
-            const { message: anotherMessage } = MessageSuiteFactory.build();
+            const { message: anotherMessage } = CosmosMsgSuiteFactory.build();
             tx.addMessage(anotherMessage);
 
             actualMessages = tx.getTxBody().value.messages;
@@ -110,7 +110,7 @@ describe('Transaction', function () {
         });
 
         it('should throw Error when no signer is added', function () {
-            const { message: anyMessage } = MessageSuiteFactory.build();
+            const { message: anyMessage } = CosmosMsgSuiteFactory.build();
             const tx = anyTransaction();
 
             tx.addMessage(anyMessage);
@@ -119,7 +119,7 @@ describe('Transaction', function () {
         });
 
         it('should return SignableTransaction', function () {
-            const { keyPair, message: anyMessage } = MessageSuiteFactory.build();
+            const { keyPair, message: anyMessage } = CosmosMsgSuiteFactory.build();
             const anySigner = TransactionSignerFactory.build(
                 {},
                 {
