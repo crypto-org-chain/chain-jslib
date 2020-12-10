@@ -1,5 +1,5 @@
 import ow from 'ow';
-import { Msg } from '../../../cosmos/v1beta1/types/msg';
+import { SignModeDirectMsg } from '../../../cosmos/v1beta1/types/msg';
 import { Message } from '../Message';
 import { ICoin } from '../../../coin/coin';
 import { owMsgBeginRedelgateOptions } from '../ow.types';
@@ -38,9 +38,9 @@ export const msgBeginRedelegate = function (config: InitConfigurations) {
 
         /**
          * Returns the raw Msg representation of MsgCreateValidator
-         * @returns {Msg}
+         * @returns {SignModeDirectMsg}
          */
-        toRawMsg(): Msg {
+        toRawMsg(): SignModeDirectMsg {
             const cosmosCoin = this.amount.toCosmosCoin();
             return {
                 typeUrl: COSMOS_MSG_TYPEURL.MsgBeginRedelegate,

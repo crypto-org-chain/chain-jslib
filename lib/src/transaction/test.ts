@@ -4,7 +4,7 @@ import { Chance } from 'chance';
 
 import { Secp256k1KeyPair } from '../keypair/secp256k1';
 import { Network } from '../network/network';
-import { Msg } from '../cosmos/v1beta1/types/msg';
+import { SignModeDirectMsg } from '../cosmos/v1beta1/types/msg';
 import { TransactionSigner } from './raw';
 import { SignableTransaction, SignableTransactionParams } from './signable';
 import { cosmos } from '../cosmos/v1beta1/codec';
@@ -16,7 +16,7 @@ const chance = new Chance();
 export type MessageSuite = {
     network: Network; // option
     keyPair: Secp256k1KeyPair;
-    message: Msg;
+    message: SignModeDirectMsg;
 };
 const cro = CroSDK({ network: CroNetwork.Testnet });
 

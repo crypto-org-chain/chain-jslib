@@ -2,14 +2,14 @@ import Big from 'big.js';
 
 import { Bytes } from '../../../utils/bytes/bytes';
 import { cosmos } from '../codec';
-import { Msg } from './msg';
+import { SignModeDirectMsg } from './msg';
 import { ICoin } from '../../../coin/coin';
 
 export type TxBody = {
     typeUrl: '/cosmos.tx.v1beta1.TxBody';
 
     value: {
-        messages: Msg[];
+        messages: SignModeDirectMsg[];
         memo?: string;
         timeoutHeight?: number;
     };

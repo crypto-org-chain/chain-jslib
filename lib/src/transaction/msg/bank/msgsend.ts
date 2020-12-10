@@ -1,5 +1,5 @@
 import ow from 'ow';
-import { Msg } from '../../../cosmos/v1beta1/types/msg';
+import { SignModeDirectMsg } from '../../../cosmos/v1beta1/types/msg';
 import { ICoin } from '../../../coin/coin';
 import { owMsgSendOptions } from '../ow.types';
 import { InitConfigurations } from '../../../core/cro';
@@ -33,9 +33,9 @@ export const msgSend = function (config: InitConfigurations) {
 
         /**
          * Returns the raw Msg representation of MsgSend
-         * @returns {Msg}
+         * @returns {SignModeDirectMsg}
          */
-        toRawMsg(): Msg {
+        toRawMsg(): SignModeDirectMsg {
             const cosmosCoin = this.amount.toCosmosCoin();
             return {
                 typeUrl: COSMOS_MSG_TYPEURL.MsgSend,

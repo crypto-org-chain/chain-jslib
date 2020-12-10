@@ -2,7 +2,7 @@ import ow from 'ow';
 import Big from 'big.js';
 
 import { cosmos } from '../cosmos/v1beta1/codec';
-import { Msg, owMsg } from '../cosmos/v1beta1/types/msg';
+import { SignModeDirectMsg, owSignModeDirectMsg } from '../cosmos/v1beta1/types/msg';
 import { AuthInfo, TxBody } from '../cosmos/v1beta1/types/tx';
 import { owRawTransactionSigner } from './ow.types';
 import { Bytes } from '../utils/bytes/bytes';
@@ -50,13 +50,13 @@ export const rawTransaction = function (config: InitConfigurations) {
 
         /**
          * Add Cosmos message to transaction. The message orders will follow the add order.
-         * @param {Msg} message one of the supported Cosmos message
+         * @param {SignModeDirectMsg} message one of the supported Cosmos message
          * @returns {RawTransaction}
          * @throws {Error} when message is invalid
          * @memberof Transaction
          */
-        public addMessage(message: Msg): RawTransaction {
-            ow(message, 'message', owMsg());
+        public addMessage(message: SignModeDirectMsg): RawTransaction {
+            ow(message, 'message', owSignModeDirectMsg());
 
             this.txBody.value.messages.push(message);
 

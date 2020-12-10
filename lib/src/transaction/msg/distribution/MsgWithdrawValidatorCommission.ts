@@ -1,7 +1,7 @@
 import ow from 'ow';
 import { InitConfigurations } from '../../../core/cro';
 import { Message } from '../Message';
-import { Msg } from '../../../cosmos/v1beta1/types/msg';
+import { SignModeDirectMsg } from '../../../cosmos/v1beta1/types/msg';
 import { AddressType, validateAddress } from '../../../utils/address';
 import { owMsgWithdrawValidatorCommissionOptions } from '../ow.types';
 import { COSMOS_MSG_TYPEURL } from '../../common/constants/typeurl';
@@ -24,10 +24,10 @@ export const msgWithdrawValidatorCommission = function (config: InitConfiguratio
 
         /**
          * Returns the raw Msg representation of MsgWithdrawValidatorCommission
-         * @returns {Msg}
+         * @returns {SignModeDirectMsg}
          * @memberof MsgWithdrawValidatorCommission
          */
-        public toRawMsg(): Msg {
+        public toRawMsg(): SignModeDirectMsg {
             return {
                 typeUrl: COSMOS_MSG_TYPEURL.MsgWithdrawValidatorCommission,
                 value: {

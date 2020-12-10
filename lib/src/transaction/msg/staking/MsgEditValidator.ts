@@ -1,5 +1,5 @@
 import ow from 'ow';
-import { Msg } from '../../../cosmos/v1beta1/types/msg';
+import { SignModeDirectMsg } from '../../../cosmos/v1beta1/types/msg';
 import { Message } from '../Message';
 import { owMsgEditValidatorOptions } from '../ow.types';
 import { InitConfigurations } from '../../../core/cro';
@@ -34,9 +34,9 @@ export const msgEditValidator = function (config: InitConfigurations) {
 
         /**
          * Returns the raw Msg representation of MsgCreateValidator
-         * @returns {Msg}
+         * @returns {SignModeDirectMsg}
          */
-        toRawMsg(): Msg {
+        toRawMsg(): SignModeDirectMsg {
             return {
                 typeUrl: COSMOS_MSG_TYPEURL.MsgEditValidator,
                 value: {

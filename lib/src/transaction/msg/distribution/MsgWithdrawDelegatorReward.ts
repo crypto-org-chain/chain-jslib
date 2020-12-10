@@ -1,6 +1,6 @@
 import ow from 'ow';
 import { Message } from '../Message';
-import { Msg } from '../../../cosmos/v1beta1/types/msg';
+import { SignModeDirectMsg } from '../../../cosmos/v1beta1/types/msg';
 import { InitConfigurations } from '../../../core/cro';
 import { AddressType, validateAddress } from '../../../utils/address';
 import { owMsgWithdrawDelegatorRewardOptions } from '../ow.types';
@@ -31,9 +31,9 @@ export const msgWithdrawDelegateReward = function (config: InitConfigurations) {
 
         /**
          * Returns the raw Msg representation of MsgWithdrawDelegatorReward
-         * @returns {Msg}
+         * @returns {SignModeDirectMsg}
          */
-        toRawMsg(): Msg {
+        toRawMsg(): SignModeDirectMsg {
             return {
                 typeUrl: COSMOS_MSG_TYPEURL.MsgWithdrawDelegatorReward,
                 value: {

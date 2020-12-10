@@ -3,7 +3,7 @@ import Long from 'long';
 import ow from 'ow';
 import { InitConfigurations } from '../../../core/cro';
 import { Message } from '../Message';
-import { Msg } from '../../../cosmos/v1beta1/types/msg';
+import { SignModeDirectMsg } from '../../../cosmos/v1beta1/types/msg';
 import { ICoin } from '../../../coin/coin';
 import { AddressType, validateAddress } from '../../../utils/address';
 import { COSMOS_MSG_TYPEURL } from '../../common/constants/typeurl';
@@ -27,7 +27,7 @@ export const msgDeposit = function (config: InitConfigurations) {
             this.validate();
         }
 
-        toRawMsg(): Msg {
+        toRawMsg(): SignModeDirectMsg {
             const cosmosAmount = this.amount.toCosmosCoin();
             const proposal = Long.fromNumber(this.proposalId.toNumber(), true);
             return {

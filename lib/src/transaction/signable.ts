@@ -7,8 +7,9 @@ import ow, { NumberPredicate } from 'ow';
 import Long from 'long';
 import secp256k1 from 'secp256k1';
 
+import { sign } from 'crypto';
 import { cosmos, google } from '../cosmos/v1beta1/codec';
-import { Msg } from '../cosmos/v1beta1/types/msg';
+import { SignModeDirectMsg } from '../cosmos/v1beta1/types/msg';
 import { omitDefaults } from '../cosmos/v1beta1/adr27';
 import { AuthInfo, TxBody, TxRaw } from '../cosmos/v1beta1/types/tx';
 import { typeUrlMappings } from '../cosmos/v1beta1/types/typeurls';
@@ -19,7 +20,12 @@ import { EMPTY_SIGNATURE, SignerAccount } from './types';
 import { owSignableTransactionParams } from './ow.types';
 import { owBytes } from '../utils/bytes/ow.types';
 import { SignedTransaction } from './signed';
+import * as legacyAmino from '../cosmos/amino';
 
+export enum SIGN_MODE {
+    DIRECT = 0,
+    AMINO_JSON = 1,
+}
 /**
  * SignableTransaction is a prepared transaction ready to be signed
  */
@@ -63,21 +69,29 @@ export class SignableTransaction {
     /**
      * Returns the SignDoc of the specified index
      * @param {number} index
+     * @param {SIGN_MODE} [signMode=SIGN_MODE.DIRECT]
      * @returns {Bytes}
      * @throws {Error} when index is invalid
      * @memberof SignableTransaction
      */
-    public toSignDoc(index: number): Bytes {
+    public toSignDoc(index: number, signMode: SIGN_MODE = SIGN_MODE.DIRECT): Bytes {
         ow(index, 'index', this.owIndex());
 
-        return sha256(
-            makeSignDoc(
-                this.txRaw.bodyBytes,
-                this.txRaw.authInfoBytes,
-                this.network.chainId,
-                this.signerAccounts[index].accountNumber,
-            ),
-        );
+        if (signMode === SIGN_MODE.DIRECT) {
+            return sha256(
+                makeDirectSignDoc(
+                    this.txRaw.bodyBytes,
+                    this.txRaw.authInfoBytes,
+                    this.network.chainId,
+                    this.signerAccounts[index].accountNumber,
+                ),
+            );
+        }
+        if (signMode === SIGN_MODE.AMINO_JSON) {
+            // TODO:
+            return Bytes.fromHexString('');
+        }
+        throw new Error(`Unrecognized sign mode: ${signMode}`);
     }
 
     /**
@@ -198,7 +212,7 @@ const encodeTxBody = (txBody: TxBody): Bytes => {
 /**
  * Encode TxBody message to protobuf binary
  */
-const encodeTxBodyMessage = (message: Msg): Uint8Array => {
+const encodeTxBodyMessage = (message: SignModeDirectMsg): Uint8Array => {
     const type = typeUrlMappings[message.typeUrl];
     if (!type) {
         throw new Error(`Unrecognized message type ${message.typeUrl}`);
@@ -250,9 +264,9 @@ const protoEncodePubKey = (pubKey: Bytes): google.protobuf.IAny => {
 };
 
 /**
- * Generate SignDoc binary bytes ready to be signed
+ * Generate SignDoc binary bytes ready to be signed in direct mode
  */
-const makeSignDoc = (txBodyBytes: Bytes, authInfoBytes: Bytes, chainId: string, accountNumber: Big): Bytes => {
+const makeDirectSignDoc = (txBodyBytes: Bytes, authInfoBytes: Bytes, chainId: string, accountNumber: Big): Bytes => {
     const signDoc = omitDefaults({
         bodyBytes: txBodyBytes.toUint8Array(),
         authInfoBytes: authInfoBytes.toUint8Array(),
@@ -266,4 +280,22 @@ const makeSignDoc = (txBodyBytes: Bytes, authInfoBytes: Bytes, chainId: string, 
     }
     const signDocProto = cosmos.tx.v1beta1.SignDoc.create(signDoc);
     return Bytes.fromUint8Array(cosmos.tx.v1beta1.SignDoc.encode(signDocProto).finish());
+};
+
+const makeAminoJSONSignDoc = (
+    msgs: readonly legacyAmino.Msg[],
+    fee: legacyAmino.StdFee,
+    chainId: string,
+    memo: string,
+    accountNumber: number | string,
+    sequence: number | string,
+): legacyAmino.StdSignDoc => {
+    return {
+        chain_id: chainId,
+        account_number: legacyAmino.Uint53.fromString(accountNumber.toString()).toString(),
+        sequence: legacyAmino.Uint53.fromString(sequence.toString()).toString(),
+        fee,
+        msgs,
+        memo,
+    };
 };

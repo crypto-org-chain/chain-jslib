@@ -1,5 +1,5 @@
 import ow from 'ow';
-import { Msg } from '../../../cosmos/v1beta1/types/msg';
+import { SignModeDirectMsg } from '../../../cosmos/v1beta1/types/msg';
 import { Message } from '../Message';
 import { ICoin } from '../../../coin/coin';
 import { owMsgCreateValidatorOptions } from '../ow.types';
@@ -47,9 +47,9 @@ export const msgCreateValidator = function (config: InitConfigurations) {
 
         /**
          * Returns the raw Msg representation of MsgCreateValidator
-         * @returns {Msg}
+         * @returns {SignModeDirectMsg}
          */
-        toRawMsg(): Msg {
+        toRawMsg(): SignModeDirectMsg {
             const cosmosCoin = this.value.toCosmosCoin();
             const pubkeyEncoded = protoEncodeEd25519PubKey(Bytes.fromBase64String(this.pubkey));
             return {
