@@ -11,7 +11,7 @@ export type TxBody = {
     value: {
         messages: CosmosMsg[];
         memo?: string;
-        timeoutHeight?: number;
+        timeoutHeight?: string;
     };
 };
 

@@ -72,7 +72,7 @@ export const SignableTransactionParamsSuiteFactory = new Factory<SignableTransac
                     value: {
                         messages: [message],
                         memo: '',
-                        timeoutHeight: 0,
+                        timeoutHeight: '0',
                     },
                 },
                 authInfo: {

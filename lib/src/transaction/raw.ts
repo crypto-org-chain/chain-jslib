@@ -3,7 +3,7 @@ import Big from 'big.js';
 
 import { cosmos } from '../cosmos/v1beta1/codec';
 import { AuthInfo, TxBody } from '../cosmos/v1beta1/types/tx';
-import { owRawTransactionSigner } from './ow.types';
+import { owRawTransactionSigner, owTimeoutHeight } from './ow.types';
 import { Bytes } from '../utils/bytes/bytes';
 import { isValidSepc256k1PublicKey } from '../utils/secp256k1';
 import { isBigInteger } from '../utils/big';
@@ -23,7 +23,7 @@ export const rawTransaction = function (config: InitConfigurations) {
             value: {
                 messages: [],
                 memo: '',
-                timeoutHeight: 0,
+                timeoutHeight: '0',
             },
         };
 
@@ -128,8 +128,8 @@ export const rawTransaction = function (config: InitConfigurations) {
          * @throws {Error} when timeoutHeight is invalid
          * @memberof Transaction
          */
-        public setTimeOutHeight(timeoutHeight: number): RawTransaction {
-            ow(timeoutHeight, 'timeoutHeight', ow.number.integer.greaterThanOrEqual(0));
+        public setTimeOutHeight(timeoutHeight: string): RawTransaction {
+            ow(timeoutHeight, 'timeoutHeight', owTimeoutHeight);
             this.txBody.value.timeoutHeight = timeoutHeight;
 
             return this;

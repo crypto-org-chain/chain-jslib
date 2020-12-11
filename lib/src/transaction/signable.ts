@@ -102,7 +102,7 @@ export class SignableTransaction {
                     this.txBody.value.memo || '',
                     this.signerAccounts[index].accountNumber.toString(),
                     this.authInfo.signerInfos[index].sequence.toString(),
-                    legacyEncodeTimeoutHeight(this.txBody.value.timeoutHeight?.toString()),
+                    legacyEncodeTimeoutHeight(this.txBody.value.timeoutHeight),
                 ),
             );
         }
@@ -223,9 +223,8 @@ const protoEncodeTxBody = (txBody: TxBody): Bytes => {
         txBodyProto.memo = txBody.value.memo;
     }
 
-    if (txBody.value.timeoutHeight) {
-        // TODO: use string
-        txBodyProto.timeoutHeight = Long.fromNumber(txBody.value.timeoutHeight, true);
+    if (txBody.value.timeoutHeight && txBody.value.timeoutHeight !== '0') {
+        txBodyProto.timeoutHeight = Long.fromString(txBody.value.timeoutHeight, true);
     }
     return Bytes.fromUint8Array(cosmos.tx.v1beta1.TxBody.encode(txBodyProto).finish());
 };
@@ -313,7 +312,7 @@ const legacyEncodeStdFee = (fee: ICoin | undefined, gas: Big | undefined): legac
     };
 };
 
-const legacyEncodeTimeoutHeight = (timeoutHeight?: string): string | undefined => {
+const legacyEncodeTimeoutHeight = (timeoutHeight: string | undefined): string | undefined => {
     if (typeof timeoutHeight === 'undefined' || timeoutHeight === '0') {
         return undefined;
     }

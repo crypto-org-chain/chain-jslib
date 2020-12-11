@@ -34,7 +34,7 @@ describe('Amino JSON sign mode', function () {
             .setFee(cro.Coin.fromBaseUnit('10000'))
             .setGasLimit('100000')
             .setMemo('amino test')
-            .setTimeOutHeight(800000)
+            .setTimeOutHeight('800000')
             .toSignable();
 
         const signature = keyPair.sign(signableTx.toSignDoc(0));

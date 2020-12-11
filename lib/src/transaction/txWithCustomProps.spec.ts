@@ -123,7 +123,7 @@ describe('Testing Tx signing with custom parameters', function () {
         rawTx.setMemo('Hello Test Memo');
         rawTx.setGasLimit('280000');
         rawTx.setFee(feeAmount);
-        rawTx.setTimeOutHeight(341910);
+        rawTx.setTimeOutHeight('341910');
 
         const msgSend1 = new cro.bank.MsgSend({
             fromAddress: 'tcro165tzcrh2yl83g8qeqxueg2g5gzgu57y3fe3kc3',
@@ -173,7 +173,7 @@ describe('Testing Tx signing with custom parameters', function () {
             .setFee(cro.Coin.fromBaseUnit('1000'))
             .setGasLimit('500000')
             .setMemo('legacy amino json')
-            .setTimeOutHeight(100000000)
+            .setTimeOutHeight('100000000')
             .toSignable();
 
         const signature = keyPair.sign(signableTx.toSignDoc(0));

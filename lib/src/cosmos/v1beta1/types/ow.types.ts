@@ -3,6 +3,7 @@ import ow from 'ow';
 import { owOptionalCoin } from '../../../coin/ow.types';
 import { owBig, owOptionalBig, owStrictObject } from '../../../ow.types';
 import { owCosmosMsg } from '../../../transaction/msg/cosmosMsg';
+import { owTimeoutHeight } from '../../../transaction/ow.types';
 import { owBytes } from '../../../utils/bytes/ow.types';
 import { cosmos } from '../codec';
 
@@ -12,7 +13,7 @@ export const owTxBody = () =>
         value: owStrictObject().exactShape({
             messages: ow.array.ofType(owCosmosMsg()),
             memo: ow.string,
-            timeoutHeight: ow.number.integer.greaterThanOrEqual(0), // Note that 0 is the default value when not set
+            timeoutHeight: owTimeoutHeight,
         }),
     });
 

@@ -118,7 +118,7 @@ describe('Testing edge case Txs with 0 account numbers or 0 sequence', function 
             .setFee(cro.Coin.fromBaseUnit('10000'))
             .setGasLimit('100000')
             .setMemo('amino test')
-            .setTimeOutHeight(800000)
+            .setTimeOutHeight('800000')
             .toSignable();
 
         const signature = keyPair.sign(signableTx.toSignDoc(0));
