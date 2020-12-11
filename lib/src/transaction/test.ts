@@ -43,6 +43,7 @@ export const TransactionSignerFactory = new Factory<TransactionSigner & { keyPai
     .attrs({
         accountNumber: new Big(chance.integer({ min: 0 })),
         accountSequence: new Big(chance.integer({ min: 0 })),
+        signMode: SIGN_MODE.DIRECT,
     });
 
 export type SignableTransactionParamsSuite = {

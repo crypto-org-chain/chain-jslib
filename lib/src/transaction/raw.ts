@@ -169,10 +169,17 @@ export const rawTransaction = function (config: InitConfigurations) {
                 signMode = SIGN_MODE.DIRECT;
             }
 
-            const cosmosSignMode =
-                signMode === SIGN_MODE.DIRECT
-                    ? cosmos.tx.signing.v1beta1.SignMode.SIGN_MODE_DIRECT
-                    : cosmos.tx.signing.v1beta1.SignMode.SIGN_MODE_LEGACY_AMINO_JSON;
+            let cosmosSignMode: cosmos.tx.signing.v1beta1.SignMode;
+            switch (signMode) {
+                case SIGN_MODE.DIRECT:
+                    cosmosSignMode = cosmos.tx.signing.v1beta1.SignMode.SIGN_MODE_DIRECT;
+                    break;
+                case SIGN_MODE.LEGACY_AMINO_JSON:
+                    cosmosSignMode = cosmos.tx.signing.v1beta1.SignMode.SIGN_MODE_LEGACY_AMINO_JSON;
+                    break;
+                default:
+                    throw new Error(`Unsupported sign mode: ${signMode}`);
+            }
             this.authInfo.signerInfos.push({
                 publicKey: signer.publicKey,
                 // TODO: support multisig

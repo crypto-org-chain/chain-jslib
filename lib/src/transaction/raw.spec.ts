@@ -86,6 +86,7 @@ describe('Transaction', function () {
             expect(actualSignerAccountNumbers[0]).to.deep.eq({
                 publicKey: anySigner.publicKey,
                 accountNumber: anySigner.accountNumber,
+                signMode: anySigner.signMode,
             });
 
             const anotherSigner = TransactionSignerFactory.build();
@@ -95,6 +96,7 @@ describe('Transaction', function () {
             expect(actualSignerAccountNumbers[1]).to.deep.eq({
                 publicKey: anotherSigner.publicKey,
                 accountNumber: anotherSigner.accountNumber,
+                signMode: anotherSigner.signMode,
             });
         });
     });

@@ -12,17 +12,19 @@ export const owRawTransactionOptions = owStrictObject().exactShape({
     network: owNetwork(),
 });
 
-export const owSignMode = () =>
-    ow.number.validate((value) => ({
-        validator: Object.values(SIGN_MODE).includes(value as any),
-        message: (label) => `Expected ${label} to be one of the sign mode, got \`${value}\``,
-    }));
+const validateSignMode = (value: number) => ({
+    validator: Object.values(SIGN_MODE).includes(value as any),
+    message: (label: string) => `Expected ${label} to be one of the sign mode, got \`${value}\``,
+});
+
+export const owSignMode = () => ow.number.validate(validateSignMode);
+export const owOptionalSignMode = () => ow.optional.number.validate(validateSignMode);
 
 export const owRawTransactionSigner = owStrictObject().exactShape({
     publicKey: owBytes(),
     accountNumber: owBig(),
     accountSequence: owBig(),
-    signMode: owSignMode(),
+    signMode: owOptionalSignMode(),
 });
 
 export const owTimeoutHeight = ow.string.validate((value) => {

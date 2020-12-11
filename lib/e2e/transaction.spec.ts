@@ -9,7 +9,7 @@ import { Secp256k1KeyPair } from '../src/keypair/secp256k1';
 import { CroSDK } from '../src/core/cro';
 import { Units } from '../src/coin/coin';
 import { Network } from '../src/network/network';
-import { SIGN_MODE } from '../src/transaction/signable';
+import { SIGN_MODE } from '../src/transaction/types';
 
 const customNetwork: Network = {
     chainId: 'testnet',
@@ -98,25 +98,19 @@ describe('e2e test suite', function () {
                 publicKey: keyPair.getPubKey(),
                 accountNumber: new Big(account1!.accountNumber),
                 accountSequence: new Big(account1!.sequence),
+                signMode: SIGN_MODE.LEGACY_AMINO_JSON,
             })
             .addSigner({
                 publicKey: keyPair2.getPubKey(),
                 accountNumber: new Big(account2!.accountNumber),
                 accountSequence: new Big(account2!.sequence),
+                signMode: SIGN_MODE.LEGACY_AMINO_JSON,
             })
             .toSignable();
 
         const signedTx = signableTx
-            .setSignature(
-                0,
-                keyPair.sign(signableTx.toSignDoc(0, SIGN_MODE.LEGACY_AMINO_JSON)),
-                SIGN_MODE.LEGACY_AMINO_JSON,
-            )
-            .setSignature(
-                1,
-                keyPair2.sign(signableTx.toSignDoc(1, SIGN_MODE.LEGACY_AMINO_JSON)),
-                SIGN_MODE.LEGACY_AMINO_JSON,
-            )
+            .setSignature(0, keyPair.sign(signableTx.toSignDoc(0)))
+            .setSignature(1, keyPair2.sign(signableTx.toSignDoc(1)))
             .toSigned();
 
         expect(msgSend1.fromAddress).to.eq(account1!.address);

@@ -85,7 +85,7 @@ export class SignableTransaction {
         const signMode = this.getSignerSignMode(index);
         if (signMode === SIGN_MODE.DIRECT) {
             return sha256(
-                makeDirectSignDoc(
+                makeSignDoc(
                     this.txRaw.bodyBytes,
                     this.txRaw.authInfoBytes,
                     this.network.chainId,
@@ -95,14 +95,14 @@ export class SignableTransaction {
         }
         if (signMode === SIGN_MODE.LEGACY_AMINO_JSON) {
             return sha256(
-                makeAminoJSONSignDoc(
+                makeLegacyAminoSignDoc(
                     legacyEncodeMsgs(this.txBody.value.messages),
                     legacyEncodeStdFee(this.authInfo.fee.amount, this.authInfo.fee.gasLimit),
                     this.network.chainId,
                     this.txBody.value.memo || '',
                     this.signerAccounts[index].accountNumber.toString(),
                     this.authInfo.signerInfos[index].sequence.toString(),
-                    this.txBody.value.timeoutHeight!.toString(),
+                    legacyEncodeTimeoutHeight(this.txBody.value.timeoutHeight?.toString()),
                 ),
             );
         }
@@ -286,7 +286,7 @@ const protoEncodePubKey = (pubKey: Bytes): google.protobuf.IAny => {
 /**
  * Generate SignDoc binary bytes ready to be signed in direct mode
  */
-const makeDirectSignDoc = (txBodyBytes: Bytes, authInfoBytes: Bytes, chainId: string, accountNumber: Big): Bytes => {
+const makeSignDoc = (txBodyBytes: Bytes, authInfoBytes: Bytes, chainId: string, accountNumber: Big): Bytes => {
     const signDoc = omitDefaults({
         bodyBytes: txBodyBytes.toUint8Array(),
         authInfoBytes: authInfoBytes.toUint8Array(),
@@ -296,7 +296,7 @@ const makeDirectSignDoc = (txBodyBytes: Bytes, authInfoBytes: Bytes, chainId: st
     // Omit encoding the Long value when it's either 0, null or undefined to keep it consistent with backend encoding
     // https://github.com/protobufjs/protobuf.js/issues/1138
     if (accountNumber.toNumber()) {
-        signDoc.accountNumber = Long.fromNumber(accountNumber.toNumber(), true);
+        signDoc.accountNumber = Long.fromNumber(accountNumber.toNumber());
     }
     const signDocProto = cosmos.tx.v1beta1.SignDoc.create(signDoc);
     return Bytes.fromUint8Array(cosmos.tx.v1beta1.SignDoc.encode(signDocProto).finish());
@@ -313,23 +313,46 @@ const legacyEncodeStdFee = (fee: ICoin | undefined, gas: Big | undefined): legac
     };
 };
 
-const makeAminoJSONSignDoc = (
+const legacyEncodeTimeoutHeight = (timeoutHeight?: string): string | undefined => {
+    if (typeof timeoutHeight === 'undefined' || timeoutHeight === '0') {
+        return undefined;
+    }
+
+    return timeoutHeight;
+};
+
+const makeLegacyAminoSignDoc = (
     msgs: readonly legacyAmino.Msg[],
     fee: legacyAmino.StdFee,
     chainId: string,
     memo: string,
     accountNumber: number | string,
     sequence: number | string,
-    timeoutHeight: number | string,
+    timeoutHeight?: string,
 ): Bytes => {
-    const stdSignDoc: legacyAmino.StdSignDoc = {
+    let encodedTimeoutHeight: string | undefined;
+    if (typeof timeoutHeight !== 'undefined') {
+        encodedTimeoutHeight = legacyAmino.Uint53.fromString(timeoutHeight.toString()).toString();
+    }
+
+    const stdSignDocBase: legacyAmino.StdSignDoc = {
         chain_id: chainId,
         account_number: legacyAmino.Uint53.fromString(accountNumber.toString()).toString(),
         sequence: legacyAmino.Uint53.fromString(sequence.toString()).toString(),
         fee,
         msgs,
         memo,
-        timeout_height: legacyAmino.Uint53.fromString(timeoutHeight.toString()).toString(),
     };
+    let stdSignDoc: legacyAmino.StdSignDoc;
+    if (typeof timeoutHeight === 'undefined') {
+        stdSignDoc = {
+            ...stdSignDocBase,
+        };
+    } else {
+        stdSignDoc = {
+            ...stdSignDocBase,
+            timeout_height: encodedTimeoutHeight,
+        };
+    }
     return Bytes.fromUint8Array(legacyAmino.toUtf8(legacyAmino.sortedJsonStringify(stdSignDoc)));
 };

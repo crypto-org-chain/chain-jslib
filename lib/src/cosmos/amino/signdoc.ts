@@ -15,7 +15,7 @@ export interface StdSignDoc {
     readonly fee: StdFee;
     readonly msgs: readonly Msg[];
     readonly memo: string;
-    readonly timeout_height: string;
+    readonly timeout_height?: string;
 }
 
 /** Returns a JSON string with objects sorted by key */
