@@ -4,11 +4,12 @@ import { ICoin } from '../../../coin/coin';
 import { owMsgSendOptions } from '../ow.types';
 import { InitConfigurations } from '../../../core/cro';
 import { AddressType, validateAddress } from '../../../utils/address';
-import { Message } from '../Message';
+import { CosmosMsg } from '../cosmosMsg';
 import { COSMOS_MSG_TYPEURL } from '../../common/constants/typeurl';
+import * as legacyAmino from '../../../cosmos/amino';
 
 export const msgSend = function (config: InitConfigurations) {
-    return class MsgSend implements Message {
+    return class MsgSend implements CosmosMsg {
         public readonly fromAddress: string;
 
         public readonly toAddress: string;
@@ -36,20 +37,26 @@ export const msgSend = function (config: InitConfigurations) {
          * @returns {Msg}
          */
         toRawMsg(): Msg {
-            const cosmosCoin = this.amount.toCosmosCoin();
             return {
                 typeUrl: COSMOS_MSG_TYPEURL.MsgSend,
                 value: {
                     fromAddress: this.fromAddress,
                     toAddress: this.toAddress,
-                    amount: [
-                        {
-                            denom: cosmosCoin.denom,
-                            amount: cosmosCoin.amount,
-                        },
-                    ],
+                    amount: this.amount.toCosmosCoins(),
                 },
             };
+        }
+
+        // eslint-disable-next-line class-methods-use-this
+        toRawAminoMsg(): legacyAmino.Msg {
+            return {
+                type: 'cosmos-sdk/MsgSend',
+                value: {
+                    from_address: this.fromAddress,
+                    to_address: this.toAddress,
+                    amount: this.amount.toCosmosCoins(),
+                },
+            } as legacyAmino.MsgSend;
         }
 
         validateAddresses() {
@@ -60,7 +67,7 @@ export const msgSend = function (config: InitConfigurations) {
                     type: AddressType.USER,
                 })
             ) {
-                throw new TypeError('Provided `fromAddress` doesnt match network selected');
+                throw new TypeError('Provided `fromAddress` does not match network selected');
             }
 
             if (
@@ -70,7 +77,7 @@ export const msgSend = function (config: InitConfigurations) {
                     type: AddressType.USER,
                 })
             ) {
-                throw new TypeError('Provided `toAddress` doesnt match network selected');
+                throw new TypeError('Provided `toAddress` does not match network selected');
             }
         }
     };

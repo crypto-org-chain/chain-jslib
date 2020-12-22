@@ -4,6 +4,7 @@ import ow from 'ow';
 import { owCoin, owCoinUnit } from './ow.types';
 import { InitConfigurations } from '../core/cro';
 import { Network } from '../network/network';
+import { Coin as CosmosCoin, coin as cosmosCoin, coins as cosmosCoins } from '../cosmos/coins';
 
 export enum Units {
     BASE = 'base',
@@ -19,6 +20,8 @@ export function isCoin(object: Object): boolean {
 // Mainly used to export Coin type
 export interface ICoin {
     toCosmosCoin(): CosmosCoin;
+
+    toCosmosCoins(): CosmosCoin[];
 
     getNetwork(): Network;
 }
@@ -206,10 +209,16 @@ export const coin = function (config: InitConfigurations) {
          * @memberof Coin
          * */
         public toCosmosCoin(): CosmosCoin {
-            return {
-                amount: this.toString(Units.BASE),
-                denom: config.network.coin.baseDenom,
-            };
+            return cosmosCoin(this.toString(Units.BASE), config.network.coin.baseDenom);
+        }
+
+        /**
+         * Returns the Cosmos-compatible Coin object representation
+         * @returns {CosmosCoin}
+         * @memberof Coin
+         * */
+        public toCosmosCoins(): CosmosCoin[] {
+            return cosmosCoins(this.toString(Units.BASE), config.network.coin.baseDenom);
         }
 
         /**
@@ -228,9 +237,4 @@ export const coin = function (config: InitConfigurations) {
             return this.baseAmount.div(Coin.ONE_CRO_IN_BASE_UNIT).toString();
         }
     };
-};
-
-export type CosmosCoin = {
-    amount: string;
-    denom: string;
 };

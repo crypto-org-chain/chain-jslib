@@ -1,15 +1,16 @@
 import ow from 'ow';
 import { InitConfigurations } from '../../../core/cro';
-import { Message } from '../Message';
 import { Msg } from '../../../cosmos/v1beta1/types/msg';
 import { ICoin } from '../../../coin/coin';
 import { COSMOS_MSG_TYPEURL } from '../../common/constants/typeurl';
 import { AddressType, validateAddress } from '../../../utils/address';
 import { owMsgSubmitProposalOptions } from '../ow.types';
 import { IMsgProposalContent } from './IMsgProposalContent';
+import { CosmosMsg } from '../cosmosMsg';
+import * as legacyAmino from '../../../cosmos/amino';
 
 export const msgSubmitProposal = function (config: InitConfigurations) {
-    return class MsgSubmitProposal implements Message {
+    return class MsgSubmitProposal implements CosmosMsg {
         public readonly proposer: string;
 
         public readonly initialDeposit: ICoin;
@@ -27,6 +28,11 @@ export const msgSubmitProposal = function (config: InitConfigurations) {
             this.proposer = options.proposer;
             this.initialDeposit = options.initialDeposit;
             this.content = options.content;
+        }
+
+        // eslint-disable-next-line class-methods-use-this
+        toRawAminoMsg(): legacyAmino.Msg {
+            throw new Error('Method not implemented.');
         }
 
         /**

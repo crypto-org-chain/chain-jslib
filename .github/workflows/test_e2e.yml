@@ -12,13 +12,13 @@ jobs:
   RPC:
     runs-on: ubuntu-latest
     steps:
-      - name: STEP-1 :Checkout chain-main repo
+      - name: Checkout chain-main repository
         uses: actions/checkout@v2
         with:
           repository: crypto-com/chain-main
           path: chain-main
 
-      - name: Build & Start ChainMaind
+      - name: Build and start chainmaind
         run: |
           sudo apt-get install jq
           cd chain-main 
@@ -67,11 +67,11 @@ jobs:
           ## TRANSFER 10CRO FROM "reserve" to "tcro1c5nd9l5ylh8udw5lsfs0hlvzxwrlymxqlnl266"
           ./build/chain-maind tx bank send $(./build/chain-maind keys show reserve -a --keyring-backend test) tcro1c5nd9l5ylh8udw5lsfs0hlvzxwrlymxqlnl266 100tcro --keyring-backend test --chain-id testnet -y | jq '.'
 
-      - name: STEP-2 :Setup JSLIB project
+      - name: Checkout jslib project
         uses: actions/checkout@v2
         with:
           path: jslib
-      - name: STEP-3 :Setup Node.js for nextgen-jslib
+      - name: Setup Node.js
         uses: actions/setup-node@v1
         with:
           node-version: 14
@@ -80,17 +80,14 @@ jobs:
         with:
           path: node_modules
           key: ${{ runner.os }}-node${{ matrix.code }}-${{ hashFiles('**/package-lock.json') }}
-      - name: Run Integration test suite
+      - name: Run e2e test suite
         run: |
-          ## RUN INTEGRATION TEST
           cd jslib
           npm install --no-progress --silent --quiet
-          echo "*************"
           VALIDATOR_OPERATOR_ADDRESS=$(../chain-main/build/chain-maind keys show validator -a --bech val --keyring-backend test) COMMUNITY_ACCOUNT_MNEMONIC=$(cat ../chain-main/community.json | jq '.mnemonic') RESERVE_ACCOUNT_MNEMONIC=$(cat ../chain-main/reserve.json | jq '.mnemonic') ECOSYSTEM_ACCOUNT_MNEMONIC=$(cat ../chain-main/ecosystem.json | jq '.mnemonic') 
-          echo $VALIDATOR_OPERATOR_ADDRESS
-          echo $COMMUNITY_ACCOUNT_MNEMONIC
-          echo $RESERVE_ACCOUNT_MNEMONIC
-          echo $ECOSYSTEM_ACCOUNT_MNEMONIC
+          echo "VALIDATOR_OPERATOR_ADDRESS: $VALIDATOR_OPERATOR_ADDRESS"
+          echo "COMMUNITY_ACCOUNT_MNEMONIC: $COMMUNITY_ACCOUNT_MNEMONIC"
+          echo "RESERVE_ACCOUNT_MNEMONIC: $RESERVE_ACCOUNT_MNEMONIC"
+          echo "ECOSYSTEM_ACCOUNT_MNEMONIC: $ECOSYSTEM_ACCOUNT_MNEMONIC"
           # COMMUNITY_ACCOUNT_MNEMONIC=$COMMUNITY_ACCOUNT_MNEMONIC RESERVE_ACCOUNT_MNEMONIC=$RESERVE_ACCOUNT_MNEMONIC ECOSYSTEM_ACCOUNT_MNEMONIC=$ECOSYSTEM_ACCOUNT_MNEMONIC
-          echo "*************"
-           VALIDATOR_OPERATOR_ADDRESS=$VALIDATOR_OPERATOR_ADDRESS npm run integration-test
+          VALIDATOR_OPERATOR_ADDRESS=$VALIDATOR_OPERATOR_ADDRESS npm run test:e2e

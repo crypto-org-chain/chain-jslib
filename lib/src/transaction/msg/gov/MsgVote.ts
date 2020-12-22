@@ -2,11 +2,12 @@ import Big from 'big.js';
 import Long from 'long';
 import ow from 'ow';
 import { InitConfigurations } from '../../../core/cro';
-import { Message } from '../Message';
 import { Msg } from '../../../cosmos/v1beta1/types/msg';
 import { AddressType, validateAddress } from '../../../utils/address';
 import { COSMOS_MSG_TYPEURL } from '../../common/constants/typeurl';
 import { owMsgVoteOptions } from '../ow.types';
+import { CosmosMsg } from '../cosmosMsg';
+import * as legacyAmino from '../../../cosmos/amino';
 
 export enum VoteOptions {
     YES = 'Yes',
@@ -16,7 +17,7 @@ export enum VoteOptions {
 }
 
 export const msgVote = function (config: InitConfigurations) {
-    return class MsgVote implements Message {
+    return class MsgVote implements CosmosMsg {
         public proposalId: Big;
 
         public voter: string;
@@ -31,6 +32,11 @@ export const msgVote = function (config: InitConfigurations) {
             this.option = options.option;
 
             this.validate();
+        }
+
+        // eslint-disable-next-line class-methods-use-this
+        toRawAminoMsg(): legacyAmino.Msg {
+            throw new Error('Method not implemented.');
         }
 
         toRawMsg(): Msg {
