@@ -105,8 +105,8 @@ describe('Testing MsgSend', function () {
             amount: coin,
         };
 
-        expect(() => new cro.bank.MsgSend(params1)).to.throw('Provided `fromAddress` doesnt match network selected');
-        expect(() => new cro.bank.MsgSend(params2)).to.throw('Provided `toAddress` doesnt match network selected');
+        expect(() => new cro.bank.MsgSend(params1)).to.throw('Provided `fromAddress` does not match network selected');
+        expect(() => new cro.bank.MsgSend(params2)).to.throw('Provided `toAddress` does not match network selected');
         expect(() => new cro.bank.MsgSend(params3)).to.throw(
             'Invalid checksum for tcro1pndm4ywdf4qtmupa0fqe75krmqed2znjyj6x8fzqa',
         );

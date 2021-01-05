@@ -15,20 +15,29 @@ import { typeUrlMappings } from '../cosmos/v1beta1/types/typeurls';
 import { sha256 } from '../utils/hash';
 import { Network } from '../network/network';
 import { Bytes } from '../utils/bytes/bytes';
-import { EMPTY_SIGNATURE, SignerAccount } from './types';
+import { EMPTY_SIGNATURE, SignerAccount, SIGN_MODE } from './types';
 import { owSignableTransactionParams } from './ow.types';
 import { owBytes } from '../utils/bytes/ow.types';
 import { SignedTransaction } from './signed';
+import * as legacyAmino from '../cosmos/amino';
+import { ICoin } from '../coin/coin';
+import { CosmosMsg } from './msg/cosmosMsg';
+
+const DEFAULT_GAS_LIMIT = 200_000;
 
 /**
  * SignableTransaction is a prepared transaction ready to be signed
  */
 export class SignableTransaction {
-    private txRaw: TxRaw;
+    private txBody: TxBody;
+
+    private authInfo: AuthInfo;
 
     private network: Network;
 
     private signerAccounts: SignerAccount[] = [];
+
+    private txRaw: TxRaw;
 
     /**
      * Constructor to create a SignableTransaction
@@ -49,8 +58,11 @@ export class SignableTransaction {
             throw new TypeError('Expected signer in `signerInfos` of `authInfo` of `params`, got none');
         }
 
-        const bodyBytes = encodeTxBody(params.txBody);
-        const authInfoBytes = encodeAuthInfo(params.authInfo);
+        this.txBody = params.txBody;
+        this.authInfo = params.authInfo;
+
+        const bodyBytes = protoEncodeTxBody(params.txBody);
+        const authInfoBytes = protoEncodeAuthInfo(params.authInfo);
         this.txRaw = {
             bodyBytes,
             authInfoBytes,
@@ -62,7 +74,7 @@ export class SignableTransaction {
 
     /**
      * Returns the SignDoc of the specified index
-     * @param {number} index
+     * @param {number} index index of the signer
      * @returns {Bytes}
      * @throws {Error} when index is invalid
      * @memberof SignableTransaction
@@ -70,14 +82,31 @@ export class SignableTransaction {
     public toSignDoc(index: number): Bytes {
         ow(index, 'index', this.owIndex());
 
-        return sha256(
-            makeSignDoc(
-                this.txRaw.bodyBytes,
-                this.txRaw.authInfoBytes,
-                this.network.chainId,
-                this.signerAccounts[index].accountNumber,
-            ),
-        );
+        const signMode = this.getSignerSignMode(index);
+        if (signMode === SIGN_MODE.DIRECT) {
+            return sha256(
+                makeSignDoc(
+                    this.txRaw.bodyBytes,
+                    this.txRaw.authInfoBytes,
+                    this.network.chainId,
+                    this.signerAccounts[index].accountNumber,
+                ),
+            );
+        }
+        if (signMode === SIGN_MODE.LEGACY_AMINO_JSON) {
+            return sha256(
+                makeLegacyAminoSignDoc(
+                    legacyEncodeMsgs(this.txBody.value.messages),
+                    legacyEncodeStdFee(this.authInfo.fee.amount, this.authInfo.fee.gasLimit),
+                    this.network.chainId,
+                    this.txBody.value.memo || '',
+                    this.signerAccounts[index].accountNumber.toString(),
+                    this.authInfo.signerInfos[index].sequence.toString(),
+                    legacyEncodeTimeoutHeight(this.txBody.value.timeoutHeight),
+                ),
+            );
+        }
+        throw new Error(`Unrecognized sign mode: ${signMode}`);
     }
 
     /**
@@ -100,6 +129,10 @@ export class SignableTransaction {
         this.txRaw.signatures[index] = signature;
 
         return this;
+    }
+
+    private getSignerSignMode(index: number): SIGN_MODE {
+        return this.signerAccounts[index].signMode;
     }
 
     /**
@@ -172,11 +205,12 @@ export type SignableTransactionParams = {
 /**
  * Encode TxBody to protobuf binary
  */
-const encodeTxBody = (txBody: TxBody): Bytes => {
+const protoEncodeTxBody = (txBody: TxBody): Bytes => {
     const wrappedMessages = txBody.value.messages.map((message) => {
-        const messageBytes = encodeTxBodyMessage(message);
+        const rawMessage = message.toRawMsg();
+        const messageBytes = protoEncodeTxBodyMessage(rawMessage);
         return google.protobuf.Any.create({
-            type_url: message.typeUrl,
+            type_url: rawMessage.typeUrl,
             value: messageBytes,
         });
     });
@@ -189,8 +223,8 @@ const encodeTxBody = (txBody: TxBody): Bytes => {
         txBodyProto.memo = txBody.value.memo;
     }
 
-    if (txBody.value.timeoutHeight) {
-        txBodyProto.timeoutHeight = Long.fromNumber(txBody.value.timeoutHeight, true);
+    if (txBody.value.timeoutHeight && txBody.value.timeoutHeight !== '0') {
+        txBodyProto.timeoutHeight = Long.fromString(txBody.value.timeoutHeight, true);
     }
     return Bytes.fromUint8Array(cosmos.tx.v1beta1.TxBody.encode(txBodyProto).finish());
 };
@@ -198,7 +232,7 @@ const encodeTxBody = (txBody: TxBody): Bytes => {
 /**
  * Encode TxBody message to protobuf binary
  */
-const encodeTxBodyMessage = (message: Msg): Uint8Array => {
+const protoEncodeTxBodyMessage = (message: Msg): Uint8Array => {
     const type = typeUrlMappings[message.typeUrl];
     if (!type) {
         throw new Error(`Unrecognized message type ${message.typeUrl}`);
@@ -207,18 +241,10 @@ const encodeTxBodyMessage = (message: Msg): Uint8Array => {
     return Uint8Array.from(type.encode(created).finish());
 };
 
-const DEFAULT_GAS_LIMIT = 200_000;
-const getGasLimit = (authInfo: AuthInfo): Long.Long => {
-    const defaultGasLimit = Long.fromNumber(DEFAULT_GAS_LIMIT);
-    return authInfo.fee.gasLimit !== undefined && authInfo.fee.gasLimit !== null
-        ? Long.fromNumber(authInfo.fee.gasLimit.toNumber())
-        : defaultGasLimit;
-};
-
 /**
  * Encode AuthInfo message to protobuf binary
  */
-const encodeAuthInfo = (authInfo: AuthInfo): Bytes => {
+const protoEncodeAuthInfo = (authInfo: AuthInfo): Bytes => {
     const encodableAuthInfo: cosmos.tx.v1beta1.IAuthInfo = {
         signerInfos: authInfo.signerInfos.map(
             ({ publicKey, modeInfo, sequence }): cosmos.tx.v1beta1.ISignerInfo => ({
@@ -229,11 +255,18 @@ const encodeAuthInfo = (authInfo: AuthInfo): Bytes => {
         ),
         fee: {
             amount: authInfo.fee.amount !== undefined ? [authInfo.fee.amount.toCosmosCoin()] : [],
-            gasLimit: getGasLimit(authInfo),
+            gasLimit: protoEncodeGasLimitOrDefault(authInfo),
         },
     };
 
     return Bytes.fromUint8Array(cosmos.tx.v1beta1.AuthInfo.encode(encodableAuthInfo).finish());
+};
+
+const protoEncodeGasLimitOrDefault = (authInfo: AuthInfo): Long.Long => {
+    const defaultGasLimit = Long.fromNumber(DEFAULT_GAS_LIMIT);
+    return authInfo.fee.gasLimit !== undefined && authInfo.fee.gasLimit !== null
+        ? Long.fromNumber(authInfo.fee.gasLimit.toNumber())
+        : defaultGasLimit;
 };
 
 /**
@@ -250,7 +283,7 @@ const protoEncodePubKey = (pubKey: Bytes): google.protobuf.IAny => {
 };
 
 /**
- * Generate SignDoc binary bytes ready to be signed
+ * Generate SignDoc binary bytes ready to be signed in direct mode
  */
 const makeSignDoc = (txBodyBytes: Bytes, authInfoBytes: Bytes, chainId: string, accountNumber: Big): Bytes => {
     const signDoc = omitDefaults({
@@ -262,8 +295,63 @@ const makeSignDoc = (txBodyBytes: Bytes, authInfoBytes: Bytes, chainId: string, 
     // Omit encoding the Long value when it's either 0, null or undefined to keep it consistent with backend encoding
     // https://github.com/protobufjs/protobuf.js/issues/1138
     if (accountNumber.toNumber()) {
-        signDoc.accountNumber = Long.fromNumber(accountNumber.toNumber(), true);
+        signDoc.accountNumber = Long.fromNumber(accountNumber.toNumber());
     }
     const signDocProto = cosmos.tx.v1beta1.SignDoc.create(signDoc);
     return Bytes.fromUint8Array(cosmos.tx.v1beta1.SignDoc.encode(signDocProto).finish());
+};
+
+const legacyEncodeMsgs = (msgs: CosmosMsg[]): legacyAmino.Msg[] => {
+    return msgs.map((msg) => msg.toRawAminoMsg());
+};
+
+const legacyEncodeStdFee = (fee: ICoin | undefined, gas: Big | undefined): legacyAmino.StdFee => {
+    return {
+        amount: fee ? fee.toCosmosCoins() : [],
+        gas: gas ? gas.toString() : DEFAULT_GAS_LIMIT.toString(),
+    };
+};
+
+const legacyEncodeTimeoutHeight = (timeoutHeight: string | undefined): string | undefined => {
+    if (typeof timeoutHeight === 'undefined' || timeoutHeight === '0') {
+        return undefined;
+    }
+
+    return timeoutHeight;
+};
+
+const makeLegacyAminoSignDoc = (
+    msgs: readonly legacyAmino.Msg[],
+    fee: legacyAmino.StdFee,
+    chainId: string,
+    memo: string,
+    accountNumber: number | string,
+    sequence: number | string,
+    timeoutHeight?: string,
+): Bytes => {
+    let encodedTimeoutHeight: string | undefined;
+    if (typeof timeoutHeight !== 'undefined') {
+        encodedTimeoutHeight = legacyAmino.Uint53.fromString(timeoutHeight.toString()).toString();
+    }
+
+    const stdSignDocBase: legacyAmino.StdSignDoc = {
+        chain_id: chainId,
+        account_number: legacyAmino.Uint53.fromString(accountNumber.toString()).toString(),
+        sequence: legacyAmino.Uint53.fromString(sequence.toString()).toString(),
+        fee,
+        msgs,
+        memo,
+    };
+    let stdSignDoc: legacyAmino.StdSignDoc;
+    if (typeof timeoutHeight === 'undefined') {
+        stdSignDoc = {
+            ...stdSignDocBase,
+        };
+    } else {
+        stdSignDoc = {
+            ...stdSignDocBase,
+            timeout_height: encodedTimeoutHeight,
+        };
+    }
+    return Bytes.fromUint8Array(legacyAmino.toUtf8(legacyAmino.sortedJsonStringify(stdSignDoc)));
 };

@@ -1,13 +1,14 @@
 import ow from 'ow';
 import { InitConfigurations } from '../../../core/cro';
-import { Message } from '../Message';
+import { CosmosMsg } from '../cosmosMsg';
 import { Msg } from '../../../cosmos/v1beta1/types/msg';
 import { AddressType, validateAddress } from '../../../utils/address';
 import { owMsgWithdrawValidatorCommissionOptions } from '../ow.types';
 import { COSMOS_MSG_TYPEURL } from '../../common/constants/typeurl';
+import * as legacyAmino from '../../../cosmos/amino';
 
 export const msgWithdrawValidatorCommission = function (config: InitConfigurations) {
-    return class MsgWithdrawValidatorCommission implements Message {
+    return class MsgWithdrawValidatorCommission implements CosmosMsg {
         public readonly validatorAddress: string;
 
         /**
@@ -20,6 +21,11 @@ export const msgWithdrawValidatorCommission = function (config: InitConfiguratio
             ow(options, 'commissionWithdrawalOptions', owMsgWithdrawValidatorCommissionOptions);
             this.validatorAddress = options.validatorAddress;
             this.validateAddresses();
+        }
+
+        // eslint-disable-next-line class-methods-use-this
+        toRawAminoMsg(): legacyAmino.Msg {
+            throw new Error('Method not implemented.');
         }
 
         /**

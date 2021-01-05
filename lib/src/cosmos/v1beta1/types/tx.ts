@@ -2,16 +2,16 @@ import Big from 'big.js';
 
 import { Bytes } from '../../../utils/bytes/bytes';
 import { cosmos } from '../codec';
-import { Msg } from './msg';
 import { ICoin } from '../../../coin/coin';
+import { CosmosMsg } from '../../../transaction/msg/cosmosMsg';
 
 export type TxBody = {
     typeUrl: '/cosmos.tx.v1beta1.TxBody';
 
     value: {
-        messages: Msg[];
+        messages: CosmosMsg[];
         memo?: string;
-        timeoutHeight?: number;
+        timeoutHeight?: string;
     };
 };
 
@@ -30,7 +30,7 @@ export type SignerInfo = {
     // TODO: support multisig
     modeInfo: {
         single: {
-            mode: cosmos.tx.signing.v1beta1.SignMode.SIGN_MODE_DIRECT;
+            mode: cosmos.tx.signing.v1beta1.SignMode;
         };
     };
     sequence: Big;
