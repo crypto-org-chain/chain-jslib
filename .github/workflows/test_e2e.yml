@@ -47,7 +47,8 @@ jobs:
           ./build/chain-maind add-genesis-account $(./build/chain-maind keys show community -a --keyring-backend test) 200tcro
           ./build/chain-maind add-genesis-account $(./build/chain-maind keys show reserve -a --keyring-backend test) 200tcro
 
-          ./build/chain-maind gentx validator --amount 100tcro --keyring-backend test  --chain-id testnet
+          # Issue: gentx denomination is ignored https://github.com/cosmos/cosmos-sdk/issues/8251
+          ./build/chain-maind gentx validator 100tcro --amount 100tcro --keyring-backend test  --chain-id testnet
 
           ./build/chain-maind collect-gentxs
 
