@@ -2,7 +2,7 @@ import 'mocha';
 import { expect } from 'chai';
 import Big from 'big.js';
 
-import { CroNetwork, CroSDK } from '../core/cro';
+import { CroSDK } from '../core/cro';
 import { HDKey } from '../hdkey/hdkey';
 import { Secp256k1KeyPair } from '../keypair/secp256k1';
 import { SIGN_MODE } from './types';
@@ -15,7 +15,22 @@ describe('Amino JSON sign mode', function () {
         const privKey = hdKey.derivePrivKey("m/44'/1'/0'/0/0");
         const keyPair = Secp256k1KeyPair.fromPrivKey(privKey);
 
-        const cro = CroSDK({ network: CroNetwork.Testnet });
+        const cro = CroSDK({
+            network: {
+                chainId: 'testnet-croeseid-1',
+                addressPrefix: 'tcro',
+                validatorAddressPrefix: 'tcrocncl',
+                validatorPubKeyPrefix: 'tcrocnclconspub',
+                coin: {
+                    baseDenom: 'basetcro',
+                    croDenom: 'tcro',
+                },
+                bip44Path: {
+                    coinType: 1,
+                    account: 0,
+                },
+            },
+        });
         const msg = new cro.bank.MsgSend({
             fromAddress: new cro.Address(keyPair).account(),
             toAddress: 'tcro1fzcrza3j4f2677jfuxulkg33z6852qsqs8hx50',
