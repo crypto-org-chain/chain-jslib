@@ -3,13 +3,29 @@ import Big from 'big.js';
 import { expect } from 'chai';
 import { HDKey } from '../hdkey/hdkey';
 import { Secp256k1KeyPair } from '../keypair/secp256k1';
-import { CroNetwork, CroSDK } from '../core/cro';
+import { CroSDK } from '../core/cro';
 import { Units } from '../coin/coin';
 import { SIGN_MODE } from './types';
+import { Network } from '../network/network';
+
+const TestNetwork: Network = {
+    chainId: 'testnet-croeseid-1',
+    addressPrefix: 'tcro',
+    validatorAddressPrefix: 'tcrocncl',
+    validatorPubKeyPrefix: 'tcrocnclconspub',
+    coin: {
+        baseDenom: 'basetcro',
+        croDenom: 'tcro',
+    },
+    bip44Path: {
+        coinType: 1,
+        account: 0,
+    },
+};
 
 describe('Testing Tx signing with custom parameters', function () {
     it('test passing custom properties', function () {
-        const cro = CroSDK({ network: CroNetwork.Testnet });
+        const cro = CroSDK({ network: TestNetwork });
         const rawTx = new cro.RawTransaction();
 
         expect(() => rawTx.setGasLimit('1234009AXS')).to.throw(
@@ -28,7 +44,7 @@ describe('Testing Tx signing with custom parameters', function () {
         const privKey = hdKey.derivePrivKey("m/44'/1'/0'/0/0");
         const keyPair = Secp256k1KeyPair.fromPrivKey(privKey);
 
-        const cro = CroSDK({ network: CroNetwork.Testnet });
+        const cro = CroSDK({ network: TestNetwork });
         const msg = new cro.bank.MsgSend({
             fromAddress: new cro.Address(keyPair).account(),
             toAddress: 'tcro1fzcrza3j4f2677jfuxulkg33z6852qsqs8hx50',
@@ -70,7 +86,7 @@ describe('Testing Tx signing with custom parameters', function () {
         const privKey = hdKey.derivePrivKey("m/44'/1'/0'/0/0");
         const keyPair = Secp256k1KeyPair.fromPrivKey(privKey);
 
-        const cro = CroSDK({ network: CroNetwork.Testnet });
+        const cro = CroSDK({ network: TestNetwork });
         const msg = new cro.bank.MsgSend({
             fromAddress: new cro.Address(keyPair).account(),
             toAddress: 'tcro1fzcrza3j4f2677jfuxulkg33z6852qsqs8hx50',
@@ -114,7 +130,7 @@ describe('Testing Tx signing with custom parameters', function () {
         const privKey = hdKey.derivePrivKey("m/44'/1'/0'/0/0");
         const keyPair = Secp256k1KeyPair.fromPrivKey(privKey);
 
-        const cro = CroSDK({ network: CroNetwork.Testnet });
+        const cro = CroSDK({ network: TestNetwork });
         const rawTx = new cro.RawTransaction();
 
         const feeAmount = new cro.Coin('6500', Units.BASE);
@@ -154,7 +170,7 @@ describe('Testing Tx signing with custom parameters', function () {
         const privKey = hdKey.derivePrivKey("m/44'/1'/0'/0/0");
         const keyPair = Secp256k1KeyPair.fromPrivKey(privKey);
 
-        const cro = CroSDK({ network: CroNetwork.Testnet });
+        const cro = CroSDK({ network: TestNetwork });
         const msg = new cro.bank.MsgSend({
             fromAddress: new cro.Address(keyPair).account(),
             toAddress: 'tcro18tk89ddr4lg32e58sp5kfrm0egldlcfu40ww80',
