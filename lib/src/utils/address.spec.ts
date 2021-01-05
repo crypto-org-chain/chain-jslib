@@ -1,6 +1,6 @@
 import 'mocha';
 import { expect } from 'chai';
-import { AddressType, validateAddress } from './address';
+import { AddressType, AddressValidator, validateAddress } from './address';
 import { CroNetwork } from '../core/cro';
 
 describe('Validate address against network and checksums', function () {
@@ -50,5 +50,16 @@ describe('Validate address against network and checksums', function () {
                 type: AddressType.VALIDATOR,
             }),
         ).to.throw('Invalid checksum for tcrocncl1reyshfdygf7673xm9p8v0xvtd96m6cd6canhu3xcqa');
+    });
+
+    it('check valid address using AddressValidator', function () {
+        const addressProps = {
+            address: 'tcro165tzcrh2yl83g8qeqxueg2g5gzgu57y3fe3kc3',
+            network: CroNetwork.Testnet,
+            type: AddressType.USER,
+        };
+
+        const addressValidator = new AddressValidator(addressProps);
+        expect(addressValidator.isValid()).to.be.eq(true);
     });
 });
