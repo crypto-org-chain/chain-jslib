@@ -9,16 +9,22 @@ on:
       - master
 
 jobs:
-  RPC:
+  test-e2e:
+    name: End-to-end Test
     runs-on: ubuntu-latest
     steps:
+      - name: Set up Golang
+        uses: actions/setup-go@v2
+        with:
+          go-version: 1.15.5
+
       - name: Checkout chain-main repository
         uses: actions/checkout@v2
         with:
           repository: crypto-com/chain-main
           path: chain-main
 
-      - name: Build and start chainmaind
+      - name: Build and start chain-maind
         run: |
           sudo apt-get install jq
           cd chain-main 
@@ -42,13 +48,15 @@ jobs:
           ./build/chain-maind add-genesis-account $(./build/chain-maind keys show community -a --keyring-backend test) 200tcro
           ./build/chain-maind add-genesis-account $(./build/chain-maind keys show reserve -a --keyring-backend test) 200tcro
 
-          ./build/chain-maind gentx validator --amount 100tcro --keyring-backend test  --chain-id testnet
+          # Issue: gentx denomination is ignored https://github.com/cosmos/cosmos-sdk/issues/8251
+          ./build/chain-maind gentx validator 100tcro --amount 100tcro --keyring-backend test  --chain-id testnet
 
           ./build/chain-maind collect-gentxs
 
           ./build/chain-maind validate-genesis
 
           ./build/chain-maind start --trace &
+
       - name: Transfer funds to Test accounts
         run: |
           ## Sleep 5 Seconds
@@ -67,19 +75,22 @@ jobs:
           ## TRANSFER 10CRO FROM "reserve" to "tcro1c5nd9l5ylh8udw5lsfs0hlvzxwrlymxqlnl266"
           ./build/chain-maind tx bank send $(./build/chain-maind keys show reserve -a --keyring-backend test) tcro1c5nd9l5ylh8udw5lsfs0hlvzxwrlymxqlnl266 100tcro --keyring-backend test --chain-id testnet -y | jq '.'
 
-      - name: Checkout jslib project
+      - name: Checkout this project
         uses: actions/checkout@v2
         with:
           path: jslib
+
       - name: Setup Node.js
         uses: actions/setup-node@v1
         with:
           node-version: 14
+
       - uses: actions/cache@v2
         id: cache-deps
         with:
           path: node_modules
           key: ${{ runner.os }}-node${{ matrix.code }}-${{ hashFiles('**/package-lock.json') }}
+
       - name: Run e2e test suite
         run: |
           cd jslib
