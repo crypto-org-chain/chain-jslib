@@ -3,13 +3,28 @@ import Big from 'big.js';
 import { expect } from 'chai';
 import { Network } from '../network/network';
 import { HDKey } from '../hdkey/hdkey';
-import { CroNetwork, CroSDK } from '../core/cro';
+import { CroSDK } from '../core/cro';
 import { Secp256k1KeyPair } from '../keypair/secp256k1';
 import { Units } from '../coin/coin';
 import { SIGN_MODE } from './types';
 
 const PystaportTestNet: Network = {
     chainId: 'chainmaind',
+    addressPrefix: 'tcro',
+    validatorAddressPrefix: 'tcrocncl',
+    validatorPubKeyPrefix: 'tcrocnclconspub',
+    coin: {
+        baseDenom: 'basetcro',
+        croDenom: 'tcro',
+    },
+    bip44Path: {
+        coinType: 1,
+        account: 0,
+    },
+};
+
+const TestNetwork: Network = {
+    chainId: 'testnet-croeseid-1',
     addressPrefix: 'tcro',
     validatorAddressPrefix: 'tcrocncl',
     validatorPubKeyPrefix: 'tcrocnclconspub',
@@ -99,7 +114,7 @@ describe('Testing edge case Txs with 0 account numbers or 0 sequence', function 
         const privKey = hdKey.derivePrivKey("m/44'/1'/0'/0/0");
         const keyPair = Secp256k1KeyPair.fromPrivKey(privKey);
 
-        const cro = CroSDK({ network: CroNetwork.Testnet });
+        const cro = CroSDK({ network: TestNetwork });
         const msg = new cro.bank.MsgSend({
             fromAddress: new cro.Address(keyPair).account(),
             toAddress: 'tcro1ca066afeuj52k3r29je25q0auyr32k4plkh33r',
