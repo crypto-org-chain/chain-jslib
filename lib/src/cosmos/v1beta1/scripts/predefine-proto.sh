@@ -38,6 +38,8 @@ mkdir -p "$GENERATED_DIR"
   "$COSMOS_PROTO_DIR/tx/signing/v1beta1/signing.proto" \
   "$COSMOS_PROTO_DIR/gov/v1beta1/tx.proto" \
   "$COSMOS_PROTO_DIR/gov/v1beta1/gov.proto" \
+  "$COSMOS_PROTO_DIR/params/v1beta1/params.proto" \
+  "$COSMOS_PROTO_DIR/upgrade/v1beta1/upgrade.proto" \
   "$TENDERMINT_PROTO_DIR/types/types.proto" \
   "$TENDERMINT_PROTO_DIR/crypto/proof.proto" \
   "$TENDERMINT_PROTO_DIR/version/types.proto" \

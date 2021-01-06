@@ -1,6 +1,6 @@
 import ow from 'ow';
 import { Msg } from '../../../cosmos/v1beta1/types/msg';
-import { Message } from '../Message';
+import { CosmosMsg } from '../cosmosMsg';
 import { ICoin } from '../../../coin/coin';
 import { owMsgCreateValidatorOptions } from '../ow.types';
 import { InitConfigurations } from '../../../core/cro';
@@ -10,9 +10,10 @@ import { COSMOS_MSG_TYPEURL } from '../../common/constants/typeurl';
 import { ICommissionRates } from '../../common/interface/ICommissionRates';
 import { google, cosmos } from '../../../cosmos/v1beta1/codec';
 import { Bytes } from '../../../utils/bytes/bytes';
+import * as legacyAmino from '../../../cosmos/amino';
 
 export const msgCreateValidator = function (config: InitConfigurations) {
-    return class MsgCreateValidator implements Message {
+    return class MsgCreateValidator implements CosmosMsg {
         public readonly description: IDescription;
 
         public readonly commission: ICommissionRates;
@@ -43,6 +44,11 @@ export const msgCreateValidator = function (config: InitConfigurations) {
             this.pubkey = options.pubkey;
             this.value = options.value;
             this.validateAddresses();
+        }
+
+        // eslint-disable-next-line class-methods-use-this
+        toRawAminoMsg(): legacyAmino.Msg {
+            throw new Error('Method not implemented.');
         }
 
         /**

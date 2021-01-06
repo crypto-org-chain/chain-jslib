@@ -5,9 +5,24 @@ import { fuzzyDescribe } from '../../../test/mocha-fuzzy/suite';
 import { Msg } from '../../../cosmos/v1beta1/types/msg';
 import { Secp256k1KeyPair } from '../../../keypair/secp256k1';
 import { Bytes } from '../../../utils/bytes/bytes';
-import { CroNetwork, CroSDK } from '../../../core/cro';
+import { CroSDK } from '../../../core/cro';
 
-const cro = CroSDK({ network: CroNetwork.Testnet });
+const cro = CroSDK({
+    network: {
+        chainId: 'testnet-croeseid-1',
+        addressPrefix: 'tcro',
+        validatorAddressPrefix: 'tcrocncl',
+        validatorPubKeyPrefix: 'tcrocnclconspub',
+        coin: {
+            baseDenom: 'basetcro',
+            croDenom: 'tcro',
+        },
+        bip44Path: {
+            coinType: 1,
+            account: 0,
+        },
+    },
+});
 
 describe('Testing MsgEditValidator', function () {
     fuzzyDescribe('should throw Error when options is invalid', function (fuzzy) {

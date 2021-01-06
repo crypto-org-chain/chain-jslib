@@ -14,6 +14,10 @@ import { msgBeginRedelegate } from '../transaction/msg/staking/MsgBeginRedelegat
 import { userAddress } from '../address/address';
 import { msgWithdrawValidatorCommission } from '../transaction/msg/distribution/MsgWithdrawValidatorCommission';
 import { msgDeposit } from '../transaction/msg/gov/MsgDeposit';
+import { msgVote } from '../transaction/msg/gov/MsgVote';
+import { msgSubmitProposal } from '../transaction/msg/gov/MsgSubmitProposal';
+import { communityPoolSpendProposal } from '../transaction/msg/gov/CommunityPoolSpendProposal';
+import { paramChangeProposal } from '../transaction/msg/gov/ParamChangeProposal';
 
 export const CroSDK = function (configs: InitConfigurations) {
     ow(configs, 'configs', owCroSDKInitParams);
@@ -24,6 +28,13 @@ export const CroSDK = function (configs: InitConfigurations) {
         Address: userAddress(configs),
         gov: {
             MsgDeposit: msgDeposit(configs),
+            MsgVote: msgVote(configs),
+            MsgSubmitProposal: msgSubmitProposal(configs),
+            proposal: {
+                CommunityPoolSpendProposal: communityPoolSpendProposal(configs),
+                ParamChangeProposal: paramChangeProposal(),
+                // TODO : More type of proposals to be added here
+            },
         },
         bank: {
             MsgSend: msgSend(configs),
@@ -45,7 +56,7 @@ export const CroSDK = function (configs: InitConfigurations) {
 
 export class CroNetwork {
     public static Testnet: Network = {
-        chainId: 'testnet-croeseid-1',
+        chainId: 'testnet-croeseid-2',
         addressPrefix: 'tcro',
         validatorAddressPrefix: 'tcrocncl',
         validatorPubKeyPrefix: 'tcrocnclconspub',

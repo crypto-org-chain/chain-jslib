@@ -1,13 +1,14 @@
 import ow from 'ow';
-import { Message } from '../Message';
+import { CosmosMsg } from '../cosmosMsg';
 import { Msg } from '../../../cosmos/v1beta1/types/msg';
 import { InitConfigurations } from '../../../core/cro';
 import { AddressType, validateAddress } from '../../../utils/address';
 import { owMsgWithdrawDelegatorRewardOptions } from '../ow.types';
 import { COSMOS_MSG_TYPEURL } from '../../common/constants/typeurl';
+import * as legacyAmino from '../../../cosmos/amino';
 
 export const msgWithdrawDelegateReward = function (config: InitConfigurations) {
-    return class MsgWithdrawDelegatorReward implements Message {
+    return class MsgWithdrawDelegatorReward implements CosmosMsg {
         // Normal user addresses with (t)cro prefix
         public readonly delegatorAddress: string;
 
@@ -27,6 +28,11 @@ export const msgWithdrawDelegateReward = function (config: InitConfigurations) {
             this.validatorAddress = options.validatorAddress;
 
             this.validateAddresses();
+        }
+
+        // eslint-disable-next-line class-methods-use-this
+        toRawAminoMsg(): legacyAmino.Msg {
+            throw new Error('Method not implemented.');
         }
 
         /**
