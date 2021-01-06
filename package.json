@@ -1,6 +1,6 @@
 {
   "name": "@crypto-com/chain-jslib",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "Crypto.com Chain JavaScript library",
   "author": "Crypto.com <chain@crypto.com>",
   "license": "Apache-2.0",
@@ -28,7 +28,7 @@
     "test": "NODE_ENV=test mocha --timeout 10000 --require ./node_modules/ts-node/register --exit --color --recursive 'lib/src/**/*.spec.ts'",
     "test:e2e": "NODE_ENV=test mocha --timeout 10000 --require ./node_modules/ts-node/register --exit --color ./lib/e2e/**/*.spec.ts",
     "preget-proto": "rm -rf proto",
-    "get-proto": "REF=v0.40.0-rc3 ./lib/src/cosmos/v1beta1/scripts/get-proto.sh",
+    "get-proto": "REF=v0.40.0-rc5 ./lib/src/cosmos/v1beta1/scripts/get-proto.sh",
     "predefine-proto": "./lib/src/cosmos/v1beta1/scripts/predefine-proto.sh",
     "define-proto": "./lib/src/cosmos/v1beta1/scripts/define-proto.sh",
     "postdefine-proto": "./lib/src/cosmos/v1beta1/scripts/postdefine-proto.sh",
