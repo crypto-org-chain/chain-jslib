@@ -2,17 +2,16 @@ import ow from 'ow';
 import Big from 'big.js';
 
 import { cosmos } from '../cosmos/v1beta1/codec';
-import { Msg, owMsg } from '../cosmos/v1beta1/types/msg';
 import { AuthInfo, TxBody } from '../cosmos/v1beta1/types/tx';
-import { owRawTransactionSigner } from './ow.types';
+import { owRawTransactionSigner, owTimeoutHeight } from './ow.types';
 import { Bytes } from '../utils/bytes/bytes';
 import { isValidSepc256k1PublicKey } from '../utils/secp256k1';
 import { isBigInteger } from '../utils/big';
 import { Network } from '../network/network';
-import { SignerAccount } from './types';
+import { SignerAccount, SIGN_MODE } from './types';
 import { SignableTransaction } from './signable';
 import { cloneDeep } from '../utils/clone';
-import { Message } from './msg/Message';
+import { CosmosMsg, owCosmosMsg } from './msg/cosmosMsg';
 import { InitConfigurations } from '../core/cro';
 import { ICoin } from '../coin/coin';
 import { owCoin } from '../coin/ow.types';
@@ -24,7 +23,7 @@ export const rawTransaction = function (config: InitConfigurations) {
             value: {
                 messages: [],
                 memo: '',
-                timeoutHeight: 0,
+                timeoutHeight: '0',
             },
         };
 
@@ -50,13 +49,13 @@ export const rawTransaction = function (config: InitConfigurations) {
 
         /**
          * Add Cosmos message to transaction. The message orders will follow the add order.
-         * @param {Msg} message one of the supported Cosmos message
+         * @param {CosmosMsg} message one of the supported Cosmos message
          * @returns {RawTransaction}
          * @throws {Error} when message is invalid
          * @memberof Transaction
          */
-        public addMessage(message: Msg): RawTransaction {
-            ow(message, 'message', owMsg());
+        public addMessage(message: CosmosMsg): RawTransaction {
+            ow(message, 'message', owCosmosMsg());
 
             this.txBody.value.messages.push(message);
 
@@ -65,33 +64,37 @@ export const rawTransaction = function (config: InitConfigurations) {
 
         /**
          * Append Cosmos MsgSend to transaction
-         * @param {Message} message one of the supported Cosmos message
+         * @param {CosmosMsg} message one of the supported Cosmos message
          * @returns {RawTransaction}
          * @throws {Error} when message is invalid
          * @memberof Transaction
          */
-        public appendMessage(message: Message): RawTransaction {
-            return this.addMessage(message.toRawMsg());
+        public appendMessage(message: CosmosMsg): RawTransaction {
+            return this.addMessage(message);
         }
 
         /**
          * Set a memo value to the raw tx body
          * @param {string} memo to be set to the raw tx body
+         * @returns {RawTransaction}
          * @throws {Error} when memo is invalid
          * @memberof Transaction
          */
-        public setMemo(memo: string) {
+        public setMemo(memo: string): RawTransaction {
             ow(memo, 'memo', ow.string);
             this.txBody.value.memo = memo;
+
+            return this;
         }
 
         /**
          * Set gas limit value to tx
          * @param {string} gasLimit to be set to the raw tx body, default value is 200_000
+         * @returns {RawTransaction}
          * @throws {Error} when gasLimit set is invalid
          * @memberof Transaction
          */
-        public setGasLimit(gasLimit: string) {
+        public setGasLimit(gasLimit: string): RawTransaction {
             ow(gasLimit, 'gasLimit', ow.string);
             try {
                 this.authInfo.fee.gasLimit = new Big(gasLimit);
@@ -100,28 +103,36 @@ export const rawTransaction = function (config: InitConfigurations) {
                     `Expected gasLimit value to be a base10 number represented as string, got \`${gasLimit}\``,
                 );
             }
+
+            return this;
         }
 
         /**
          * Set fee to the raw tx
          * @param {ICoin} fee to be set to the raw tx body
+         * @returns {RawTransaction}
          * @throws {Error} when fee set is invalid
          * @memberof Transaction
          */
-        public setFee(fee: ICoin) {
+        public setFee(fee: ICoin): RawTransaction {
             ow(fee, 'fee', owCoin());
             this.authInfo.fee.amount = fee;
+
+            return this;
         }
 
         /**
          * Set a timeout param to tx body
-         * @param {number} timeoutHeight to best to the broad-casted tx
-         * @throws {Error} when timeoutHeight set is invalid
+         * @param {string} timeoutHeight to best to the broad-casted tx
+         * @returns {RawTransaction}
+         * @throws {Error} when timeoutHeight is invalid
          * @memberof Transaction
          */
-        public setTimeOutHeight(timeoutHeight: number) {
-            ow(timeoutHeight, 'timeoutHeight', ow.number.integer.greaterThanOrEqual(0));
+        public setTimeOutHeight(timeoutHeight: string): RawTransaction {
+            ow(timeoutHeight, 'timeoutHeight', owTimeoutHeight);
             this.txBody.value.timeoutHeight = timeoutHeight;
+
+            return this;
         }
 
         /**
@@ -153,12 +164,28 @@ export const rawTransaction = function (config: InitConfigurations) {
                 );
             }
 
+            let { signMode } = signer;
+            if (typeof signMode === 'undefined') {
+                signMode = SIGN_MODE.DIRECT;
+            }
+
+            let cosmosSignMode: cosmos.tx.signing.v1beta1.SignMode;
+            switch (signMode) {
+                case SIGN_MODE.DIRECT:
+                    cosmosSignMode = cosmos.tx.signing.v1beta1.SignMode.SIGN_MODE_DIRECT;
+                    break;
+                case SIGN_MODE.LEGACY_AMINO_JSON:
+                    cosmosSignMode = cosmos.tx.signing.v1beta1.SignMode.SIGN_MODE_LEGACY_AMINO_JSON;
+                    break;
+                default:
+                    throw new Error(`Unsupported sign mode: ${signMode}`);
+            }
             this.authInfo.signerInfos.push({
                 publicKey: signer.publicKey,
                 // TODO: support multisig
                 modeInfo: {
                     single: {
-                        mode: cosmos.tx.signing.v1beta1.SignMode.SIGN_MODE_DIRECT,
+                        mode: cosmosSignMode,
                     },
                 },
                 sequence: signer.accountSequence,
@@ -166,6 +193,7 @@ export const rawTransaction = function (config: InitConfigurations) {
             this.signerAccounts.push({
                 publicKey: signer.publicKey,
                 accountNumber: signer.accountNumber,
+                signMode,
             });
 
             return this;
@@ -234,4 +262,5 @@ export type TransactionSigner = {
     publicKey: Bytes;
     accountNumber: Big;
     accountSequence: Big;
+    signMode?: SIGN_MODE;
 };

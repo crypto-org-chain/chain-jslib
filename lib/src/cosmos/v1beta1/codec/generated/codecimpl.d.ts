@@ -6066,6 +6066,132 @@ export namespace cosmos {
             }
         }
     }
+
+    /** Namespace params. */
+    namespace params {
+        /** Namespace v1beta1. */
+        namespace v1beta1 {
+            /** Properties of a ParameterChangeProposal. */
+            interface IParameterChangeProposal {
+                /** ParameterChangeProposal title */
+                title?: string | null;
+
+                /** ParameterChangeProposal description */
+                description?: string | null;
+
+                /** ParameterChangeProposal changes */
+                changes?: cosmos.params.v1beta1.IParamChange[] | null;
+            }
+
+            /** Represents a ParameterChangeProposal. */
+            class ParameterChangeProposal implements IParameterChangeProposal {
+                /**
+                 * Constructs a new ParameterChangeProposal.
+                 * @param [p] Properties to set
+                 */
+                constructor(p?: cosmos.params.v1beta1.IParameterChangeProposal);
+
+                /** ParameterChangeProposal title. */
+                public title: string;
+
+                /** ParameterChangeProposal description. */
+                public description: string;
+
+                /** ParameterChangeProposal changes. */
+                public changes: cosmos.params.v1beta1.IParamChange[];
+
+                /**
+                 * Creates a new ParameterChangeProposal instance using the specified properties.
+                 * @param [properties] Properties to set
+                 * @returns ParameterChangeProposal instance
+                 */
+                public static create(
+                    properties?: cosmos.params.v1beta1.IParameterChangeProposal,
+                ): cosmos.params.v1beta1.ParameterChangeProposal;
+
+                /**
+                 * Encodes the specified ParameterChangeProposal message. Does not implicitly {@link cosmos.params.v1beta1.ParameterChangeProposal.verify|verify} messages.
+                 * @param m ParameterChangeProposal message or plain object to encode
+                 * @param [w] Writer to encode to
+                 * @returns Writer
+                 */
+                public static encode(
+                    m: cosmos.params.v1beta1.IParameterChangeProposal,
+                    w?: $protobuf.Writer,
+                ): $protobuf.Writer;
+
+                /**
+                 * Decodes a ParameterChangeProposal message from the specified reader or buffer.
+                 * @param r Reader or buffer to decode from
+                 * @param [l] Message length if known beforehand
+                 * @returns ParameterChangeProposal
+                 * @throws {Error} If the payload is not a reader or valid buffer
+                 * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                 */
+                public static decode(
+                    r: $protobuf.Reader | Uint8Array,
+                    l?: number,
+                ): cosmos.params.v1beta1.ParameterChangeProposal;
+            }
+
+            /** Properties of a ParamChange. */
+            interface IParamChange {
+                /** ParamChange subspace */
+                subspace?: string | null;
+
+                /** ParamChange key */
+                key?: string | null;
+
+                /** ParamChange value */
+                value?: string | null;
+            }
+
+            /** Represents a ParamChange. */
+            class ParamChange implements IParamChange {
+                /**
+                 * Constructs a new ParamChange.
+                 * @param [p] Properties to set
+                 */
+                constructor(p?: cosmos.params.v1beta1.IParamChange);
+
+                /** ParamChange subspace. */
+                public subspace: string;
+
+                /** ParamChange key. */
+                public key: string;
+
+                /** ParamChange value. */
+                public value: string;
+
+                /**
+                 * Creates a new ParamChange instance using the specified properties.
+                 * @param [properties] Properties to set
+                 * @returns ParamChange instance
+                 */
+                public static create(
+                    properties?: cosmos.params.v1beta1.IParamChange,
+                ): cosmos.params.v1beta1.ParamChange;
+
+                /**
+                 * Encodes the specified ParamChange message. Does not implicitly {@link cosmos.params.v1beta1.ParamChange.verify|verify} messages.
+                 * @param m ParamChange message or plain object to encode
+                 * @param [w] Writer to encode to
+                 * @returns Writer
+                 */
+                public static encode(m: cosmos.params.v1beta1.IParamChange, w?: $protobuf.Writer): $protobuf.Writer;
+
+                /**
+                 * Decodes a ParamChange message from the specified reader or buffer.
+                 * @param r Reader or buffer to decode from
+                 * @param [l] Message length if known beforehand
+                 * @returns ParamChange
+                 * @throws {Error} If the payload is not a reader or valid buffer
+                 * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                 */
+                public static decode(r: $protobuf.Reader | Uint8Array, l?: number): cosmos.params.v1beta1.ParamChange;
+            }
+        }
+    }
 }
 
 /** Namespace google. */

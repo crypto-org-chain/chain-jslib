@@ -1,11 +1,11 @@
 import bech32 from 'bech32';
 import { Network } from '../network/network';
 
-export type AddressValidationProperties = {
+export interface AddressValidationProperties {
     address: string;
     network: Network;
     type: AddressType;
-};
+}
 
 export enum AddressType {
     USER,
@@ -29,5 +29,17 @@ export function validateAddress(addressProps: AddressValidationProperties): bool
             return bech32Decoded.prefix === network.validatorAddressPrefix;
         default:
             return false;
+    }
+}
+
+export class AddressValidator {
+    public readonly params: AddressValidationProperties;
+
+    constructor(params: AddressValidationProperties) {
+        this.params = params;
+    }
+
+    public isValid(): boolean {
+        return validateAddress(this.params);
     }
 }
