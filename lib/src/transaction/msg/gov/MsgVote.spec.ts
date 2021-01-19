@@ -56,7 +56,7 @@ describe('Testing MsgVote', function () {
             value: {
                 proposalId: Long.fromNumber(1244000, true),
                 voter: 'tcro184lta2lsyu47vwyp2e8zmtca3k5yq85p6c4vp3',
-                option: 'No',
+                option: 'VOTE_OPTION_NO',
             },
         };
         expect(msgVote.toRawMsg()).to.eqls(rawMsg);

@@ -10,10 +10,11 @@ import { CosmosMsg } from '../cosmosMsg';
 import * as legacyAmino from '../../../cosmos/amino';
 
 export enum VoteOptions {
-    YES = 'Yes',
-    ABSTAIN = 'Abstain',
-    NO = 'No',
-    NO_WITH_VETO = 'NoWithVeto',
+    YES = 'VOTE_OPTION_YES',
+    ABSTAIN = 'VOTE_OPTION_ABSTAIN',
+    NO = 'VOTE_OPTION_NO',
+    NO_WITH_VETO = 'VOTE_OPTION_NO_WITH_VETO',
+    UNSPECIFIED = 'VOTE_OPTION_UNSPECIFIED',
 }
 
 export const msgVote = function (config: InitConfigurations) {
