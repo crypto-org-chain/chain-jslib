@@ -2,17 +2,21 @@
 
 All notable changes to this project will be documented in this file.
 
-*Unreleased*
-
 ## v0.0.5
+
+- Support `MsgSend` amino json transaction (Experimental)
+- Support `staking` module messages
+- Update Supported Cosmos Modules
+- Update network configuration for `croeseid-2`
+
+## v0.0.4
 
 ### Features
 
-- Working with private keys and key pairs 🔐
-- Generating an address 🔖
-- Build and Sign a transfer transaction ✅
+- Working with private keys and key pairs
+- Generating an address
+- Build and Sign `MsgSend` transaction
 - Generate Cosmos Protobuf Definitions
-- Update Supported Cosmos Modules
 
 ### Known Limitation
 
