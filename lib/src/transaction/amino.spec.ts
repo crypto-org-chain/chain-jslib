@@ -52,7 +52,7 @@ describe('Amino JSON sign mode', function () {
             .setTimeOutHeight('800000')
             .toSignable();
 
-        const signature = keyPair.sign(signableTx.toSignDoc(0));
+        const signature = keyPair.sign(signableTx.toSignDocumentHash(0));
         const expectedSignature =
             'RwttPpxKNy7t1ZIUubckiUKexQ/mDZQ4nSpICdUWtrggtyMK22E31+FVWsdrYWT/r0hBaA4FBAWTqMs/TU1utw==';
         expect(signature.toBase64String()).to.eq(expectedSignature);

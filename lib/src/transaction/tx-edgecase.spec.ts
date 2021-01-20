@@ -66,7 +66,7 @@ describe('Testing edge case Txs with 0 account numbers or 0 sequence', function 
             })
             .toSignable();
 
-        const signedTx = signableTx.setSignature(0, keyPair.sign(signableTx.toSignDoc(0))).toSigned();
+        const signedTx = signableTx.setSignature(0, keyPair.sign(signableTx.toSignDocumentHash(0))).toSigned();
         expect(signedTx.getTxHash()).to.eq('5481CCE07ACEF891F701AFEDC746C3478DDFEBFE524F5161ED09BB396F045B46');
         expect(signedTx.getHexEncoded()).to.eq(
             '0aa0010a8c010a1c2f636f736d6f732e62616e6b2e763162657461312e4d736753656e64126c0a2b7463726f313572736e36397a65397237673532746b3075366379687534656465703838647867747a6d3635122b7463726f316c346778656a793871786c3376786378763776706b34637175387168727a326e6678787232701a100a08626173657463726f120431323130120f48656c6c6f2054657374204d656d6f12580a500a460a1f2f636f736d6f732e63727970746f2e736563703235366b312e5075624b657912230a21028dc6ea491defbae760b9cf97b513208942816be5efdc28d3959e6994dfcc458b12040a0208011801120410c09a0c1a40c212f25dfc6758ae42c78079cba83f5d7bedf0dc5e03261e2ee67ee46e55eb6a5820e4c865b0a18c28ee838f5da3dac2e7b84e67dc8fb3449e83597a995da6da',
@@ -100,7 +100,7 @@ describe('Testing edge case Txs with 0 account numbers or 0 sequence', function 
             })
             .toSignable();
 
-        const signedTx = signableTx.setSignature(0, keyPair.sign(signableTx.toSignDoc(0))).toSigned();
+        const signedTx = signableTx.setSignature(0, keyPair.sign(signableTx.toSignDocumentHash(0))).toSigned();
         expect(signedTx.getTxHash()).to.eq('D0F76CAF5FBB7CCE330FC32EA86905994FE18730A4A00505474B5E62570B73A0');
         expect(signedTx.getHexEncoded()).to.eq(
             '0aa0010a8c010a1c2f636f736d6f732e62616e6b2e763162657461312e4d736753656e64126c0a2b7463726f316c346778656a793871786c3376786378763776706b34637175387168727a326e667878723270122b7463726f31327a33617774336b6b6830753538686d7738356c6874646736376434347077753632783873611a100a08626173657463726f120432323130120f48656c6c6f2054657374204d656d6f12580a500a460a1f2f636f736d6f732e63727970746f2e736563703235366b312e5075624b657912230a21030bf28c5f92c336db4703791691fa650fee408690b0a22c5ee4afb7e2508d32a712040a0208011800120410c09a0c1a40f7a03f0510596020b41b3ba7729a248b357a7ab857cf9c7956b2a20d750a859e36f2254829151cbb986f42b0cce1eb0ac17805ffb34b0de860b36062a4338441',
@@ -136,7 +136,7 @@ describe('Testing edge case Txs with 0 account numbers or 0 sequence', function 
             .setTimeOutHeight('800000')
             .toSignable();
 
-        const signature = keyPair.sign(signableTx.toSignDoc(0));
+        const signature = keyPair.sign(signableTx.toSignDocumentHash(0));
         const expectedSignature =
             'SvhVHQf6OgHLQtzIGgDX9+u1Y5CiV9UZWVqkw+T+QNZn724s4mRs/+MvNoxKpxi5AqLzoxmh62AwezJIrIQmwA==';
         expect(signature.toBase64String()).to.eq(expectedSignature);

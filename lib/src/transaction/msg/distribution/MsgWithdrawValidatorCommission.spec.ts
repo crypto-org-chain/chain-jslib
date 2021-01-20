@@ -59,7 +59,7 @@ describe('Testing MsgWithdrawValidatorCommission', function () {
         const signableTx = rawTx.appendMessage(msgWithdrawValidatorCommission).addSigner(commissionSigner).toSignable();
 
         const signedCommissionWithdrawTx = signableTx
-            .setSignature(0, anyKeyPair.sign(signableTx.toSignDoc(0)))
+            .setSignature(0, anyKeyPair.sign(signableTx.toSignDocumentHash(0)))
             .toSigned();
 
         const signedTxHex = signedCommissionWithdrawTx.encode().toHexString();
