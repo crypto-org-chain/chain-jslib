@@ -64,7 +64,7 @@ describe('Testing Tx signing with custom parameters', function () {
             .setMemo('amino test')
             .toSignable();
 
-        const signature = keyPair.sign(signableTx.toSignDoc(0));
+        const signature = keyPair.sign(signableTx.toSignDocumentHash(0));
         const expectedSignature =
             'Zg0SO4Y8lpY1Fo7rBpF1DnxXB46m/EC/1n2BO/p1TDEFWN9zF5DYrvtdKcuLHh+o/lBQ3QJ9lyibsnmOdfy7kA==';
         expect(signature.toBase64String()).to.eq(expectedSignature);
@@ -107,7 +107,7 @@ describe('Testing Tx signing with custom parameters', function () {
             .setMemo('amino test')
             .toSignable();
 
-        const signature = keyPair.sign(signableTx.toSignDoc(0));
+        const signature = keyPair.sign(signableTx.toSignDocumentHash(0));
         const expectedSignature =
             'yHxxmBZcL0FPPdCdDvDfhCJenHN0Fds5bnEd0Ilu/Ig6N1j1zmHt6tjMW+M/O4cf2k8kJoL0PUOE2jY+vRF3Bw==';
         expect(signature.toBase64String()).to.eq(expectedSignature);
@@ -156,7 +156,7 @@ describe('Testing Tx signing with custom parameters', function () {
             })
             .toSignable();
 
-        const signedTx = signableTx.setSignature(0, keyPair.sign(signableTx.toSignDoc(0))).toSigned();
+        const signedTx = signableTx.setSignature(0, keyPair.sign(signableTx.toSignDocumentHash(0))).toSigned();
         expect(signedTx.getTxHash()).to.eq('02A10D9E8B8D3AFE69EC56B1FE6ECFE8478C82038452D6BA4E9B189D81FA9908');
         expect(signedTx.getHexEncoded()).to.eq(
             '0aa4010a8c010a1c2f636f736d6f732e62616e6b2e763162657461312e4d736753656e64126c0a2b7463726f313635747a63726832796c3833673871657178756567326735677a6775353779336665336b6333122b7463726f313635747a63726832796c3833673871657178756567326735677a6775353779336665336b63331a100a08626173657463726f120431323130120f48656c6c6f2054657374204d656d6f1896ef14126a0a500a460a1f2f636f736d6f732e63727970746f2e736563703235366b312e5075624b657912230a2103c3d281a28592adce81bee3094f00eae26932cbc682fba239b90f47dac9fe703612040a020801180d12160a100a08626173657463726f12043635303010c08b111a40fe9b30f29bb9a83df3685f5bf8b7e6c34bae9ee8ba93115af4136289354c5bf947698ef3a3c0a1f6092ba7a2069616c436f4bcf6f3ecef11b92ad4d319ec0347',
@@ -192,7 +192,7 @@ describe('Testing Tx signing with custom parameters', function () {
             .setTimeOutHeight('100000000')
             .toSignable();
 
-        const signature = keyPair.sign(signableTx.toSignDoc(0));
+        const signature = keyPair.sign(signableTx.toSignDocumentHash(0));
         const expectedSignature =
             'rzYLb8TG7gEpsW8J2hehJhOMzKzyxcZ6nNWqeekR9LMMBpwHy9hjFk3sPfEC9cYiNR1Ik1TMRKXF8MblYU9YNQ==';
         expect(signature.toBase64String()).to.eq(expectedSignature);

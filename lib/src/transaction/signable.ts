@@ -73,40 +73,61 @@ export class SignableTransaction {
     }
 
     /**
-     * Returns the SignDoc of the specified index
+     * Returns the SignDoc of the specified index before hashing
      * @param {number} index index of the signer
      * @returns {Bytes}
      * @throws {Error} when index is invalid
      * @memberof SignableTransaction
      */
-    public toSignDoc(index: number): Bytes {
+    public toSignDocument(index: number): Bytes {
         ow(index, 'index', this.owIndex());
 
         const signMode = this.getSignerSignMode(index);
         if (signMode === SIGN_MODE.DIRECT) {
-            return sha256(
-                makeSignDoc(
-                    this.txRaw.bodyBytes,
-                    this.txRaw.authInfoBytes,
-                    this.network.chainId,
-                    this.signerAccounts[index].accountNumber,
-                ),
+            return makeSignDoc(
+                this.txRaw.bodyBytes,
+                this.txRaw.authInfoBytes,
+                this.network.chainId,
+                this.signerAccounts[index].accountNumber,
             );
         }
         if (signMode === SIGN_MODE.LEGACY_AMINO_JSON) {
-            return sha256(
-                makeLegacyAminoSignDoc(
-                    legacyEncodeMsgs(this.txBody.value.messages),
-                    legacyEncodeStdFee(this.authInfo.fee.amount, this.authInfo.fee.gasLimit),
-                    this.network.chainId,
-                    this.txBody.value.memo || '',
-                    this.signerAccounts[index].accountNumber.toString(),
-                    this.authInfo.signerInfos[index].sequence.toString(),
-                    legacyEncodeTimeoutHeight(this.txBody.value.timeoutHeight),
-                ),
+            return makeLegacyAminoSignDoc(
+                legacyEncodeMsgs(this.txBody.value.messages),
+                legacyEncodeStdFee(this.authInfo.fee.amount, this.authInfo.fee.gasLimit),
+                this.network.chainId,
+                this.txBody.value.memo || '',
+                this.signerAccounts[index].accountNumber.toString(),
+                this.authInfo.signerInfos[index].sequence.toString(),
+                legacyEncodeTimeoutHeight(this.txBody.value.timeoutHeight),
             );
         }
         throw new Error(`Unrecognized sign mode: ${signMode}`);
+    }
+
+    /**
+     * Returns the SignDoc Hash of the specified index
+     * @param {number} index index of the signer
+     * @returns {Bytes} , length is 32 bytes, SHA256 hash
+     * @throws {Error} when index is invalid
+     * @memberof SignableTransaction
+     */
+    public toSignDocumentHash(index: number): Bytes {
+        const raw = this.toSignDocument(index);
+        const hash = sha256(raw);
+        return hash;
+    }
+
+    /**
+     * DEPRECATED WARNING - this function will be deprecated
+     * Returns the SignDoc Hash of the specified index
+     * @param {number} index index of the signer
+     * @returns {Bytes} , length is 32 bytes, SHA256 hash
+     * @throws {Error} when index is invalid
+     * @memberof SignableTransaction
+     */
+    public toSignDoc(index: number): Bytes {
+        return this.toSignDocumentHash(index);
     }
 
     /**
@@ -121,8 +142,8 @@ export class SignableTransaction {
         ow(signature, 'signature', owBytes());
 
         const pubKey = this.signerAccounts[index].publicKey;
-        const signDoc = this.toSignDoc(index);
-        if (!secp256k1.ecdsaVerify(signature.toUint8Array(), signDoc.toUint8Array(), pubKey.toUint8Array())) {
+        const signDocHash = this.toSignDocumentHash(index);
+        if (!secp256k1.ecdsaVerify(signature.toUint8Array(), signDocHash.toUint8Array(), pubKey.toUint8Array())) {
             throw new Error('Invalid signature');
         }
 
