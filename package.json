@@ -1,6 +1,6 @@
 {
   "name": "@crypto-com/chain-jslib",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "Crypto.com Chain JavaScript library",
   "author": "Crypto.com <chain@crypto.com>",
   "license": "Apache-2.0",
