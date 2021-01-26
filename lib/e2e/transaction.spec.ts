@@ -109,8 +109,8 @@ describe('e2e test suite', function () {
             .toSignable();
 
         const signedTx = signableTx
-            .setSignature(0, keyPair.sign(signableTx.toSignDoc(0)))
-            .setSignature(1, keyPair2.sign(signableTx.toSignDoc(1)))
+            .setSignature(0, keyPair.sign(signableTx.toSignDocumentHash(0)))
+            .setSignature(1, keyPair2.sign(signableTx.toSignDocumentHash(1)))
             .toSigned();
 
         expect(msgSend1.fromAddress).to.eq(account1!.address);
@@ -174,8 +174,8 @@ describe('e2e test suite', function () {
             .toSignable();
 
         const signedTx = signableTx
-            .setSignature(0, keyPair.sign(signableTx.toSignDoc(0)))
-            .setSignature(1, keyPair2.sign(signableTx.toSignDoc(1)))
+            .setSignature(0, keyPair.sign(signableTx.toSignDocumentHash(0)))
+            .setSignature(1, keyPair2.sign(signableTx.toSignDocumentHash(1)))
             .toSigned();
 
         expect(msgSend1.fromAddress).to.eq(account1!.address);
@@ -212,7 +212,7 @@ describe('e2e test suite', function () {
         };
         const rawTx = new cro.RawTransaction();
         const signableTx = rawTx.appendMessage(MsgDelegate).addSigner(anySigner).toSignable();
-        const signedTx = signableTx.setSignature(0, keyPair.sign(signableTx.toSignDoc(0))).toSigned();
+        const signedTx = signableTx.setSignature(0, keyPair.sign(signableTx.toSignDocumentHash(0))).toSigned();
         const broadcastResult = await client.broadcastTx(signedTx.encode().toUint8Array());
         assertIsBroadcastTxSuccess(broadcastResult);
         const { transactionHash } = broadcastResult;
@@ -245,7 +245,7 @@ describe('e2e test suite', function () {
         };
         const rawTx = new cro.RawTransaction();
         const signableTx = rawTx.appendMessage(MsgUndelegate).addSigner(anySigner).toSignable();
-        const signedTx = signableTx.setSignature(0, keyPair.sign(signableTx.toSignDoc(0))).toSigned();
+        const signedTx = signableTx.setSignature(0, keyPair.sign(signableTx.toSignDocumentHash(0))).toSigned();
         const broadcastResult = await client.broadcastTx(signedTx.encode().toUint8Array());
         assertIsBroadcastTxSuccess(broadcastResult);
         const { transactionHash } = broadcastResult;
@@ -292,7 +292,7 @@ describe('e2e test suite', function () {
         };
         const rawTx = new cro.RawTransaction();
         const signableTx = rawTx.appendMessage(MsgCreateValidator).addSigner(anySigner).toSignable();
-        const signedTx = signableTx.setSignature(0, keyPair.sign(signableTx.toSignDoc(0))).toSigned();
+        const signedTx = signableTx.setSignature(0, keyPair.sign(signableTx.toSignDocumentHash(0))).toSigned();
         const broadcastResult = await client.broadcastTx(signedTx.encode().toUint8Array());
         assertIsBroadcastTxSuccess(broadcastResult);
         const { transactionHash } = broadcastResult;
@@ -328,7 +328,7 @@ describe('e2e test suite', function () {
         };
         const rawTx = new cro.RawTransaction();
         const signableTx = rawTx.appendMessage(MsgEditValidator).addSigner(anySigner).toSignable();
-        const signedTx = signableTx.setSignature(0, keyPair.sign(signableTx.toSignDoc(0))).toSigned();
+        const signedTx = signableTx.setSignature(0, keyPair.sign(signableTx.toSignDocumentHash(0))).toSigned();
         const broadcastResult = await client.broadcastTx(signedTx.encode().toUint8Array());
         assertIsBroadcastTxSuccess(broadcastResult);
         const { transactionHash } = broadcastResult;
@@ -363,7 +363,7 @@ describe('e2e test suite', function () {
         const rawTx = new cro.RawTransaction();
         rawTx.setGasLimit('300000');
         const signableTx = rawTx.appendMessage(MsgBeginRedelegate).addSigner(anySigner).toSignable();
-        const signedTx = signableTx.setSignature(0, keyPair.sign(signableTx.toSignDoc(0))).toSigned();
+        const signedTx = signableTx.setSignature(0, keyPair.sign(signableTx.toSignDocumentHash(0))).toSigned();
         const broadcastResult = await client.broadcastTx(signedTx.encode().toUint8Array());
         assertIsBroadcastTxSuccess(broadcastResult);
         const { transactionHash } = broadcastResult;
@@ -394,7 +394,7 @@ describe('e2e test suite', function () {
         };
         const rawTx = new cro.RawTransaction();
         const signableTx = rawTx.appendMessage(MsgWithdrawDelegatorReward).addSigner(anySigner).toSignable();
-        const signedTx = signableTx.setSignature(0, keyPair.sign(signableTx.toSignDoc(0))).toSigned();
+        const signedTx = signableTx.setSignature(0, keyPair.sign(signableTx.toSignDocumentHash(0))).toSigned();
         const broadcastResult = await client.broadcastTx(signedTx.encode().toUint8Array());
         assertIsBroadcastTxSuccess(broadcastResult);
         const { transactionHash } = broadcastResult;
@@ -425,7 +425,7 @@ describe('e2e test suite', function () {
         };
         const rawTx = new cro.RawTransaction();
         const signableTx = rawTx.appendMessage(MsgWithdrawValidatorCommission).addSigner(anySigner).toSignable();
-        const signedTx = signableTx.setSignature(0, keyPair.sign(signableTx.toSignDoc(0))).toSigned();
+        const signedTx = signableTx.setSignature(0, keyPair.sign(signableTx.toSignDocumentHash(0))).toSigned();
         const broadcast = await axios.get('broadcast_tx_commit', {
             baseURL: axiosConfig.url,
             params: { tx: `0x${signedTx.getHexEncoded()}` },

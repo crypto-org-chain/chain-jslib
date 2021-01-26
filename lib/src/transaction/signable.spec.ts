@@ -57,6 +57,64 @@ describe('SignableTransaction', function () {
         });
     });
 
+    describe('toSignDocument', function () {
+        fuzzyDescribe('should throw Error when index is invalid', function (fuzzy) {
+            const testRunner = fuzzy(fuzzy.NumberArg(0));
+
+            testRunner(function (index) {
+                if (index.valid) {
+                    return;
+                }
+
+                const anyTx = anySignableTransaction();
+                expect(() => anyTx.toSignDocument(index.value)).to.throw('Expected `index` to be of type `number`');
+            });
+        });
+
+        it('should throw Error when index is out of signers size', function () {
+            const anyTx = anySignableTransaction();
+            const outOfBoundIndex = 100;
+            expect(() => anyTx.toSignDocument(outOfBoundIndex)).to.throw(
+                'Expected `number `index`` to be within signer size',
+            );
+        });
+
+        it('should return Bytes representation of SignDoc', function () {
+            const anyTx = anySignableTransaction();
+            expect(anyTx.toSignDocument(0)).to.be.an.instanceOf(Bytes);
+        });
+    });
+
+    describe('toSignDocumentHash', function () {
+        fuzzyDescribe('should throw Error when index is invalid', function (fuzzy) {
+            const testRunner = fuzzy(fuzzy.NumberArg(0));
+
+            testRunner(function (index) {
+                if (index.valid) {
+                    return;
+                }
+
+                const anyTx = anySignableTransaction();
+                expect(() => anyTx.toSignDocumentHash(index.value)).to.throw('Expected `index` to be of type `number`');
+            });
+        });
+
+        it('should throw Error when index is out of signers size', function () {
+            const anyTx = anySignableTransaction();
+            const outOfBoundIndex = 100;
+
+            expect(() => anyTx.toSignDocumentHash(outOfBoundIndex)).to.throw(
+                'Expected `number `index`` to be within signer size',
+            );
+        });
+
+        it('should return Bytes representation of SignDoc', function () {
+            const anyTx = anySignableTransaction();
+
+            expect(anyTx.toSignDocumentHash(0)).to.be.an.instanceOf(Bytes);
+        });
+    });
+
     describe('setSignature', function () {
         fuzzyDescribe('should throw Error when index is invalid', function (fuzzy) {
             const anySignature = Bytes.fromHexString('111111');
@@ -79,7 +137,7 @@ describe('SignableTransaction', function () {
         it('should throw Error when index is out of signers size', function () {
             const { keyPair, params: anyParams } = SignableTransactionParamsSuiteFactory.build();
             const anyTx = new SignableTransaction(anyParams);
-            const signature = keyPair.sign(anyTx.toSignDoc(0));
+            const signature = keyPair.sign(anyTx.toSignDocumentHash(0));
 
             const outOfBoundIndex = 100;
             expect(() => anyTx.setSignature(outOfBoundIndex, signature)).to.throw(
@@ -100,7 +158,7 @@ describe('SignableTransaction', function () {
             const anyTx = new SignableTransaction(anyParams);
 
             const anyValidIndex = 0;
-            const signature = keyPair.sign(anyTx.toSignDoc(0));
+            const signature = keyPair.sign(anyTx.toSignDocumentHash(0));
 
             expect(anyTx.isIndexSigned(anyValidIndex)).to.eq(false);
 

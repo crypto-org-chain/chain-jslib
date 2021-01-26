@@ -86,7 +86,7 @@ describe('Testing MsgVote', function () {
 
         const signableTx = rawTx.appendMessage(msgVote).addSigner(anySigner).toSignable();
 
-        const signedTx = signableTx.setSignature(0, keyPair.sign(signableTx.toSignDoc(0))).toSigned();
+        const signedTx = signableTx.setSignature(0, keyPair.sign(signableTx.toSignDocumentHash(0))).toSigned();
 
         const signedTxHex = signedTx.encode().toHexString();
         expect(signedTxHex).to.be.eql(

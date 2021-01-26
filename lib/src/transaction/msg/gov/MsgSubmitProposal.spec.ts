@@ -127,7 +127,7 @@ describe('Testing MsgSubmitProposal and its content types', function () {
 
         const signableTx = rawTx.appendMessage(msgSubmitProposalCommunitySpend).addSigner(anySigner).toSignable();
 
-        const signedTx = signableTx.setSignature(0, keyPair.sign(signableTx.toSignDoc(0))).toSigned();
+        const signedTx = signableTx.setSignature(0, keyPair.sign(signableTx.toSignDocumentHash(0))).toSigned();
 
         const signedTxHex = signedTx.getHexEncoded();
         expect(signedTx.getTxHash()).to.be.eq('2A177BC5B770C503096F5AA2CCF0B89EC8FC2D33C135630A38922266E6EE1EF1');
@@ -174,7 +174,7 @@ describe('Testing MsgSubmitProposal and its content types', function () {
 
         const signableTx = rawTx.appendMessage(msgSubmitProposalChangeParam).addSigner(anySigner).toSignable();
 
-        const signedTx = signableTx.setSignature(0, keyPair.sign(signableTx.toSignDoc(0))).toSigned();
+        const signedTx = signableTx.setSignature(0, keyPair.sign(signableTx.toSignDocumentHash(0))).toSigned();
 
         const signedTxHex = signedTx.getHexEncoded();
         expect(signedTx.getTxHash()).to.be.eq('AFEBA2DE9891AF22040359C8AACEF2836E8BF1276D66505DE36559F3E912EFF8');

@@ -107,7 +107,7 @@ export const txRawFactory = {
     build: (): TxRaw => {
         const { keyPair, params } = SignableTransactionParamsSuiteFactory.build();
         const signableTx = new SignableTransaction(params);
-        const signDoc = signableTx.toSignDoc(0);
+        const signDoc = signableTx.toSignDocumentHash(0);
 
         const signature = keyPair.sign(signDoc);
         signableTx.setSignature(0, signature);

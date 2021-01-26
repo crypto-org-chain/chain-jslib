@@ -91,7 +91,7 @@ describe('Testing MsgUndelegate (Unbonding)', function () {
 
         const signableTx = rawTx.appendMessage(MsgUndelegate).addSigner(anySigner).toSignable();
 
-        const signedTx = signableTx.setSignature(0, anyKeyPair.sign(signableTx.toSignDoc(0))).toSigned();
+        const signedTx = signableTx.setSignature(0, anyKeyPair.sign(signableTx.toSignDocumentHash(0))).toSigned();
 
         const signedTxHex = signedTx.encode().toHexString();
         expect(signedTxHex).to.be.eql(
