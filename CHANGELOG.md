@@ -2,6 +2,11 @@
 
 All notable changes to this project will be documented in this file.
 
+## v0.0.6
+
+- Add `toSignDocument` and `toSignDocumentHash` to `SignableTransaction`
+- `toSignDoc` is now an alias of `toSignDocumentHash` with the same behaviour as before and will be deprecated
+
 ## v0.0.5
 
 - Support `MsgSend` amino json transaction (Experimental)
