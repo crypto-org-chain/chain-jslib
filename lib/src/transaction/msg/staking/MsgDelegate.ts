@@ -35,7 +35,14 @@ export const msgDelegate = function (config: InitConfigurations) {
 
         // eslint-disable-next-line class-methods-use-this
         toRawAminoMsg(): legacyAmino.Msg {
-            throw new Error('Method not implemented.');
+            return {
+                type: 'cosmos-sdk/MsgDelegate',
+                value: {
+                    delegator_address: this.delegatorAddress,
+                    validator_address: this.validatorAddress,
+                    amount: this.amount.toCosmosCoin(),
+                },
+            } as legacyAmino.MsgDelegate;
         }
 
         /**

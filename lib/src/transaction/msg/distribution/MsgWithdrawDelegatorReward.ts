@@ -32,7 +32,13 @@ export const msgWithdrawDelegateReward = function (config: InitConfigurations) {
 
         // eslint-disable-next-line class-methods-use-this
         toRawAminoMsg(): legacyAmino.Msg {
-            throw new Error('Method not implemented.');
+            return {
+                type: 'cosmos-sdk/MsgWithdrawDelegatorReward',
+                value: {
+                    delegator_address: this.delegatorAddress,
+                    validator_address: this.validatorAddress,
+                },
+            } as legacyAmino.MsgWithdrawDelegatorReward;
         }
 
         /**

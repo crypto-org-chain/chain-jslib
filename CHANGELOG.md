@@ -2,6 +2,9 @@
 
 All notable changes to this project will be documented in this file.
 
+## v0.0.7
+- Add toRawAminoMsg for MsgDelegate, MsgWithdrawDelegateReward
+
 ## v0.0.6
 
 - Add `toSignDocument` and `toSignDocumentHash` to `SignableTransaction`
