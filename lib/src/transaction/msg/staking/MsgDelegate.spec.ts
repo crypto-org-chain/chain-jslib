@@ -8,6 +8,7 @@ import { Secp256k1KeyPair } from '../../../keypair/secp256k1';
 import { Bytes } from '../../../utils/bytes/bytes';
 import { Units } from '../../../coin/coin';
 import { CroSDK } from '../../../core/cro';
+import * as legacyAmino from '../../../cosmos/amino';
 
 const cro = CroSDK({
     network: {
@@ -129,5 +130,31 @@ describe('Testing MsgDelegate', function () {
         expect(() => new cro.staking.MsgDelegate(params3)).to.throw(
             'Invalid checksum for tcro165tzcrh2yl83g8qeqxueg2g5gzgu57y3fe3kc',
         );
+    });
+
+    describe('Testing MsgDelegate Json', function () {
+        it('Test MsgDelegate conversion for amino json', function () {
+            const coin = new cro.Coin('12000500', Units.BASE);
+
+            const MsgDelegate = new cro.staking.MsgDelegate({
+                delegatorAddress: 'tcro165tzcrh2yl83g8qeqxueg2g5gzgu57y3fe3kc3',
+                validatorAddress: 'tcrocncl1j7pej8kplem4wt50p4hfvndhuw5jprxxxtenvr',
+                amount: coin,
+            });
+
+            const rawMsg: legacyAmino.Msg = {
+                type: 'cosmos-sdk/MsgDelegate',
+                value: {
+                    delegator_address: 'tcro165tzcrh2yl83g8qeqxueg2g5gzgu57y3fe3kc3',
+                    validator_address: 'tcrocncl1j7pej8kplem4wt50p4hfvndhuw5jprxxxtenvr',
+                    amount: {
+                        denom: 'basetcro',
+                        amount: '12000500',
+                    },
+                },
+            };
+
+            expect(MsgDelegate.toRawAminoMsg()).to.eqls(rawMsg);
+        });
     });
 });
