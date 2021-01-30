@@ -39,6 +39,10 @@ export class AddressValidator {
         this.params = params;
     }
 
+    public validate(): boolean | never {
+        return validateAddress(this.params);
+    }
+
     public isValid(): boolean {
         try {
             return validateAddress(this.params);
