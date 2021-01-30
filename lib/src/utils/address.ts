@@ -40,6 +40,10 @@ export class AddressValidator {
     }
 
     public isValid(): boolean {
-        return validateAddress(this.params);
+        try {
+            return validateAddress(this.params);
+        } catch {
+            return false;
+        }
     }
 }

@@ -52,14 +52,27 @@ describe('Validate address against network and checksums', function () {
         ).to.throw('Invalid checksum for tcrocncl1reyshfdygf7673xm9p8v0xvtd96m6cd6canhu3xcqa');
     });
 
-    it('check valid address using AddressValidator', function () {
-        const addressProps = {
-            address: 'tcro165tzcrh2yl83g8qeqxueg2g5gzgu57y3fe3kc3',
-            network: CroNetwork.Testnet,
-            type: AddressType.USER,
-        };
+    describe('AddressValidator', function () {
+        it('isValid should return false when the address is invalid', function () {
+            const addressProps = {
+                address: 'tcrocncl1reyshfdygf7673xm9p8v0xvtd96m6cd6canhu3xcqa',
+                network: CroNetwork.Testnet,
+                type: AddressType.USER,
+            };
 
-        const addressValidator = new AddressValidator(addressProps);
-        expect(addressValidator.isValid()).to.be.eq(true);
+            const addressValidator = new AddressValidator(addressProps);
+            expect(addressValidator.isValid()).to.be.eq(false);
+        });
+
+        it('isValid should return true when the address', function () {
+            const addressProps = {
+                address: 'tcro165tzcrh2yl83g8qeqxueg2g5gzgu57y3fe3kc3',
+                network: CroNetwork.Testnet,
+                type: AddressType.USER,
+            };
+
+            const addressValidator = new AddressValidator(addressProps);
+            expect(addressValidator.isValid()).to.be.eq(true);
+        });
     });
 });
