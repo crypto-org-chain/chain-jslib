@@ -77,7 +77,7 @@ describe('Testing MsgWithdrawDelegatorReward', function () {
             });
 
             const rawMsg: legacyAmino.Msg = {
-                type: 'cosmos-sdk/MsgWithdrawDelegatorReward',
+                type: 'cosmos-sdk/MsgWithdrawDelegationReward',
                 value: {
                     delegator_address: 'tcro165tzcrh2yl83g8qeqxueg2g5gzgu57y3fe3kc3',
                     validator_address: 'tcrocncl1reyshfdygf7673xm9p8v0xvtd96m6cd6canhu3',
