@@ -89,7 +89,7 @@ export function isMsgSetWithdrawAddress(msg: Msg): msg is MsgSetWithdrawAddress 
 
 /** Message for delegation withdraw from a single validator */
 export interface MsgWithdrawDelegatorReward extends Msg {
-    readonly type: 'cosmos-sdk/MsgWithdrawDelegatorReward';
+    readonly type: 'cosmos-sdk/MsgWithdrawDelegationReward';
     readonly value: {
         /** Bech32 account address */
         readonly delegator_address: string;
@@ -99,7 +99,7 @@ export interface MsgWithdrawDelegatorReward extends Msg {
 }
 
 export function isMsgWithdrawDelegatorReward(msg: Msg): msg is MsgWithdrawDelegatorReward {
-    return (msg as MsgWithdrawDelegatorReward).type === 'cosmos-sdk/MsgWithdrawDelegatorReward';
+    return (msg as MsgWithdrawDelegatorReward).type === 'cosmos-sdk/MsgWithdrawDelegationReward';
 }
 
 /** Message for validator withdraw */
