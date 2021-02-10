@@ -3,6 +3,7 @@ import { owStrictObject } from '../ow.types';
 
 export const owNetwork = () =>
     owStrictObject().exactShape({
+        defaultNodeUrl: ow.string,
         chainId: ow.string,
         addressPrefix: ow.string,
         validatorAddressPrefix: ow.string,

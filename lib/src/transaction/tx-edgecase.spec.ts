@@ -9,6 +9,7 @@ import { Units } from '../coin/coin';
 import { SIGN_MODE } from './types';
 
 const PystaportTestNet: Network = {
+    defaultNodeUrl: '',
     chainId: 'chainmaind',
     addressPrefix: 'tcro',
     validatorAddressPrefix: 'tcrocncl',
@@ -24,6 +25,7 @@ const PystaportTestNet: Network = {
 };
 
 const TestNetwork: Network = {
+    defaultNodeUrl: '',
     chainId: 'testnet-croeseid-1',
     addressPrefix: 'tcro',
     validatorAddressPrefix: 'tcrocncl',

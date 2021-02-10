@@ -2,6 +2,9 @@
 
 All notable changes to this project will be documented in this file.
 
+## v0.0.8
+- Add default node URL property on network interface
+
 ## v0.0.7
 - Add toRawAminoMsg for MsgDelegate, MsgWithdrawDelegateReward
 

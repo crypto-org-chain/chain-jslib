@@ -11,6 +11,7 @@ import { protoEncodeEd25519PubKey } from './MsgCreateValidator';
 
 const cro = CroSDK({
     network: {
+        defaultNodeUrl: '',
         chainId: 'testnet-croeseid-1',
         addressPrefix: 'tcro',
         validatorAddressPrefix: 'tcrocncl',

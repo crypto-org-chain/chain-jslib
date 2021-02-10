@@ -8,6 +8,7 @@ import * as legacyAmino from '../../../cosmos/amino';
 
 const cro = CroSDK({
     network: {
+        defaultNodeUrl: '',
         chainId: 'testnet-croeseid-1',
         addressPrefix: 'tcro',
         validatorAddressPrefix: 'tcrocncl',

@@ -9,6 +9,7 @@ import { SIGN_MODE } from './types';
 import { Network } from '../network/network';
 
 const TestNetwork: Network = {
+    defaultNodeUrl: '',
     chainId: 'testnet-croeseid-1',
     addressPrefix: 'tcro',
     validatorAddressPrefix: 'tcrocncl',
