@@ -2,8 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
-## v0.0.8
+## v0.0.9
 - Add default node URL property on network interface
+
+## v0.0.8
+- Fixed Amino encoding for withdrawing delegation reward.
+- Provide a non-throwing address validation helper function and a throwing one.
 
 ## v0.0.7
 - Add toRawAminoMsg for MsgDelegate, MsgWithdrawDelegateReward
