@@ -10,6 +10,7 @@ import { Secp256k1KeyPair } from '../../../keypair/secp256k1';
 import { Network } from '../../../network/network';
 
 const PystaportTestNet: Network = {
+    defaultNodeUrl: '',
     chainId: 'chainmaind',
     addressPrefix: 'tcro',
     validatorAddressPrefix: 'tcrocncl',

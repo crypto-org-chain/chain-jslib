@@ -12,6 +12,7 @@ import { Network } from '../src/network/network';
 import { SIGN_MODE } from '../src/transaction/types';
 
 const customNetwork: Network = {
+    defaultNodeUrl: '',
     chainId: 'testnet',
     addressPrefix: 'tcro',
     validatorAddressPrefix: 'tcrocncl',

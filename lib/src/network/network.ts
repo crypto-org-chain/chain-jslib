@@ -1,4 +1,5 @@
 export type Network = {
+    defaultNodeUrl: string;
     chainId: string;
     addressPrefix: string;
     validatorAddressPrefix: string;

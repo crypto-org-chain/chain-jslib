@@ -56,6 +56,7 @@ export const CroSDK = function (configs: InitConfigurations) {
 
 export class CroNetwork {
     public static Testnet: Network = {
+        defaultNodeUrl: 'https://testnet-croeseid.crypto.com',
         chainId: 'testnet-croeseid-2',
         addressPrefix: 'tcro',
         validatorAddressPrefix: 'tcrocncl',
@@ -71,6 +72,7 @@ export class CroNetwork {
     };
 
     public static Mainnet: Network = {
+        defaultNodeUrl: 'NOT_KNOWN_YET',
         chainId: 'croeseid-1',
         addressPrefix: 'cro',
         validatorAddressPrefix: 'crocncl',

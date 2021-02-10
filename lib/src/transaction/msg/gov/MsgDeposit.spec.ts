@@ -12,6 +12,7 @@ import { HDKey } from '../../../hdkey/hdkey';
 
 const cro = CroSDK({
     network: {
+        defaultNodeUrl: '',
         chainId: 'testnet-croeseid-1',
         addressPrefix: 'tcro',
         validatorAddressPrefix: 'tcrocncl',
