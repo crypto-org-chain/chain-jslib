@@ -1,0 +1,1 @@
+{"version":3,"file":"fee.d.ts","sourceRoot":"","sources":["../../../src/cosmos/amino/fee.ts"],"names":[],"mappings":"AAAA,OAAO,EAAE,IAAI,EAAE,MAAM,UAAU,CAAC;AAEhC,MAAM,WAAW,MAAM;IACnB,QAAQ,CAAC,MAAM,EAAE,SAAS,IAAI,EAAE,CAAC;IACjC,QAAQ,CAAC,GAAG,EAAE,MAAM,CAAC;CACxB"}

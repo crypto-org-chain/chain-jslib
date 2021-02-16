@@ -1,0 +1,1 @@
+{"version":3,"file":"typed-array.js","sourceRoot":"","sources":["../../src/utils/typed-array.ts"],"names":[],"mappings":";;;AAKa,QAAA,eAAe,GAAG,UAAC,GAAe;IAC3C,IAAM,MAAM,GAAG,IAAI,UAAU,CAAC,GAAG,CAAC,MAAM,CAAC,CAAC;IAC1C,MAAM,CAAC,GAAG,CAAC,GAAG,CAAC,CAAC;IAEhB,OAAO,MAAM,CAAC;AAClB,CAAC,CAAC"}

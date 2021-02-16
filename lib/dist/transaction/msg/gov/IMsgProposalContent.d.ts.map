@@ -1,0 +1,1 @@
+{"version":3,"file":"IMsgProposalContent.d.ts","sourceRoot":"","sources":["../../../../src/transaction/msg/gov/IMsgProposalContent.ts"],"names":[],"mappings":"AAAA,OAAO,EAAE,MAAM,EAAE,MAAM,+BAA+B,CAAC;AAQvD,MAAM,WAAW,mBAAmB;IAKhC,UAAU,IAAI,MAAM,CAAC,QAAQ,CAAC,GAAG,CAAC;CACrC;AAGD,wBAAgB,oBAAoB,CAAC,MAAM,EAAE,MAAM,GAAG,OAAO,CAG5D"}
