@@ -1,0 +1,1 @@
+{"version":3,"file":"msg.d.ts","sourceRoot":"","sources":["../../../../src/cosmos/v1beta1/types/msg.ts"],"names":[],"mappings":"AAGA,oBAAY,GAAG,GAAG;IACd,OAAO,EAAE,MAAM,CAAC;IAChB,KAAK,EAAE;QACH,CAAC,GAAG,EAAE,MAAM,GAAG,GAAG,CAAC;KACtB,CAAC;CACL,CAAC;AACF,eAAO,MAAM,KAAK,gDAGZ,CAAC"}
