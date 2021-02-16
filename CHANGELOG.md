@@ -2,6 +2,9 @@
 
 All notable changes to this project will be documented in this file.
 
+## v0.0.10
+- Add support for undelegate on LegacyAmino - Ledger support
+
 ## v0.0.9
 - Add default node URL property on network interface
 
