@@ -4,6 +4,7 @@ export type Network = {
     addressPrefix: string;
     validatorAddressPrefix: string;
     validatorPubKeyPrefix: string;
+    defaultNodeUrl: string,
     coin: {
         baseDenom: string;
         croDenom: string;
