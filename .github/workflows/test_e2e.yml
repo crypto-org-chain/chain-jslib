@@ -23,6 +23,7 @@ jobs:
         with:
           repository: crypto-com/chain-main
           path: chain-main
+          ref: v0.9.1-croeseid
           submodules: recursive
 
       - name: Build and start chain-maind
