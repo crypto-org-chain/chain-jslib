@@ -2,6 +2,10 @@
 
 All notable changes to this project will be documented in this file.
 
+## v0.0.12
+- Fix vulnerability in dependencies
+- Update Mainnet configuration
+
 ## v0.0.11
 - Fix 5 vulnerabilities in dependencies
 - Rebrand to Crypto.org
