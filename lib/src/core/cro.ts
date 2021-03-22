@@ -72,8 +72,8 @@ export class CroNetwork {
     };
 
     public static Mainnet: Network = {
-        defaultNodeUrl: 'NOT_KNOWN_YET',
-        chainId: 'croeseid-1',
+        defaultNodeUrl: 'https://mainnet.crypto.org',
+        chainId: 'crypto-org-chain-mainnet-1',
         addressPrefix: 'cro',
         validatorAddressPrefix: 'crocncl',
         validatorPubKeyPrefix: 'crocnclconspub',
@@ -82,7 +82,7 @@ export class CroNetwork {
             croDenom: 'cro',
         },
         bip44Path: {
-            coinType: 1,
+            coinType: 394,
             account: 0,
         },
     };
