@@ -7,6 +7,7 @@ import { Secp256k1KeyPair } from '../../../keypair/secp256k1';
 import { Bytes } from '../../../utils/bytes/bytes';
 import { Units } from '../../../coin/coin';
 import { CroSDK } from '../../../core/cro';
+import * as legacyAmino from '../../../cosmos/amino';
 
 const cro = CroSDK({
     network: {
@@ -67,6 +68,32 @@ describe('Testing MsgBeginRedelegate', function () {
         };
 
         expect(msgSend.toRawMsg()).to.eqls(rawMsg);
+    });
+
+    it('Test MsgBeginRedelegate conversion Json', function () {
+        const coin = new cro.Coin('12000500', Units.BASE);
+
+        const msgSend = new cro.staking.MsgBeginRedelegate({
+            delegatorAddress: 'tcro1j7pej8kplem4wt50p4hfvndhuw5jprxxn5625q',
+            validatorDstAddress: 'tcrocncl1j7pej8kplem4wt50p4hfvndhuw5jprxxxtenvr',
+            validatorSrcAddress: 'tcrocncl16mmzexp3zqfpgqtnn927m5ph560qgxrs52a3wx',
+            amount: coin,
+        });
+
+        const rawMsg: legacyAmino.Msg = {
+            type: 'cosmos-sdk/MsgBeginRedelegate',
+            value: {
+                delegator_address: 'tcro1j7pej8kplem4wt50p4hfvndhuw5jprxxn5625q',
+                validator_src_address: 'tcrocncl16mmzexp3zqfpgqtnn927m5ph560qgxrs52a3wx',
+                validator_dst_address: 'tcrocncl1j7pej8kplem4wt50p4hfvndhuw5jprxxxtenvr',
+                amount: {
+                    denom: 'basetcro',
+                    amount: '12000500',
+                },
+            },
+        };
+
+        expect(msgSend.toRawAminoMsg()).to.eqls(rawMsg);
     });
 
     it('Test appendTxBody MsgBeginRedelegate Tx signing', function () {
