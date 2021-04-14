@@ -19,6 +19,7 @@ import { msgSubmitProposal } from '../transaction/msg/gov/MsgSubmitProposal';
 import { communityPoolSpendProposal } from '../transaction/msg/gov/CommunityPoolSpendProposal';
 import { paramChangeProposal } from '../transaction/msg/gov/ParamChangeProposal';
 import { cancelSoftwareUpgradeProposal } from '../transaction/msg/gov/proposal/CancelSoftwareUpgradeProposal';
+import { softwareUpgradeProposal } from '../transaction/msg/gov/proposal/SoftwareUpgradeProposal';
 
 export const CroSDK = function (configs: InitConfigurations) {
     ow(configs, 'configs', owCroSDKInitParams);
@@ -35,6 +36,7 @@ export const CroSDK = function (configs: InitConfigurations) {
                 CommunityPoolSpendProposal: communityPoolSpendProposal(configs),
                 ParamChangeProposal: paramChangeProposal(),
                 CancelSoftwareUpgradeProposal: cancelSoftwareUpgradeProposal(),
+                SoftwareUpgradeProposal: softwareUpgradeProposal(),
                 // TODO : More type of proposals to be added here
             },
         },
