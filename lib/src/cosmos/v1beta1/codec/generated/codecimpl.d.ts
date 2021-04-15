@@ -6192,6 +6192,199 @@ export namespace cosmos {
             }
         }
     }
+
+    /** Namespace upgrade. */
+    namespace upgrade {
+        /** Namespace v1beta1. */
+        namespace v1beta1 {
+            /** Properties of a Plan. */
+            interface IPlan {
+                /** Plan name */
+                name?: string | null;
+
+                /** Plan time */
+                time?: google.protobuf.ITimestamp | null;
+
+                /** Plan height */
+                height?: Long | null;
+
+                /** Plan info */
+                info?: string | null;
+
+                /** Plan upgradedClientState */
+                upgradedClientState?: google.protobuf.IAny | null;
+            }
+
+            /** Represents a Plan. */
+            class Plan implements IPlan {
+                /**
+                 * Constructs a new Plan.
+                 * @param [p] Properties to set
+                 */
+                constructor(p?: cosmos.upgrade.v1beta1.IPlan);
+
+                /** Plan name. */
+                public name: string;
+
+                /** Plan time. */
+                public time?: google.protobuf.ITimestamp | null;
+
+                /** Plan height. */
+                public height: Long;
+
+                /** Plan info. */
+                public info: string;
+
+                /** Plan upgradedClientState. */
+                public upgradedClientState?: google.protobuf.IAny | null;
+
+                /**
+                 * Creates a new Plan instance using the specified properties.
+                 * @param [properties] Properties to set
+                 * @returns Plan instance
+                 */
+                public static create(properties?: cosmos.upgrade.v1beta1.IPlan): cosmos.upgrade.v1beta1.Plan;
+
+                /**
+                 * Encodes the specified Plan message. Does not implicitly {@link cosmos.upgrade.v1beta1.Plan.verify|verify} messages.
+                 * @param m Plan message or plain object to encode
+                 * @param [w] Writer to encode to
+                 * @returns Writer
+                 */
+                public static encode(m: cosmos.upgrade.v1beta1.IPlan, w?: $protobuf.Writer): $protobuf.Writer;
+
+                /**
+                 * Decodes a Plan message from the specified reader or buffer.
+                 * @param r Reader or buffer to decode from
+                 * @param [l] Message length if known beforehand
+                 * @returns Plan
+                 * @throws {Error} If the payload is not a reader or valid buffer
+                 * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                 */
+                public static decode(r: $protobuf.Reader | Uint8Array, l?: number): cosmos.upgrade.v1beta1.Plan;
+            }
+
+            /** Properties of a SoftwareUpgradeProposal. */
+            interface ISoftwareUpgradeProposal {
+                /** SoftwareUpgradeProposal title */
+                title?: string | null;
+
+                /** SoftwareUpgradeProposal description */
+                description?: string | null;
+
+                /** SoftwareUpgradeProposal plan */
+                plan?: cosmos.upgrade.v1beta1.IPlan | null;
+            }
+
+            /** Represents a SoftwareUpgradeProposal. */
+            class SoftwareUpgradeProposal implements ISoftwareUpgradeProposal {
+                /**
+                 * Constructs a new SoftwareUpgradeProposal.
+                 * @param [p] Properties to set
+                 */
+                constructor(p?: cosmos.upgrade.v1beta1.ISoftwareUpgradeProposal);
+
+                /** SoftwareUpgradeProposal title. */
+                public title: string;
+
+                /** SoftwareUpgradeProposal description. */
+                public description: string;
+
+                /** SoftwareUpgradeProposal plan. */
+                public plan?: cosmos.upgrade.v1beta1.IPlan | null;
+
+                /**
+                 * Creates a new SoftwareUpgradeProposal instance using the specified properties.
+                 * @param [properties] Properties to set
+                 * @returns SoftwareUpgradeProposal instance
+                 */
+                public static create(
+                    properties?: cosmos.upgrade.v1beta1.ISoftwareUpgradeProposal,
+                ): cosmos.upgrade.v1beta1.SoftwareUpgradeProposal;
+
+                /**
+                 * Encodes the specified SoftwareUpgradeProposal message. Does not implicitly {@link cosmos.upgrade.v1beta1.SoftwareUpgradeProposal.verify|verify} messages.
+                 * @param m SoftwareUpgradeProposal message or plain object to encode
+                 * @param [w] Writer to encode to
+                 * @returns Writer
+                 */
+                public static encode(
+                    m: cosmos.upgrade.v1beta1.ISoftwareUpgradeProposal,
+                    w?: $protobuf.Writer,
+                ): $protobuf.Writer;
+
+                /**
+                 * Decodes a SoftwareUpgradeProposal message from the specified reader or buffer.
+                 * @param r Reader or buffer to decode from
+                 * @param [l] Message length if known beforehand
+                 * @returns SoftwareUpgradeProposal
+                 * @throws {Error} If the payload is not a reader or valid buffer
+                 * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                 */
+                public static decode(
+                    r: $protobuf.Reader | Uint8Array,
+                    l?: number,
+                ): cosmos.upgrade.v1beta1.SoftwareUpgradeProposal;
+            }
+
+            /** Properties of a CancelSoftwareUpgradeProposal. */
+            interface ICancelSoftwareUpgradeProposal {
+                /** CancelSoftwareUpgradeProposal title */
+                title?: string | null;
+
+                /** CancelSoftwareUpgradeProposal description */
+                description?: string | null;
+            }
+
+            /** Represents a CancelSoftwareUpgradeProposal. */
+            class CancelSoftwareUpgradeProposal implements ICancelSoftwareUpgradeProposal {
+                /**
+                 * Constructs a new CancelSoftwareUpgradeProposal.
+                 * @param [p] Properties to set
+                 */
+                constructor(p?: cosmos.upgrade.v1beta1.ICancelSoftwareUpgradeProposal);
+
+                /** CancelSoftwareUpgradeProposal title. */
+                public title: string;
+
+                /** CancelSoftwareUpgradeProposal description. */
+                public description: string;
+
+                /**
+                 * Creates a new CancelSoftwareUpgradeProposal instance using the specified properties.
+                 * @param [properties] Properties to set
+                 * @returns CancelSoftwareUpgradeProposal instance
+                 */
+                public static create(
+                    properties?: cosmos.upgrade.v1beta1.ICancelSoftwareUpgradeProposal,
+                ): cosmos.upgrade.v1beta1.CancelSoftwareUpgradeProposal;
+
+                /**
+                 * Encodes the specified CancelSoftwareUpgradeProposal message. Does not implicitly {@link cosmos.upgrade.v1beta1.CancelSoftwareUpgradeProposal.verify|verify} messages.
+                 * @param m CancelSoftwareUpgradeProposal message or plain object to encode
+                 * @param [w] Writer to encode to
+                 * @returns Writer
+                 */
+                public static encode(
+                    m: cosmos.upgrade.v1beta1.ICancelSoftwareUpgradeProposal,
+                    w?: $protobuf.Writer,
+                ): $protobuf.Writer;
+
+                /**
+                 * Decodes a CancelSoftwareUpgradeProposal message from the specified reader or buffer.
+                 * @param r Reader or buffer to decode from
+                 * @param [l] Message length if known beforehand
+                 * @returns CancelSoftwareUpgradeProposal
+                 * @throws {Error} If the payload is not a reader or valid buffer
+                 * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                 */
+                public static decode(
+                    r: $protobuf.Reader | Uint8Array,
+                    l?: number,
+                ): cosmos.upgrade.v1beta1.CancelSoftwareUpgradeProposal;
+            }
+        }
+    }
 }
 
 /** Namespace google. */

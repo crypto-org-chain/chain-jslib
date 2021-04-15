@@ -9,12 +9,12 @@ import { owMsgVoteOptions } from '../ow.types';
 import { CosmosMsg } from '../cosmosMsg';
 import * as legacyAmino from '../../../cosmos/amino';
 
-export enum VoteOptions {
-    YES = 'VOTE_OPTION_YES',
-    ABSTAIN = 'VOTE_OPTION_ABSTAIN',
-    NO = 'VOTE_OPTION_NO',
-    NO_WITH_VETO = 'VOTE_OPTION_NO_WITH_VETO',
-    UNSPECIFIED = 'VOTE_OPTION_UNSPECIFIED',
+export enum VoteOption {
+    VOTE_OPTION_UNSPECIFIED = 0,
+    VOTE_OPTION_YES = 1,
+    VOTE_OPTION_ABSTAIN = 2,
+    VOTE_OPTION_NO = 3,
+    VOTE_OPTION_NO_WITH_VETO = 4,
 }
 
 export const msgVote = function (config: InitConfigurations) {
@@ -23,7 +23,7 @@ export const msgVote = function (config: InitConfigurations) {
 
         public voter: string;
 
-        public option: string;
+        public option: VoteOption;
 
         constructor(options: MsgVoteOptions) {
             ow(options, 'options', owMsgVoteOptions);
@@ -69,5 +69,5 @@ export const msgVote = function (config: InitConfigurations) {
 export type MsgVoteOptions = {
     proposalId: Big;
     voter: string;
-    option: string;
+    option: VoteOption;
 };
