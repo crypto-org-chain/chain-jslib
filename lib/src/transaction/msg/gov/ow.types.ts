@@ -21,3 +21,8 @@ export const owParamChangeProposalOptions = owStrictObject().exactShape({
     description: ow.string,
     paramChanges: ow.array.ofType(owParamChange()),
 });
+
+export const owCancelSoftwareUpgradeProposalOptions = owStrictObject().exactShape({
+    title: ow.string,
+    description: ow.string,
+});
