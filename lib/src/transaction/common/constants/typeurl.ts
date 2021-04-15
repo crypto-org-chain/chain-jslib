@@ -14,4 +14,7 @@ export const COSMOS_MSG_TYPEURL = {
     PubKey: {
         ed25519: '/cosmos.crypto.ed25519.PubKey',
     },
+    upgrade: {
+        CancelSoftwareUpgradeProposal: '/cosmos.upgrade.v1beta1.CancelSoftwareUpgradeProposal',
+    },
 };
