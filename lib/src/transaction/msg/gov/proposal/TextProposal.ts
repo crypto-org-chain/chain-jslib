@@ -29,11 +29,11 @@ export const textProposal = function () {
                 description: this.description,
             };
 
-            const textProposal = cosmos.gov.v1beta1.TextProposal.create(textProposalOptions);
+            const textProposalProto = cosmos.gov.v1beta1.TextProposal.create(textProposalOptions);
 
             return google.protobuf.Any.create({
                 type_url: COSMOS_MSG_TYPEURL.gov.TextProposal,
-                value: cosmos.gov.v1beta1.TextProposal.encode(textProposal).finish(),
+                value: cosmos.gov.v1beta1.TextProposal.encode(textProposalProto).finish(),
             });
         }
     };

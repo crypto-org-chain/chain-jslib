@@ -79,10 +79,7 @@ describe('Testing TextProposal and its content types', function () {
 
         const rawTx = new cro.RawTransaction();
 
-        const signableTx = rawTx
-            .appendMessage(TextProposalChangeParam)
-            .addSigner(anySigner)
-            .toSignable();
+        const signableTx = rawTx.appendMessage(TextProposalChangeParam).addSigner(anySigner).toSignable();
 
         const signedTx = signableTx.setSignature(0, keyPair.sign(signableTx.toSignDocumentHash(0))).toSigned();
 
