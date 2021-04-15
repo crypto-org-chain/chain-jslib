@@ -1,15 +1,15 @@
 import ow from 'ow';
 import { owCoin } from '../../coin/ow.types';
 import { owBig, owStrictObject } from '../../ow.types';
-import { VoteOptions } from './gov/MsgVote';
+import { VoteOption } from './gov/MsgVote';
 import { isMsgProposalContent } from './gov/IMsgProposalContent';
 
-const voteOptionValidator = (val: string) => ({
-    validator: Object.values(VoteOptions).includes(val as any),
+const voteOptionValidator = (val: number) => ({
+    validator: Object.values(VoteOption).includes(val as any),
     message: (label: string) => `Expected ${label} to be one of the Vote options, got \`${val}\``,
 });
 
-export const owVoteOption = () => ow.string.validate(voteOptionValidator);
+export const owVoteOption = () => ow.number.validate(voteOptionValidator);
 
 export const owMsgSendOptions = owStrictObject().exactShape({
     fromAddress: ow.string,
