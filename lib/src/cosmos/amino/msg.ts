@@ -167,7 +167,7 @@ export function isMsgSubmitProposal(msg: Msg): msg is MsgSubmitProposal {
     return (msg as MsgSubmitProposal).type === 'cosmos-sdk/MsgSubmitProposal';
 }
 
-enum VoteOption {
+export enum VoteOption {
     VoteOptionUnspecified,
     VoteOptionYes,
     VoteOptionAbstain,
@@ -179,7 +179,7 @@ enum VoteOption {
 export interface MsgVote extends Msg {
     readonly type: 'cosmos-sdk/MsgVote';
     readonly value: {
-        readonly proposal_id: number;
+        readonly proposal_id: string;
         /** Bech32 account address */
         readonly voter: string;
         readonly option: VoteOption;
