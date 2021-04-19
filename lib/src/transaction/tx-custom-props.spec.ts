@@ -22,6 +22,7 @@ const TestNetwork: Network = {
         coinType: 1,
         account: 0,
     },
+    rpcUrl: '',
 };
 
 describe('Testing Tx signing with custom parameters', function () {
