@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file.
 
+## v0.0.15
+- Add support for MsgVote on LegacyAmino - Ledger support
+
+## v0.0.14
+- Add support for MsgCancelSoftwareUpgradeProposal
+- Update protobuf files to Cosmos SDK 0.42.4
+- Fix incorrect voting options in MsgVote
+
 ## v0.0.13
 - Add support for redelegation message in AminoJS format
 
