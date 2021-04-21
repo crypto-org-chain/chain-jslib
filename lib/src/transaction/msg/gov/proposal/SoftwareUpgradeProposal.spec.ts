@@ -68,9 +68,9 @@ describe('Testing SoftwareUpgradeProposal and its content types', function () {
 
         const coin = new cro.Coin('120', Units.CRO);
 
-        const cancelSoftwareUpgradeContent = new cro.gov.proposal.SoftwareUpgradeProposal({
-            title: 'Cancel a software upgrade proposal',
-            description: 'Lorem Ipsum ... Checking cancel software upgrade',
+        const softwareUpgradeContent = new cro.gov.proposal.SoftwareUpgradeProposal({
+            title: 'Propose a new software upgrade proposal',
+            description: 'Lorem Ipsum ... Checking software upgrade proposal',
             plan: {
                 height: Long.fromNumber(1000, true),
                 name: 'name',
@@ -82,7 +82,7 @@ describe('Testing SoftwareUpgradeProposal and its content types', function () {
         const SoftwareUpgradeProposalChangeParam = new cro.gov.MsgSubmitProposal({
             proposer: 'tcro14sh490wk79dltea4udk95k7mw40wmvf77p0l5a',
             initialDeposit: coin,
-            content: cancelSoftwareUpgradeContent,
+            content: softwareUpgradeContent,
         });
 
         const anySigner = {
