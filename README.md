@@ -125,6 +125,33 @@ console.log(signedTx.getHexEncoded());
 // Note that the result of signedTx.getHexEncoded() can be directly broadcasted to the network as a raw tx
 ```
 
+### 1.4. Sending transactions 📨
+
+The SDK uses cosmjs stargate client to send transactions. For more information, check
+https://github.com/cosmos/cosmjs/tree/main/packages/stargate
+
+```javascript
+// Imports
+const sdk = require("@crypto-com/chain-jslib");
+const cro = sdk.CroSDK({ network: sdk.CroNetwork.Testnet });
+const client = await cro.CroClient.connect();
+await client.broadcastTx(signedTx.encode().toUint8Array());
+```
+
+### 1.5. Query the chain ❓
+The SDK uses cosmjs queryclient to query the blockchain. For more information, check
+https://github.com/cosmos/cosmjs/tree/main/packages/stargate/src/queries
+
+```javascript
+// Imports
+const sdk = require("@crypto-com/chain-jslib");
+const cro = sdk.CroSDK({ network: sdk.CroNetwork.Testnet });
+const client = await cro.CroClient.connect();
+const queryResult = await client.query().<module>.<operation>
+// example client.query().bank.allBalances(<address>)
+```
+
+
 ## 2. Cosmos Protobuf Definitions
 
 ### Generate Cosmos Protobuf Definitions in JavaScript
