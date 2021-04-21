@@ -22,6 +22,7 @@ const PystaportTestNet: Network = {
         coinType: 1,
         account: 0,
     },
+    rpcUrl: '',
 };
 
 const TestNetwork: Network = {
@@ -38,6 +39,7 @@ const TestNetwork: Network = {
         coinType: 1,
         account: 0,
     },
+    rpcUrl: '',
 };
 
 describe('Testing edge case Txs with 0 account numbers or 0 sequence', function () {
