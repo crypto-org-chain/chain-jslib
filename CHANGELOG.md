@@ -2,6 +2,8 @@
 
 All notable changes to this project will be documented in this file.
 
+## v0.0.16
+- Add CRO query client
 ## v0.0.15
 - Add support for MsgVote on LegacyAmino - Ledger support
 
