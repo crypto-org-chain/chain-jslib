@@ -47,7 +47,6 @@ export class TxDecoder {
         const sanitisedTxHex = Bytes.clean0x(txHex);
         try {
             this.isValidHex(sanitisedTxHex);
-            console.log(sanitisedTxHex);
             const encodedTxBytes = Bytes.fromHexString(sanitisedTxHex).toUint8Array();
             const decodedTxRaw = cosmos.tx.v1beta1.TxRaw.decode(encodedTxBytes)!;
             const libDecodedTx = Tx.decode(encodedTxBytes);
