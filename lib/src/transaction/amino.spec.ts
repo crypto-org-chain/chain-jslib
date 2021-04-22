@@ -30,6 +30,7 @@ describe('Amino JSON sign mode', function () {
                     coinType: 1,
                     account: 0,
                 },
+                rpcUrl: '',
             },
         });
         const msg = new cro.bank.MsgSend({

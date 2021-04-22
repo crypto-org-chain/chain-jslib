@@ -16,4 +16,5 @@ export const owNetwork = () =>
             coinType: ow.number,
             account: ow.number,
         }),
+        rpcUrl: ow.string,
     });

@@ -1,7 +1,7 @@
 import 'mocha';
 import Big from 'big.js';
 import { expect } from 'chai';
-import { StargateClient, assertIsBroadcastTxSuccess } from '@cosmjs/stargate';
+import { assertIsBroadcastTxSuccess } from '@cosmjs/stargate';
 import axios from 'axios';
 
 import { HDKey } from '../src/hdkey/hdkey';
@@ -25,6 +25,7 @@ const customNetwork: Network = {
         coinType: 1,
         account: 0,
     },
+    rpcUrl: 'http://localhost:26657',
 };
 
 const testNode = {
@@ -72,7 +73,7 @@ describe('e2e test suite', function () {
         const address1 = new cro.Address(keyPair.getPubKey());
         const address2 = new cro.Address(keyPair2.getPubKey());
         const randomAddress = new cro.Address(randomKeyPair.getPubKey());
-        const client = await StargateClient.connect(`${testNode.httpEndpoint}:${testNode.httpPort}`);
+        const client = await cro.CroClient.connect();
 
         const msgSend1 = new cro.bank.MsgSend({
             fromAddress: address1.account(),
@@ -139,7 +140,7 @@ describe('e2e test suite', function () {
         const address1 = new cro.Address(keyPair.getPubKey());
         const address2 = new cro.Address(keyPair2.getPubKey());
         const randomAddress = new cro.Address(randomKeyPair.getPubKey());
-        const client = await StargateClient.connect(`${testNode.httpEndpoint}:${testNode.httpPort}`);
+        const client = await cro.CroClient.connect();
 
         const msgSend1 = new cro.bank.MsgSend({
             fromAddress: address1.account(),
@@ -202,7 +203,7 @@ describe('e2e test suite', function () {
             delegatorAddress: address1.account(),
         });
 
-        const client = await StargateClient.connect(`${testNode.httpEndpoint}:${testNode.httpPort}`);
+        const client = await cro.CroClient.connect();
 
         expect(client).to.be.not.undefined;
         const account = await client.getAccount(address1.account());
@@ -235,7 +236,7 @@ describe('e2e test suite', function () {
             delegatorAddress: address1.account(),
         });
 
-        const client = await StargateClient.connect(`${testNode.httpEndpoint}:${testNode.httpPort}`);
+        const client = await cro.CroClient.connect();
 
         expect(client).to.be.not.undefined;
         const account = await client.getAccount(address1.account());
@@ -282,7 +283,7 @@ describe('e2e test suite', function () {
             value: new cro.Coin('1000000000', Units.BASE),
         });
 
-        const client = await StargateClient.connect(`${testNode.httpEndpoint}:${testNode.httpPort}`);
+        const client = await cro.CroClient.connect();
 
         expect(client).to.be.not.undefined;
         const account = await client.getAccount(addressAccount.account());
@@ -318,7 +319,7 @@ describe('e2e test suite', function () {
             minSelfDelegation: null,
         });
 
-        const client = await StargateClient.connect(`${testNode.httpEndpoint}:${testNode.httpPort}`);
+        const client = await cro.CroClient.connect();
 
         expect(client).to.be.not.undefined;
         const account = await client.getAccount(address1.account());
@@ -352,7 +353,7 @@ describe('e2e test suite', function () {
             delegatorAddress: address1.account(),
         });
 
-        const client = await StargateClient.connect(`${testNode.httpEndpoint}:${testNode.httpPort}`);
+        const client = await cro.CroClient.connect();
 
         expect(client).to.be.not.undefined;
         const account = await client.getAccount(address1.account());
@@ -384,7 +385,7 @@ describe('e2e test suite', function () {
             delegatorAddress: address1.account(),
         });
 
-        const client = await StargateClient.connect(`${testNode.httpEndpoint}:${testNode.httpPort}`);
+        const client = await cro.CroClient.connect();
 
         expect(client).to.be.not.undefined;
         const account = await client.getAccount(address1.account());
@@ -415,7 +416,7 @@ describe('e2e test suite', function () {
             validatorAddress: address1.validator(),
         });
 
-        const client = await StargateClient.connect(`${testNode.httpEndpoint}:${testNode.httpPort}`);
+        const client = await cro.CroClient.connect();
 
         expect(client).to.be.not.undefined;
         const account = await client.getAccount(address1.account());

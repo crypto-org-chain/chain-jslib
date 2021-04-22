@@ -9,12 +9,12 @@ import { owMsgVoteOptions } from '../ow.types';
 import { CosmosMsg } from '../cosmosMsg';
 import * as legacyAmino from '../../../cosmos/amino';
 
-export enum VoteOptions {
-    YES = 'VOTE_OPTION_YES',
-    ABSTAIN = 'VOTE_OPTION_ABSTAIN',
-    NO = 'VOTE_OPTION_NO',
-    NO_WITH_VETO = 'VOTE_OPTION_NO_WITH_VETO',
-    UNSPECIFIED = 'VOTE_OPTION_UNSPECIFIED',
+export enum VoteOption {
+    VOTE_OPTION_UNSPECIFIED = 0,
+    VOTE_OPTION_YES = 1,
+    VOTE_OPTION_ABSTAIN = 2,
+    VOTE_OPTION_NO = 3,
+    VOTE_OPTION_NO_WITH_VETO = 4,
 }
 
 export const msgVote = function (config: InitConfigurations) {
@@ -23,7 +23,7 @@ export const msgVote = function (config: InitConfigurations) {
 
         public voter: string;
 
-        public option: string;
+        public option: VoteOption;
 
         constructor(options: MsgVoteOptions) {
             ow(options, 'options', owMsgVoteOptions);
@@ -37,11 +37,39 @@ export const msgVote = function (config: InitConfigurations) {
 
         // eslint-disable-next-line class-methods-use-this
         toRawAminoMsg(): legacyAmino.Msg {
-            throw new Error('Method not implemented.');
+            let aminooption = legacyAmino.VoteOption.VoteOptionUnspecified;
+            switch (this.option) {
+                case VoteOption.VOTE_OPTION_UNSPECIFIED:
+                    aminooption = legacyAmino.VoteOption.VoteOptionUnspecified;
+                    break;
+                case VoteOption.VOTE_OPTION_YES:
+                    aminooption = legacyAmino.VoteOption.VoteOptionYes;
+                    break;
+                case VoteOption.VOTE_OPTION_ABSTAIN:
+                    aminooption = legacyAmino.VoteOption.VoteOptionAbstain;
+                    break;
+                case VoteOption.VOTE_OPTION_NO:
+                    aminooption = legacyAmino.VoteOption.VoteOptionNo;
+                    break;
+                case VoteOption.VOTE_OPTION_NO_WITH_VETO:
+                    aminooption = legacyAmino.VoteOption.VoteOptionNoWithVeto;
+                    break;
+                default:
+                    // assert false
+                    break;
+            }
+            return {
+                type: 'cosmos-sdk/MsgVote',
+                value: {
+                    proposal_id: this.proposalId.toString(),
+                    voter: this.voter,
+                    option: aminooption,
+                },
+            } as legacyAmino.MsgVote;
         }
 
         toRawMsg(): Msg {
-            const proposal = Long.fromNumber(this.proposalId.toNumber(), true);
+            const proposal = Long.fromString(this.proposalId.toString(), true);
             return {
                 typeUrl: COSMOS_MSG_TYPEURL.MsgVote,
                 value: {
@@ -69,5 +97,5 @@ export const msgVote = function (config: InitConfigurations) {
 export type MsgVoteOptions = {
     proposalId: Big;
     voter: string;
-    option: string;
+    option: VoteOption;
 };

@@ -4,11 +4,12 @@ import Big from 'big.js';
 import Long from 'long';
 
 import { fuzzyDescribe } from '../../../test/mocha-fuzzy/suite';
-import { VoteOptions } from './MsgVote';
+import { VoteOption } from './MsgVote';
 import { CroSDK } from '../../../core/cro';
 import { Msg } from '../../../cosmos/v1beta1/types/msg';
 import { Secp256k1KeyPair } from '../../../keypair/secp256k1';
 import { HDKey } from '../../../hdkey/hdkey';
+import * as legacyAmino from '../../../cosmos/amino';
 
 const cro = CroSDK({
     network: {
@@ -25,6 +26,7 @@ const cro = CroSDK({
             coinType: 1,
             account: 0,
         },
+        rpcUrl: '',
     },
 });
 
@@ -33,7 +35,7 @@ describe('Testing MsgVote', function () {
         const anyValidOptions = {
             proposalId: Big(1244000),
             voter: 'tcro184lta2lsyu47vwyp2e8zmtca3k5yq85p6c4vp3',
-            option: VoteOptions.NO,
+            option: VoteOption.VOTE_OPTION_NO,
         };
         const testRunner = fuzzy(fuzzy.ObjArg(anyValidOptions));
 
@@ -49,7 +51,7 @@ describe('Testing MsgVote', function () {
         const msgVote = new cro.gov.MsgVote({
             proposalId: Big(1244000),
             voter: 'tcro184lta2lsyu47vwyp2e8zmtca3k5yq85p6c4vp3',
-            option: VoteOptions.NO,
+            option: VoteOption.VOTE_OPTION_NO,
         });
 
         const rawMsg: Msg = {
@@ -57,7 +59,7 @@ describe('Testing MsgVote', function () {
             value: {
                 proposalId: Long.fromNumber(1244000, true),
                 voter: 'tcro184lta2lsyu47vwyp2e8zmtca3k5yq85p6c4vp3',
-                option: 'VOTE_OPTION_NO',
+                option: 3,
             },
         };
         expect(msgVote.toRawMsg()).to.eqls(rawMsg);
@@ -74,7 +76,7 @@ describe('Testing MsgVote', function () {
         const msgVote = new cro.gov.MsgVote({
             proposalId: Big(1244000),
             voter: 'tcro184lta2lsyu47vwyp2e8zmtca3k5yq85p6c4vp3',
-            option: VoteOptions.NO,
+            option: VoteOption.VOTE_OPTION_NO,
         });
 
         const anySigner = {
@@ -91,7 +93,24 @@ describe('Testing MsgVote', function () {
 
         const signedTxHex = signedTx.encode().toHexString();
         expect(signedTxHex).to.be.eql(
-            '0a540a520a1b2f636f736d6f732e676f762e763162657461312e4d7367566f7465123308e0f64b122b7463726f3138346c7461326c7379753437767779703265387a6d746361336b357971383570366334767033180012580a500a460a1f2f636f736d6f732e63727970746f2e736563703235366b312e5075624b657912230a21030bf28c5f92c336db4703791691fa650fee408690b0a22c5ee4afb7e2508d32a712040a0208011800120410c09a0c1a4048f214a8b781e3bea5a34dbf5f9f9afc8e8b0a4c148eea307c1a37a0cc7c2e9f221eee73cfbd571ff8230580d81890047b4e3a04dae1190f090190ceda44fe56',
+            '0a540a520a1b2f636f736d6f732e676f762e763162657461312e4d7367566f7465123308e0f64b122b7463726f3138346c7461326c7379753437767779703265387a6d746361336b357971383570366334767033180312580a500a460a1f2f636f736d6f732e63727970746f2e736563703235366b312e5075624b657912230a21030bf28c5f92c336db4703791691fa650fee408690b0a22c5ee4afb7e2508d32a712040a0208011800120410c09a0c1a4036fae282a345fd0b2653c06b7f9f8e3f6c2b29282d62f0ca63b99d9acfc602c570a792bd50afc405e35447a08ee69031f08bffaa0d0af3a91b0a66fdc3cf77eb',
         );
+    });
+    it('Test MsgVote amino json conversion', function () {
+        const msgVote = new cro.gov.MsgVote({
+            proposalId: Big(1244000),
+            voter: 'tcro184lta2lsyu47vwyp2e8zmtca3k5yq85p6c4vp3',
+            option: VoteOption.VOTE_OPTION_NO,
+        });
+
+        const rawMsg: legacyAmino.Msg = {
+            type: 'cosmos-sdk/MsgVote',
+            value: {
+                proposal_id: '1244000',
+                voter: 'tcro184lta2lsyu47vwyp2e8zmtca3k5yq85p6c4vp3',
+                option: 3,
+            },
+        };
+        expect(msgVote.toRawAminoMsg()).to.eqls(rawMsg);
     });
 });

@@ -1,5 +1,6 @@
 import ow from 'ow';
 
+import { croClient } from '../client/client';
 import { Network } from '../network/network';
 import { coin } from '../coin/coin';
 import { owCroSDKInitParams } from './ow.types';
@@ -18,11 +19,13 @@ import { msgVote } from '../transaction/msg/gov/MsgVote';
 import { msgSubmitProposal } from '../transaction/msg/gov/MsgSubmitProposal';
 import { communityPoolSpendProposal } from '../transaction/msg/gov/CommunityPoolSpendProposal';
 import { paramChangeProposal } from '../transaction/msg/gov/ParamChangeProposal';
+import { cancelSoftwareUpgradeProposal } from '../transaction/msg/gov/proposal/CancelSoftwareUpgradeProposal';
 
 export const CroSDK = function (configs: InitConfigurations) {
     ow(configs, 'configs', owCroSDKInitParams);
 
     return {
+        CroClient: croClient(configs),
         Coin: coin(configs),
         RawTransaction: rawTransaction(configs),
         Address: userAddress(configs),
@@ -33,6 +36,7 @@ export const CroSDK = function (configs: InitConfigurations) {
             proposal: {
                 CommunityPoolSpendProposal: communityPoolSpendProposal(configs),
                 ParamChangeProposal: paramChangeProposal(),
+                CancelSoftwareUpgradeProposal: cancelSoftwareUpgradeProposal(),
                 // TODO : More type of proposals to be added here
             },
         },
@@ -69,6 +73,7 @@ export class CroNetwork {
             coinType: 1,
             account: 0,
         },
+        rpcUrl: 'https://testnet-croeseid.crypto.org:26657',
     };
 
     public static Mainnet: Network = {
@@ -85,6 +90,7 @@ export class CroNetwork {
             coinType: 394,
             account: 0,
         },
+        rpcUrl: 'https://mainnet.crypto.org:26657',
     };
 }
 

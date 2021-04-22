@@ -45,3 +45,6 @@ coverage
 
 # Generated docs file
 docs/dist/
+
+# Yarn
+yarn.lock
