@@ -26,6 +26,7 @@ const cro = CroSDK({
             coinType: 1,
             account: 0,
         },
+        rpcUrl: '',
     },
 });
 

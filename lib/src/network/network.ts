@@ -12,4 +12,5 @@ export type Network = {
         coinType: number;
         account: number;
     };
+    rpcUrl: string;
 };

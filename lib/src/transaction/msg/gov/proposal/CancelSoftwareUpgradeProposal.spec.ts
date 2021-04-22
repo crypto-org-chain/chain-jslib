@@ -23,6 +23,7 @@ const PystaportTestNet: Network = {
         coinType: 1,
         account: 0,
     },
+    rpcUrl: '',
 };
 const cro = CroSDK({ network: PystaportTestNet });
 

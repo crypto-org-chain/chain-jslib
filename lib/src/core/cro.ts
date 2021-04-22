@@ -1,5 +1,6 @@
 import ow from 'ow';
 
+import { croClient } from '../client/client';
 import { Network } from '../network/network';
 import { coin } from '../coin/coin';
 import { owCroSDKInitParams } from './ow.types';
@@ -26,6 +27,7 @@ export const CroSDK = function (configs: InitConfigurations) {
     ow(configs, 'configs', owCroSDKInitParams);
 
     return {
+        CroClient: croClient(configs),
         Coin: coin(configs),
         RawTransaction: rawTransaction(configs),
         Address: userAddress(configs),
@@ -75,6 +77,7 @@ export class CroNetwork {
             coinType: 1,
             account: 0,
         },
+        rpcUrl: 'https://testnet-croeseid.crypto.org:26657',
     };
 
     public static Mainnet: Network = {
@@ -91,6 +94,7 @@ export class CroNetwork {
             coinType: 394,
             account: 0,
         },
+        rpcUrl: 'https://mainnet.crypto.org:26657',
     };
 }
 
