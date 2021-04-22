@@ -28,12 +28,12 @@ export class TxDecoder {
         this.libDecodedSignatures = Object.create(null);
     }
 
-    isValidHex(h: string) {
+    private isValidHex = (h: string) => {
         const re = /[0-9A-Fa-f]/g;
         if (!re.test(h)) {
             throw new TypeError('Invalid Hex provided.');
         }
-    }
+    };
 
     /**
      * @name fromHex()
@@ -59,7 +59,6 @@ export class TxDecoder {
 
             return this;
         } catch (error) {
-            console.error(error);
             throw new TypeError(`Error decoding provided transaction hex.`);
         }
     }
@@ -110,14 +109,14 @@ export class TxDecoder {
         return obj;
     }
 
-    private getSignaturesJson(signaturesArray: Uint8Array[]): string[] {
+    private getSignaturesJson = (signaturesArray: Uint8Array[]): string[] => {
         let signatures: string[] = [];
         // Adding Signatures array to final object
         if (signaturesArray) {
             signatures = signaturesArray.map((e) => toBase64(e !== undefined ? e : new Uint8Array()));
         }
         return signatures;
-    }
+    };
 
     private getAuthInfoJson(authInfo: AuthInfo) {
         let obj = Object.create({});
