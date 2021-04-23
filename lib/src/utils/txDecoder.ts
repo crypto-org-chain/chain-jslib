@@ -94,7 +94,7 @@ export class TxDecoder {
         const txBodyStringified = JSON.stringify(TxBody.toJSON(txBody));
 
         const parsedTxBody = JSON.parse(txBodyStringified);
-        let obj = { ...parsedTxBody };
+        const obj = { ...parsedTxBody };
         obj.messages = txBody.messages.map(({ typeUrl, value }) => {
             if (!typeUrl) {
                 throw new Error('Missing type_url in Any');
@@ -118,11 +118,10 @@ export class TxDecoder {
     };
 
     private getAuthInfoJson(authInfo: AuthInfo) {
-
         const authInfoStringified = JSON.stringify(AuthInfo.toJSON(authInfo));
 
         const libParsedAuthInfo = JSON.parse(authInfoStringified);
-        let obj = { ...libParsedAuthInfo };
+        const obj = { ...libParsedAuthInfo };
 
         if (authInfo.signerInfos) {
             obj.signerInfos = authInfo.signerInfos.map((e) => (e ? this.getSignerInfoJson(e) : undefined));
@@ -143,7 +142,7 @@ export class TxDecoder {
             },
         );
 
-        let obj = { ...libParsedSignerInfo };
+        const obj = { ...libParsedSignerInfo };
         obj.publicKey = { typeUrl: libParsedSignerInfo.publicKey?.typeUrl!, key: toBase64(decodedPubkey.key) };
 
         return obj;
