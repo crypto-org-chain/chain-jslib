@@ -25,7 +25,7 @@ export class TxDecoder {
         this.protoDecodedTxRaw = Object.create({});
         this.libDecodedTxBody = Object.create({});
         this.libDecodedAuthInfo = Object.create({});
-        this.libDecodedSignatures = Object.create(null);
+        this.libDecodedSignatures = Object.create([]);
     }
 
     private isValidHex = (h: string) => {
@@ -119,11 +119,11 @@ export class TxDecoder {
     };
 
     private getAuthInfoJson(authInfo: AuthInfo) {
-        let obj = Object.create({});
+
         const authInfoStringified = JSON.stringify(AuthInfo.toJSON(authInfo));
 
         const libParsedAuthInfo = JSON.parse(authInfoStringified);
-        obj = { ...libParsedAuthInfo };
+        let obj = { ...libParsedAuthInfo };
 
         if (authInfo.signerInfos) {
             obj.signerInfos = authInfo.signerInfos.map((e) => (e ? this.getSignerInfoJson(e) : undefined));
@@ -135,8 +135,6 @@ export class TxDecoder {
     }
 
     private getSignerInfoJson(signerInfo: SignerInfo) {
-        let obj = Object.create({});
-
         const stringifiedSignerInfo = JSON.stringify(SignerInfo.toJSON(signerInfo) as string);
         const libParsedSignerInfo = JSON.parse(stringifiedSignerInfo);
         const decodedPubkey: cosmos.crypto.ed25519.PubKey | cosmos.crypto.secp256k1.PubKey = this.cosmJSRegistry.decode(
@@ -146,7 +144,7 @@ export class TxDecoder {
             },
         );
 
-        obj = { ...libParsedSignerInfo };
+        let obj = { ...libParsedSignerInfo };
         obj.publicKey = { typeUrl: libParsedSignerInfo.publicKey?.typeUrl!, key: toBase64(decodedPubkey.key) };
 
         return obj;
