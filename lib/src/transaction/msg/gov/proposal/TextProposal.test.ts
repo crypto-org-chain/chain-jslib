@@ -10,6 +10,7 @@ import { HDKey } from '../../../../hdkey/hdkey';
 import { Secp256k1KeyPair } from '../../../../keypair/secp256k1';
 
 const PystaportTestNet: Network = {
+    rpcUrl: '',
     defaultNodeUrl: '',
     chainId: 'chainmaind',
     addressPrefix: 'tcro',
