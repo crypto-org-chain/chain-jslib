@@ -91,11 +91,10 @@ export class TxDecoder {
     }
 
     private getTxBodyJson(txBody: TxBody) {
-        let obj = Object.create({});
         const txBodyStringified = JSON.stringify(TxBody.toJSON(txBody));
 
         const parsedTxBody = JSON.parse(txBodyStringified);
-        obj = { ...parsedTxBody };
+        let obj = { ...parsedTxBody };
         obj.messages = txBody.messages.map(({ typeUrl, value }) => {
             if (!typeUrl) {
                 throw new Error('Missing type_url in Any');
