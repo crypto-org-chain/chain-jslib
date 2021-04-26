@@ -1,6 +1,6 @@
 import { Registry } from '@cosmjs/proto-signing';
 import { toBase64, fromBase64 } from '@cosmjs/encoding';
-import { TxRaw, AuthInfo, TxBody, SignerInfo, Tx } from '@cosmjs/proto-signing/build/codec/cosmos/tx/v1beta1/tx';
+import { AuthInfo, TxBody, SignerInfo, Tx } from '@cosmjs/proto-signing/build/codec/cosmos/tx/v1beta1/tx';
 
 import * as snakecaseKeys from 'snakecase-keys';
 import { cosmos } from '../cosmos/v1beta1/codec/generated/codecimpl';
@@ -8,8 +8,6 @@ import { Bytes } from './bytes/bytes';
 import { typeUrlMappings } from '../cosmos/v1beta1/types/typeurls';
 
 export class TxDecoder {
-    private protoDecodedTxRaw!: TxRaw;
-
     private libDecodedTxBody!: TxBody;
 
     private libDecodedAuthInfo!: AuthInfo;
@@ -22,7 +20,6 @@ export class TxDecoder {
      *
      */
     constructor() {
-        this.protoDecodedTxRaw = Object.create({});
         this.libDecodedTxBody = Object.create({});
         this.libDecodedAuthInfo = Object.create({});
         this.libDecodedSignatures = Object.create([]);
@@ -48,9 +45,7 @@ export class TxDecoder {
         try {
             this.isValidHex(sanitisedTxHex);
             const encodedTxBytes = Bytes.fromHexString(sanitisedTxHex).toUint8Array();
-            const decodedTxRaw = cosmos.tx.v1beta1.TxRaw.decode(encodedTxBytes)!;
             const libDecodedTx = Tx.decode(encodedTxBytes);
-            this.protoDecodedTxRaw = decodedTxRaw;
             this.libDecodedSignatures = libDecodedTx.signatures;
             this.libDecodedAuthInfo = libDecodedTx.authInfo!;
 
@@ -67,10 +62,6 @@ export class TxDecoder {
      * @name toCosmosJSON()
      */
     public toCosmosJSON() {
-        if (!this.protoDecodedTxRaw) {
-            throw new TypeError(`Cannot convert ${this.protoDecodedTxRaw} to JSON.`);
-        }
-
         const txObject = {
             tx: {
                 body: Object.create({}),
