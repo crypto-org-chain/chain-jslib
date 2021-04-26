@@ -1,3 +1,4 @@
+/* eslint-disable */
 import { expect } from 'chai';
 import Big from 'big.js';
 import { fuzzyDescribe } from '../../../test/mocha-fuzzy/suite';
@@ -92,27 +93,21 @@ describe('Testing MsgSetWithdrawAddress', function () {
 
     describe('Testing throw scenarios', function () {
         it('Should throw on invalid delegatorAddress', function () {
-            try {
+            expect(() => {
                 new cro.distribution.MsgSetWithdrawAddress({
                     delegatorAddress: 'cro1xh3dqgljnydpwelzqf265edryrqrq7wzacx2nr',
                     withdrawAddress: 'tcro165tzcrh2yl83g8qeqxueg2g5gzgu57y3fe3kc3',
                 });
-            } catch (error) {
-                expect(error).to.not.be.undefined;
-                expect(error.message).to.equal('Provided `delegatorAddress` doesnt match network selected')
-            }
+            }).to.throw('Provided `delegatorAddress` doesnt match network selected');
         });
 
         it('Should throw on invalid withdrawAddress', function () {
-            try {
+            expect(() => {
                 new cro.distribution.MsgSetWithdrawAddress({
                     delegatorAddress: 'tcro165tzcrh2yl83g8qeqxueg2g5gzgu57y3fe3kc3',
                     withdrawAddress: 'cro1xh3dqgljnydpwelzqf265edryrqrq7wzacx2nr',
                 });
-            } catch (error) {
-                expect(error).to.not.be.undefined;
-                expect(error.message).to.equal('Provided `withdrawAddress` doesnt match network selected')
-            }
+            }).to.throw('Provided `withdrawAddress` doesnt match network selected');
         });
     });
 });
