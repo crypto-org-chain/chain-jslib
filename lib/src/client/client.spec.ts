@@ -37,5 +37,22 @@ describe('CroClient', function () {
                 }
             });
         });
+
+        context('Getting On-Chain details', function () {
+            it('Should fetch correct details from the network', async function () {
+                try {
+                    const croHttpClient = await cro.CroClient.connect(CroNetwork.Testnet.rpcUrl);
+                    expect(await croHttpClient.getChainId()).to.be.equal('testnet-croeseid-2');
+                    expect(typeof (await croHttpClient.getHeight())).to.equal('number');
+                    expect(
+                        typeof (await (await croHttpClient.getSequence('tcro1mz5rdtf9wufwkh8te2zww7twtmna6rhl2qlhlc'))
+                            .sequence),
+                    ).to.equal('number');
+                    croHttpClient.disconnect();
+                } catch (e) {
+                    expect(e).to.be.undefined;
+                }
+            });
+        });
     });
 });
