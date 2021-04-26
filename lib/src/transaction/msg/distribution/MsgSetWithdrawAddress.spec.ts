@@ -39,7 +39,7 @@ describe('Testing MsgSetWithdrawAddress', function () {
                 return;
             }
             expect(() => new cro.distribution.MsgSetWithdrawAddress(options.value)).to.throw(
-                'Expected `rewardOptions` to be of type `object`',
+                'Expected `setWithdrawOptions` to be of type `object`',
             );
         });
     });

@@ -22,7 +22,7 @@ export const msgSetWithdrawAddress = function (config: InitConfigurations) {
          * @throws {Error} when options is invalid
          */
         constructor(options: MsgSetWithdrawAddressOptions) {
-            ow(options, 'rewardOptions', owMsgSetWithdrawAddressOptions);
+            ow(options, 'setWithdrawOptions', owMsgSetWithdrawAddressOptions);
 
             this.delegatorAddress = options.delegatorAddress;
             this.withdrawAddress = options.withdrawAddress;
