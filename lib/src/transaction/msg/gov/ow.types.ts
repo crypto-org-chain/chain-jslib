@@ -1,5 +1,6 @@
 import ow from 'ow';
-import { owStrictObject } from '../../../ow.types';
+import Long from 'long';
+import { owStrictObject, owOptionalStrictObject } from '../../../ow.types';
 import { owCoin } from '../../../coin/ow.types';
 
 export const owCommunityPoolSpendProposalOptions = owStrictObject().exactShape({
@@ -25,4 +26,34 @@ export const owParamChangeProposalOptions = owStrictObject().exactShape({
 export const owCancelSoftwareUpgradeProposalOptions = owStrictObject().exactShape({
     title: ow.string,
     description: ow.string,
+});
+
+const owLongValidator = (val: object) => ({
+    validator: val instanceof Long,
+    message: (label: string) => `Expected ${label} to be an instance of \`Long\``,
+});
+export const owLong = () => owStrictObject().validate(owLongValidator);
+export const owOptionalLong = () => owOptionalStrictObject().validate(owLongValidator);
+
+export const owOptionalAny = () =>
+    owOptionalStrictObject().exactShape({
+        typeUrl: ow.string,
+        value: ow.uint8Array,
+    });
+
+export const owOptionalTimestamp = () =>
+    owOptionalStrictObject().exactShape({
+        seconds: owOptionalLong(),
+        nanos: ow.optional.number,
+    });
+export const owSoftwareUpgradeProposalOptions = owStrictObject().exactShape({
+    title: ow.string,
+    description: ow.string,
+    plan: ow.object.exactShape({
+        name: ow.string,
+        time: owOptionalTimestamp(),
+        height: owLong(),
+        info: ow.string,
+        upgradedClientState: owOptionalAny(),
+    }),
 });
