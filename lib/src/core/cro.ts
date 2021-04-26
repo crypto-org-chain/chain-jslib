@@ -21,6 +21,7 @@ import { communityPoolSpendProposal } from '../transaction/msg/gov/CommunityPool
 import { paramChangeProposal } from '../transaction/msg/gov/ParamChangeProposal';
 import { cancelSoftwareUpgradeProposal } from '../transaction/msg/gov/proposal/CancelSoftwareUpgradeProposal';
 import { softwareUpgradeProposal } from '../transaction/msg/gov/proposal/SoftwareUpgradeProposal';
+import { msgSetWithdrawAddress } from '../transaction/msg/distribution/MsgSetWithdrawAddress';
 
 export const CroSDK = function (configs: InitConfigurations) {
     ow(configs, 'configs', owCroSDKInitParams);
@@ -55,6 +56,7 @@ export const CroSDK = function (configs: InitConfigurations) {
         distribution: {
             MsgWithdrawValidatorCommission: msgWithdrawValidatorCommission(configs),
             MsgWithdrawDelegatorReward: msgWithdrawDelegateReward(configs),
+            MsgSetWithdrawAddress: msgSetWithdrawAddress(configs),
         },
         Options: configs,
     };

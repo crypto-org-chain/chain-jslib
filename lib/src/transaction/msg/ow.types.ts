@@ -80,6 +80,11 @@ export const owMsgWithdrawDelegatorRewardOptions = owStrictObject().exactShape({
     validatorAddress: ow.string,
 });
 
+export const owMsgSetWithdrawAddressOptions = owStrictObject().exactShape({
+    delegatorAddress: ow.string,
+    withdrawAddress: ow.string,
+});
+
 export const owMsgDelegateOptions = owStrictObject().exactShape({
     delegatorAddress: ow.string,
     validatorAddress: ow.string,
