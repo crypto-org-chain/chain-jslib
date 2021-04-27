@@ -28,6 +28,11 @@ export const owCancelSoftwareUpgradeProposalOptions = owStrictObject().exactShap
     description: ow.string,
 });
 
+export const owTextProposalOptions = owStrictObject().exactShape({
+    title: ow.string,
+    description: ow.string,
+});
+
 const owLongValidator = (val: object) => ({
     validator: val instanceof Long,
     message: (label: string) => `Expected ${label} to be an instance of \`Long\``,
