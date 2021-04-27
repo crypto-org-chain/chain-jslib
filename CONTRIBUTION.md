@@ -42,7 +42,7 @@ Once you identified an issue to work on, this is the summary of your basic steps
 
 * If your changes are of interest to other developers, please make corresponding changes in the official documentation and the changelog.
 
-* Push your changes to your fork's branch and open the pull request to Sample Chain Wallet repository master branch.
+* Push your changes to your fork's branch and open the pull request to [Chain-jslib repository](https://github.com/crypto-org-chain/chain-jslib) master branch.
 
 * In the pull request, complete its checklist, add a clear description of the problem your changes solve, and add the following statement to confirm that your contribution is your own original work: "I hereby certify that my contribution is in accordance with the Developer Certificate of Origin (https://developercertificate.org/)."
 
