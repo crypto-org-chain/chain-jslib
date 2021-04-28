@@ -22,6 +22,7 @@ export const typeUrlMappings: {
     '/cosmos.gov.v1beta1.MsgDeposit': cosmos.gov.v1beta1.MsgDeposit,
     '/cosmos.gov.v1beta1.MsgVote': cosmos.gov.v1beta1.MsgVote,
     '/cosmos.gov.v1beta1.MsgSubmitProposal': cosmos.gov.v1beta1.MsgSubmitProposal,
+    '/cosmos.distribution.v1beta1.MsgSetWithdrawAddress': cosmos.distribution.v1beta1.MsgSetWithdrawAddress,
 };
 
 export interface GeneratedType {

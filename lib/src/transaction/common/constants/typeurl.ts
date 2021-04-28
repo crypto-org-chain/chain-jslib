@@ -18,6 +18,9 @@ export const COSMOS_MSG_TYPEURL = {
         CancelSoftwareUpgradeProposal: '/cosmos.upgrade.v1beta1.CancelSoftwareUpgradeProposal',
         SoftwareUpgradeProposal: '/cosmos.upgrade.v1beta1.SoftwareUpgradeProposal',
     },
+    distribution: {
+        MsgSetWithdrawAddress: '/cosmos.distribution.v1beta1.MsgSetWithdrawAddress',
+    },
     gov: {
         TextProposal: '/cosmos.gov.v1beta1.TextProposal',
     },
