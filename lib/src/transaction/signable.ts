@@ -7,6 +7,11 @@ import ow, { NumberPredicate } from 'ow';
 import Long from 'long';
 import secp256k1 from 'secp256k1';
 
+import {
+    AuthInfo as NativeAuthInfo,
+    TxBody as NativeTxbody,
+} from '@cosmjs/proto-signing/build/codec/cosmos/tx/v1beta1/tx';
+import * as snakecaseKeys from 'snakecase-keys';
 import { cosmos, google } from '../cosmos/v1beta1/codec';
 import { Msg } from '../cosmos/v1beta1/types/msg';
 import { omitDefaults } from '../cosmos/v1beta1/adr27';
@@ -23,9 +28,6 @@ import * as legacyAmino from '../cosmos/amino';
 import { ICoin } from '../coin/coin';
 import { CosmosMsg } from './msg/cosmosMsg';
 import { TxDecoder } from '../utils/txDecoder';
-import { AuthInfo as NativeAuthInfo, TxBody as NativeTxbody } from '@cosmjs/proto-signing/build/codec/cosmos/tx/v1beta1/tx';
-import * as snakecaseKeys from 'snakecase-keys';
-
 
 const DEFAULT_GAS_LIMIT = 200_000;
 
@@ -236,7 +238,7 @@ export class SignableTransaction {
             // Convert to native types
             const nativeAuthInfo = NativeAuthInfo.decode(this.txRaw.authInfoBytes.toUint8Array());
             const nativeTxBody = NativeTxbody.decode(this.txRaw.bodyBytes.toUint8Array());
-            const nativeSignaturesList = this.getTxRaw().signatures.map(byteSig => byteSig.toUint8Array());
+            const nativeSignaturesList = this.getTxRaw().signatures.map((byteSig) => byteSig.toUint8Array());
 
             // Construct JSON bodies individually
             txObject.authInfo = txDecoder.getAuthInfoJson(nativeAuthInfo);
@@ -251,7 +253,7 @@ export class SignableTransaction {
 
             return cosmosApiFormatTxJson;
         } catch (error) {
-            throw new Error("Error converting SignableTransaction to Cosmos compatible JSON.");
+            throw new Error('Error converting SignableTransaction to Cosmos compatible JSON.');
         }
     }
 }
