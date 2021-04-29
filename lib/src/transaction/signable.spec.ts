@@ -168,6 +168,18 @@ describe('SignableTransaction', function () {
     });
 
     describe('toCosmosJSON', function () {
+
+        it('should throw', function () {
+            const { params: anyParams } = SignableTransactionParamsSuiteFactory.build();
+            const anyTx = new SignableTransaction(anyParams);
+            // @ts-ignore
+            anyTx['txRaw']['authInfoBytes'] = undefined
+            
+            expect(() => {
+                anyTx.toCosmosJSON();
+            }).to.throw('Error converting SignableTransaction to Cosmos compatible JSON.`');
+        });
+
         it('should not throw', function () {
             const anyTx = anySignableTransaction();
             expect(() => {
