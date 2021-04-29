@@ -81,7 +81,7 @@ export class TxDecoder {
         return cosmosApiFormatTxJson;
     }
 
-    private getTxBodyJson(txBody: TxBody) {
+    public getTxBodyJson(txBody: TxBody) {
         const txBodyStringified = JSON.stringify(TxBody.toJSON(txBody));
 
         const parsedTxBody = JSON.parse(txBodyStringified);
@@ -99,7 +99,7 @@ export class TxDecoder {
         return obj;
     }
 
-    private getSignaturesJson = (signaturesArray: Uint8Array[]): string[] => {
+    public getSignaturesJson = (signaturesArray: Uint8Array[]): string[] => {
         let signatures: string[] = [];
         // Adding Signatures array to final object
         if (signaturesArray) {
@@ -108,7 +108,7 @@ export class TxDecoder {
         return signatures;
     };
 
-    private getAuthInfoJson(authInfo: AuthInfo) {
+    public getAuthInfoJson(authInfo: AuthInfo) {
         const authInfoStringified = JSON.stringify(AuthInfo.toJSON(authInfo));
 
         const libParsedAuthInfo = JSON.parse(authInfoStringified);
@@ -140,5 +140,5 @@ export class TxDecoder {
     }
 
     // transforms `type_url` to `@type` to match GoLang's TxDecoder JSON output
-    private typeUrlTransformer = (str: string) => str.replace(/type_url/g, '@type');
+    public typeUrlTransformer = (str: string) => str.replace(/type_url/g, '@type');
 }

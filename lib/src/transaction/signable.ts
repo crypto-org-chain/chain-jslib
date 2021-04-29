@@ -22,6 +22,10 @@ import { SignedTransaction } from './signed';
 import * as legacyAmino from '../cosmos/amino';
 import { ICoin } from '../coin/coin';
 import { CosmosMsg } from './msg/cosmosMsg';
+import { TxDecoder } from '../utils/txDecoder';
+import { AuthInfo as NativeAuthInfo, TxBody as NativeTxbody } from '@cosmjs/proto-signing/build/codec/cosmos/tx/v1beta1/tx';
+import * as snakecaseKeys from 'snakecase-keys';
+
 
 const DEFAULT_GAS_LIMIT = 200_000;
 
@@ -213,6 +217,42 @@ export class SignableTransaction {
      */
     public isCompletelySigned(): boolean {
         return this.txRaw.signatures.every((signature) => !signature.isEqual(EMPTY_SIGNATURE));
+    }
+
+    /**
+     * Returns the Chain-maind encoded JSON containing SignerInfo
+     * @memberof SignableTransaction
+     * @returns {unknown} Tx-Encoded JSON
+     */
+    public toCosmosJSON(): unknown {
+        const txObject = {
+            body: Object.create({}),
+            authInfo: Object.create({}),
+            signatures: Object.create([[]]),
+        };
+        const txDecoder = new TxDecoder();
+
+        try {
+            // Convert to native types
+            const nativeAuthInfo = NativeAuthInfo.decode(this.txRaw.authInfoBytes.toUint8Array());
+            const nativeTxBody = NativeTxbody.decode(this.txRaw.bodyBytes.toUint8Array());
+            const nativeSignaturesList = this.getTxRaw().signatures.map(byteSig => byteSig.toUint8Array());
+
+            // Construct JSON bodies individually
+            txObject.authInfo = txDecoder.getAuthInfoJson(nativeAuthInfo);
+            txObject.body = txDecoder.getTxBodyJson(nativeTxBody);
+            txObject.signatures = txDecoder.getSignaturesJson(nativeSignaturesList);
+
+            // CamelCase to snake_case convertor
+            const stringifiedTx = JSON.stringify(snakecaseKeys.default(txObject));
+
+            // type_url to @type transformer
+            const cosmosApiFormatTxJson = txDecoder.typeUrlTransformer(stringifiedTx);
+
+            return cosmosApiFormatTxJson;
+        } catch (error) {
+            throw new Error("Error converting SignableTransaction to Cosmos compatible JSON.");
+        }
     }
 }
 
