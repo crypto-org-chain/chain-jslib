@@ -16,9 +16,6 @@ export class TxDecoder {
 
     private readonly cosmJSRegistry = new Registry(Object.entries(typeUrlMappings));
 
-    /**
-     *
-     */
     constructor() {
         this.libDecodedTxBody = Object.create({});
         this.libDecodedAuthInfo = Object.create({});
@@ -59,7 +56,9 @@ export class TxDecoder {
     }
 
     /**
+     * Returns CosmosSDK compatible JSON encoded transaction
      * @name toCosmosJSON()
+     * @returns {string}
      */
     public toCosmosJSON() {
         const txObject = {
