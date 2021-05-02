@@ -8,6 +8,7 @@ export type SignerAccount = {
     signMode: SIGN_MODE;
 };
 
+//todo: support SIGN_MODE_UNSPECIFIED = 0, UNRECOGNIZED = -1
 export enum SIGN_MODE {
     LEGACY_AMINO_JSON = 0,
     DIRECT = 1,

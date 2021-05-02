@@ -6,6 +6,14 @@ import * as snakecaseKeys from 'snakecase-keys';
 import { cosmos } from '../cosmos/v1beta1/codec/generated/codecimpl';
 import { Bytes } from './bytes/bytes';
 import { typeUrlMappings } from '../cosmos/v1beta1/types/typeurls';
+import { camelCase } from 'lodash';
+import { AuthInfo as AuthInfoLib, TxBody as TxBodyLib } from '../cosmos/v1beta1/types/tx';
+import { rawTransaction } from '../transaction/raw';
+import { Network } from '../network/network';
+import { CroNetwork, CroSDK } from '../core/cro';
+import { Units, ICoin } from '../coin/coin';
+import { SIGN_MODE } from '../transaction/types';
+
 
 export class TxDecoder {
     private libDecodedTxBody!: TxBody;
@@ -76,7 +84,7 @@ export class TxDecoder {
 
         const stringifiedTx = JSON.stringify(snakecaseKeys.default(txObject));
 
-        const cosmosApiFormatTxJson = this.typeUrlTransformer(stringifiedTx);
+        const cosmosApiFormatTxJson = typeUrlToCosmosTransformer(stringifiedTx);
 
         return cosmosApiFormatTxJson;
     }
@@ -139,6 +147,120 @@ export class TxDecoder {
         return obj;
     }
 
-    // transforms `type_url` to `@type` to match GoLang's TxDecoder JSON output
-    public typeUrlTransformer = (str: string) => str.replace(/type_url/g, '@type');
+    public static fromCosmosJSON(jsonTx: string, network: Network = CroNetwork.Testnet) {
+        if (!jsonTx) {
+            throw new Error("Error decoding provided Tx JSON.");
+        }
+
+        if (isValidJson(jsonTx)) {
+            throw new Error("Provided JSON is not valid.");
+        }
+
+        const txString = transformInputJson(jsonTx);
+        const txObject = JSON.parse(txString);
+        const decodedTx: Tx = assertOrReturnValidTx(txObject);
+
+        if (!decodedTx.authInfo || !decodedTx.body) {
+            throw new Error("Invalid JSON provided.");
+        }
+
+        // Todo: Looks like we need to support `nonCriticalExtensionOptions` and `extensionOptions`
+        if (decodedTx.body.nonCriticalExtensionOptions.length > 0 || decodedTx.body.extensionOptions.length > 0) {
+            throw new Error("JSON Decoder doesn't support 'nonCriticalExtensionOptions' or 'extensionOptions'");
+        }
+        /**
+         *  txBody: TxBody;
+    authInfo: AuthInfo;
+    signerAccounts: SignerAccount[];
+    network: Network; x 
+         */
+
+        const croSdk = CroSDK({ network });
+        const rawTx = new croSdk.RawTransaction();
+        rawTx.setMemo(decodedTx.body.memo);
+        rawTx.setTimeOutHeight(decodedTx.body.timeoutHeight.toString(10))
+
+
+        // WOrk on authInfo
+
+        // Considering only first element as we support non-array mode
+        const feeAmountString = decodedTx.authInfo.fee?.amount[0]!.amount!;
+        const feeAmountDenom = decodedTx.authInfo.fee?.amount[0]!.denom;
+        const gasLimitString = decodedTx.authInfo.fee?.gasLimit.toString(10)!;
+
+        let feeCoin: ICoin;
+        if (feeAmountDenom === network.coin.baseDenom) {
+            feeCoin = croSdk.Coin.fromBaseUnit(feeAmountString);
+        } else {
+            feeCoin = croSdk.Coin.fromCRO(feeAmountString);
+        }
+
+        if (decodedTx.authInfo.signerInfos.length > 0) {
+            // // let signerData;
+            // const anySigner = {
+            //     publicKey: anyKeyPair.getPubKey(),
+            //     accountNumber: new Big(0),
+            //     accountSequence: new Big(2),
+            // };
+            const publicKey = decodedTx.authInfo.signerInfos[0].publicKey
+            // Todo: keeping it default for now
+            const accountNumber = new Big(0);
+            const accountSequence = new Big(decodedTx.authInfo.signerInfos[0].sequence.toString())
+            
+            const signMode = SIGN_MODE.DIRECT == decodedTx.authInfo.signerInfos[0].modeInfo?.single?.mode.valueOf()
+        }
+        let authInfo: AuthInfoLib = {
+            signerInfos: [],
+            fee: { amount: feeCoin, gasLimit: new Big(gasLimitString) }
+        };
+
+
+        rawTx.setFee(feeCoin);
+        rawTx.setGasLimit(gasLimitString);
+
+
+        if (decodedTx.signatures.length > 0) {
+            // Return a SignedTransaction Instance
+
+        } else {
+            // Return a SignableTransaction Instance
+
+        }
+    }
+}
+
+
+// transforms `type_url` to `@type` to match GoLang's TxDecoder JSON output
+export const typeUrlToCosmosTransformer = (str: string) => str.replace(/type_url/g, '@type');
+
+const assertOrReturnValidTx = (obj: any): Tx => {
+    try {
+        let decodedTx: Tx, txToDecode: any = obj;
+        if (obj.tx !== undefined && obj.tx !== null) {
+            txToDecode = obj.tx;
+        }
+        decodedTx = Tx.fromJSON(obj);
+        return decodedTx;
+    } catch (error) {
+        throw new Error("Provided Tx JSON is not valid.");
+    }
+}
+
+const isValidJson = (str: string): boolean => {
+    try {
+        JSON.parse(str);
+        return true;
+    } catch (error) {
+        return false;
+    }
+};
+
+// transforms `@type` to `type_url`
+const typeUrlFromCosmosTransformer = (str: string) => str.replace(/@type/g, 'type_url');
+
+//
+const transformInputJson = (input: string): string => {
+    let snakeCaseTx = typeUrlFromCosmosTransformer(input);
+    let camelCaseTx = camelCase(snakeCaseTx);
+    return camelCaseTx;
 }

@@ -160,7 +160,7 @@ export const rawTransaction = function (config: InitConfigurations) {
             }
             if (!isBigInteger(signer.accountSequence) && signer.accountSequence.gte(0)) {
                 throw new TypeError(
-                    `Expected accountNumber to be of positive integer, got \`${signer.accountNumber}\``,
+                    `Expected accountNumber to be of positive integer, got \`${signer.accountSequence}\``,
                 );
             }
 
