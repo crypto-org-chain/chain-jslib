@@ -105,7 +105,7 @@ export class TxDecoder {
     private getSignaturesJson = (signaturesArray: Uint8Array[]): string[] => {
         let signatures: string[] = [];
         // Adding Signatures array to final object
-        if (signaturesArray && signaturesArray.length > 1) {
+        if (signaturesArray) {
             signatures = signaturesArray.map((e) => toBase64(typeof e !== typeof undefined ? e : new Uint8Array()));
         }
         return signatures;
