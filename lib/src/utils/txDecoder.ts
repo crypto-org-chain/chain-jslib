@@ -18,7 +18,7 @@ export class TxDecoder {
 
     /**
      * Creates TxDecoder instance
-     * @constructor 
+     * @constructor
      */
     constructor() {
         this.libDecodedTxBody = Object.create({});
@@ -118,7 +118,9 @@ export class TxDecoder {
         const obj = { ...libParsedAuthInfo };
 
         if (authInfo.signerInfos) {
-            obj.signerInfos = authInfo.signerInfos.map((e) => (typeof e !== typeof undefined ? this.getSignerInfoJson(e) : undefined));
+            obj.signerInfos = authInfo.signerInfos.map((e) =>
+                typeof e !== typeof undefined ? this.getSignerInfoJson(e) : undefined,
+            );
         } else {
             obj.signerInfos = [];
         }
