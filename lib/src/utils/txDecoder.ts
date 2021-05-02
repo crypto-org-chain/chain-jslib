@@ -16,6 +16,10 @@ export class TxDecoder {
 
     private readonly cosmJSRegistry = new Registry(Object.entries(typeUrlMappings));
 
+    /**
+     * Creates TxDecoder instance
+     * @constructor 
+     */
     constructor() {
         this.libDecodedTxBody = Object.create({});
         this.libDecodedAuthInfo = Object.create({});
@@ -101,8 +105,8 @@ export class TxDecoder {
     private getSignaturesJson = (signaturesArray: Uint8Array[]): string[] => {
         let signatures: string[] = [];
         // Adding Signatures array to final object
-        if (signaturesArray) {
-            signatures = signaturesArray.map((e) => toBase64(e !== undefined ? e : new Uint8Array()));
+        if (signaturesArray && signaturesArray.length > 1) {
+            signatures = signaturesArray.map((e) => toBase64(typeof e !== typeof undefined ? e : new Uint8Array()));
         }
         return signatures;
     };
@@ -114,7 +118,7 @@ export class TxDecoder {
         const obj = { ...libParsedAuthInfo };
 
         if (authInfo.signerInfos) {
-            obj.signerInfos = authInfo.signerInfos.map((e) => (e ? this.getSignerInfoJson(e) : undefined));
+            obj.signerInfos = authInfo.signerInfos.map((e) => (typeof e !== typeof undefined ? this.getSignerInfoJson(e) : undefined));
         } else {
             obj.signerInfos = [];
         }
