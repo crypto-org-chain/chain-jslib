@@ -139,6 +139,6 @@ export class TxDecoder {
         return obj;
     }
 
-    // transforms `type_url` to `@type` to match GoLang's TxDecoder JSON output
+    // replace `type_url` with `@type` to match CosmosSDK tx format
     private typeUrlTransformer = (str: string) => str.replace(/type_url/g, '@type');
 }
