@@ -35,7 +35,7 @@ export class TxDecoder {
     /**
      * @name fromHex()
      * @param txHex
-     * @returns TxDecode
+     * @returns TxDecoder
      */
     public fromHex(txHex: string): TxDecoder {
         if (!txHex) {
