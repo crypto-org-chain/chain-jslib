@@ -19,6 +19,38 @@ describe('TxDecoder', function () {
             txDecoder.fromHex('');
         }).to.throw('Received malformed transaction hex.');
     });
+    it('should decode correctly on empty auth_info and signatures', function () {
+        const txDecoder = new TxDecoder();
+
+        expect(
+            txDecoder
+                .fromHex(
+                    '0a540a520a1b2f636f736d6f732e676f762e763162657461312e4d7367566f7465123308e0f64b122b7463726f3138346c7461326c7379753437767779703265387a6d746361336b35797138357036633476703318021200',
+                )
+                .toCosmosJSON(),
+        ).to.equal(
+            JSON.stringify({
+                tx: {
+                    body: {
+                        messages: [
+                            {
+                                '@type': '/cosmos.gov.v1beta1.MsgVote',
+                                proposal_id: { low: 1244000, high: 0, unsigned: true },
+                                voter: 'tcro184lta2lsyu47vwyp2e8zmtca3k5yq85p6c4vp3',
+                                option: 2,
+                            },
+                        ],
+                        memo: '',
+                        timeout_height: '0',
+                        extension_options: [],
+                        non_critical_extension_options: [],
+                    },
+                    auth_info: { signer_infos: [] },
+                    signatures: [],
+                },
+            }),
+        );
+    });
 
     it('should throw on empty messages array', function () {
         const txDecoder = new TxDecoder();
