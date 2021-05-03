@@ -8,7 +8,7 @@ import { Bytes } from './bytes/bytes';
 import { typeUrlMappings } from '../cosmos/v1beta1/types/typeurls';
 import { camelCase } from 'lodash';
 import { AuthInfo as AuthInfoLib, TxBody as TxBodyLib } from '../cosmos/v1beta1/types/tx';
-import { rawTransaction } from '../transaction/raw';
+import { rawTransaction, TransactionSigner } from '../transaction/raw';
 import { Network } from '../network/network';
 import { CroNetwork, CroSDK } from '../core/cro';
 import { Units, ICoin } from '../coin/coin';
@@ -185,7 +185,6 @@ export class TxDecoder {
         rawTx.setMemo(decodedTx.body.memo);
         rawTx.setTimeOutHeight(decodedTx.body.timeoutHeight.toString(10))
 
-
         // WOrk on authInfo
 
         // Considering only first element as we support non-array mode
@@ -200,6 +199,7 @@ export class TxDecoder {
             feeCoin = croSdk.Coin.fromCRO(feeAmountString);
         }
 
+        let decodedSignerInfos: TransactionSigner[] = [];
         if (decodedTx.authInfo.signerInfos.length > 0) {
             // // let signerData;
             // const anySigner = {
@@ -207,22 +207,27 @@ export class TxDecoder {
             //     accountNumber: new Big(0),
             //     accountSequence: new Big(2),
             // };
-            const publicKey = decodedTx.authInfo.signerInfos[0].publicKey
-            // Todo: keeping it default for now
-            const accountNumber = new Big(0);
-            const accountSequence = new Big(decodedTx.authInfo.signerInfos[0].sequence.toString())
-            
-            const signMode = SIGN_MODE.DIRECT == decodedTx.authInfo.signerInfos[0].modeInfo?.single?.mode.valueOf()
-        }
-        let authInfo: AuthInfoLib = {
-            signerInfos: [],
-            fee: { amount: feeCoin, gasLimit: new Big(gasLimitString) }
-        };
+            decodedSignerInfos = decodedTx.authInfo.signerInfos.map((signerInfo) => {
+                const publicKey = Bytes.fromUint8Array(signerInfo.publicKey?.value!);
+                // Todo: keeping it default for now, it must be patched
+                const accountNumber = new Big(0);
 
+                const accountSequence = new Big(signerInfo.sequence.toString())
+                const signMode = SIGN_MODE.DIRECT //== signerInfo.modeInfo?.single?.mode.valueOf()
+                return {
+                    publicKey,
+                    accountNumber,
+                    accountSequence,
+                    signMode
+                } as TransactionSigner
+            })
+        }
 
         rawTx.setFee(feeCoin);
         rawTx.setGasLimit(gasLimitString);
-
+        
+        // Adding decoded SignerData to the raw transaction
+        decodedSignerInfos.forEach(rawTx.addSigner)
 
         if (decodedTx.signatures.length > 0) {
             // Return a SignedTransaction Instance
