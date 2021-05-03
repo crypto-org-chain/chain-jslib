@@ -113,4 +113,21 @@ describe('Testing MsgVote', function () {
         };
         expect(msgVote.toRawAminoMsg()).to.eqls(rawMsg);
     });
+    it('Test MsgVote amino json conversion [VOTE_OPTION_YES]', function () {
+        const msgVote = new cro.gov.MsgVote({
+            proposalId: Big(12000),
+            voter: 'tcro184lta2lsyu47vwyp2e8zmtca3k5yq85p6c4vp3',
+            option: VoteOption.VOTE_OPTION_YES,
+        });
+
+        const rawMsg: legacyAmino.Msg = {
+            type: 'cosmos-sdk/MsgVote',
+            value: {
+                proposal_id: '12000',
+                voter: 'tcro184lta2lsyu47vwyp2e8zmtca3k5yq85p6c4vp3',
+                option: 1,
+            },
+        };
+        expect(msgVote.toRawAminoMsg()).to.eqls(rawMsg);
+    });
 });
