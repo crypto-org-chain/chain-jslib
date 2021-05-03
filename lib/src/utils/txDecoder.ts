@@ -129,7 +129,7 @@ export class TxDecoder {
     }
 
     private getSignerInfoJson(signerInfo: SignerInfo) {
-        const stringifiedSignerInfo = JSON.stringify(SignerInfo.toJSON(signerInfo) as string);
+        const stringifiedSignerInfo = JSON.stringify(SignerInfo.toJSON(signerInfo) as any);
         const libParsedSignerInfo = JSON.parse(stringifiedSignerInfo);
         const decodedPubkey: cosmos.crypto.ed25519.PubKey | cosmos.crypto.secp256k1.PubKey = this.cosmJSRegistry.decode(
             {
