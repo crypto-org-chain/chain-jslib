@@ -85,6 +85,11 @@ export const owMsgSetWithdrawAddressOptions = owStrictObject().exactShape({
     withdrawAddress: ow.string,
 });
 
+export const owMsgFundCommunityPoolOptions = owStrictObject().exactShape({
+    depositor: ow.string,
+    amount: owCoin(),
+});
+
 export const owMsgDelegateOptions = owStrictObject().exactShape({
     delegatorAddress: ow.string,
     validatorAddress: ow.string,

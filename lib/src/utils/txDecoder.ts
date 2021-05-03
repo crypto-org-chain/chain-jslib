@@ -25,7 +25,8 @@ export class TxDecoder {
     private readonly cosmJSRegistry = new Registry(Object.entries(typeUrlMappings));
 
     /**
-     *
+     * Creates TxDecoder instance
+     * @constructor
      */
     constructor() {
         this.libDecodedTxBody = Object.create({});
@@ -43,7 +44,7 @@ export class TxDecoder {
     /**
      * @name fromHex()
      * @param txHex
-     * @returns TxDecode
+     * @returns TxDecoder
      */
     public fromHex(txHex: string): TxDecoder {
         if (!txHex) {
@@ -67,7 +68,9 @@ export class TxDecoder {
     }
 
     /**
+     * Returns CosmosSDK compatible JSON encoded transaction
      * @name toCosmosJSON()
+     * @returns {string}
      */
     public toCosmosJSON() {
         const txObject = {
@@ -111,7 +114,7 @@ export class TxDecoder {
         let signatures: string[] = [];
         // Adding Signatures array to final object
         if (signaturesArray) {
-            signatures = signaturesArray.map((e) => toBase64(e !== undefined ? e : new Uint8Array()));
+            signatures = signaturesArray.map((e) => toBase64(typeof e !== typeof undefined ? e : new Uint8Array()));
         }
         return signatures;
     };
@@ -123,7 +126,9 @@ export class TxDecoder {
         const obj = { ...libParsedAuthInfo };
 
         if (authInfo.signerInfos) {
-            obj.signerInfos = authInfo.signerInfos.map((e) => (e ? this.getSignerInfoJson(e) : undefined));
+            obj.signerInfos = authInfo.signerInfos.map((e) =>
+                typeof e !== typeof undefined ? this.getSignerInfoJson(e) : undefined,
+            );
         } else {
             obj.signerInfos = [];
         }
@@ -132,7 +137,7 @@ export class TxDecoder {
     }
 
     private getSignerInfoJson(signerInfo: SignerInfo) {
-        const stringifiedSignerInfo = JSON.stringify(SignerInfo.toJSON(signerInfo) as string);
+        const stringifiedSignerInfo = JSON.stringify(SignerInfo.toJSON(signerInfo) as any);
         const libParsedSignerInfo = JSON.parse(stringifiedSignerInfo);
         const decodedPubkey: cosmos.crypto.ed25519.PubKey | cosmos.crypto.secp256k1.PubKey = this.cosmJSRegistry.decode(
             {

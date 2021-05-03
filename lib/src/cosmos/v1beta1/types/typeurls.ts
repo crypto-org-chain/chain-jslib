@@ -25,6 +25,7 @@ export const typeUrlMappings: {
     '/cosmos.gov.v1beta1.MsgSubmitProposal': cosmos.gov.v1beta1.MsgSubmitProposal,
     '/google.protobuf.Any': google.protobuf.Any,
     '/cosmos.distribution.v1beta1.MsgSetWithdrawAddress': cosmos.distribution.v1beta1.MsgSetWithdrawAddress,
+    '/cosmos.distribution.v1beta1.MsgFundCommunityPool': cosmos.distribution.v1beta1.MsgFundCommunityPool,
 };
 
 export interface GeneratedType {
