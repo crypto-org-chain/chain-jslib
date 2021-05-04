@@ -27,7 +27,8 @@ import { SignedTransaction } from './signed';
 import * as legacyAmino from '../cosmos/amino';
 import { ICoin } from '../coin/coin';
 import { CosmosMsg } from './msg/cosmosMsg';
-import { TxDecoder } from '../utils/txDecoder';
+import { TxDecoder, typeUrlToCosmosTransformer } from '../utils/txDecoder';
+import { owBig } from '../ow.types';
 
 const DEFAULT_GAS_LIMIT = 200_000;
 
@@ -53,10 +54,6 @@ export class SignableTransaction {
      */
     public constructor(params: SignableTransactionParams) {
         ow(params, 'params', owSignableTransactionParams);
-
-        if (params.txBody.value.messages.length === 0) {
-            throw new TypeError('Expected message in `txBody` of `params`, got none');
-        }
         if (params.authInfo.signerInfos.length === 0) {
             throw new TypeError('Expected signer in `signerInfos` of `authInfo` of `params`, got none');
         }
@@ -67,7 +64,12 @@ export class SignableTransaction {
         this.txBody = params.txBody;
         this.authInfo = params.authInfo;
 
-        const bodyBytes = protoEncodeTxBody(params.txBody);
+        let bodyBytes = Bytes.fromUint8Array(new Uint8Array());
+
+        if (this.txBody.value.messages.length > 0) {
+            bodyBytes = protoEncodeTxBody(params.txBody);
+        }
+
         const authInfoBytes = protoEncodeAuthInfo(params.authInfo);
         this.txRaw = {
             bodyBytes,
@@ -109,6 +111,33 @@ export class SignableTransaction {
             );
         }
         throw new Error(`Unrecognized sign mode: ${signMode}`);
+    }
+
+    /**
+     * This function sets the provided bytes to bodyBytes of TxRaw
+     * @param {Bytes} txBodyBytes TxBody Protoencoded bytes
+     * @memberof SignableTransaction
+     */
+    public setTxBodyBytes(txBodyBytes: Bytes): SignableTransaction {
+        ow(txBodyBytes, 'txBodyBytes', owBytes());
+
+        this.txRaw.bodyBytes = txBodyBytes;
+        return this;
+    }
+
+    /**
+     * This function manually set the provided accountNumber at specified index
+     * @param {number} index index of the signer
+     * @param {Big} accountNumber accountNumber to set
+     * @throws {Error} when index is invalid
+     * @memberof SignableTransaction
+     */
+    public setSignerAccountNumberAtIndex(index: number, accountNumber: Big): SignableTransaction {
+        ow(accountNumber, 'accountNumber', owBig());
+        ow(index, 'index', this.owIndex());
+
+        this.signerAccounts[index].accountNumber = accountNumber;
+        return this;
     }
 
     /**
@@ -248,8 +277,8 @@ export class SignableTransaction {
             // CamelCase to snake_case convertor
             const stringifiedTx = JSON.stringify(snakecaseKeys.default(txObject));
 
-            // type_url to @type transformer
-            const cosmosApiFormatTxJson = txDecoder.typeUrlTransformer(stringifiedTx);
+            // type_url to @type transformer for matching Cosmos JSON Format
+            const cosmosApiFormatTxJson = typeUrlToCosmosTransformer(stringifiedTx);
 
             return cosmosApiFormatTxJson;
         } catch (error) {
