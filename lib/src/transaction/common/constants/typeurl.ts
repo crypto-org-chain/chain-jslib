@@ -20,6 +20,7 @@ export const COSMOS_MSG_TYPEURL = {
     },
     distribution: {
         MsgSetWithdrawAddress: '/cosmos.distribution.v1beta1.MsgSetWithdrawAddress',
+        MsgFundCommunityPool: '/cosmos.distribution.v1beta1.MsgFundCommunityPool',
     },
     gov: {
         TextProposal: '/cosmos.gov.v1beta1.TextProposal',
