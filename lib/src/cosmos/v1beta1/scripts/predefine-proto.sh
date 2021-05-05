@@ -9,6 +9,7 @@ command -v shellcheck > /dev/null && shellcheck "$0"
 
 GENERATED_DIR="./tmp"
 ROOT_PROTO_DIR="./proto/cosmos/cosmos-sdk"
+NFT_PROTO_DIR="./proto/nft"
 COSMOS_PROTO_DIR="$ROOT_PROTO_DIR/proto/cosmos"
 TENDERMINT_PROTO_DIR="$ROOT_PROTO_DIR/third_party/proto/tendermint"
 
@@ -44,7 +45,8 @@ mkdir -p "$GENERATED_DIR"
   "$TENDERMINT_PROTO_DIR/crypto/proof.proto" \
   "$TENDERMINT_PROTO_DIR/version/types.proto" \
   "$TENDERMINT_PROTO_DIR/types/validator.proto" \
-  "$TENDERMINT_PROTO_DIR/crypto/keys.proto"
+  "$TENDERMINT_PROTO_DIR/crypto/keys.proto" \
+  "$NFT_PROTO_DIR/tx.proto" \
 
   # "$TENDERMINT_PROTO_DIR/protobuf/timestamp.proto" 
 

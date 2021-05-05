@@ -7962,3 +7962,722 @@ export namespace tendermint {
         }
     }
 }
+
+/** Namespace chainmain. */
+export namespace chainmain {
+    /** Namespace nft. */
+    namespace nft {
+        /** Namespace v1. */
+        namespace v1 {
+            /** Represents a Msg */
+            class Msg extends $protobuf.rpc.Service {
+                /**
+                 * Constructs a new Msg service.
+                 * @param rpcImpl RPC implementation
+                 * @param [requestDelimited=false] Whether requests are length-delimited
+                 * @param [responseDelimited=false] Whether responses are length-delimited
+                 */
+                constructor(rpcImpl: $protobuf.RPCImpl, requestDelimited?: boolean, responseDelimited?: boolean);
+
+                /**
+                 * Creates new Msg service using the specified rpc implementation.
+                 * @param rpcImpl RPC implementation
+                 * @param [requestDelimited=false] Whether requests are length-delimited
+                 * @param [responseDelimited=false] Whether responses are length-delimited
+                 * @returns RPC service. Useful where requests and/or responses are streamed.
+                 */
+                public static create(
+                    rpcImpl: $protobuf.RPCImpl,
+                    requestDelimited?: boolean,
+                    responseDelimited?: boolean,
+                ): Msg;
+
+                /**
+                 * Calls IssueDenom.
+                 * @param request MsgIssueDenom message or plain object
+                 * @param callback Node-style callback called with the error, if any, and MsgIssueDenomResponse
+                 */
+                public issueDenom(
+                    request: chainmain.nft.v1.IMsgIssueDenom,
+                    callback: chainmain.nft.v1.Msg.IssueDenomCallback,
+                ): void;
+
+                /**
+                 * Calls IssueDenom.
+                 * @param request MsgIssueDenom message or plain object
+                 * @returns Promise
+                 */
+                public issueDenom(
+                    request: chainmain.nft.v1.IMsgIssueDenom,
+                ): Promise<chainmain.nft.v1.MsgIssueDenomResponse>;
+
+                /**
+                 * Calls MintNFT.
+                 * @param request MsgMintNFT message or plain object
+                 * @param callback Node-style callback called with the error, if any, and MsgMintNFTResponse
+                 */
+                public mintNFT(
+                    request: chainmain.nft.v1.IMsgMintNFT,
+                    callback: chainmain.nft.v1.Msg.MintNFTCallback,
+                ): void;
+
+                /**
+                 * Calls MintNFT.
+                 * @param request MsgMintNFT message or plain object
+                 * @returns Promise
+                 */
+                public mintNFT(request: chainmain.nft.v1.IMsgMintNFT): Promise<chainmain.nft.v1.MsgMintNFTResponse>;
+
+                /**
+                 * Calls EditNFT.
+                 * @param request MsgEditNFT message or plain object
+                 * @param callback Node-style callback called with the error, if any, and MsgEditNFTResponse
+                 */
+                public editNFT(
+                    request: chainmain.nft.v1.IMsgEditNFT,
+                    callback: chainmain.nft.v1.Msg.EditNFTCallback,
+                ): void;
+
+                /**
+                 * Calls EditNFT.
+                 * @param request MsgEditNFT message or plain object
+                 * @returns Promise
+                 */
+                public editNFT(request: chainmain.nft.v1.IMsgEditNFT): Promise<chainmain.nft.v1.MsgEditNFTResponse>;
+
+                /**
+                 * Calls TransferNFT.
+                 * @param request MsgTransferNFT message or plain object
+                 * @param callback Node-style callback called with the error, if any, and MsgTransferNFTResponse
+                 */
+                public transferNFT(
+                    request: chainmain.nft.v1.IMsgTransferNFT,
+                    callback: chainmain.nft.v1.Msg.TransferNFTCallback,
+                ): void;
+
+                /**
+                 * Calls TransferNFT.
+                 * @param request MsgTransferNFT message or plain object
+                 * @returns Promise
+                 */
+                public transferNFT(
+                    request: chainmain.nft.v1.IMsgTransferNFT,
+                ): Promise<chainmain.nft.v1.MsgTransferNFTResponse>;
+
+                /**
+                 * Calls BurnNFT.
+                 * @param request MsgBurnNFT message or plain object
+                 * @param callback Node-style callback called with the error, if any, and MsgBurnNFTResponse
+                 */
+                public burnNFT(
+                    request: chainmain.nft.v1.IMsgBurnNFT,
+                    callback: chainmain.nft.v1.Msg.BurnNFTCallback,
+                ): void;
+
+                /**
+                 * Calls BurnNFT.
+                 * @param request MsgBurnNFT message or plain object
+                 * @returns Promise
+                 */
+                public burnNFT(request: chainmain.nft.v1.IMsgBurnNFT): Promise<chainmain.nft.v1.MsgBurnNFTResponse>;
+            }
+
+            namespace Msg {
+                /**
+                 * Callback as used by {@link chainmain.nft.v1.Msg#issueDenom}.
+                 * @param error Error, if any
+                 * @param [response] MsgIssueDenomResponse
+                 */
+                type IssueDenomCallback = (
+                    error: Error | null,
+                    response?: chainmain.nft.v1.MsgIssueDenomResponse,
+                ) => void;
+
+                /**
+                 * Callback as used by {@link chainmain.nft.v1.Msg#mintNFT}.
+                 * @param error Error, if any
+                 * @param [response] MsgMintNFTResponse
+                 */
+                type MintNFTCallback = (error: Error | null, response?: chainmain.nft.v1.MsgMintNFTResponse) => void;
+
+                /**
+                 * Callback as used by {@link chainmain.nft.v1.Msg#editNFT}.
+                 * @param error Error, if any
+                 * @param [response] MsgEditNFTResponse
+                 */
+                type EditNFTCallback = (error: Error | null, response?: chainmain.nft.v1.MsgEditNFTResponse) => void;
+
+                /**
+                 * Callback as used by {@link chainmain.nft.v1.Msg#transferNFT}.
+                 * @param error Error, if any
+                 * @param [response] MsgTransferNFTResponse
+                 */
+                type TransferNFTCallback = (
+                    error: Error | null,
+                    response?: chainmain.nft.v1.MsgTransferNFTResponse,
+                ) => void;
+
+                /**
+                 * Callback as used by {@link chainmain.nft.v1.Msg#burnNFT}.
+                 * @param error Error, if any
+                 * @param [response] MsgBurnNFTResponse
+                 */
+                type BurnNFTCallback = (error: Error | null, response?: chainmain.nft.v1.MsgBurnNFTResponse) => void;
+            }
+
+            /** Properties of a MsgIssueDenom. */
+            interface IMsgIssueDenom {
+                /** MsgIssueDenom id */
+                id?: string | null;
+
+                /** MsgIssueDenom name */
+                name?: string | null;
+
+                /** MsgIssueDenom schema */
+                schema?: string | null;
+
+                /** MsgIssueDenom sender */
+                sender?: string | null;
+            }
+
+            /** Represents a MsgIssueDenom. */
+            class MsgIssueDenom implements IMsgIssueDenom {
+                /**
+                 * Constructs a new MsgIssueDenom.
+                 * @param [p] Properties to set
+                 */
+                constructor(p?: chainmain.nft.v1.IMsgIssueDenom);
+
+                /** MsgIssueDenom id. */
+                public id: string;
+
+                /** MsgIssueDenom name. */
+                public name: string;
+
+                /** MsgIssueDenom schema. */
+                public schema: string;
+
+                /** MsgIssueDenom sender. */
+                public sender: string;
+
+                /**
+                 * Creates a new MsgIssueDenom instance using the specified properties.
+                 * @param [properties] Properties to set
+                 * @returns MsgIssueDenom instance
+                 */
+                public static create(properties?: chainmain.nft.v1.IMsgIssueDenom): chainmain.nft.v1.MsgIssueDenom;
+
+                /**
+                 * Encodes the specified MsgIssueDenom message. Does not implicitly {@link chainmain.nft.v1.MsgIssueDenom.verify|verify} messages.
+                 * @param m MsgIssueDenom message or plain object to encode
+                 * @param [w] Writer to encode to
+                 * @returns Writer
+                 */
+                public static encode(m: chainmain.nft.v1.IMsgIssueDenom, w?: $protobuf.Writer): $protobuf.Writer;
+
+                /**
+                 * Decodes a MsgIssueDenom message from the specified reader or buffer.
+                 * @param r Reader or buffer to decode from
+                 * @param [l] Message length if known beforehand
+                 * @returns MsgIssueDenom
+                 * @throws {Error} If the payload is not a reader or valid buffer
+                 * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                 */
+                public static decode(r: $protobuf.Reader | Uint8Array, l?: number): chainmain.nft.v1.MsgIssueDenom;
+            }
+
+            /** Properties of a MsgIssueDenomResponse. */
+            interface IMsgIssueDenomResponse {}
+
+            /** Represents a MsgIssueDenomResponse. */
+            class MsgIssueDenomResponse implements IMsgIssueDenomResponse {
+                /**
+                 * Constructs a new MsgIssueDenomResponse.
+                 * @param [p] Properties to set
+                 */
+                constructor(p?: chainmain.nft.v1.IMsgIssueDenomResponse);
+
+                /**
+                 * Creates a new MsgIssueDenomResponse instance using the specified properties.
+                 * @param [properties] Properties to set
+                 * @returns MsgIssueDenomResponse instance
+                 */
+                public static create(
+                    properties?: chainmain.nft.v1.IMsgIssueDenomResponse,
+                ): chainmain.nft.v1.MsgIssueDenomResponse;
+
+                /**
+                 * Encodes the specified MsgIssueDenomResponse message. Does not implicitly {@link chainmain.nft.v1.MsgIssueDenomResponse.verify|verify} messages.
+                 * @param m MsgIssueDenomResponse message or plain object to encode
+                 * @param [w] Writer to encode to
+                 * @returns Writer
+                 */
+                public static encode(
+                    m: chainmain.nft.v1.IMsgIssueDenomResponse,
+                    w?: $protobuf.Writer,
+                ): $protobuf.Writer;
+
+                /**
+                 * Decodes a MsgIssueDenomResponse message from the specified reader or buffer.
+                 * @param r Reader or buffer to decode from
+                 * @param [l] Message length if known beforehand
+                 * @returns MsgIssueDenomResponse
+                 * @throws {Error} If the payload is not a reader or valid buffer
+                 * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                 */
+                public static decode(
+                    r: $protobuf.Reader | Uint8Array,
+                    l?: number,
+                ): chainmain.nft.v1.MsgIssueDenomResponse;
+            }
+
+            /** Properties of a MsgTransferNFT. */
+            interface IMsgTransferNFT {
+                /** MsgTransferNFT id */
+                id?: string | null;
+
+                /** MsgTransferNFT denomId */
+                denomId?: string | null;
+
+                /** MsgTransferNFT name */
+                name?: string | null;
+
+                /** MsgTransferNFT uri */
+                uri?: string | null;
+
+                /** MsgTransferNFT data */
+                data?: string | null;
+
+                /** MsgTransferNFT sender */
+                sender?: string | null;
+
+                /** MsgTransferNFT recipient */
+                recipient?: string | null;
+            }
+
+            /** Represents a MsgTransferNFT. */
+            class MsgTransferNFT implements IMsgTransferNFT {
+                /**
+                 * Constructs a new MsgTransferNFT.
+                 * @param [p] Properties to set
+                 */
+                constructor(p?: chainmain.nft.v1.IMsgTransferNFT);
+
+                /** MsgTransferNFT id. */
+                public id: string;
+
+                /** MsgTransferNFT denomId. */
+                public denomId: string;
+
+                /** MsgTransferNFT name. */
+                public name: string;
+
+                /** MsgTransferNFT uri. */
+                public uri: string;
+
+                /** MsgTransferNFT data. */
+                public data: string;
+
+                /** MsgTransferNFT sender. */
+                public sender: string;
+
+                /** MsgTransferNFT recipient. */
+                public recipient: string;
+
+                /**
+                 * Creates a new MsgTransferNFT instance using the specified properties.
+                 * @param [properties] Properties to set
+                 * @returns MsgTransferNFT instance
+                 */
+                public static create(properties?: chainmain.nft.v1.IMsgTransferNFT): chainmain.nft.v1.MsgTransferNFT;
+
+                /**
+                 * Encodes the specified MsgTransferNFT message. Does not implicitly {@link chainmain.nft.v1.MsgTransferNFT.verify|verify} messages.
+                 * @param m MsgTransferNFT message or plain object to encode
+                 * @param [w] Writer to encode to
+                 * @returns Writer
+                 */
+                public static encode(m: chainmain.nft.v1.IMsgTransferNFT, w?: $protobuf.Writer): $protobuf.Writer;
+
+                /**
+                 * Decodes a MsgTransferNFT message from the specified reader or buffer.
+                 * @param r Reader or buffer to decode from
+                 * @param [l] Message length if known beforehand
+                 * @returns MsgTransferNFT
+                 * @throws {Error} If the payload is not a reader or valid buffer
+                 * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                 */
+                public static decode(r: $protobuf.Reader | Uint8Array, l?: number): chainmain.nft.v1.MsgTransferNFT;
+            }
+
+            /** Properties of a MsgTransferNFTResponse. */
+            interface IMsgTransferNFTResponse {}
+
+            /** Represents a MsgTransferNFTResponse. */
+            class MsgTransferNFTResponse implements IMsgTransferNFTResponse {
+                /**
+                 * Constructs a new MsgTransferNFTResponse.
+                 * @param [p] Properties to set
+                 */
+                constructor(p?: chainmain.nft.v1.IMsgTransferNFTResponse);
+
+                /**
+                 * Creates a new MsgTransferNFTResponse instance using the specified properties.
+                 * @param [properties] Properties to set
+                 * @returns MsgTransferNFTResponse instance
+                 */
+                public static create(
+                    properties?: chainmain.nft.v1.IMsgTransferNFTResponse,
+                ): chainmain.nft.v1.MsgTransferNFTResponse;
+
+                /**
+                 * Encodes the specified MsgTransferNFTResponse message. Does not implicitly {@link chainmain.nft.v1.MsgTransferNFTResponse.verify|verify} messages.
+                 * @param m MsgTransferNFTResponse message or plain object to encode
+                 * @param [w] Writer to encode to
+                 * @returns Writer
+                 */
+                public static encode(
+                    m: chainmain.nft.v1.IMsgTransferNFTResponse,
+                    w?: $protobuf.Writer,
+                ): $protobuf.Writer;
+
+                /**
+                 * Decodes a MsgTransferNFTResponse message from the specified reader or buffer.
+                 * @param r Reader or buffer to decode from
+                 * @param [l] Message length if known beforehand
+                 * @returns MsgTransferNFTResponse
+                 * @throws {Error} If the payload is not a reader or valid buffer
+                 * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                 */
+                public static decode(
+                    r: $protobuf.Reader | Uint8Array,
+                    l?: number,
+                ): chainmain.nft.v1.MsgTransferNFTResponse;
+            }
+
+            /** Properties of a MsgEditNFT. */
+            interface IMsgEditNFT {
+                /** MsgEditNFT id */
+                id?: string | null;
+
+                /** MsgEditNFT denomId */
+                denomId?: string | null;
+
+                /** MsgEditNFT name */
+                name?: string | null;
+
+                /** MsgEditNFT uri */
+                uri?: string | null;
+
+                /** MsgEditNFT data */
+                data?: string | null;
+
+                /** MsgEditNFT sender */
+                sender?: string | null;
+            }
+
+            /** Represents a MsgEditNFT. */
+            class MsgEditNFT implements IMsgEditNFT {
+                /**
+                 * Constructs a new MsgEditNFT.
+                 * @param [p] Properties to set
+                 */
+                constructor(p?: chainmain.nft.v1.IMsgEditNFT);
+
+                /** MsgEditNFT id. */
+                public id: string;
+
+                /** MsgEditNFT denomId. */
+                public denomId: string;
+
+                /** MsgEditNFT name. */
+                public name: string;
+
+                /** MsgEditNFT uri. */
+                public uri: string;
+
+                /** MsgEditNFT data. */
+                public data: string;
+
+                /** MsgEditNFT sender. */
+                public sender: string;
+
+                /**
+                 * Creates a new MsgEditNFT instance using the specified properties.
+                 * @param [properties] Properties to set
+                 * @returns MsgEditNFT instance
+                 */
+                public static create(properties?: chainmain.nft.v1.IMsgEditNFT): chainmain.nft.v1.MsgEditNFT;
+
+                /**
+                 * Encodes the specified MsgEditNFT message. Does not implicitly {@link chainmain.nft.v1.MsgEditNFT.verify|verify} messages.
+                 * @param m MsgEditNFT message or plain object to encode
+                 * @param [w] Writer to encode to
+                 * @returns Writer
+                 */
+                public static encode(m: chainmain.nft.v1.IMsgEditNFT, w?: $protobuf.Writer): $protobuf.Writer;
+
+                /**
+                 * Decodes a MsgEditNFT message from the specified reader or buffer.
+                 * @param r Reader or buffer to decode from
+                 * @param [l] Message length if known beforehand
+                 * @returns MsgEditNFT
+                 * @throws {Error} If the payload is not a reader or valid buffer
+                 * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                 */
+                public static decode(r: $protobuf.Reader | Uint8Array, l?: number): chainmain.nft.v1.MsgEditNFT;
+            }
+
+            /** Properties of a MsgEditNFTResponse. */
+            interface IMsgEditNFTResponse {}
+
+            /** Represents a MsgEditNFTResponse. */
+            class MsgEditNFTResponse implements IMsgEditNFTResponse {
+                /**
+                 * Constructs a new MsgEditNFTResponse.
+                 * @param [p] Properties to set
+                 */
+                constructor(p?: chainmain.nft.v1.IMsgEditNFTResponse);
+
+                /**
+                 * Creates a new MsgEditNFTResponse instance using the specified properties.
+                 * @param [properties] Properties to set
+                 * @returns MsgEditNFTResponse instance
+                 */
+                public static create(
+                    properties?: chainmain.nft.v1.IMsgEditNFTResponse,
+                ): chainmain.nft.v1.MsgEditNFTResponse;
+
+                /**
+                 * Encodes the specified MsgEditNFTResponse message. Does not implicitly {@link chainmain.nft.v1.MsgEditNFTResponse.verify|verify} messages.
+                 * @param m MsgEditNFTResponse message or plain object to encode
+                 * @param [w] Writer to encode to
+                 * @returns Writer
+                 */
+                public static encode(m: chainmain.nft.v1.IMsgEditNFTResponse, w?: $protobuf.Writer): $protobuf.Writer;
+
+                /**
+                 * Decodes a MsgEditNFTResponse message from the specified reader or buffer.
+                 * @param r Reader or buffer to decode from
+                 * @param [l] Message length if known beforehand
+                 * @returns MsgEditNFTResponse
+                 * @throws {Error} If the payload is not a reader or valid buffer
+                 * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                 */
+                public static decode(r: $protobuf.Reader | Uint8Array, l?: number): chainmain.nft.v1.MsgEditNFTResponse;
+            }
+
+            /** Properties of a MsgMintNFT. */
+            interface IMsgMintNFT {
+                /** MsgMintNFT id */
+                id?: string | null;
+
+                /** MsgMintNFT denomId */
+                denomId?: string | null;
+
+                /** MsgMintNFT name */
+                name?: string | null;
+
+                /** MsgMintNFT uri */
+                uri?: string | null;
+
+                /** MsgMintNFT data */
+                data?: string | null;
+
+                /** MsgMintNFT sender */
+                sender?: string | null;
+
+                /** MsgMintNFT recipient */
+                recipient?: string | null;
+            }
+
+            /** Represents a MsgMintNFT. */
+            class MsgMintNFT implements IMsgMintNFT {
+                /**
+                 * Constructs a new MsgMintNFT.
+                 * @param [p] Properties to set
+                 */
+                constructor(p?: chainmain.nft.v1.IMsgMintNFT);
+
+                /** MsgMintNFT id. */
+                public id: string;
+
+                /** MsgMintNFT denomId. */
+                public denomId: string;
+
+                /** MsgMintNFT name. */
+                public name: string;
+
+                /** MsgMintNFT uri. */
+                public uri: string;
+
+                /** MsgMintNFT data. */
+                public data: string;
+
+                /** MsgMintNFT sender. */
+                public sender: string;
+
+                /** MsgMintNFT recipient. */
+                public recipient: string;
+
+                /**
+                 * Creates a new MsgMintNFT instance using the specified properties.
+                 * @param [properties] Properties to set
+                 * @returns MsgMintNFT instance
+                 */
+                public static create(properties?: chainmain.nft.v1.IMsgMintNFT): chainmain.nft.v1.MsgMintNFT;
+
+                /**
+                 * Encodes the specified MsgMintNFT message. Does not implicitly {@link chainmain.nft.v1.MsgMintNFT.verify|verify} messages.
+                 * @param m MsgMintNFT message or plain object to encode
+                 * @param [w] Writer to encode to
+                 * @returns Writer
+                 */
+                public static encode(m: chainmain.nft.v1.IMsgMintNFT, w?: $protobuf.Writer): $protobuf.Writer;
+
+                /**
+                 * Decodes a MsgMintNFT message from the specified reader or buffer.
+                 * @param r Reader or buffer to decode from
+                 * @param [l] Message length if known beforehand
+                 * @returns MsgMintNFT
+                 * @throws {Error} If the payload is not a reader or valid buffer
+                 * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                 */
+                public static decode(r: $protobuf.Reader | Uint8Array, l?: number): chainmain.nft.v1.MsgMintNFT;
+            }
+
+            /** Properties of a MsgMintNFTResponse. */
+            interface IMsgMintNFTResponse {}
+
+            /** Represents a MsgMintNFTResponse. */
+            class MsgMintNFTResponse implements IMsgMintNFTResponse {
+                /**
+                 * Constructs a new MsgMintNFTResponse.
+                 * @param [p] Properties to set
+                 */
+                constructor(p?: chainmain.nft.v1.IMsgMintNFTResponse);
+
+                /**
+                 * Creates a new MsgMintNFTResponse instance using the specified properties.
+                 * @param [properties] Properties to set
+                 * @returns MsgMintNFTResponse instance
+                 */
+                public static create(
+                    properties?: chainmain.nft.v1.IMsgMintNFTResponse,
+                ): chainmain.nft.v1.MsgMintNFTResponse;
+
+                /**
+                 * Encodes the specified MsgMintNFTResponse message. Does not implicitly {@link chainmain.nft.v1.MsgMintNFTResponse.verify|verify} messages.
+                 * @param m MsgMintNFTResponse message or plain object to encode
+                 * @param [w] Writer to encode to
+                 * @returns Writer
+                 */
+                public static encode(m: chainmain.nft.v1.IMsgMintNFTResponse, w?: $protobuf.Writer): $protobuf.Writer;
+
+                /**
+                 * Decodes a MsgMintNFTResponse message from the specified reader or buffer.
+                 * @param r Reader or buffer to decode from
+                 * @param [l] Message length if known beforehand
+                 * @returns MsgMintNFTResponse
+                 * @throws {Error} If the payload is not a reader or valid buffer
+                 * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                 */
+                public static decode(r: $protobuf.Reader | Uint8Array, l?: number): chainmain.nft.v1.MsgMintNFTResponse;
+            }
+
+            /** Properties of a MsgBurnNFT. */
+            interface IMsgBurnNFT {
+                /** MsgBurnNFT id */
+                id?: string | null;
+
+                /** MsgBurnNFT denomId */
+                denomId?: string | null;
+
+                /** MsgBurnNFT sender */
+                sender?: string | null;
+            }
+
+            /** Represents a MsgBurnNFT. */
+            class MsgBurnNFT implements IMsgBurnNFT {
+                /**
+                 * Constructs a new MsgBurnNFT.
+                 * @param [p] Properties to set
+                 */
+                constructor(p?: chainmain.nft.v1.IMsgBurnNFT);
+
+                /** MsgBurnNFT id. */
+                public id: string;
+
+                /** MsgBurnNFT denomId. */
+                public denomId: string;
+
+                /** MsgBurnNFT sender. */
+                public sender: string;
+
+                /**
+                 * Creates a new MsgBurnNFT instance using the specified properties.
+                 * @param [properties] Properties to set
+                 * @returns MsgBurnNFT instance
+                 */
+                public static create(properties?: chainmain.nft.v1.IMsgBurnNFT): chainmain.nft.v1.MsgBurnNFT;
+
+                /**
+                 * Encodes the specified MsgBurnNFT message. Does not implicitly {@link chainmain.nft.v1.MsgBurnNFT.verify|verify} messages.
+                 * @param m MsgBurnNFT message or plain object to encode
+                 * @param [w] Writer to encode to
+                 * @returns Writer
+                 */
+                public static encode(m: chainmain.nft.v1.IMsgBurnNFT, w?: $protobuf.Writer): $protobuf.Writer;
+
+                /**
+                 * Decodes a MsgBurnNFT message from the specified reader or buffer.
+                 * @param r Reader or buffer to decode from
+                 * @param [l] Message length if known beforehand
+                 * @returns MsgBurnNFT
+                 * @throws {Error} If the payload is not a reader or valid buffer
+                 * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                 */
+                public static decode(r: $protobuf.Reader | Uint8Array, l?: number): chainmain.nft.v1.MsgBurnNFT;
+            }
+
+            /** Properties of a MsgBurnNFTResponse. */
+            interface IMsgBurnNFTResponse {}
+
+            /** Represents a MsgBurnNFTResponse. */
+            class MsgBurnNFTResponse implements IMsgBurnNFTResponse {
+                /**
+                 * Constructs a new MsgBurnNFTResponse.
+                 * @param [p] Properties to set
+                 */
+                constructor(p?: chainmain.nft.v1.IMsgBurnNFTResponse);
+
+                /**
+                 * Creates a new MsgBurnNFTResponse instance using the specified properties.
+                 * @param [properties] Properties to set
+                 * @returns MsgBurnNFTResponse instance
+                 */
+                public static create(
+                    properties?: chainmain.nft.v1.IMsgBurnNFTResponse,
+                ): chainmain.nft.v1.MsgBurnNFTResponse;
+
+                /**
+                 * Encodes the specified MsgBurnNFTResponse message. Does not implicitly {@link chainmain.nft.v1.MsgBurnNFTResponse.verify|verify} messages.
+                 * @param m MsgBurnNFTResponse message or plain object to encode
+                 * @param [w] Writer to encode to
+                 * @returns Writer
+                 */
+                public static encode(m: chainmain.nft.v1.IMsgBurnNFTResponse, w?: $protobuf.Writer): $protobuf.Writer;
+
+                /**
+                 * Decodes a MsgBurnNFTResponse message from the specified reader or buffer.
+                 * @param r Reader or buffer to decode from
+                 * @param [l] Message length if known beforehand
+                 * @returns MsgBurnNFTResponse
+                 * @throws {Error} If the payload is not a reader or valid buffer
+                 * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                 */
+                public static decode(r: $protobuf.Reader | Uint8Array, l?: number): chainmain.nft.v1.MsgBurnNFTResponse;
+            }
+        }
+    }
+}
