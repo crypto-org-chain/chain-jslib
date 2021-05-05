@@ -48,7 +48,7 @@
     "@cosmjs/proto-signing": "0.24.1",
     "@cosmjs/stargate": "0.25.0-alpha.2",
     "@cosmjs/tendermint-rpc": "0.25.0-alpha.2",
-    "@types/nock": "^11.1.0",
+    "@types/nock": "11.1.0",
     "axios": "0.21.1",
     "bech32": "1.1.4",
     "big.js": "6.0.0",
