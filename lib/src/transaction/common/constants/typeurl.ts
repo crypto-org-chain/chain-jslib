@@ -25,4 +25,7 @@ export const COSMOS_MSG_TYPEURL = {
     gov: {
         TextProposal: '/cosmos.gov.v1beta1.TextProposal',
     },
+    nft: {
+        MsgIssueDenom: '/chainmain.nft.v1.MsgIssueDenom',
+    },
 };
