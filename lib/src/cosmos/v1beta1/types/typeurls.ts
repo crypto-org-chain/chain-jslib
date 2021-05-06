@@ -29,6 +29,7 @@ export const typeUrlMappings: {
     '/chainmain.nft.v1.MsgIssueDenom': chainmain.nft.v1.MsgIssueDenom,
     '/chainmain.nft.v1.MsgMintNFT': chainmain.nft.v1.MsgMintNFT,
     '/chainmain.nft.v1.MsgEditNFT': chainmain.nft.v1.MsgEditNFT,
+    '/chainmain.nft.v1.MsgTransferNFT': chainmain.nft.v1.MsgTransferNFT,
 };
 
 export interface GeneratedType {
