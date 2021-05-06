@@ -132,3 +132,12 @@ export const owMsgMintNFTOptions = owStrictObject().exactShape({
     sender: ow.string,
     recipient: ow.string,
 });
+
+export const owMsgEditNFTOptions = owStrictObject().exactShape({
+    id: ow.string,
+    denomId: ow.string,
+    name: ow.string,
+    uri: ow.string,
+    data: ow.string,
+    sender: ow.string,
+});
