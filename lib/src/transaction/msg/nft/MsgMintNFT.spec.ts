@@ -43,9 +43,7 @@ describe('Testing MsgMintNFT', function () {
             if (options.valid) {
                 return;
             }
-            expect(() => new cro.nft.MsgMintNFT(options.value)).to.throw(
-                'Expected `options` to be of type `object`',
-            );
+            expect(() => new cro.nft.MsgMintNFT(options.value)).to.throw('Expected `options` to be of type `object`');
         });
     });
 
@@ -121,7 +119,7 @@ describe('Testing MsgMintNFT', function () {
         };
 
         expect(() => new cro.nft.MsgMintNFT(params1)).to.throw('Provided `sender` does not match network selected');
-        
+
         const params2 = {
             id: 'alphanumericId1234',
             name: 'nft_name',

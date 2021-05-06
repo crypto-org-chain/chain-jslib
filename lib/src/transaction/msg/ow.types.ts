@@ -130,5 +130,5 @@ export const owMsgMintNFTOptions = owStrictObject().exactShape({
     uri: ow.string,
     data: ow.string,
     sender: ow.string,
-    recipient: ow.string
+    recipient: ow.string,
 });
