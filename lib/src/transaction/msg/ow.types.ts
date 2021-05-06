@@ -151,3 +151,9 @@ export const owMsgTransferNFTOptions = owStrictObject().exactShape({
     sender: ow.string,
     recipient: ow.string,
 });
+
+export const owMsgBurnNFTOptions = owStrictObject().exactShape({
+    id: ow.string,
+    denomId: ow.string,
+    sender: ow.string,
+});
