@@ -1,4 +1,5 @@
 // @ts-nocheck
+/* eslint-disable */
 import 'mocha';
 import { expect } from 'chai';
 import { TxBody } from '@cosmjs/proto-signing/build/codec/cosmos/tx/v1beta1/tx';
@@ -84,7 +85,7 @@ describe('TxDecoder', function () {
         signableTx.setSignature(0, signature);
         const encodedHex = signableTx.toSigned().encode().toHexString();
         const txDecoder = new TxDecoder();
-        cosmosTxObject_Legacy.tx.auth_info.fee.amount = [{ denom: 'basetcro', amount: '1000000000000' }]
+        cosmosTxObject_Legacy.tx.auth_info.fee.amount = [{ denom: 'basetcro', amount: '1000000000000' }];
         expect(txDecoder.fromHex(encodedHex).toCosmosJSON()).to.equal(JSON.stringify(cosmosTxObject_Legacy));
     });
     it('should decode the transaction correctly', function () {
@@ -99,32 +100,24 @@ describe('TxDecoder', function () {
     });
     it('should throw when no/invalid input provided to .fromCosmosJSON()', function () {
         // empty string
-        expect(
-            () => TxDecoder.fromCosmosJSON('')
-        ).to.throw('Error decoding provided Tx JSON.')
+        expect(() => TxDecoder.fromCosmosJSON('')).to.throw('Error decoding provided Tx JSON.');
 
         // invalid JSON
-        expect(
-            () => TxDecoder.fromCosmosJSON('anInvalidString')
-        ).to.throw('Provided JSON is not valid.')
+        expect(() => TxDecoder.fromCosmosJSON('anInvalidString')).to.throw('Provided JSON is not valid.');
 
         // invalid JSON - Invalid Tx JSON
-        expect(
-            () => TxDecoder.fromCosmosJSON(JSON.stringify(undefinedAuthInfoTxObject))
-        ).to.throw('Provided Tx JSON is not valid.')
+        expect(() => TxDecoder.fromCosmosJSON(JSON.stringify(undefinedAuthInfoTxObject))).to.throw(
+            'Provided Tx JSON is not valid.',
+        );
 
         // invalid JSON - Empty authinfo
-        expect(
-            () => TxDecoder.fromCosmosJSON(JSON.stringify(multipleFeeAmountsTx))
-        ).to.throw('Invalid fee amount provided.')
+        expect(() => TxDecoder.fromCosmosJSON(JSON.stringify(multipleFeeAmountsTx))).to.throw(
+            'Invalid fee amount provided.',
+        );
 
         // invalid txBody
-        expect(
-            () => getTxBodyBytes(undefined)
-        ).to.throw('Error getting TxBody bytes')
-
+        expect(() => getTxBodyBytes(undefined)).to.throw('Error getting TxBody bytes');
     });
-
 });
 
 let cosmosTxObject = {
@@ -161,9 +154,10 @@ let cosmosTxObject = {
 };
 
 let cosmosTxObject_Legacy = JSON.parse(JSON.stringify(cosmosTxObject));
-cosmosTxObject_Legacy.tx.auth_info.signer_infos[0].mode_info.single.mode = 'SIGN_MODE_LEGACY_AMINO_JSON'
-cosmosTxObject_Legacy.tx.auth_info.fee.amount = [{ denom: 'tcro', amount: '10000' }]
-cosmosTxObject_Legacy.tx.signatures[0] = 'd/GcumOqYkUFSxKz+VNgsDnsPuAUkIq0Oy7DLScbpMV3gd7RGkA36my33ixzKr0mdBUqmHFqok98glxzjJxpyg==';
+cosmosTxObject_Legacy.tx.auth_info.signer_infos[0].mode_info.single.mode = 'SIGN_MODE_LEGACY_AMINO_JSON';
+cosmosTxObject_Legacy.tx.auth_info.fee.amount = [{ denom: 'tcro', amount: '10000' }];
+cosmosTxObject_Legacy.tx.signatures[0] =
+    'd/GcumOqYkUFSxKz+VNgsDnsPuAUkIq0Oy7DLScbpMV3gd7RGkA36my33ixzKr0mdBUqmHFqok98glxzjJxpyg==';
 
 let emptyAuthInfoTxObject = {
     tx: {
@@ -208,4 +202,7 @@ let undefinedAuthInfoTxObject = {
 };
 
 let multipleFeeAmountsTx = JSON.parse(JSON.stringify(cosmosTxObject));
-multipleFeeAmountsTx.tx.auth_info.fee.amount = [{ denom: 'tcro', amount: '10000' }, { denom: 'tcro', amount: '10000' }]
+multipleFeeAmountsTx.tx.auth_info.fee.amount = [
+    { denom: 'tcro', amount: '10000' },
+    { denom: 'tcro', amount: '10000' },
+];

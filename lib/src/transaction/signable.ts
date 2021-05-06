@@ -27,7 +27,7 @@ import { SignedTransaction } from './signed';
 import * as legacyAmino from '../cosmos/amino';
 import { ICoin } from '../coin/coin';
 import { CosmosMsg } from './msg/cosmosMsg';
-import { TxDecoder, typeUrlToCosmosTransformer } from '../utils/txDecoder';
+import { typeUrlToCosmosTransformer, getAuthInfoJson, getTxBodyJson, getSignaturesJson } from '../utils/txDecoder';
 import { owBig } from '../ow.types';
 
 const DEFAULT_GAS_LIMIT = 200_000;
@@ -261,7 +261,6 @@ export class SignableTransaction {
             authInfo: Object.create({}),
             signatures: Object.create([[]]),
         };
-        const txDecoder = new TxDecoder();
 
         try {
             // Convert to native types
@@ -270,9 +269,9 @@ export class SignableTransaction {
             const nativeSignaturesList = this.getTxRaw().signatures.map((byteSig) => byteSig.toUint8Array());
 
             // Construct JSON bodies individually
-            txObject.authInfo = txDecoder.getAuthInfoJson(nativeAuthInfo);
-            txObject.body = txDecoder.getTxBodyJson(nativeTxBody);
-            txObject.signatures = txDecoder.getSignaturesJson(nativeSignaturesList);
+            txObject.authInfo = getAuthInfoJson(nativeAuthInfo);
+            txObject.body = getTxBodyJson(nativeTxBody);
+            txObject.signatures = getSignaturesJson(nativeSignaturesList);
 
             // CamelCase to snake_case convertor
             const stringifiedTx = JSON.stringify(snakecaseKeys.default(txObject));

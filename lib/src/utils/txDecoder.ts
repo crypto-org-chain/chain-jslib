@@ -22,7 +22,6 @@ export class TxDecoder {
 
     private libDecodedSignatures!: Uint8Array[];
 
-
     /**
      * Creates TxDecoder instance
      * @constructor
@@ -80,75 +79,15 @@ export class TxDecoder {
             },
         };
 
-        txObject.tx.body = this.getTxBodyJson(this.libDecodedTxBody);
-        txObject.tx.signatures = this.getSignaturesJson(this.libDecodedSignatures);
-        txObject.tx.authInfo = this.getAuthInfoJson(this.libDecodedAuthInfo);
+        txObject.tx.body = getTxBodyJson(this.libDecodedTxBody);
+        txObject.tx.signatures = getSignaturesJson(this.libDecodedSignatures);
+        txObject.tx.authInfo = getAuthInfoJson(this.libDecodedAuthInfo);
 
         const stringifiedTx = JSON.stringify(snakecaseKeys.default(txObject));
 
         const cosmosApiFormatTxJson = typeUrlToCosmosTransformer(stringifiedTx);
 
         return cosmosApiFormatTxJson;
-    }
-
-    public getTxBodyJson(txBody: TxBody) {
-        const txBodyStringified = JSON.stringify(TxBody.toJSON(txBody));
-
-        const parsedTxBody = JSON.parse(txBodyStringified);
-        const obj = { ...parsedTxBody };
-        obj.messages = txBody.messages.map(({ typeUrl, value }) => {
-            if (!typeUrl) {
-                throw new Error('Missing type_url in Any');
-            }
-            if (!value) {
-                throw new Error('Missing value in Any');
-            }
-            const decodedParams = cosmJSRegistry.decode({ typeUrl, value });
-            return { typeUrl, ...decodedParams };
-        });
-        return obj;
-    }
-
-    public getSignaturesJson = (signaturesArray: Uint8Array[]): string[] => {
-        let signatures: string[] = [];
-        // Adding Signatures array to final object
-        if (signaturesArray) {
-            signatures = signaturesArray.map((e) => toBase64(typeof e !== typeof undefined ? e : new Uint8Array()));
-        }
-        return signatures;
-    };
-
-    public getAuthInfoJson(authInfo: AuthInfo) {
-        const authInfoStringified = JSON.stringify(AuthInfo.toJSON(authInfo));
-
-        const libParsedAuthInfo = JSON.parse(authInfoStringified);
-        const obj = { ...libParsedAuthInfo };
-
-        if (authInfo.signerInfos) {
-            obj.signerInfos = authInfo.signerInfos.map((e) =>
-                typeof e !== typeof undefined ? this.getSignerInfoJson(e) : undefined,
-            );
-        } else {
-            obj.signerInfos = [];
-        }
-
-        return obj;
-    }
-
-    private getSignerInfoJson(signerInfo: SignerInfo) {
-        const stringifiedSignerInfo = JSON.stringify(SignerInfo.toJSON(signerInfo) as any);
-        const libParsedSignerInfo = JSON.parse(stringifiedSignerInfo);
-        const decodedPubkey: cosmos.crypto.ed25519.PubKey | cosmos.crypto.secp256k1.PubKey = cosmJSRegistry.decode(
-            {
-                typeUrl: libParsedSignerInfo.publicKey?.typeUrl!,
-                value: fromBase64(libParsedSignerInfo.publicKey?.value!),
-            },
-        );
-
-        const obj = { ...libParsedSignerInfo };
-        obj.publicKey = { typeUrl: libParsedSignerInfo.publicKey?.typeUrl!, key: toBase64(decodedPubkey.key) };
-
-        return obj;
     }
 
     public static fromCosmosJSON(jsonTx: string, network: Network = CroNetwork.Testnet) {
@@ -190,8 +129,8 @@ export class TxDecoder {
         let feeCoin = croSdk.Coin.fromBaseUnit('0');
 
         if (
-            decodedTx.authInfo.fee?.amount &&
-            decodedTx.authInfo.fee?.amount.length > 1 || decodedTx.authInfo.fee?.amount.length! < 1
+            (decodedTx.authInfo.fee?.amount && decodedTx.authInfo.fee?.amount.length > 1) ||
+            decodedTx.authInfo.fee?.amount.length! < 1
         ) {
             // @todo: revisit this in IBC
             throw new Error('Invalid fee amount provided.');
@@ -252,6 +191,62 @@ export class TxDecoder {
         return signableTx;
     }
 }
+export const getSignerInfoJson = (signerInfo: SignerInfo) => {
+    const stringifiedSignerInfo = JSON.stringify(SignerInfo.toJSON(signerInfo) as any);
+    const libParsedSignerInfo = JSON.parse(stringifiedSignerInfo);
+    const decodedPubkey: cosmos.crypto.ed25519.PubKey | cosmos.crypto.secp256k1.PubKey = cosmJSRegistry.decode({
+        typeUrl: libParsedSignerInfo.publicKey?.typeUrl!,
+        value: fromBase64(libParsedSignerInfo.publicKey?.value!),
+    });
+
+    const obj = { ...libParsedSignerInfo };
+    obj.publicKey = { typeUrl: libParsedSignerInfo.publicKey?.typeUrl!, key: toBase64(decodedPubkey.key) };
+
+    return obj;
+};
+
+export const getSignaturesJson = (signaturesArray: Uint8Array[]): string[] => {
+    let signatures: string[] = [];
+    // Adding Signatures array to final object
+    if (signaturesArray) {
+        signatures = signaturesArray.map((e) => toBase64(typeof e !== typeof undefined ? e : new Uint8Array()));
+    }
+    return signatures;
+};
+
+export const getTxBodyJson = (txBody: TxBody) => {
+    const txBodyStringified = JSON.stringify(TxBody.toJSON(txBody));
+
+    const parsedTxBody = JSON.parse(txBodyStringified);
+    const obj = { ...parsedTxBody };
+    obj.messages = txBody.messages.map(({ typeUrl, value }) => {
+        if (!typeUrl) {
+            throw new Error('Missing type_url in Any');
+        }
+        if (!value) {
+            throw new Error('Missing value in Any');
+        }
+        const decodedParams = cosmJSRegistry.decode({ typeUrl, value });
+        return { typeUrl, ...decodedParams };
+    });
+    return obj;
+};
+export const getAuthInfoJson = (authInfo: AuthInfo) => {
+    const authInfoStringified = JSON.stringify(AuthInfo.toJSON(authInfo));
+
+    const libParsedAuthInfo = JSON.parse(authInfoStringified);
+    const obj = { ...libParsedAuthInfo };
+
+    if (authInfo.signerInfos) {
+        obj.signerInfos = authInfo.signerInfos.map((e) =>
+            typeof e !== typeof undefined ? getSignerInfoJson(e) : undefined,
+        );
+    } else {
+        obj.signerInfos = [];
+    }
+
+    return obj;
+};
 
 // transforms `type_url` to `@type` to match GoLang's TxDecoder JSON output
 export const typeUrlToCosmosTransformer = (str: string) => str.replace(/type_url/g, '@type');
