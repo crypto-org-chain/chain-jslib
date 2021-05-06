@@ -24,6 +24,7 @@ import { softwareUpgradeProposal } from '../transaction/msg/gov/proposal/Softwar
 import { msgSetWithdrawAddress } from '../transaction/msg/distribution/MsgSetWithdrawAddress';
 import { msgFundCommunityPool } from '../transaction/msg/distribution/MsgFundCommunityPool';
 import { textProposal } from '../transaction/msg/gov/proposal/TextProposal';
+import { msgIssueDenomNFT } from '../transaction/msg/nft/MsgIssueDenom';
 
 export const CroSDK = function (configs: InitConfigurations) {
     ow(configs, 'configs', owCroSDKInitParams);
@@ -61,6 +62,9 @@ export const CroSDK = function (configs: InitConfigurations) {
             MsgWithdrawDelegatorReward: msgWithdrawDelegateReward(configs),
             MsgSetWithdrawAddress: msgSetWithdrawAddress(configs),
             MsgFundCommunityPool: msgFundCommunityPool(configs),
+        },
+        nft: {
+            MsgIssueDenom: msgIssueDenomNFT(configs),
         },
         Options: configs,
     };

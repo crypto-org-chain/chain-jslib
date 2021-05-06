@@ -112,3 +112,13 @@ export const owMsgBeginRedelgateOptions = owStrictObject().exactShape({
     validatorSrcAddress: ow.string,
     amount: owCoin(),
 });
+
+/**
+ * nft ow types here
+ */
+export const owMsgIssueDenomOptions = owStrictObject().exactShape({
+    id: ow.string,
+    name: ow.string,
+    schema: ow.string,
+    sender: ow.string,
+});
