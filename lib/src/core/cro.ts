@@ -25,6 +25,7 @@ import { msgSetWithdrawAddress } from '../transaction/msg/distribution/MsgSetWit
 import { msgFundCommunityPool } from '../transaction/msg/distribution/MsgFundCommunityPool';
 import { textProposal } from '../transaction/msg/gov/proposal/TextProposal';
 import { msgIssueDenomNFT } from '../transaction/msg/nft/MsgIssueDenom';
+import { msgMintNFT } from '../transaction/msg/nft/MsgMintNFT';
 
 export const CroSDK = function (configs: InitConfigurations) {
     ow(configs, 'configs', owCroSDKInitParams);
@@ -65,6 +66,7 @@ export const CroSDK = function (configs: InitConfigurations) {
         },
         nft: {
             MsgIssueDenom: msgIssueDenomNFT(configs),
+            MsgMintNFT: msgMintNFT(configs),
         },
         Options: configs,
     };
