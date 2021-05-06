@@ -26,6 +26,7 @@ import { msgFundCommunityPool } from '../transaction/msg/distribution/MsgFundCom
 import { textProposal } from '../transaction/msg/gov/proposal/TextProposal';
 import { msgIssueDenomNFT } from '../transaction/msg/nft/MsgIssueDenom';
 import { msgMintNFT } from '../transaction/msg/nft/MsgMintNFT';
+import { msgEditNFT } from '../transaction/msg/nft/MsgEditNFT';
 
 export const CroSDK = function (configs: InitConfigurations) {
     ow(configs, 'configs', owCroSDKInitParams);
@@ -67,6 +68,7 @@ export const CroSDK = function (configs: InitConfigurations) {
         nft: {
             MsgIssueDenom: msgIssueDenomNFT(configs),
             MsgMintNFT: msgMintNFT(configs),
+            MsgEditNFT: msgEditNFT(configs),
         },
         Options: configs,
     };
