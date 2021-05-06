@@ -3,7 +3,7 @@
 // Copyright © 2020 Simon Warta (licensed under the Apache License, Version 2.0)
 // Modifications Copyright (c) 2018 - 2020, Foris Limited (licensed under the Apache License, Version 2.0)
 import protobuf from 'protobufjs';
-import { cosmos, google } from '../codec';
+import { cosmos, google, chainmain } from '../codec';
 
 export const typeUrlMappings: {
     [key: string]: GeneratedType;
@@ -26,6 +26,7 @@ export const typeUrlMappings: {
     '/google.protobuf.Any': google.protobuf.Any,
     '/cosmos.distribution.v1beta1.MsgSetWithdrawAddress': cosmos.distribution.v1beta1.MsgSetWithdrawAddress,
     '/cosmos.distribution.v1beta1.MsgFundCommunityPool': cosmos.distribution.v1beta1.MsgFundCommunityPool,
+    '/chainmain.nft.v1.MsgIssueDenom': chainmain.nft.v1.MsgIssueDenom,
 };
 
 export interface GeneratedType {
