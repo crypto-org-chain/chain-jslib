@@ -22,7 +22,6 @@ export class TxDecoder {
 
     private libDecodedSignatures!: Uint8Array[];
 
-    private readonly cosmJSRegistry = new Registry(Object.entries(typeUrlMappings));
 
     /**
      * Creates TxDecoder instance
@@ -34,8 +33,8 @@ export class TxDecoder {
         this.libDecodedSignatures = Object.create([]);
     }
 
-    private isValidHex = (h: string) => {
-        const re = /[0-9A-Fa-f]/g;
+    private assertHex = (h: string) => {
+        const re = /^[a-fA-F0-9]+$/;
         if (!re.test(h)) {
             throw new TypeError('Invalid Hex provided.');
         }
@@ -50,9 +49,9 @@ export class TxDecoder {
         if (!txHex) {
             throw new TypeError(`Received malformed transaction hex.`);
         }
+        this.assertHex(txHex);
         const sanitisedTxHex = Bytes.clean0x(txHex);
         try {
-            this.isValidHex(sanitisedTxHex);
             const encodedTxBytes = Bytes.fromHexString(sanitisedTxHex).toUint8Array();
             const libDecodedTx = Tx.decode(encodedTxBytes);
             this.libDecodedSignatures = libDecodedTx.signatures;
@@ -104,7 +103,7 @@ export class TxDecoder {
             if (!value) {
                 throw new Error('Missing value in Any');
             }
-            const decodedParams = this.cosmJSRegistry.decode({ typeUrl, value });
+            const decodedParams = cosmJSRegistry.decode({ typeUrl, value });
             return { typeUrl, ...decodedParams };
         });
         return obj;
@@ -139,7 +138,7 @@ export class TxDecoder {
     private getSignerInfoJson(signerInfo: SignerInfo) {
         const stringifiedSignerInfo = JSON.stringify(SignerInfo.toJSON(signerInfo) as any);
         const libParsedSignerInfo = JSON.parse(stringifiedSignerInfo);
-        const decodedPubkey: cosmos.crypto.ed25519.PubKey | cosmos.crypto.secp256k1.PubKey = this.cosmJSRegistry.decode(
+        const decodedPubkey: cosmos.crypto.ed25519.PubKey | cosmos.crypto.secp256k1.PubKey = cosmJSRegistry.decode(
             {
                 typeUrl: libParsedSignerInfo.publicKey?.typeUrl!,
                 value: fromBase64(libParsedSignerInfo.publicKey?.value!),
@@ -192,8 +191,7 @@ export class TxDecoder {
 
         if (
             decodedTx.authInfo.fee?.amount &&
-            decodedTx.authInfo.fee?.amount.length > 1 &&
-            decodedTx.authInfo.fee?.amount.length < 1
+            decodedTx.authInfo.fee?.amount.length > 1 || decodedTx.authInfo.fee?.amount.length! < 1
         ) {
             // @todo: revisit this in IBC
             throw new Error('Invalid fee amount provided.');
@@ -278,7 +276,7 @@ const assertAndReturnValidTx = (obj: any): Tx => {
         throw new Error('Provided Tx JSON is not valid.');
     }
 };
-const getTxBodyBytes = (txBody: TxBody): Bytes => {
+export const getTxBodyBytes = (txBody: TxBody): Bytes => {
     try {
         return Bytes.fromUint8Array(TxBody.encode(txBody).finish());
     } catch (error) {
