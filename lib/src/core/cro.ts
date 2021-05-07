@@ -28,6 +28,7 @@ import { msgIssueDenomNFT } from '../transaction/msg/nft/MsgIssueDenom';
 import { msgMintNFT } from '../transaction/msg/nft/MsgMintNFT';
 import { msgEditNFT } from '../transaction/msg/nft/MsgEditNFT';
 import { msgTransferNFT } from '../transaction/msg/nft/MsgTransferNFT';
+import { msgBurnNFT } from '../transaction/msg/nft/MsgBurnNFT';
 
 export const CroSDK = function (configs: InitConfigurations) {
     ow(configs, 'configs', owCroSDKInitParams);
@@ -71,6 +72,7 @@ export const CroSDK = function (configs: InitConfigurations) {
             MsgMintNFT: msgMintNFT(configs),
             MsgEditNFT: msgEditNFT(configs),
             MsgTransferNFT: msgTransferNFT(configs),
+            MsgBurnNFT: msgBurnNFT(configs),
         },
         Options: configs,
     };
