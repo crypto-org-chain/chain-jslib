@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## v0.0.17
+- Add Software Upgrade Proposal, Text Proposal & Cancel Software Upgrade transaction support
+- Add MsgFundCommunityPool and MsgSetWithdrawalAddress transaction support
+- Add NFT module transaction messages support
+- Add Cosmos-compatible Transaction Decoder
+
 ## v0.0.16
 - Add CRO client
 
