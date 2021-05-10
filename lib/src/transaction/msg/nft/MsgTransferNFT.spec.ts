@@ -43,7 +43,9 @@ describe('Testing MsgTransferNFT', function () {
             if (options.valid) {
                 return;
             }
-            expect(() => new cro.nft.MsgTransferNFT(options.value)).to.throw('Expected `options` to be of type `object`');
+            expect(() => new cro.nft.MsgTransferNFT(options.value)).to.throw(
+                'Expected `options` to be of type `object`',
+            );
         });
     });
 
@@ -130,7 +132,9 @@ describe('Testing MsgTransferNFT', function () {
             recipient: 'cro1pndm4ywdf4qtmupa0fqe75krmqed2znjyj6x8f',
         };
 
-        expect(() => new cro.nft.MsgTransferNFT(params2)).to.throw('Provided `recipient` does not match network selected');
+        expect(() => new cro.nft.MsgTransferNFT(params2)).to.throw(
+            'Provided `recipient` does not match network selected',
+        );
     });
 
     it('Should throw on getting toRawAminoMsg()', function () {
