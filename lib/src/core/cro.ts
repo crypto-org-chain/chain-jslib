@@ -20,6 +20,15 @@ import { msgSubmitProposal } from '../transaction/msg/gov/MsgSubmitProposal';
 import { communityPoolSpendProposal } from '../transaction/msg/gov/CommunityPoolSpendProposal';
 import { paramChangeProposal } from '../transaction/msg/gov/ParamChangeProposal';
 import { cancelSoftwareUpgradeProposal } from '../transaction/msg/gov/proposal/CancelSoftwareUpgradeProposal';
+import { softwareUpgradeProposal } from '../transaction/msg/gov/proposal/SoftwareUpgradeProposal';
+import { msgSetWithdrawAddress } from '../transaction/msg/distribution/MsgSetWithdrawAddress';
+import { msgFundCommunityPool } from '../transaction/msg/distribution/MsgFundCommunityPool';
+import { textProposal } from '../transaction/msg/gov/proposal/TextProposal';
+import { msgIssueDenomNFT } from '../transaction/msg/nft/MsgIssueDenom';
+import { msgMintNFT } from '../transaction/msg/nft/MsgMintNFT';
+import { msgEditNFT } from '../transaction/msg/nft/MsgEditNFT';
+import { msgTransferNFT } from '../transaction/msg/nft/MsgTransferNFT';
+import { msgBurnNFT } from '../transaction/msg/nft/MsgBurnNFT';
 
 export const CroSDK = function (configs: InitConfigurations) {
     ow(configs, 'configs', owCroSDKInitParams);
@@ -37,6 +46,8 @@ export const CroSDK = function (configs: InitConfigurations) {
                 CommunityPoolSpendProposal: communityPoolSpendProposal(configs),
                 ParamChangeProposal: paramChangeProposal(),
                 CancelSoftwareUpgradeProposal: cancelSoftwareUpgradeProposal(),
+                SoftwareUpgradeProposal: softwareUpgradeProposal(),
+                TextProposal: textProposal(),
                 // TODO : More type of proposals to be added here
             },
         },
@@ -53,6 +64,15 @@ export const CroSDK = function (configs: InitConfigurations) {
         distribution: {
             MsgWithdrawValidatorCommission: msgWithdrawValidatorCommission(configs),
             MsgWithdrawDelegatorReward: msgWithdrawDelegateReward(configs),
+            MsgSetWithdrawAddress: msgSetWithdrawAddress(configs),
+            MsgFundCommunityPool: msgFundCommunityPool(configs),
+        },
+        nft: {
+            MsgIssueDenom: msgIssueDenomNFT(configs),
+            MsgMintNFT: msgMintNFT(configs),
+            MsgEditNFT: msgEditNFT(configs),
+            MsgTransferNFT: msgTransferNFT(configs),
+            MsgBurnNFT: msgBurnNFT(configs),
         },
         Options: configs,
     };

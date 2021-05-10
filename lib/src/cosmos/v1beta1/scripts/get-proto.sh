@@ -9,6 +9,7 @@ command -v shellcheck > /dev/null && shellcheck "$0"
 
 PROTO_DIR="./proto"
 COSMOS_DIR="$PROTO_DIR/cosmos"
+NFT_DIR="$PROTO_DIR/nft"
 COSMOS_SDK_DIR="$COSMOS_DIR/cosmos-sdk"
 ZIP_FILE="$COSMOS_DIR/tmp.zip"
 REF=${REF:-"master"}
@@ -20,5 +21,6 @@ mkdir -p "$COSMOS_DIR"
 
 curl -sL -o "$ZIP_FILE" "https://github.com/cosmos/cosmos-sdk/archive/$REF.zip"
 unzip "$ZIP_FILE" "*.proto" -d "$COSMOS_DIR"
+wget -P "$NFT_DIR" "https://raw.githubusercontent.com/crypto-org-chain/chain-main/master/proto/nft/v1/tx.proto"
 mv "$COSMOS_SDK_DIR-$SUFFIX" "$COSMOS_SDK_DIR"
 rm "$ZIP_FILE"

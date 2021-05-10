@@ -80,6 +80,16 @@ export const owMsgWithdrawDelegatorRewardOptions = owStrictObject().exactShape({
     validatorAddress: ow.string,
 });
 
+export const owMsgSetWithdrawAddressOptions = owStrictObject().exactShape({
+    delegatorAddress: ow.string,
+    withdrawAddress: ow.string,
+});
+
+export const owMsgFundCommunityPoolOptions = owStrictObject().exactShape({
+    depositor: ow.string,
+    amount: owCoin(),
+});
+
 export const owMsgDelegateOptions = owStrictObject().exactShape({
     delegatorAddress: ow.string,
     validatorAddress: ow.string,
@@ -101,4 +111,49 @@ export const owMsgBeginRedelgateOptions = owStrictObject().exactShape({
     validatorDstAddress: ow.string,
     validatorSrcAddress: ow.string,
     amount: owCoin(),
+});
+
+/**
+ * nft ow types here
+ */
+export const owMsgIssueDenomOptions = owStrictObject().exactShape({
+    id: ow.string,
+    name: ow.string,
+    schema: ow.string,
+    sender: ow.string,
+});
+
+export const owMsgMintNFTOptions = owStrictObject().exactShape({
+    id: ow.string,
+    denomId: ow.string,
+    name: ow.string,
+    uri: ow.string,
+    data: ow.string,
+    sender: ow.string,
+    recipient: ow.string,
+});
+
+export const owMsgEditNFTOptions = owStrictObject().exactShape({
+    id: ow.string,
+    denomId: ow.string,
+    name: ow.string,
+    uri: ow.string,
+    data: ow.string,
+    sender: ow.string,
+});
+
+export const owMsgTransferNFTOptions = owStrictObject().exactShape({
+    id: ow.string,
+    denomId: ow.string,
+    name: ow.string,
+    uri: ow.string,
+    data: ow.string,
+    sender: ow.string,
+    recipient: ow.string,
+});
+
+export const owMsgBurnNFTOptions = owStrictObject().exactShape({
+    id: ow.string,
+    denomId: ow.string,
+    sender: ow.string,
 });

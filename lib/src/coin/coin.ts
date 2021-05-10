@@ -214,7 +214,7 @@ export const coin = function (config: InitConfigurations) {
 
         /**
          * Returns the Cosmos-compatible Coin object representation
-         * @returns {CosmosCoin}
+         * @returns {CosmosCoin[]}
          * @memberof Coin
          * */
         public toCosmosCoins(): CosmosCoin[] {

@@ -16,5 +16,20 @@ export const COSMOS_MSG_TYPEURL = {
     },
     upgrade: {
         CancelSoftwareUpgradeProposal: '/cosmos.upgrade.v1beta1.CancelSoftwareUpgradeProposal',
+        SoftwareUpgradeProposal: '/cosmos.upgrade.v1beta1.SoftwareUpgradeProposal',
+    },
+    distribution: {
+        MsgSetWithdrawAddress: '/cosmos.distribution.v1beta1.MsgSetWithdrawAddress',
+        MsgFundCommunityPool: '/cosmos.distribution.v1beta1.MsgFundCommunityPool',
+    },
+    gov: {
+        TextProposal: '/cosmos.gov.v1beta1.TextProposal',
+    },
+    nft: {
+        MsgIssueDenom: '/chainmain.nft.v1.MsgIssueDenom',
+        MsgMintNFT: '/chainmain.nft.v1.MsgMintNFT',
+        MsgEditNFT: '/chainmain.nft.v1.MsgEditNFT',
+        MsgTransferNFT: '/chainmain.nft.v1.MsgTransferNFT',
+        MsgBurnNFT: '/chainmain.nft.v1.MsgBurnNFT',
     },
 };

@@ -3,7 +3,7 @@
 // Copyright © 2020 Simon Warta (licensed under the Apache License, Version 2.0)
 // Modifications Copyright (c) 2018 - 2020, Foris Limited (licensed under the Apache License, Version 2.0)
 import protobuf from 'protobufjs';
-import { cosmos } from '../codec';
+import { cosmos, google, chainmain } from '../codec';
 
 export const typeUrlMappings: {
     [key: string]: GeneratedType;
@@ -19,9 +19,18 @@ export const typeUrlMappings: {
     '/cosmos.distribution.v1beta1.MsgWithdrawValidatorCommission':
         cosmos.distribution.v1beta1.MsgWithdrawValidatorCommission,
     '/cosmos.crypto.ed25519.PubKey': cosmos.crypto.ed25519.PubKey,
+    '/cosmos.crypto.secp256k1.PubKey': cosmos.crypto.secp256k1.PubKey,
     '/cosmos.gov.v1beta1.MsgDeposit': cosmos.gov.v1beta1.MsgDeposit,
     '/cosmos.gov.v1beta1.MsgVote': cosmos.gov.v1beta1.MsgVote,
     '/cosmos.gov.v1beta1.MsgSubmitProposal': cosmos.gov.v1beta1.MsgSubmitProposal,
+    '/google.protobuf.Any': google.protobuf.Any,
+    '/cosmos.distribution.v1beta1.MsgSetWithdrawAddress': cosmos.distribution.v1beta1.MsgSetWithdrawAddress,
+    '/cosmos.distribution.v1beta1.MsgFundCommunityPool': cosmos.distribution.v1beta1.MsgFundCommunityPool,
+    '/chainmain.nft.v1.MsgIssueDenom': chainmain.nft.v1.MsgIssueDenom,
+    '/chainmain.nft.v1.MsgMintNFT': chainmain.nft.v1.MsgMintNFT,
+    '/chainmain.nft.v1.MsgEditNFT': chainmain.nft.v1.MsgEditNFT,
+    '/chainmain.nft.v1.MsgTransferNFT': chainmain.nft.v1.MsgTransferNFT,
+    '/chainmain.nft.v1.MsgBurnNFT': chainmain.nft.v1.MsgBurnNFT,
 };
 
 export interface GeneratedType {

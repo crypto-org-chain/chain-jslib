@@ -66,7 +66,7 @@ export class Bytes {
         return Bytes.fromUint8Array(arr);
     }
 
-    private static clean0x(value: string) {
+    public static clean0x(value: string) {
         if (value.startsWith(this.PREFIX_OX)) {
             return value.replace(this.PREFIX_OX, '');
         }
