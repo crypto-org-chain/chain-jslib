@@ -11,6 +11,7 @@ GENERATED_DIR="./tmp"
 ROOT_PROTO_DIR="./proto/cosmos/cosmos-sdk"
 NFT_PROTO_DIR="./proto/nft"
 COSMOS_PROTO_DIR="$ROOT_PROTO_DIR/proto/cosmos"
+IBC_PROTO_DIR="$ROOT_PROTO_DIR/proto/ibc"
 TENDERMINT_PROTO_DIR="$ROOT_PROTO_DIR/third_party/proto/tendermint"
 
 mkdir -p "$GENERATED_DIR"
@@ -41,6 +42,9 @@ mkdir -p "$GENERATED_DIR"
   "$COSMOS_PROTO_DIR/gov/v1beta1/gov.proto" \
   "$COSMOS_PROTO_DIR/params/v1beta1/params.proto" \
   "$COSMOS_PROTO_DIR/upgrade/v1beta1/upgrade.proto" \
+  "$IBC_PROTO_DIR/applications/transfer/v1/tx.proto" \
+  "$IBC_PROTO_DIR/core/client/v1/tx.proto" \
+  "$IBC_PROTO_DIR/core/client/v1/client.proto" \
   "$TENDERMINT_PROTO_DIR/types/types.proto" \
   "$TENDERMINT_PROTO_DIR/crypto/proof.proto" \
   "$TENDERMINT_PROTO_DIR/version/types.proto" \
