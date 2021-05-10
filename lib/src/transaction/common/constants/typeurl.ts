@@ -27,5 +27,9 @@ export const COSMOS_MSG_TYPEURL = {
     },
     nft: {
         MsgIssueDenom: '/chainmain.nft.v1.MsgIssueDenom',
+        MsgMintNFT: '/chainmain.nft.v1.MsgMintNFT',
+        MsgEditNFT: '/chainmain.nft.v1.MsgEditNFT',
+        MsgTransferNFT: '/chainmain.nft.v1.MsgTransferNFT',
+        MsgBurnNFT: '/chainmain.nft.v1.MsgBurnNFT',
     },
 };

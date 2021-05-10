@@ -122,3 +122,38 @@ export const owMsgIssueDenomOptions = owStrictObject().exactShape({
     schema: ow.string,
     sender: ow.string,
 });
+
+export const owMsgMintNFTOptions = owStrictObject().exactShape({
+    id: ow.string,
+    denomId: ow.string,
+    name: ow.string,
+    uri: ow.string,
+    data: ow.string,
+    sender: ow.string,
+    recipient: ow.string,
+});
+
+export const owMsgEditNFTOptions = owStrictObject().exactShape({
+    id: ow.string,
+    denomId: ow.string,
+    name: ow.string,
+    uri: ow.string,
+    data: ow.string,
+    sender: ow.string,
+});
+
+export const owMsgTransferNFTOptions = owStrictObject().exactShape({
+    id: ow.string,
+    denomId: ow.string,
+    name: ow.string,
+    uri: ow.string,
+    data: ow.string,
+    sender: ow.string,
+    recipient: ow.string,
+});
+
+export const owMsgBurnNFTOptions = owStrictObject().exactShape({
+    id: ow.string,
+    denomId: ow.string,
+    sender: ow.string,
+});

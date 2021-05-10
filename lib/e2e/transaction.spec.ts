@@ -436,4 +436,201 @@ describe('e2e test suite', function () {
         expect(broadcast.data).to.be.not.undefined;
         assertIsBroadcastTxSuccess(broadcast.data);
     });
+
+    it('[NFT] Creates, signs and broadcasts a `MsgIssueDenom` NFT Tx', async function () {
+        const hdKey = HDKey.fromMnemonic(env.mnemonic.reserveAccount);
+        const privKey = hdKey.derivePrivKey(`m/44'/${customNetwork.bip44Path.coinType}'/0'/0/0`);
+
+        const keyPair = Secp256k1KeyPair.fromPrivKey(privKey);
+
+        const cro = CroSDK({ network: customNetwork });
+        const address1 = new cro.Address(keyPair.getPubKey());
+        const MsgIssueDenom = new cro.nft.MsgIssueDenom({
+            id: 'alpha1',
+            name: 'alpha1',
+            schema: 'schema',
+            sender: 'tcro1c5nd9l5ylh8udw5lsfs0hlvzxwrlymxqlnl266',
+        });
+
+        const client = await cro.CroClient.connect();
+
+        expect(client).to.be.not.undefined;
+        const account = await client.getAccount(address1.account());
+        const anySigner = {
+            publicKey: keyPair.getPubKey(),
+            accountNumber: new Big(account!.accountNumber),
+            accountSequence: new Big(account!.sequence),
+        };
+        const rawTx = new cro.RawTransaction();
+        const signableTx = rawTx.appendMessage(MsgIssueDenom).addSigner(anySigner).toSignable();
+
+        const signedTx = signableTx.setSignature(0, keyPair.sign(signableTx.toSignDocumentHash(0))).toSigned();
+
+        const broadcast = await axios.get('broadcast_tx_commit', {
+            baseURL: axiosConfig.url,
+            params: { tx: `0x${signedTx.getHexEncoded()}` },
+        });
+        expect(broadcast.status).to.eq(200);
+        expect(broadcast.data).to.be.not.undefined;
+        assertIsBroadcastTxSuccess(broadcast.data);
+    });
+
+    it('[NFT] Creates, signs and broadcasts a `MsgMintNFT` NFT Tx', async function () {
+        const hdKey = HDKey.fromMnemonic(env.mnemonic.reserveAccount);
+        const privKey = hdKey.derivePrivKey(`m/44'/${customNetwork.bip44Path.coinType}'/0'/0/0`);
+
+        const keyPair = Secp256k1KeyPair.fromPrivKey(privKey);
+
+        const cro = CroSDK({ network: customNetwork });
+        const address1 = new cro.Address(keyPair.getPubKey());
+
+        const MsgMintNFT = new cro.nft.MsgMintNFT({
+            id: 'nft1',
+            name: 'mannu',
+            denomId: 'alpha1',
+            uri: 'someUri',
+            data: 'randomData',
+            sender: 'tcro1c5nd9l5ylh8udw5lsfs0hlvzxwrlymxqlnl266',
+            recipient: 'tcro1c5nd9l5ylh8udw5lsfs0hlvzxwrlymxqlnl266',
+        });
+        const client = await cro.CroClient.connect();
+
+        expect(client).to.be.not.undefined;
+        const account = await client.getAccount(address1.account());
+        const anySigner = {
+            publicKey: keyPair.getPubKey(),
+            accountNumber: new Big(account!.accountNumber),
+            accountSequence: new Big(account!.sequence),
+        };
+        const rawTx = new cro.RawTransaction();
+        const signableTx = rawTx.appendMessage(MsgMintNFT).addSigner(anySigner).toSignable();
+
+        const signedTx = signableTx.setSignature(0, keyPair.sign(signableTx.toSignDocumentHash(0))).toSigned();
+
+        const broadcast = await axios.get('broadcast_tx_commit', {
+            baseURL: axiosConfig.url,
+            params: { tx: `0x${signedTx.getHexEncoded()}` },
+        });
+        expect(broadcast.status).to.eq(200);
+        expect(broadcast.data).to.be.not.undefined;
+        assertIsBroadcastTxSuccess(broadcast.data);
+    });
+
+    it('[NFT] Creates, signs and broadcasts a `MsgTransferNFT` NFT Tx', async function () {
+        const hdKey = HDKey.fromMnemonic(env.mnemonic.reserveAccount);
+        const privKey = hdKey.derivePrivKey(`m/44'/${customNetwork.bip44Path.coinType}'/0'/0/0`);
+
+        const keyPair = Secp256k1KeyPair.fromPrivKey(privKey);
+
+        const cro = CroSDK({ network: customNetwork });
+        const address1 = new cro.Address(keyPair.getPubKey());
+
+        const MsgTransferNFT = new cro.nft.MsgTransferNFT({
+            id: 'nft1',
+            name: 'mannu',
+            denomId: 'alpha1',
+            uri: 'someUri',
+            data: 'randomData',
+            sender: address1.account(),
+            recipient: 'tcro184lta2lsyu47vwyp2e8zmtca3k5yq85p6c4vp3',
+        });
+        const client = await cro.CroClient.connect();
+
+        expect(client).to.be.not.undefined;
+        const account = await client.getAccount(address1.account());
+        const anySigner = {
+            publicKey: keyPair.getPubKey(),
+            accountNumber: new Big(account!.accountNumber),
+            accountSequence: new Big(account!.sequence),
+        };
+        const rawTx = new cro.RawTransaction();
+        const signableTx = rawTx.appendMessage(MsgTransferNFT).addSigner(anySigner).toSignable();
+
+        const signedTx = signableTx.setSignature(0, keyPair.sign(signableTx.toSignDocumentHash(0))).toSigned();
+
+        const broadcast = await axios.get('broadcast_tx_commit', {
+            baseURL: axiosConfig.url,
+            params: { tx: `0x${signedTx.getHexEncoded()}` },
+        });
+        expect(broadcast.status).to.eq(200);
+        expect(broadcast.data).to.be.not.undefined;
+        assertIsBroadcastTxSuccess(broadcast.data);
+    });
+
+    it('[NFT] Creates, signs and broadcasts a `MsgEditNFT` NFT Tx', async function () {
+        const hdKey = HDKey.fromMnemonic(env.mnemonic.reserveAccount);
+        const privKey = hdKey.derivePrivKey(`m/44'/${customNetwork.bip44Path.coinType}'/0'/0/0`);
+
+        const keyPair = Secp256k1KeyPair.fromPrivKey(privKey);
+
+        const cro = CroSDK({ network: customNetwork });
+        const address1 = new cro.Address(keyPair.getPubKey());
+
+        const MsgEditNFT = new cro.nft.MsgEditNFT({
+            id: 'nft1',
+            name: 'newname',
+            denomId: 'alpha1',
+            uri: 'newuri',
+            data: 'dataupdated',
+            sender: address1.account(),
+        });
+        const client = await cro.CroClient.connect();
+
+        expect(client).to.be.not.undefined;
+        const account = await client.getAccount(address1.account());
+        const anySigner = {
+            publicKey: keyPair.getPubKey(),
+            accountNumber: new Big(account!.accountNumber),
+            accountSequence: new Big(account!.sequence),
+        };
+        const rawTx = new cro.RawTransaction();
+        const signableTx = rawTx.appendMessage(MsgEditNFT).addSigner(anySigner).toSignable();
+
+        const signedTx = signableTx.setSignature(0, keyPair.sign(signableTx.toSignDocumentHash(0))).toSigned();
+
+        const broadcast = await axios.get('broadcast_tx_commit', {
+            baseURL: axiosConfig.url,
+            params: { tx: `0x${signedTx.getHexEncoded()}` },
+        });
+        expect(broadcast.status).to.eq(200);
+        expect(broadcast.data).to.be.not.undefined;
+        assertIsBroadcastTxSuccess(broadcast.data);
+    });
+
+    it('[NFT] Creates, signs and broadcasts a `MsgBurnNFT` NFT Tx', async function () {
+        const hdKey = HDKey.fromMnemonic(env.mnemonic.reserveAccount);
+        const privKey = hdKey.derivePrivKey(`m/44'/${customNetwork.bip44Path.coinType}'/0'/0/0`);
+
+        const keyPair = Secp256k1KeyPair.fromPrivKey(privKey);
+
+        const cro = CroSDK({ network: customNetwork });
+        const address1 = new cro.Address(keyPair.getPubKey());
+
+        const MsgBurnNFT = new cro.nft.MsgBurnNFT({
+            id: 'nft1',
+            denomId: 'alpha1',
+            sender: address1.account(),
+        });
+        const client = await cro.CroClient.connect();
+
+        expect(client).to.be.not.undefined;
+        const account = await client.getAccount(address1.account());
+        const anySigner = {
+            publicKey: keyPair.getPubKey(),
+            accountNumber: new Big(account!.accountNumber),
+            accountSequence: new Big(account!.sequence),
+        };
+        const rawTx = new cro.RawTransaction();
+        const signableTx = rawTx.appendMessage(MsgBurnNFT).addSigner(anySigner).toSignable();
+
+        const signedTx = signableTx.setSignature(0, keyPair.sign(signableTx.toSignDocumentHash(0))).toSigned();
+
+        const broadcast = await axios.get('broadcast_tx_commit', {
+            baseURL: axiosConfig.url,
+            params: { tx: `0x${signedTx.getHexEncoded()}` },
+        });
+        expect(broadcast.status).to.eq(200);
+        expect(broadcast.data).to.be.not.undefined;
+        assertIsBroadcastTxSuccess(broadcast.data);
+    });
 });

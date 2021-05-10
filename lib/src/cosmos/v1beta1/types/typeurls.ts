@@ -27,6 +27,10 @@ export const typeUrlMappings: {
     '/cosmos.distribution.v1beta1.MsgSetWithdrawAddress': cosmos.distribution.v1beta1.MsgSetWithdrawAddress,
     '/cosmos.distribution.v1beta1.MsgFundCommunityPool': cosmos.distribution.v1beta1.MsgFundCommunityPool,
     '/chainmain.nft.v1.MsgIssueDenom': chainmain.nft.v1.MsgIssueDenom,
+    '/chainmain.nft.v1.MsgMintNFT': chainmain.nft.v1.MsgMintNFT,
+    '/chainmain.nft.v1.MsgEditNFT': chainmain.nft.v1.MsgEditNFT,
+    '/chainmain.nft.v1.MsgTransferNFT': chainmain.nft.v1.MsgTransferNFT,
+    '/chainmain.nft.v1.MsgBurnNFT': chainmain.nft.v1.MsgBurnNFT,
 };
 
 export interface GeneratedType {
