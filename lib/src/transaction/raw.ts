@@ -147,7 +147,6 @@ export const rawTransaction = function (config: InitConfigurations) {
          */
         public addSigner(signer: TransactionSigner): RawTransaction {
             ow(signer, 'signer', owRawTransactionSigner);
-
             const publicKeyResult = isValidSepc256k1PublicKey(signer.publicKey);
             if (!publicKeyResult.ok) {
                 throw new TypeError(publicKeyResult.err('signer'));
@@ -160,7 +159,7 @@ export const rawTransaction = function (config: InitConfigurations) {
             }
             if (!isBigInteger(signer.accountSequence) && signer.accountSequence.gte(0)) {
                 throw new TypeError(
-                    `Expected accountNumber to be of positive integer, got \`${signer.accountNumber}\``,
+                    `Expected accountNumber to be of positive integer, got \`${signer.accountSequence}\``,
                 );
             }
 
@@ -206,9 +205,6 @@ export const rawTransaction = function (config: InitConfigurations) {
          * @memberof RawTransaction
          */
         public toSignable(): SignableTransaction {
-            if (this.txBody.value.messages.length === 0) {
-                throw new Error('Expected message in transaction, got none');
-            }
             if (this.authInfo.signerInfos.length === 0) {
                 throw new Error('Expected signer in transaction, got none');
             }
