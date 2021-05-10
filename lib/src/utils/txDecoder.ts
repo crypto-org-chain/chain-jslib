@@ -4,6 +4,7 @@ import { AuthInfo, TxBody, SignerInfo, Tx } from '@cosmjs/proto-signing/build/co
 import * as snakecaseKeys from 'snakecase-keys';
 import Big from 'big.js';
 import { Any } from '@cosmjs/proto-signing/build/codec/google/protobuf/any';
+import Long from 'long';
 import { cosmos } from '../cosmos/v1beta1/codec/generated/codecimpl';
 import { Bytes } from './bytes/bytes';
 import { typeUrlMappings } from '../cosmos/v1beta1/types/typeurls';
@@ -227,6 +228,7 @@ export const getTxBodyJson = (txBody: TxBody) => {
             throw new Error('Missing value in Any');
         }
         const decodedParams = cosmJSRegistry.decode({ typeUrl, value });
+        handleCustomTypes(decodedParams);
         return { typeUrl, ...decodedParams };
     });
     return obj;
@@ -351,4 +353,16 @@ const getSignModeFromLibDecodedSignMode = (signModeNumber: number) => {
         default:
             throw new Error(`Received Sign Mode ${signModeNumber} not supported`);
     }
+};
+
+const handleCustomTypes = (obj: any) => {
+    Object.keys(obj).forEach((k) => {
+        if (typeof obj[k] === 'object' && obj[k] !== null) {
+            if (obj[k] instanceof Long) {
+                // todo: I will fix the below unsuggested version
+                obj[k] = obj[k].toString(10); // eslint-disable-line no-param-reassign
+            }
+            handleCustomTypes(obj[k]);
+        }
+    });
 };

@@ -98,6 +98,17 @@ describe('TxDecoder', function () {
                 .toCosmosJSON(),
         ).equal(JSON.stringify(cosmosTxObject));
     });
+    it('should decode IBC MsgTransfer transaction correctly', function () {
+        const txDecoder = new TxDecoder();
+        expect(
+            txDecoder
+                .fromHex(
+                    '0ac7010ac4010a292f6962632e6170706c69636174696f6e732e7472616e736665722e76312e4d73675472616e736665721296010a087472616e73666572120a6368616e6e656c2d33331a100a08626173657463726f120431323334222b7463726f313573667570643236737036716633376c6c3571367875663333306b37646639746e76727168742a2d636f736d6f7331767734756361656167746475763565703473613935653361717a7170736b356d6564613038633206080010e3a36838c4a7e1daaafaeabe1612580a500a460a1f2f636f736d6f732e63727970746f2e736563703235366b312e5075624b657912230a2103fd0d560b6c4aa1ca16721d039a192867c3457e19dad553edb98e7ba88b159c2712040a0208011802120410c09a0c1a40f1032ff3d1b53682d8038e4a06d7c1fadf17858a619e32cc3fa5f9463b35c6194f7ebff606dbe142fe63f3d978da2e4372831ea96faf94c80153416667bcd321',
+                )
+                .toCosmosJSON(),
+        ).equal(JSON.stringify(ibc.msgTransfer));
+    });
+    
     it('should throw when no/invalid input provided to .fromCosmosJSON()', function () {
         // empty string
         expect(() => TxDecoder.fromCosmosJSON('')).to.throw('Error decoding provided Tx JSON.');
@@ -119,7 +130,9 @@ describe('TxDecoder', function () {
         expect(() => getTxBodyBytes(undefined)).to.throw('Error getting TxBody bytes');
     });
 });
-
+let ibc = {
+    msgTransfer: { "tx": { "body": { "messages": [{ "@type": "/ibc.applications.transfer.v1.MsgTransfer", "source_port": "transfer", "source_channel": "channel-33", "token": { "denom": "basetcro", "amount": "1234" }, "sender": "tcro15sfupd26sp6qf37ll5q6xuf330k7df9tnvrqht", "receiver": "cosmos1vw4ucaeagtduv5ep4sa95e3aqzqpsk5meda08c", "timeout_height": { "revision_number": "0", "revision_height": "1708515" }, "timeout_timestamp": "1620640362229420996" }], "memo": "", "timeout_height": "0", "extension_options": [], "non_critical_extension_options": [] }, "auth_info": { "signer_infos": [{ "public_key": { "@type": "/cosmos.crypto.secp256k1.PubKey", "key": "A/0NVgtsSqHKFnIdA5oZKGfDRX4Z2tVT7bmOe6iLFZwn" }, "mode_info": { "single": { "mode": "SIGN_MODE_DIRECT" } }, "sequence": "2" }], "fee": { "amount": [], "gas_limit": "200000", "payer": "", "granter": "" } }, "signatures": ["8QMv89G1NoLYA45KBtfB+t8XhYphnjLMP6X5Rjs1xhlPfr/2BtvhQv5j89l42i5DcoMeqW+vlMgBU0FmZ7zTIQ=="] } }
+}
 let cosmosTxObject = {
     tx: {
         body: {
@@ -159,26 +172,7 @@ cosmosTxObject_Legacy.tx.auth_info.fee.amount = [{ denom: 'tcro', amount: '10000
 cosmosTxObject_Legacy.tx.signatures[0] =
     'd/GcumOqYkUFSxKz+VNgsDnsPuAUkIq0Oy7DLScbpMV3gd7RGkA36my33ixzKr0mdBUqmHFqok98glxzjJxpyg==';
 
-let emptyAuthInfoTxObject = {
-    tx: {
-        body: {
-            messages: [
-                {
-                    '@type': '/cosmos.gov.v1beta1.MsgVote',
-                    proposal_id: { low: 1244000, high: 0, unsigned: true },
-                    voter: 'tcro184lta2lsyu47vwyp2e8zmtca3k5yq85p6c4vp3',
-                    option: 2,
-                },
-            ],
-            memo: '',
-            timeout_height: '0',
-            extension_options: [],
-            non_critical_extension_options: [],
-        },
-        auth_info: { signer_infos: [] },
-        signatures: [],
-    },
-};
+let emptyAuthInfoTxObject = { "tx": { "body": { "messages": [{ "@type": "/cosmos.gov.v1beta1.MsgVote", "proposal_id": "1244000", "voter": "tcro184lta2lsyu47vwyp2e8zmtca3k5yq85p6c4vp3", "option": 2 }], "memo": "", "timeout_height": "0", "extension_options": [], "non_critical_extension_options": [] }, "auth_info": { "signer_infos": [] }, "signatures": [] } };
 
 let undefinedAuthInfoTxObject = {
     tx: {
