@@ -43,9 +43,7 @@ describe('Testing MsgTransferNFT', function () {
             if (options.valid) {
                 return;
             }
-            expect(() => new cro.nft.MsgTransferNFT(options.value)).to.throw(
-                'Expected `options` to be of type `object`',
-            );
+            expect(() => new cro.nft.MsgTransferNFT(options.value)).to.throw('Expected `options` to be of type `object`');
         });
     });
 
@@ -105,7 +103,7 @@ describe('Testing MsgTransferNFT', function () {
 
         const signedTxHex = signedTx.encode().toHexString();
         expect(signedTxHex).to.be.eql(
-            '0aca010ac7010a202f636861696e6d61696e2e6e66742e76312e4d73675472616e736665724e465412a2010a12616c7068616e756d657269634964313233341208626173657463726f1a086e66745f6e616d65220f68747470733a2f2f736f6d657572692a0d736f6d655f646174615f6e6674322b7463726f313635747a63726832796c3833673871657178756567326735677a6775353779336665336b63333a2b7463726f316a3770656a386b706c656d347774353070346866766e64687577356a707278786e353632357112580a500a460a1f2f636f736d6f732e63727970746f2e736563703235366b312e5075624b657912230a2103fd0d560b6c4aa1ca16721d039a192867c3457e19dad553edb98e7ba88b159c2712040a0208011802120410c09a0c1a403bdf7a0a15f38335639b2eb8e13185695624cd8db33e842ce222e89958c628427e4c61dbeb842807baad5821ca01ad9f69c951372758605bb3e24e674bf06742',
+            '0a9f010a9c010a202f636861696e6d61696e2e6e66742e76312e4d73675472616e736665724e465412780a12616c7068616e756d657269634964313233341208626173657463726f1a2b7463726f313635747a63726832796c3833673871657178756567326735677a6775353779336665336b6333222b7463726f316a3770656a386b706c656d347774353070346866766e64687577356a707278786e353632357112580a500a460a1f2f636f736d6f732e63727970746f2e736563703235366b312e5075624b657912230a2103fd0d560b6c4aa1ca16721d039a192867c3457e19dad553edb98e7ba88b159c2712040a0208011802120410c09a0c1a40bcff4a558a22df40a4a6f7932f80f019eaa3f3308e1e72869e125a2618ec531275511913cf8db0e2aa954f2dae56303461a296318912d60e70dd529f1198bc33',
         );
     });
 
@@ -132,9 +130,7 @@ describe('Testing MsgTransferNFT', function () {
             recipient: 'cro1pndm4ywdf4qtmupa0fqe75krmqed2znjyj6x8f',
         };
 
-        expect(() => new cro.nft.MsgTransferNFT(params2)).to.throw(
-            'Provided `recipient` does not match network selected',
-        );
+        expect(() => new cro.nft.MsgTransferNFT(params2)).to.throw('Provided `recipient` does not match network selected');
     });
 
     it('Should throw on getting toRawAminoMsg()', function () {
