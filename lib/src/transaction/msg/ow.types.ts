@@ -1,8 +1,9 @@
 import ow from 'ow';
-import { owCoin } from '../../coin/ow.types';
-import { owBig, owStrictObject } from '../../ow.types';
+import { owCoin, owOptionalCoin } from '../../coin/ow.types';
+import { owBig, owStrictObject, owOptionalStrictObject } from '../../ow.types';
 import { VoteOption } from './gov/MsgVote';
 import { isMsgProposalContent } from './gov/IMsgProposalContent';
+import { owLong } from './gov/ow.types';
 
 const voteOptionValidator = (val: number) => ({
     validator: Object.values(VoteOption).includes(val as any),
@@ -156,4 +157,24 @@ export const owMsgBurnNFTOptions = owStrictObject().exactShape({
     id: ow.string,
     denomId: ow.string,
     sender: ow.string,
+});
+
+/**
+ * IBC ow types
+ */
+
+const owIBCHeightOptional = () =>
+    owOptionalStrictObject().exactShape({
+        revisionHeight: owLong(),
+        revisionNumber: owLong(),
+    });
+
+export const owMsgTransferIBCOptions = owStrictObject().exactShape({
+    sourcePort: ow.string,
+    sourceChannel: ow.string,
+    token: owOptionalCoin(),
+    sender: ow.string,
+    receiver: ow.string,
+    timeoutHeight: owIBCHeightOptional(),
+    timeoutTimestamp: owLong(),
 });

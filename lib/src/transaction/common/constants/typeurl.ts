@@ -32,4 +32,7 @@ export const COSMOS_MSG_TYPEURL = {
         MsgTransferNFT: '/chainmain.nft.v1.MsgTransferNFT',
         MsgBurnNFT: '/chainmain.nft.v1.MsgBurnNFT',
     },
+    ibc: {
+        MsgTransfer: '/ibc.applications.transfer.v1.MsgTransfer',
+    },
 };

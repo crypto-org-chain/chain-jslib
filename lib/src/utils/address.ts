@@ -31,7 +31,15 @@ export function validateAddress(addressProps: AddressValidationProperties): bool
             return false;
     }
 }
-
+export const isValidBech32Address = (addr: string): boolean => {
+    try {
+        bech32.decode(addr);
+        // May be maintain a whitelist Array list of possible prefixes. Such as  [cosmos, cro, tcro] ..etc
+        return true;
+    } catch (error) {
+        return false;
+    }
+};
 export class AddressValidator {
     public readonly params: AddressValidationProperties;
 
