@@ -52,11 +52,8 @@ describe('Testing MsgTransferNFT', function () {
     it('Test MsgTransferNFT conversion', function () {
         const MsgTransferNFT = new cro.nft.MsgTransferNFT({
             id: 'alphanumericId1234',
-            name: 'nft_name',
-            sender: 'tcro165tzcrh2yl83g8qeqxueg2g5gzgu57y3fe3kc3',
             denomId: 'basetcro',
-            uri: 'https://someuri',
-            data: 'some_data_nft',
+            sender: 'tcro165tzcrh2yl83g8qeqxueg2g5gzgu57y3fe3kc3',
             recipient: 'tcro1j7pej8kplem4wt50p4hfvndhuw5jprxxn5625q',
         });
 
@@ -64,11 +61,8 @@ describe('Testing MsgTransferNFT', function () {
             typeUrl: COSMOS_MSG_TYPEURL.nft.MsgTransferNFT,
             value: {
                 id: 'alphanumericId1234',
-                name: 'nft_name',
                 sender: 'tcro165tzcrh2yl83g8qeqxueg2g5gzgu57y3fe3kc3',
                 denomId: 'basetcro',
-                uri: 'https://someuri',
-                data: 'some_data_nft',
                 recipient: 'tcro1j7pej8kplem4wt50p4hfvndhuw5jprxxn5625q',
             },
         };
@@ -83,11 +77,8 @@ describe('Testing MsgTransferNFT', function () {
 
         const MsgTransferNFT = new cro.nft.MsgTransferNFT({
             id: 'alphanumericId1234',
-            name: 'nft_name',
             sender: 'tcro165tzcrh2yl83g8qeqxueg2g5gzgu57y3fe3kc3',
             denomId: 'basetcro',
-            uri: 'https://someuri',
-            data: 'some_data_nft',
             recipient: 'tcro1j7pej8kplem4wt50p4hfvndhuw5jprxxn5625q',
         });
 
@@ -112,11 +103,8 @@ describe('Testing MsgTransferNFT', function () {
     it('Should validate MsgTransferNFT provided addresses with network config', function () {
         const params1 = {
             id: 'alphanumericId1234',
-            name: 'nft_name',
             sender: 'cro1pndm4ywdf4qtmupa0fqe75krmqed2znjyj6x8f',
             denomId: 'basetcro',
-            uri: 'https://someuri',
-            data: 'some_data_nft',
             recipient: 'tcro1j7pej8kplem4wt50p4hfvndhuw5jprxxn5625q',
         };
 
@@ -124,11 +112,8 @@ describe('Testing MsgTransferNFT', function () {
 
         const params2 = {
             id: 'alphanumericId1234',
-            name: 'nft_name',
             sender: 'tcro1j7pej8kplem4wt50p4hfvndhuw5jprxxn5625q',
             denomId: 'basetcro',
-            uri: 'https://someuri',
-            data: 'some_data_nft',
             recipient: 'cro1pndm4ywdf4qtmupa0fqe75krmqed2znjyj6x8f',
         };
 
@@ -140,11 +125,8 @@ describe('Testing MsgTransferNFT', function () {
     it('Should throw on getting toRawAminoMsg()', function () {
         const MsgTransferNFT = new cro.nft.MsgTransferNFT({
             id: 'alphanumericId1234',
-            name: 'nft_name',
             sender: 'tcro165tzcrh2yl83g8qeqxueg2g5gzgu57y3fe3kc3',
             denomId: 'basetcro',
-            uri: 'https://someuri',
-            data: 'some_data_nft',
             recipient: 'tcro1j7pej8kplem4wt50p4hfvndhuw5jprxxn5625q',
         });
 
