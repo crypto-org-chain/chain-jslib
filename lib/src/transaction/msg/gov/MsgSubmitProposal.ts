@@ -28,6 +28,8 @@ export const msgSubmitProposal = function (config: InitConfigurations) {
             this.proposer = options.proposer;
             this.initialDeposit = options.initialDeposit;
             this.content = options.content;
+
+            this.validate();
         }
 
         // eslint-disable-next-line class-methods-use-this
