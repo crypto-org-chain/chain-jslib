@@ -145,9 +145,6 @@ export const owMsgEditNFTOptions = owStrictObject().exactShape({
 export const owMsgTransferNFTOptions = owStrictObject().exactShape({
     id: ow.string,
     denomId: ow.string,
-    name: ow.string,
-    uri: ow.string,
-    data: ow.string,
     sender: ow.string,
     recipient: ow.string,
 });

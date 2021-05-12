@@ -2,6 +2,9 @@
 
 All notable changes to this project will be documented in this file.
 
+## v0.0.18
+- Remove unused params from MsgTransfer of NFT module
+
 ## v0.0.17
 - Add Software Upgrade Proposal, Text Proposal & Cancel Software Upgrade transaction support
 - Add MsgFundCommunityPool and MsgSetWithdrawalAddress transaction support

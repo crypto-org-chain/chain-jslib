@@ -15,15 +15,6 @@ export const msgTransferNFT = function (config: InitConfigurations) {
         /** MsgTransferNFT denomId. */
         public denomId: string;
 
-        /** MsgTransferNFT name. */
-        public name: string;
-
-        /** MsgTransferNFT uri. */
-        public uri: string;
-
-        /** MsgTransferNFT data. */
-        public data: string;
-
         /** MsgTransferNFT sender. */
         public sender: string;
 
@@ -40,11 +31,8 @@ export const msgTransferNFT = function (config: InitConfigurations) {
             ow(options, 'options', owMsgTransferNFTOptions);
 
             this.id = options.id;
-            this.name = options.name;
             this.sender = options.sender;
             this.denomId = options.denomId;
-            this.uri = options.uri;
-            this.data = options.data;
             this.recipient = options.recipient;
 
             this.validateAddresses();
@@ -59,13 +47,10 @@ export const msgTransferNFT = function (config: InitConfigurations) {
                 typeUrl: COSMOS_MSG_TYPEURL.nft.MsgTransferNFT,
                 value: {
                     id: this.id,
-                    name: this.name,
                     sender: this.sender,
                     denomId: this.denomId,
-                    uri: this.uri,
-                    data: this.data,
                     recipient: this.recipient,
-                },
+                } as MsgTransferNFTOptions,
             };
         }
 
@@ -101,9 +86,6 @@ export const msgTransferNFT = function (config: InitConfigurations) {
 export type MsgTransferNFTOptions = {
     id: string;
     denomId: string;
-    name: string;
-    uri: string;
-    data: string;
     sender: string;
     recipient: string;
 };

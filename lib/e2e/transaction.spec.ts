@@ -527,10 +527,7 @@ describe('e2e test suite', function () {
 
         const MsgTransferNFT = new cro.nft.MsgTransferNFT({
             id: 'nft1',
-            name: 'mannu',
             denomId: 'alpha1',
-            uri: 'someUri',
-            data: 'randomData',
             sender: address1.account(),
             recipient: 'tcro184lta2lsyu47vwyp2e8zmtca3k5yq85p6c4vp3',
         });
