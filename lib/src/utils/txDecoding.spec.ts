@@ -117,6 +117,13 @@ describe('TxDecoder', function () {
 
         // invalid txBody
         expect(() => getTxBodyBytes(undefined)).to.throw('Error getting TxBody bytes');
+
+        // Invalid signing mode
+        expect(() => TxDecoder.fromCosmosJSON(JSON.stringify(cosmosTxObject_UNRECOGNIZED))).to.throw(
+            'Received Sign Mode -1 not supported',
+        );
+
+
     });
 });
 
@@ -158,6 +165,9 @@ cosmosTxObject_Legacy.tx.auth_info.signer_infos[0].mode_info.single.mode = 'SIGN
 cosmosTxObject_Legacy.tx.auth_info.fee.amount = [{ denom: 'tcro', amount: '10000' }];
 cosmosTxObject_Legacy.tx.signatures[0] =
     'd/GcumOqYkUFSxKz+VNgsDnsPuAUkIq0Oy7DLScbpMV3gd7RGkA36my33ixzKr0mdBUqmHFqok98glxzjJxpyg==';
+
+let cosmosTxObject_UNRECOGNIZED = JSON.parse(JSON.stringify(cosmosTxObject));
+cosmosTxObject_UNRECOGNIZED.tx.auth_info.signer_infos[0].mode_info.single.mode = 'UNRECOGNIZED';
 
 let emptyAuthInfoTxObject = {
     tx: {
