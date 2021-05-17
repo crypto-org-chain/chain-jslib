@@ -182,7 +182,7 @@ export class TxDecoder {
 
         /**
          * Creating a `SignableTransaction` instance
-         * It must be patched for accountNumber information using `.addSignerAccountNumberAtIndex()`
+         * It must be patched for accountNumber information using `.setSignerAccountNumberAtIndex()`
          */
         const signableTx = rawTx.toSignable();
 
