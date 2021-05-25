@@ -1,5 +1,7 @@
 import bech32 from 'bech32';
 import { Network } from '../network/network';
+import { Bytes } from './bytes/bytes';
+// import { toBase64 } from '@cosmjs/encoding';
 
 export interface AddressValidationProperties {
     address: string;
@@ -10,6 +12,7 @@ export interface AddressValidationProperties {
 export enum AddressType {
     USER,
     VALIDATOR,
+
 }
 // https://stackoverflow.com/questions/49434751/how-to-declare-a-function-that-throws-an-error-in-typescript
 /**
@@ -18,6 +21,7 @@ export enum AddressType {
  * @returns {boolean}
  * @throws {Error} when Bech32 encoding is not correct
  */
+//Todo: we can rename it to `validateAddressByNetwork`
 export function validateAddress(addressProps: AddressValidationProperties): boolean | never {
     const { network } = addressProps;
     const bech32Decoded = bech32.decode(addressProps.address);
@@ -31,6 +35,17 @@ export function validateAddress(addressProps: AddressValidationProperties): bool
             return false;
     }
 }
+
+export const assertAndReturnBech32AddressWordBytes = (addr: string): Bytes => {
+    try {
+        const { words } = bech32.decode(addr);
+        // May be maintain a whitelist Array list of possible prefixes. Such as  [cosmos, cro, tcro] ..etc
+        return Bytes.fromUint8Array(new Uint8Array(bech32.fromWords(words.slice(5))));
+    } catch (error) {
+        throw new Error("Invalid Bech32 address.");
+
+    }
+};
 
 export class AddressValidator {
     public readonly params: AddressValidationProperties;

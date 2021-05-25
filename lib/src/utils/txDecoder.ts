@@ -2,16 +2,14 @@ import { Registry } from '@cosmjs/proto-signing';
 import { toBase64, fromBase64 } from '@cosmjs/encoding';
 import { AuthInfo, TxBody, SignerInfo, Tx } from '@cosmjs/proto-signing/build/codec/cosmos/tx/v1beta1/tx';
 import * as snakecaseKeys from 'snakecase-keys';
-import Big from 'big.js';
 import { Any } from '@cosmjs/proto-signing/build/codec/google/protobuf/any';
-import { cosmos } from '../cosmos/v1beta1/codec/generated/codecimpl';
+import { cosmos, google } from '../cosmos/v1beta1/codec/generated/codecimpl';
 import { Bytes } from './bytes/bytes';
 import { typeUrlMappings } from '../cosmos/v1beta1/types/typeurls';
-import { TransactionSigner } from '../transaction/raw';
-import { Network } from '../network/network';
-import { CroNetwork, CroSDK } from '../core/cro';
-import { ICoin } from '../coin/coin';
 import { SIGN_MODE } from '../transaction/types';
+import { Msg } from '../cosmos/v1beta1/types/msg';
+import Long from 'long';
+import { protoEncodeEd25519PubKey } from '../transaction/msg/staking/MsgCreateValidator';
 
 const cosmJSRegistry = new Registry(Object.entries(typeUrlMappings));
 
@@ -58,7 +56,6 @@ export class TxDecoder {
 
             // Deep decoding for TxBody below
             this.libDecodedTxBody = libDecodedTx.body!;
-
             return this;
         } catch (error) {
             throw new TypeError(`Error decoding provided transaction hex.`);
@@ -90,105 +87,18 @@ export class TxDecoder {
         return cosmosApiFormatTxJson;
     }
 
-    public static fromCosmosJSON(jsonTx: string, network: Network = CroNetwork.Testnet) {
+    public static fromCosmosJSON(jsonTx: string) {
         if (!jsonTx) {
             throw new Error('Error decoding provided Tx JSON.');
         }
         if (!isValidJson(jsonTx)) {
             throw new Error('Provided JSON is not valid.');
         }
-
         const txStringWithoutSignMode = transformInputJson(jsonTx);
         const txString = placeBackCorrectSignModeText(txStringWithoutSignMode);
         const txObject = JSON.parse(txString);
         const decodedTx: Tx = assertAndReturnValidTx(txObject);
-
-        if (!decodedTx.authInfo || !decodedTx.body) {
-            throw new Error('Provided JSON is invalid.');
-        }
-
-        // Todo: Looks like we need to support `nonCriticalExtensionOptions` and `extensionOptions`
-        if (decodedTx.body.nonCriticalExtensionOptions.length > 0 || decodedTx.body.extensionOptions.length > 0) {
-            throw new Error("JSON Decoder doesn't support 'nonCriticalExtensionOptions' or 'extensionOptions'");
-        }
-
-        /**
-         * Creating a RawTransaction instance
-         *
-         */
-        const croSdk = CroSDK({ network });
-        const rawTx = new croSdk.RawTransaction();
-
-        /**
-         * Lower section handles `authInfo` related values derivation
-         *
-         */
-        const gasLimitString = decodedTx.authInfo.fee?.gasLimit.toString(10)!;
-
-        // Default `Fee` used as ZERO(0)
-        let feeCoin = croSdk.Coin.fromBaseUnit('0');
-
-        if (
-            (decodedTx.authInfo.fee?.amount && decodedTx.authInfo.fee?.amount.length > 1) ||
-            decodedTx.authInfo.fee?.amount.length! < 1
-        ) {
-            // @todo: revisit this in IBC
-            throw new Error('Invalid fee amount provided.');
-        }
-
-        //  Note: Considering only first element as we support non-array mode
-        const feeAmountString = decodedTx.authInfo.fee?.amount[0]!.amount!;
-        const feeAmountDenom = decodedTx.authInfo.fee?.amount[0]!.denom;
-
-        if (feeAmountDenom && feeAmountString) {
-            if (feeAmountDenom === network.coin.baseDenom) {
-                feeCoin = croSdk.Coin.fromBaseUnit(feeAmountString);
-            } else {
-                feeCoin = croSdk.Coin.fromCRO(feeAmountString);
-            }
-        }
-
-        /**
-         * Lower section handles `signerInfos` part of `authInfo`
-         */
-        let decodedSignerInfos: TransactionSigner[] = [];
-        if (decodedTx.authInfo.signerInfos.length > 0) {
-            decodedSignerInfos = decodedTx.authInfo.signerInfos.map((signerInfo) => {
-                const publicKey = Bytes.fromUint8Array(signerInfo.publicKey?.value!);
-                // NOTE: keeping accountNumber default -1 for now, it MUST be patched
-                const accountNumber = new Big(-1);
-                const accountSequence = new Big(signerInfo.sequence.toString());
-                const signMode = getSignModeFromLibDecodedSignMode(signerInfo.modeInfo?.single?.mode.valueOf()!);
-                return {
-                    publicKey,
-                    accountNumber,
-                    accountSequence,
-                    signMode,
-                } as TransactionSigner;
-            });
-        }
-
-        /**
-         *
-         * Adding available values to the rawTx instance
-         */
-        rawTx.setMemo(decodedTx.body.memo);
-        rawTx.setTimeOutHeight(decodedTx.body.timeoutHeight.toString(10));
-        rawTx.setFee((feeCoin as unknown) as ICoin);
-        rawTx.setGasLimit(gasLimitString);
-        decodedSignerInfos.forEach((signerInfo) => {
-            rawTx.addSigner(signerInfo);
-        });
-
-        /**
-         * Creating a `SignableTransaction` instance
-         * It must be patched for accountNumber information using `.setSignerAccountNumberAtIndex()`
-         */
-        const signableTx = rawTx.toSignable();
-
-        signableTx.setTxBodyBytes(getTxBodyBytes(decodedTx.body));
-
-        return signableTx;
+        return decodedTx;
     }
 }
 export const getSignerInfoJson = (signerInfo: SignerInfo) => {
@@ -216,21 +126,37 @@ export const getSignaturesJson = (signaturesArray: Uint8Array[]): string[] => {
 
 export const getTxBodyJson = (txBody: TxBody) => {
     const txBodyStringified = JSON.stringify(TxBody.toJSON(txBody));
-
     const parsedTxBody = JSON.parse(txBodyStringified);
     const obj = { ...parsedTxBody };
     obj.messages = txBody.messages.map(({ typeUrl, value }) => {
-        if (!typeUrl) {
-            throw new Error('Missing type_url in Any');
-        }
-        if (!value) {
-            throw new Error('Missing value in Any');
-        }
-        const decodedParams = cosmJSRegistry.decode({ typeUrl, value });
-        return { typeUrl, ...decodedParams };
+        return decodeAnyType(typeUrl, value);
     });
     return obj;
 };
+
+function decodeAnyType(typeUrl: string, value: Uint8Array) {
+    if (!typeUrl) {
+        throw new Error('Missing type_url in Any');
+    }
+    if (!value) {
+        throw new Error('Missing value in Any');
+    }
+    const decodedParams = cosmJSRegistry.decode({ typeUrl, value });
+    handleCustomTypes(decodedParams);
+    const finalDecodedParams = handleSpecialParams(decodedParams);
+    return { typeUrl, ...finalDecodedParams };
+}
+
+function handleSpecialParams(decodedParams: any) {
+    // handle all MsgSubmitProposal
+    // TODO: Make it generic when encounter new cases
+
+    if (decodedParams.content && Object.keys(decodedParams.content).length !== 0) {
+        decodedParams.content = decodeAnyType(decodedParams.content.type_url, decodedParams.content.value);
+    }
+    return decodedParams;
+}
+
 export const getAuthInfoJson = (authInfo: AuthInfo) => {
     const authInfoStringified = JSON.stringify(AuthInfo.toJSON(authInfo));
 
@@ -257,7 +183,6 @@ const assertAndReturnValidTx = (obj: any): Tx => {
         if (obj.tx !== undefined && obj.tx !== null) {
             txToDecode = obj.tx;
         }
-
         txToDecode.body.messages = txToDecode.body.messages.map((msg: any) => {
             return encodeTxBodyMsgList(msg);
         });
@@ -265,7 +190,6 @@ const assertAndReturnValidTx = (obj: any): Tx => {
         txToDecode.authInfo.signerInfos = txToDecode.authInfo.signerInfos.map((signerInfo: any) => {
             return encodeAuthInfoSignerInfos(signerInfo);
         });
-
         return Tx.fromJSON(txToDecode);
     } catch (error) {
         throw new Error('Provided Tx JSON is not valid.');
@@ -302,13 +226,43 @@ const encodeTxBodyMsgList = (obj: any) => {
 
     const msgValueObj = { ...obj };
     delete msgValueObj.typeUrl;
+    for (const key in msgValueObj) {
+        if (Object.prototype.hasOwnProperty.call(msgValueObj, key)) {
+            // Dirty handling MsgProposal types
+            if (key === 'content') {
+                const proposalMsg = { ...msgValueObj.content };
+                delete proposalMsg.typeUrl;
+                msgValueObj[key] = google.protobuf.Any.create({
+                    type_url: obj.content.typeUrl || obj.content.type_url,
+                    value: protoEncodeTxBodyMessage({ typeUrl: obj.content.typeUrl, value: proposalMsg }),
+                })
+            }
 
+            // Dirty handling MsgCreateValidator type
+            if (key === 'pubkey') {
+                let pubkey = { ...msgValueObj.pubkey };
+                pubkey = protoEncodeEd25519PubKey(Bytes.fromUint8Array(new Uint8Array(Object.values(pubkey.value))))
+                msgValueObj[key] = google.protobuf.Any.create({
+                    type_url: pubkey.type_url,
+                    value: protoEncodeTxBodyMessage({ typeUrl: pubkey.type_url, value: { key: pubkey.value.slice(4, pubkey.value.length) } }),
+                })
+            }
+        }
+    }
     const encodedValueBytes = cosmJSRegistry.encode({ typeUrl: obj.typeUrl, value: msgValueObj });
 
     return Any.fromPartial({
         typeUrl: obj.typeUrl,
         value: encodedValueBytes,
     });
+};
+const protoEncodeTxBodyMessage = (message: Msg): Uint8Array => {
+    const type = typeUrlMappings[message.typeUrl];
+    if (!type) {
+        throw new Error(`Unrecognized message type ${message.typeUrl}`);
+    }
+    const created = type.create(message.value);
+    return Uint8Array.from(type.encode(created).finish());
 };
 
 const isValidJson = (str: string): boolean => {
@@ -325,13 +279,43 @@ const typeUrlFromCosmosTransformer = (str: string) => str.replace(/@type/g, 'typ
 
 const snakeCaseToCamelCase = (str: string) => str.replace(/([_]\w)/g, (g) => g[1].toUpperCase());
 
+function replaceAll(original: string, search: string, replace: string) {
+    return original.split(search).join(replace);
+}
+
 const transformInputJson = (input: string): string => {
     try {
-        const camelCaseTx = snakeCaseToCamelCase(typeUrlFromCosmosTransformer(input));
-        return camelCaseTx;
+        const typeUrlTransformedString = typeUrlFromCosmosTransformer(input);
+
+        let keysList = recursiveSearch(JSON.parse(typeUrlTransformedString))
+
+        let oldToTranfsormedKeysMap: { [x: string]: string; } = Object.create({});
+        keysList.forEach(key => {
+            oldToTranfsormedKeysMap[key] = snakeCaseToCamelCase(key);
+        })
+
+        let finalString: string = typeUrlTransformedString;
+        for (const key in oldToTranfsormedKeysMap) {
+            if (key !== oldToTranfsormedKeysMap[key]) {
+                finalString = replaceAll(finalString, key, oldToTranfsormedKeysMap[key])
+            }
+        }
+        return finalString;
     } catch (error) {
         throw new Error('Error transforming the input string.');
     }
+};
+
+const recursiveSearch = (obj: any) => {
+    let keys: string[] = [];
+    Object.keys(obj).forEach(key => {
+        const value = obj[key];
+        keys.push(key);
+        if (typeof value === 'object') {
+            keys.push(...recursiveSearch(value));
+        }
+    });
+    return keys;
 };
 
 const placeBackCorrectSignModeText = (str: string): string => {
@@ -342,7 +326,7 @@ const placeBackCorrectSignModeText = (str: string): string => {
         .replace(/SIGNMODELEGACYAMINOJSON/g, 'SIGN_MODE_LEGACY_AMINO_JSON');
 };
 
-const getSignModeFromLibDecodedSignMode = (signModeNumber: number) => {
+export const getSignModeFromLibDecodedSignMode = (signModeNumber: number) => {
     switch (signModeNumber) {
         case SIGN_MODE.DIRECT:
             return SIGN_MODE.DIRECT;
@@ -351,4 +335,16 @@ const getSignModeFromLibDecodedSignMode = (signModeNumber: number) => {
         default:
             throw new Error(`Received Sign Mode ${signModeNumber} not supported`);
     }
+};
+
+const handleCustomTypes = (obj: any) => {
+    Object.keys(obj).forEach((k) => {
+        if (typeof obj[k] === 'object' && obj[k] !== null) {
+            if (obj[k] instanceof Long) {
+                // todo: I will fix the below unsuggested version
+                obj[k] = obj[k].toString(10); // eslint-disable-line no-param-reassign
+            }
+            handleCustomTypes(obj[k]);
+        }
+    });
 };

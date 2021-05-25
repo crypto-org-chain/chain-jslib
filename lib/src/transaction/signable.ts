@@ -21,14 +21,26 @@ import { sha256 } from '../utils/hash';
 import { Network } from '../network/network';
 import { Bytes } from '../utils/bytes/bytes';
 import { EMPTY_SIGNATURE, SignerAccount, SIGN_MODE } from './types';
-import { owSignableTransactionParams } from './ow.types';
+// import { owSignableTransactionParams } from './ow.types';
 import { owBytes } from '../utils/bytes/ow.types';
 import { SignedTransaction } from './signed';
 import * as legacyAmino from '../cosmos/amino';
 import { ICoin } from '../coin/coin';
 import { CosmosMsg } from './msg/cosmosMsg';
-import { typeUrlToCosmosTransformer, getAuthInfoJson, getTxBodyJson, getSignaturesJson } from '../utils/txDecoder';
+import {
+    typeUrlToCosmosTransformer,
+    getAuthInfoJson,
+    getTxBodyJson,
+    getSignaturesJson,
+    TxDecoder,
+    getSignModeFromLibDecodedSignMode,
+    getTxBodyBytes,
+} from '../utils/txDecoder';
 import { owBig } from '../ow.types';
+import { CroSDK, CroNetwork } from '../core/cro';
+import { TransactionSigner } from './raw';
+import { isValidSepc256k1PublicKey } from '../utils/secp256k1';
+import { isBigInteger } from '../utils/big';
 
 const DEFAULT_GAS_LIMIT = 200_000;
 
@@ -36,15 +48,27 @@ const DEFAULT_GAS_LIMIT = 200_000;
  * SignableTransaction is a prepared transaction ready to be signed
  */
 export class SignableTransaction {
-    private txBody: TxBody;
+    private txRaw: TxRaw;
 
-    private authInfo: AuthInfo;
+    public readonly txBody: TxBody = {
+        typeUrl: '/cosmos.tx.v1beta1.TxBody',
+        value: {
+            messages: [],
+            memo: '',
+            timeoutHeight: '0',
+        },
+    };
+
+    public readonly authInfo: AuthInfo = {
+        signerInfos: [],
+        fee: {
+            gasLimit: new Big(DEFAULT_GAS_LIMIT),
+        },
+    };
 
     private network: Network;
 
     private signerAccounts: SignerAccount[] = [];
-
-    private txRaw: TxRaw;
 
     /**
      * Constructor to create a SignableTransaction
@@ -52,6 +76,43 @@ export class SignableTransaction {
      * @returns {SignableTransaction}
      * @throws {Error} when params is invalid or the transaction
      */
+    public constructor(params: SignableTransactionParams) {
+        // ow(params, 'params', owSignableTransactionParams);
+        if (params.signerAccounts.length === 0) {
+            throw new TypeError('Expected signer in `signerInfos` of `authInfo` of `params`, got none');
+        }
+        this.network = params.network;
+        const decodedTx = TxDecoder.fromCosmosJSON(params.rawTxJSON);
+        // console.debug(decodedTx.body?.messages)
+
+        if (!decodedTx.authInfo || !decodedTx.body) {
+            throw new Error('Cannot decode transaction details.');
+        }
+
+        // Todo: Looks like we need to support `nonCriticalExtensionOptions` and `extensionOptions`
+        if (decodedTx.body.nonCriticalExtensionOptions.length > 0 || decodedTx.body.extensionOptions.length > 0) {
+            throw new Error("SignableTransaction doesn't support 'nonCriticalExtensionOptions' or 'extensionOptions'");
+        }
+
+        const bodyBytes = Bytes.fromUint8Array(new Uint8Array());
+        const authInfoBytes = Bytes.fromUint8Array(new Uint8Array());
+
+        this.txRaw = {
+            bodyBytes,
+            authInfoBytes,
+            signatures: decodedTx.authInfo.signerInfos.map(() => EMPTY_SIGNATURE),
+        };
+        this.handleAuthInfo(decodedTx.authInfo, params.signerAccounts);
+
+        this.txRaw.bodyBytes = getTxBodyBytes(decodedTx.body);
+        this.txRaw.authInfoBytes = protoEncodeAuthInfo(this.authInfo);
+    }
+    /**
+     * Constructor to create a SignableTransaction
+     * @param {SignableTransactionParams} params
+     * @returns {SignableTransaction}
+     * @throws {Error} when params is invalid or the transaction
+     
     public constructor(params: SignableTransactionParams) {
         ow(params, 'params', owSignableTransactionParams);
         if (params.authInfo.signerInfos.length === 0) {
@@ -78,6 +139,137 @@ export class SignableTransaction {
         };
         this.network = params.network;
         this.signerAccounts = params.signerAccounts;
+    } */
+
+    /**
+     * importSignerAccounts
+     */
+    public importSignerAccounts(signerAccounts: SignerAccount[]) {
+        this.signerAccounts = signerAccounts;
+        return this;
+    }
+
+    /**
+     * fromCosmosJSON
+     */
+    public static fromCosmosJSON(cosmosTxJSON: string, network: Network = CroNetwork.Testnet): SignableTransaction {
+        return new SignableTransaction({
+            rawTxJSON: cosmosTxJSON,
+            signerAccounts: [],
+            network,
+        });
+    }
+
+    private handleAuthInfo(decodedAuthInfo: NativeAuthInfo, signerAccounts: SignerAccount[]) {
+        const gasLimitString = decodedAuthInfo.fee?.gasLimit.toString(10)! || DEFAULT_GAS_LIMIT;
+        this.authInfo.fee.gasLimit = new Big(gasLimitString);
+
+        if (
+            (decodedAuthInfo.fee?.amount && decodedAuthInfo.fee?.amount.length > 1)
+        ) {
+            // @todo: revisit this in IBC
+            throw new Error('Invalid fee amount provided.');
+        }
+        const croSdk = CroSDK({ network: this.getNetwork() });
+        decodedAuthInfo.fee?.amount.forEach(feeAmountCoin => {
+            //  Note: Considering only first element as we support non-array mode
+            const feeAmountString = feeAmountCoin.amount!;
+            const feeAmountDenom = feeAmountCoin.denom;
+
+            // Todo: Support List of amounts.
+            this.authInfo.fee.amount = croSdk.Coin.fromCustomAmountDenom(feeAmountString, feeAmountDenom);
+        });
+
+        // Handles decoded signerinfo list and update signerAccounts
+        this.handleSignerInfoList(decodedAuthInfo, signerAccounts);
+    }
+
+    private handleSignerInfoList(decodedAuthInfo: NativeAuthInfo, signerAccounts: SignerAccount[]) {
+        let decodedSignerInfoList: TransactionSigner[] = [];
+        if (decodedAuthInfo.signerInfos.length > 0) {
+            decodedSignerInfoList = decodedAuthInfo.signerInfos.map((signerInfo, idx) => {
+                const publicKey = signerAccounts[idx].publicKey || Bytes.fromUint8Array(signerInfo.publicKey?.value!);
+
+                // NOTE: keeping accountNumber default -1 for now, it MUST be patched
+                const accountNumber = signerAccounts[idx].accountNumber || new Big(-1);
+                const accountSequence = new Big(signerInfo.sequence.toString());
+
+                const signMode =
+                    signerAccounts[idx].signMode ||
+                    getSignModeFromLibDecodedSignMode(signerInfo.modeInfo?.single?.mode.valueOf()!);
+                return {
+                    publicKey,
+                    accountNumber,
+                    accountSequence,
+                    signMode,
+                } as TransactionSigner;
+            });
+        }
+
+        decodedSignerInfoList.forEach((signerInfo) => {
+            this.addSigner(signerInfo)
+        });
+    }
+
+    /**
+     * Add a signer to the transaction. The signer orders will follow the add order.
+     * @param {TransactionSigner} signer
+     * @param {Bytes} signer.publicKey signer public key
+     * @param {Big} signer.accountNumber  account number of the signer address
+     * @param {Big} signer.accountSequence account sequence of the signer address
+     * @returns {RawTransaction}
+     * @throws {Error} when argument is invalid
+     * @memberof Transaction
+     */
+    private addSigner(signer: TransactionSigner) {
+        // ow(signer, 'signer', owRawTransactionSigner);
+        const publicKeyResult = isValidSepc256k1PublicKey(signer.publicKey);
+        if (!publicKeyResult.ok) {
+            throw new TypeError(publicKeyResult.err('signer'));
+        }
+
+        if (!isBigInteger(signer.accountNumber) && signer.accountNumber.gte(0)) {
+            throw new TypeError(`Expected accountNumber to be of positive integer, got \`${signer.accountNumber}\``);
+        }
+        if (!isBigInteger(signer.accountSequence) && signer.accountSequence.gte(0)) {
+            throw new TypeError(
+                `Expected accountSequence to be of positive integer, got \`${signer.accountSequence}\``,
+            );
+        }
+
+        let { signMode } = signer;
+        if (typeof signMode === 'undefined') {
+            signMode = SIGN_MODE.DIRECT;
+        }
+
+        let cosmosSignMode: cosmos.tx.signing.v1beta1.SignMode;
+        switch (signMode) {
+            case SIGN_MODE.DIRECT:
+                cosmosSignMode = cosmos.tx.signing.v1beta1.SignMode.SIGN_MODE_DIRECT;
+                break;
+            case SIGN_MODE.LEGACY_AMINO_JSON:
+                cosmosSignMode = cosmos.tx.signing.v1beta1.SignMode.SIGN_MODE_LEGACY_AMINO_JSON;
+                break;
+            default:
+                throw new Error(`Unsupported sign mode: ${signMode}`);
+        }
+        this.authInfo.signerInfos.push({
+            publicKey: signer.publicKey,
+            // TODO: support multisig
+            modeInfo: {
+                single: {
+                    mode: cosmosSignMode,
+                },
+            },
+            sequence: signer.accountSequence,
+        });
+        this.signerAccounts.push({
+            publicKey: signer.publicKey,
+            accountNumber: signer.accountNumber,
+            signMode,
+        });
+
+        return this;
     }
 
     /**
@@ -287,8 +479,7 @@ export class SignableTransaction {
 }
 
 export type SignableTransactionParams = {
-    txBody: TxBody;
-    authInfo: AuthInfo;
+    rawTxJSON: string;
     signerAccounts: SignerAccount[];
     network: Network;
 };
@@ -296,7 +487,7 @@ export type SignableTransactionParams = {
 /**
  * Encode TxBody to protobuf binary
  */
-const protoEncodeTxBody = (txBody: TxBody): Bytes => {
+export const protoEncodeTxBody = (txBody: TxBody): Bytes => {
     const wrappedMessages = txBody.value.messages.map((message) => {
         const rawMessage = message.toRawMsg();
         const messageBytes = protoEncodeTxBodyMessage(rawMessage);
@@ -335,7 +526,7 @@ const protoEncodeTxBodyMessage = (message: Msg): Uint8Array => {
 /**
  * Encode AuthInfo message to protobuf binary
  */
-const protoEncodeAuthInfo = (authInfo: AuthInfo): Bytes => {
+export const protoEncodeAuthInfo = (authInfo: AuthInfo): Bytes => {
     const encodableAuthInfo: cosmos.tx.v1beta1.IAuthInfo = {
         signerInfos: authInfo.signerInfos.map(
             ({ publicKey, modeInfo, sequence }): cosmos.tx.v1beta1.ISignerInfo => ({

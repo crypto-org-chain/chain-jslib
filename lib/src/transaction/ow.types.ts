@@ -1,7 +1,7 @@
 import ow from 'ow';
 import Big from 'big.js';
 
-import { owAuthInfo, owTxBody } from '../cosmos/v1beta1/types/ow.types';
+// import { owAuthInfo, owTxBody } from '../cosmos/v1beta1/types/ow.types';
 import { owNetwork } from '../network/ow.types';
 import { owBig, owStrictObject } from '../ow.types';
 import { owBytes } from '../utils/bytes/ow.types';
@@ -49,9 +49,9 @@ export const owSignerAccount = () =>
         signMode: owSignMode(),
     });
 
-export const owSignableTransactionParams = owStrictObject().exactShape({
-    txBody: owTxBody(),
-    authInfo: owAuthInfo(),
-    network: owNetwork(),
-    signerAccounts: ow.array.ofType(owSignerAccount()),
-});
+// export const owSignableTransactionParams = owStrictObject().exactShape({
+//     txBody: owTxBody(),
+//     authInfo: owAuthInfo(),
+//     network: owNetwork(),
+//     signerAccounts: ow.array.ofType(owSignerAccount()),
+// });
