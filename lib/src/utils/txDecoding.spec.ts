@@ -10,6 +10,7 @@ import { TxDecoder, getTxBodyBytes } from './txDecoder';
 import { Bytes } from './bytes/bytes';
 import { Secp256k1KeyPair } from '../keypair/secp256k1';
 import { CroNetwork } from '../core/cro';
+import { SignableTransaction } from '../transaction/signable';
 
 describe('TxDecoder', function () {
     it('should throw on certain places', function () {
@@ -63,7 +64,11 @@ describe('TxDecoder', function () {
     });
 
     it('should decode and re-encode Cosmos JSON tx correctly', function () {
-        const signableTx = TxDecoder.fromCosmosJSON(JSON.stringify(cosmosTxObject), CroNetwork.Testnet);
+        const signableTx = new SignableTransaction({
+            rawTxJSON: JSON.stringify(cosmosTxObject),
+            network: CroNetwork.Testnet,
+            signerAccounts: []
+        })
         signableTx.setSignerAccountNumberAtIndex(0, new Big(179));
         const keyPair = Secp256k1KeyPair.fromPrivKey(
             Bytes.fromHexString('60300d38b56590fe22439d3eaa77d494ba9b5c93d2cec0b3639bdd51c3e3fa49'),
@@ -76,7 +81,12 @@ describe('TxDecoder', function () {
     });
 
     it('should decode and re-encode Cosmos JSON tx correctly for LEGACY MODE', function () {
-        const signableTx = TxDecoder.fromCosmosJSON(JSON.stringify(cosmosTxObject_Legacy), CroNetwork.Testnet);
+        const signableTx = new SignableTransaction({
+            rawTxJSON: JSON.stringify(cosmosTxObject_Legacy),
+            network: CroNetwork.Testnet,
+            signerAccounts: []
+        })
+        // TxDecoder.fromCosmosJSON(JSON.stringify(cosmosTxObject_Legacy), CroNetwork.Testnet);
         signableTx.setSignerAccountNumberAtIndex(0, new Big(179));
         const keyPair = Secp256k1KeyPair.fromPrivKey(
             Bytes.fromHexString('60300d38b56590fe22439d3eaa77d494ba9b5c93d2cec0b3639bdd51c3e3fa49'),
@@ -110,19 +120,8 @@ describe('TxDecoder', function () {
             'Provided Tx JSON is not valid.',
         );
 
-        // invalid JSON - Empty authinfo
-        expect(() => TxDecoder.fromCosmosJSON(JSON.stringify(multipleFeeAmountsTx))).to.throw(
-            'Invalid fee amount provided.',
-        );
-
         // invalid txBody
         expect(() => getTxBodyBytes(undefined)).to.throw('Error getting TxBody bytes');
-
-        // Invalid signing mode
-        expect(() => TxDecoder.fromCosmosJSON(JSON.stringify(cosmosTxObject_UNRECOGNIZED))).to.throw(
-            'Received Sign Mode -1 not supported',
-        );
-
 
     });
 });
@@ -162,7 +161,7 @@ let cosmosTxObject = {
 
 let cosmosTxObject_Legacy = JSON.parse(JSON.stringify(cosmosTxObject));
 cosmosTxObject_Legacy.tx.auth_info.signer_infos[0].mode_info.single.mode = 'SIGN_MODE_LEGACY_AMINO_JSON';
-cosmosTxObject_Legacy.tx.auth_info.fee.amount = [{ denom: 'tcro', amount: '10000' }];
+cosmosTxObject_Legacy.tx.auth_info.fee.amount = [{ denom: 'basetcro', amount: '1000000000000' }];
 cosmosTxObject_Legacy.tx.signatures[0] =
     'd/GcumOqYkUFSxKz+VNgsDnsPuAUkIq0Oy7DLScbpMV3gd7RGkA36my33ixzKr0mdBUqmHFqok98glxzjJxpyg==';
 
@@ -175,7 +174,7 @@ let emptyAuthInfoTxObject = {
             messages: [
                 {
                     '@type': '/cosmos.gov.v1beta1.MsgVote',
-                    proposal_id: { low: 1244000, high: 0, unsigned: true },
+                    proposal_id: "1244000",
                     voter: 'tcro184lta2lsyu47vwyp2e8zmtca3k5yq85p6c4vp3',
                     option: 2,
                 },

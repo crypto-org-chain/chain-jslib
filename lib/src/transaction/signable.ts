@@ -21,7 +21,7 @@ import { sha256 } from '../utils/hash';
 import { Network } from '../network/network';
 import { Bytes } from '../utils/bytes/bytes';
 import { EMPTY_SIGNATURE, SignerAccount, SIGN_MODE } from './types';
-// import { owSignableTransactionParams } from './ow.types';
+import { owSignableTransactionParams } from './ow.types';
 import { owBytes } from '../utils/bytes/ow.types';
 import { SignedTransaction } from './signed';
 import * as legacyAmino from '../cosmos/amino';
@@ -77,14 +77,10 @@ export class SignableTransaction {
      * @throws {Error} when params is invalid or the transaction
      */
     public constructor(params: SignableTransactionParams) {
-        // ow(params, 'params', owSignableTransactionParams);
-        if (params.signerAccounts.length === 0) {
-            throw new TypeError('Expected signer in `signerInfos` of `authInfo` of `params`, got none');
-        }
+        ow(params, 'params', owSignableTransactionParams);
         this.network = params.network;
         const decodedTx = TxDecoder.fromCosmosJSON(params.rawTxJSON);
-        // console.debug(decodedTx.body?.messages)
-
+        
         if (!decodedTx.authInfo || !decodedTx.body) {
             throw new Error('Cannot decode transaction details.');
         }
@@ -188,14 +184,14 @@ export class SignableTransaction {
         let decodedSignerInfoList: TransactionSigner[] = [];
         if (decodedAuthInfo.signerInfos.length > 0) {
             decodedSignerInfoList = decodedAuthInfo.signerInfos.map((signerInfo, idx) => {
-                const publicKey = signerAccounts[idx].publicKey || Bytes.fromUint8Array(signerInfo.publicKey?.value!);
+                const publicKey = signerAccounts[idx]?.publicKey! || Bytes.fromUint8Array(signerInfo.publicKey?.value!);
 
                 // NOTE: keeping accountNumber default -1 for now, it MUST be patched
-                const accountNumber = signerAccounts[idx].accountNumber || new Big(-1);
+                const accountNumber = signerAccounts[idx]?.accountNumber! || new Big(-1);
                 const accountSequence = new Big(signerInfo.sequence.toString());
 
                 const signMode =
-                    signerAccounts[idx].signMode ||
+                    signerAccounts[idx]?.signMode! ||
                     getSignModeFromLibDecodedSignMode(signerInfo.modeInfo?.single?.mode.valueOf()!);
                 return {
                     publicKey,
