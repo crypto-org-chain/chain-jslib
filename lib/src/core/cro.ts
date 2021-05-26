@@ -113,7 +113,7 @@ export class CroNetwork {
         rpcUrl: 'https://testnet-croeseid.crypto.org:26657',
     };
 
-    public static Testnet2: Network = {
+    public static TestnetCroeseid3: Network = {
         defaultNodeUrl: 'https://testnet-croeseid-3.crypto.org',
         chainId: 'testnet-croeseid-3',
         addressPrefix: 'tcro',
