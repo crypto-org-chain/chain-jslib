@@ -15,7 +15,7 @@ import * as snakecaseKeys from 'snakecase-keys';
 import { cosmos, google } from '../cosmos/v1beta1/codec';
 import { Msg } from '../cosmos/v1beta1/types/msg';
 import { omitDefaults } from '../cosmos/v1beta1/adr27';
-import { AuthInfo, TxBody, TxRaw } from '../cosmos/v1beta1/types/tx';
+import { AuthInfo, SignerInfo, TxBody, TxRaw } from '../cosmos/v1beta1/types/tx';
 import { typeUrlMappings } from '../cosmos/v1beta1/types/typeurls';
 import { sha256 } from '../utils/hash';
 import { Network } from '../network/network';
@@ -41,6 +41,8 @@ import { CroSDK, CroNetwork } from '../core/cro';
 import { TransactionSigner } from './raw';
 import { isValidSepc256k1PublicKey } from '../utils/secp256k1';
 import { isBigInteger } from '../utils/big';
+import { CosmosTx } from '../cosmos/v1beta1/types/cosmostx';
+import { croClient } from '../client/client';
 
 const DEFAULT_GAS_LIMIT = 200_000;
 
@@ -77,32 +79,155 @@ export class SignableTransaction {
      * @throws {Error} when params is invalid or the transaction
      */
     public constructor(params: SignableTransactionParams) {
+        // 1. Parse the Cosmos JSON -> object
+        // 2. Body messages -> iterate -> pass it to Msg -> CosmosMsg[]
+        // 3. Memo
+        // 4. Timeout height
+        // 5. Extension options, ...
+        // 6. AuthInfo
+        // 7. SignerInfo
+        // 3,4,5,6,7 -> SignableTransaction -> Append Message from 2
+        // SignableTx 
         ow(params, 'params', owSignableTransactionParams);
         this.network = params.network;
-        const decodedTx = TxDecoder.fromCosmosJSON(params.rawTxJSON);
-        
-        if (!decodedTx.authInfo || !decodedTx.body) {
-            throw new Error('Cannot decode transaction details.');
+
+        const cosmosObj: CosmosTx = JSON.parse(params.rawTxJSON);
+        // { "body": { "messages": [{ "@type": "/cosmos.bank.v1beta1.MsgSend", "amount": [{ "denom": "basetcro", "amount": "3478499933290496" }], "from_address": "tcro1x07kkkepfj2hl8etlcuqhej7jj6myqrp48y4hg", "to_address": "tcro184lta2lsyu47vwyp2e8zmtca3k5yq85p6c4vp3" }], "memo": "", "timeout_height": "0", "extension_options": [], "non_critical_extension_options": [] }, "auth_info": { "signer_infos": [{ "public_key": { "@type": "/cosmos.crypto.secp256k1.PubKey", "key": "Ap/w6zWJiX6QCKLTt6jLM1sFJsUmBWaS6VUi7zxqqb0V" }, "mode_info": { "single": { "mode": "SIGN_MODE_DIRECT" } }, "sequence": "794129105682432" }], "fee": { "amount": [], "gas_limit": "8105066556817408", "payer": "", "granter": "" } }, "signatures": [""] }
+
+        // TODO: validation
+        if (!cosmosObj.body) {
+            throw new Error('Missing body in Cosmos JSON');
+        }
+        const memo = cosmosObj.body.memo;
+        const timeoutHeight = cosmosObj.body.timeout_height;
+        // TODO: If extension_options and non_critical_extension_options length > 1, then throw
+
+        const txBody: TxBody = {
+            typeUrl: '/cosmos.tx.v1beta1.TxBody',
+            value: {
+                // TODO
+                messages: [],
+                memo,
+                timeoutHeight,
+            }
+        } 
+
+        // TODO: structure integrity check
+        const cosmosAuthInfo = cosmosObj.auth_info;
+        const cosmosSignerInfos = cosmosAuthInfo.signer_infos;
+        const signerInfos: SignerInfo[] = [];
+        for (const signerInfo of cosmosSignerInfos) {
+            // TODO: check for multi and reject by throwing an error
+            const pubKey = (signerInfo.public_key as any).key;
+
+            let signMode: cosmos.tx.signing.v1beta1.SignMode;
+            if (signerInfo.mode_info.single?.mode === 'SIGN_MODE_DIRECT') {
+                signMode = cosmos.tx.signing.v1beta1.SignMode.SIGN_MODE_DIRECT;
+            } else if (signerInfo.mode_info.single?.mode === 'SIGN_MODE_LEGACY_AMINO_JSON') {
+                signMode = cosmos.tx.signing.v1beta1.SignMode.SIGN_MODE_LEGACY_AMINO_JSON;
+            } else {
+                throw new Error(`Unsupported sign mode: ${signerInfo.mode_info.single?.mode}`);
+            }
+
+            signerInfos.push({
+                publicKey: Bytes.fromBase64String(pubKey),
+                modeInfo: {
+                    single: {
+                        mode: signMode,
+                    },
+                },
+                sequence: new Big(signerInfo.sequence),
+            });
         }
 
-        // Todo: Looks like we need to support `nonCriticalExtensionOptions` and `extensionOptions`
-        if (decodedTx.body.nonCriticalExtensionOptions.length > 0 || decodedTx.body.extensionOptions.length > 0) {
-            throw new Error("SignableTransaction doesn't support 'nonCriticalExtensionOptions' or 'extensionOptions'");
+
+        const croSdk = CroSDK({ network: this.getNetwork() });
+        if (cosmosAuthInfo.fee.amount.length > 1) {
+            // TODO: Multi-coin support
+            throw new Error(`More than one fee amount in transaction is not supported`);
         }
 
-        const bodyBytes = Bytes.fromUint8Array(new Uint8Array());
-        const authInfoBytes = Bytes.fromUint8Array(new Uint8Array());
+        const feeAmount = cosmosAuthInfo.fee.amount[0];
+        const feeAmountString = feeAmount.amount!;
+        const feeAmountDenom = feeAmount.denom;
+        const feeAmountCoin = croSdk.Coin.fromCustomAmountDenom(feeAmountString, feeAmountDenom);
 
+        const authInfo: AuthInfo = {
+            signerInfos,
+            fee: {
+                amount: feeAmountCoin,
+                gasLimit: new Big(cosmosAuthInfo.fee.gas_limit),
+                payer: cosmosAuthInfo.fee.payer,
+                granter: cosmosAuthInfo.fee.granter,
+            }
+        };
+
+        const signatures: string[] = ...
+
+        // message handling
+
+        if (authInfo.signerInfos.length === 0) {
+            throw new TypeError('Expected signer in `signerInfos` of `authInfo` of `params`, got none');
+        }
+        // TODO:
+        if (params.signerAccounts.length === 0) {
+            throw new TypeError('Expected signer in `signerInfos` of `authInfo` of `params`, got none');
+        }
+
+        this.txBody = txBody;
+        this.authInfo = authInfo;
+
+        let bodyBytes = Bytes.fromUint8Array(new Uint8Array());
+
+        if (this.txBody.value.messages.length > 0) {
+            bodyBytes = protoEncodeTxBody(txBody);
+        }
+
+        const authInfoBytes = protoEncodeAuthInfo(authInfo);
         this.txRaw = {
             bodyBytes,
             authInfoBytes,
-            signatures: decodedTx.authInfo.signerInfos.map(() => EMPTY_SIGNATURE),
+            // TODO: maybe not need to empty out
+            signatures: authInfo.signerInfos.map(() => EMPTY_SIGNATURE),
         };
-        this.handleAuthInfo(decodedTx.authInfo, params.signerAccounts);
-
-        this.txRaw.bodyBytes = getTxBodyBytes(decodedTx.body);
-        this.txRaw.authInfoBytes = protoEncodeAuthInfo(this.authInfo);
+        this.network = params.network;
+        this.signerAccounts = params.signerAccounts
     }
+
+    // /**
+    //  * Constructor to create a SignableTransaction
+    //  * @param {SignableTransactionParams} params
+    //  * @returns {SignableTransaction}
+    //  * @throws {Error} when params is invalid or the transaction
+    //  */
+    // public constructor(params: SignableTransactionParams) {
+    //     ow(params, 'params', owSignableTransactionParams);
+    //     this.network = params.network;
+
+    //     const decodedTx = TxDecoder.fromCosmosJSON(params.rawTxJSON);
+        
+    //     if (!decodedTx.authInfo || !decodedTx.body) {
+    //         throw new Error('Cannot decode transaction details.');
+    //     }
+
+    //     // Todo: Looks like we need to support `nonCriticalExtensionOptions` and `extensionOptions`
+    //     if (decodedTx.body.nonCriticalExtensionOptions.length > 0 || decodedTx.body.extensionOptions.length > 0) {
+    //         throw new Error("SignableTransaction doesn't support 'nonCriticalExtensionOptions' or 'extensionOptions'");
+    //     }
+
+    //     const bodyBytes = Bytes.fromUint8Array(new Uint8Array());
+    //     const authInfoBytes = Bytes.fromUint8Array(new Uint8Array());
+
+    //     this.txRaw = {
+    //         bodyBytes,
+    //         authInfoBytes,
+    //         signatures: decodedTx.authInfo.signerInfos.map(() => EMPTY_SIGNATURE),
+    //     };
+    //     this.handleAuthInfo(decodedTx.authInfo, params.signerAccounts);
+
+    //     this.txRaw.bodyBytes = getTxBodyBytes(decodedTx.body);
+    //     this.txRaw.authInfoBytes = protoEncodeAuthInfo(this.authInfo);
+    // }
     /**
      * Constructor to create a SignableTransaction
      * @param {SignableTransactionParams} params
@@ -149,12 +274,15 @@ export class SignableTransaction {
      * fromCosmosJSON
      */
     public static fromCosmosJSON(cosmosTxJSON: string, network: Network = CroNetwork.Testnet): SignableTransaction {
+
         return new SignableTransaction({
             rawTxJSON: cosmosTxJSON,
             signerAccounts: [],
             network,
         });
     }
+
+
 
     private handleAuthInfo(decodedAuthInfo: NativeAuthInfo, signerAccounts: SignerAccount[]) {
         const gasLimitString = decodedAuthInfo.fee?.gasLimit.toString(10)! || DEFAULT_GAS_LIMIT;
