@@ -45,6 +45,17 @@ describe('Testing MsgSend', function () {
         });
     });
 
+    describe.only('fromCosmosJSON', function() {
+        it('should throw Error if the JSON is not a MsgSend', function() {
+            const json = '{ "body": { "messages": [{ "@type": "/cosmos.bank.v1beta1.MsgCreateValidator" }] } }';
+            expect(() => cro.bank.MsgSend.fromCosmosJSON(json)).to.throw('Error');
+        })
+        it('should throw Error when the from field is missing', function() {})
+        it('should throw Error when the to field is missing', function() {})
+        it('should throw Error when the amount field is missing', function() {})
+        it('should return the MsgSend corresponding to the JSON', function() {})
+    });
+
     it('Test MsgSend conversion', function () {
         const coin = new cro.Coin('12000500', Units.BASE);
 

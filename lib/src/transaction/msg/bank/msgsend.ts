@@ -32,6 +32,15 @@ export const msgSend = function (config: InitConfigurations) {
             this.validateAddresses();
         }
 
+        // { "body": { "messages": [{ "@type": "/cosmos.bank.v1beta1.MsgSend", "amount": [{ "denom": "basetcro", "amount": "3478499933290496" }], "from_address": "tcro1x07kkkepfj2hl8etlcuqhej7jj6myqrp48y4hg", "to_address": "tcro184lta2lsyu47vwyp2e8zmtca3k5yq85p6c4vp3" }], "memo": "", "timeout_height": "0", "extension_options": [], "non_critical_extension_options": [] }, "auth_info": { "signer_infos": [{ "public_key": { "@type": "/cosmos.crypto.secp256k1.PubKey", "key": "Ap/w6zWJiX6QCKLTt6jLM1sFJsUmBWaS6VUi7zxqqb0V" }, "mode_info": { "single": { "mode": "SIGN_MODE_DIRECT" } }, "sequence": "794129105682432" }], "fee": { "amount": [], "gas_limit": "8105066556817408", "payer": "", "granter": "" } }, "signatures": [""] }
+        public static fromCosmosJSON(jsonStr: string): MsgSend {
+            const cosmosObj = JSON.parse(jsonStr);
+            if (!cosmosObj.body?.messages) {
+                throw new Error('Missing body or messages in Cosmos JSON');
+            }
+            throw new Error('Error');
+        }
+
         /**
          * Returns the raw Msg representation of MsgSend
          * @returns {Msg}
