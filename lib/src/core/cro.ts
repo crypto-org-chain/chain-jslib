@@ -79,6 +79,23 @@ export const CroSDK = function (configs: InitConfigurations) {
 };
 
 export class CroNetwork {
+    public static Mainnet: Network = {
+        defaultNodeUrl: 'https://mainnet.crypto.org',
+        chainId: 'crypto-org-chain-mainnet-1',
+        addressPrefix: 'cro',
+        validatorAddressPrefix: 'crocncl',
+        validatorPubKeyPrefix: 'crocnclconspub',
+        coin: {
+            baseDenom: 'basecro',
+            croDenom: 'cro',
+        },
+        bip44Path: {
+            coinType: 394,
+            account: 0,
+        },
+        rpcUrl: 'https://mainnet.crypto.org:26657',
+    };
+
     public static Testnet: Network = {
         defaultNodeUrl: 'https://testnet-croeseid.crypto.org',
         chainId: 'testnet-croeseid-2',
@@ -96,21 +113,21 @@ export class CroNetwork {
         rpcUrl: 'https://testnet-croeseid.crypto.org:26657',
     };
 
-    public static Mainnet: Network = {
-        defaultNodeUrl: 'https://mainnet.crypto.org',
-        chainId: 'crypto-org-chain-mainnet-1',
-        addressPrefix: 'cro',
-        validatorAddressPrefix: 'crocncl',
-        validatorPubKeyPrefix: 'crocnclconspub',
+    public static TestnetCroeseid3: Network = {
+        defaultNodeUrl: 'https://testnet-croeseid-3.crypto.org',
+        chainId: 'testnet-croeseid-3',
+        addressPrefix: 'tcro',
+        validatorAddressPrefix: 'tcrocncl',
+        validatorPubKeyPrefix: 'tcrocnclconspub',
         coin: {
-            baseDenom: 'basecro',
-            croDenom: 'cro',
+            baseDenom: 'basetcro',
+            croDenom: 'tcro',
         },
         bip44Path: {
-            coinType: 394,
+            coinType: 1,
             account: 0,
         },
-        rpcUrl: 'https://mainnet.crypto.org:26657',
+        rpcUrl: 'https://testnet-croeseid-3.crypto.org:26657',
     };
 }
 
