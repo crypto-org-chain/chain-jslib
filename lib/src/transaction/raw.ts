@@ -1,6 +1,11 @@
 import ow from 'ow';
 import Big from 'big.js';
 
+import {
+    AuthInfo as NativeAuthInfo,
+    TxBody as NativeTxbody,
+} from '@cosmjs/proto-signing/build/codec/cosmos/tx/v1beta1/tx';
+import * as snakecaseKeys from 'snakecase-keys';
 import { cosmos } from '../cosmos/v1beta1/codec';
 import { AuthInfo, TxBody } from '../cosmos/v1beta1/types/tx';
 import { owRawTransactionSigner, owTimeoutHeight } from './ow.types';
@@ -9,12 +14,13 @@ import { isValidSepc256k1PublicKey } from '../utils/secp256k1';
 import { isBigInteger } from '../utils/big';
 import { Network } from '../network/network';
 import { SignerAccount, SIGN_MODE } from './types';
-import { SignableTransaction } from './signable';
+import { SignableTransaction, protoEncodeAuthInfo, protoEncodeTxBody } from './signable';
 import { cloneDeep } from '../utils/clone';
 import { CosmosMsg, owCosmosMsg } from './msg/cosmosMsg';
 import { InitConfigurations } from '../core/cro';
 import { ICoin } from '../coin/coin';
 import { owCoin } from '../coin/ow.types';
+import { getAuthInfoJson, getTxBodyJson, typeUrlToCosmosTransformer } from '../utils/txDecoder';
 
 export const rawTransaction = function (config: InitConfigurations) {
     return class RawTransaction {
@@ -71,6 +77,50 @@ export const rawTransaction = function (config: InitConfigurations) {
          */
         public appendMessage(message: CosmosMsg): RawTransaction {
             return this.addMessage(message);
+        }
+
+        /**
+         * Returns the Chain-maind encoded JSON
+         * @memberof RawTransaction
+         * @returns {unknown} Tx-Encoded JSON
+         */
+        public toCosmosJSON(): unknown {
+            const txObject = {
+                body: Object.create({}),
+                authInfo: Object.create({}),
+                signatures: [],
+            };
+
+            try {
+                // Convert to native types
+                const authInfoBytes = protoEncodeAuthInfo(this.getAuthInfo());
+                const txBodyBytes = protoEncodeTxBody(this.getTxBody());
+                const nativeAuthInfo = NativeAuthInfo.decode(authInfoBytes.toUint8Array());
+                const nativeTxBody = NativeTxbody.decode(txBodyBytes.toUint8Array());
+
+                // Construct JSON bodies individually
+                txObject.authInfo = getAuthInfoJson(nativeAuthInfo);
+                txObject.body = getTxBodyJson(nativeTxBody);
+
+                // CamelCase to snake_case convertor
+                const stringifiedTx = JSON.stringify(snakecaseKeys.default(txObject));
+
+                // type_url to @type transformer for matching Cosmos JSON Format
+                const cosmosApiFormatTxJson = typeUrlToCosmosTransformer(stringifiedTx);
+
+                return cosmosApiFormatTxJson;
+            } catch (error) {
+                throw new Error('Error converting RawTransaction to Cosmos compatible JSON.');
+            }
+        }
+
+        /**
+         * Export the added SignerAccounts in JSON.
+         * The result of this function can be imported into `SignableTransaction` instance
+         * @memberof RawTransaction
+         */
+        public exportSignerAccounts(): unknown {
+            return JSON.stringify(this.getSignerAccounts());
         }
 
         /**
@@ -147,7 +197,6 @@ export const rawTransaction = function (config: InitConfigurations) {
          */
         public addSigner(signer: TransactionSigner): RawTransaction {
             ow(signer, 'signer', owRawTransactionSigner);
-
             const publicKeyResult = isValidSepc256k1PublicKey(signer.publicKey);
             if (!publicKeyResult.ok) {
                 throw new TypeError(publicKeyResult.err('signer'));
@@ -160,7 +209,7 @@ export const rawTransaction = function (config: InitConfigurations) {
             }
             if (!isBigInteger(signer.accountSequence) && signer.accountSequence.gte(0)) {
                 throw new TypeError(
-                    `Expected accountNumber to be of positive integer, got \`${signer.accountNumber}\``,
+                    `Expected accountSequence to be of positive integer, got \`${signer.accountSequence}\``,
                 );
             }
 
@@ -206,15 +255,11 @@ export const rawTransaction = function (config: InitConfigurations) {
          * @memberof RawTransaction
          */
         public toSignable(): SignableTransaction {
-            if (this.txBody.value.messages.length === 0) {
-                throw new Error('Expected message in transaction, got none');
-            }
             if (this.authInfo.signerInfos.length === 0) {
                 throw new Error('Expected signer in transaction, got none');
             }
             return new SignableTransaction({
-                txBody: cloneDeep(this.txBody),
-                authInfo: cloneDeep(this.authInfo),
+                rawTxJSON: this.toCosmosJSON() as string,
                 network: cloneDeep(this.network),
                 signerAccounts: cloneDeep(this.signerAccounts),
             });

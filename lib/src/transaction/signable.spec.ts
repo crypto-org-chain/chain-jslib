@@ -166,4 +166,39 @@ describe('SignableTransaction', function () {
             expect(anyTx.isIndexSigned(anyValidIndex)).to.eq(true);
         });
     });
+
+    describe('toCosmosJSON', function () {
+        it('should throw', function () {
+            const { params: anyParams } = SignableTransactionParamsSuiteFactory.build();
+            const anyTx = new SignableTransaction(anyParams);
+            // @ts-ignore
+            anyTx.txRaw.authInfoBytes = undefined;
+
+            expect(() => {
+                anyTx.toCosmosJSON();
+            }).to.throw('Error converting SignableTransaction to Cosmos compatible JSON.');
+        });
+
+        it('should not throw', function () {
+            const anyTx = anySignableTransaction();
+            expect(() => {
+                anyTx.toCosmosJSON();
+            }).not.throw();
+        });
+
+        it('should create correct JSON', function () {
+            const anyTx = anySignableTransaction();
+            const parsedCosmosJson = JSON.parse(anyTx.toCosmosJSON() as string);
+            // { "body": { "messages": [{ "@type": "/cosmos.bank.v1beta1.MsgSend", "amount": [{ "denom": "basetcro", "amount": "3478499933290496" }], "from_address": "tcro1x07kkkepfj2hl8etlcuqhej7jj6myqrp48y4hg", "to_address": "tcro184lta2lsyu47vwyp2e8zmtca3k5yq85p6c4vp3" }], "memo": "", "timeout_height": "0", "extension_options": [], "non_critical_extension_options": [] }, "auth_info": { "signer_infos": [{ "public_key": { "@type": "/cosmos.crypto.secp256k1.PubKey", "key": "Ap/w6zWJiX6QCKLTt6jLM1sFJsUmBWaS6VUi7zxqqb0V" }, "mode_info": { "single": { "mode": "SIGN_MODE_DIRECT" } }, "sequence": "794129105682432" }], "fee": { "amount": [], "gas_limit": "8105066556817408", "payer": "", "granter": "" } }, "signatures": [""] }
+
+            expect(parsedCosmosJson).to.have.all.keys('body', 'auth_info', 'signatures');
+            expect(parsedCosmosJson.body.messages.length).to.greaterThan(0);
+            expect(parsedCosmosJson.body).to.haveOwnProperty('memo');
+            expect(parsedCosmosJson.body).to.haveOwnProperty('timeout_height');
+            expect(parsedCosmosJson.auth_info).to.haveOwnProperty('signer_infos');
+            expect(parsedCosmosJson.auth_info).to.haveOwnProperty('fee');
+            expect(parsedCosmosJson.auth_info.fee).to.haveOwnProperty('gas_limit');
+            expect(parseInt(parsedCosmosJson.auth_info.fee.gas_limit, 10)).to.greaterThan(0);
+        });
+    });
 });
