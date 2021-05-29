@@ -2,11 +2,24 @@ import ow from 'ow';
 import { Msg } from '../../../cosmos/v1beta1/types/msg';
 import { ICoin } from '../../../coin/coin';
 import { owMsgSendOptions } from '../ow.types';
-import { InitConfigurations } from '../../../core/cro';
+import { InitConfigurations, CroSDK } from '../../../core/cro';
 import { AddressType, validateAddress } from '../../../utils/address';
 import { CosmosMsg } from '../cosmosMsg';
 import { COSMOS_MSG_TYPEURL } from '../../common/constants/typeurl';
 import * as legacyAmino from '../../../cosmos/amino';
+import { Network } from '../../../network/network';
+
+export interface MsgSendRaw {
+    '@type': string;
+    amount: Amount[];
+    from_address: string;
+    to_address: string;
+}
+
+export interface Amount {
+    denom: string;
+    amount: string;
+}
 
 export const msgSend = function (config: InitConfigurations) {
     return class MsgSend implements CosmosMsg {
@@ -32,13 +45,28 @@ export const msgSend = function (config: InitConfigurations) {
             this.validateAddresses();
         }
 
-        // { "body": { "messages": [{ "@type": "/cosmos.bank.v1beta1.MsgSend", "amount": [{ "denom": "basetcro", "amount": "3478499933290496" }], "from_address": "tcro1x07kkkepfj2hl8etlcuqhej7jj6myqrp48y4hg", "to_address": "tcro184lta2lsyu47vwyp2e8zmtca3k5yq85p6c4vp3" }], "memo": "", "timeout_height": "0", "extension_options": [], "non_critical_extension_options": [] }, "auth_info": { "signer_infos": [{ "public_key": { "@type": "/cosmos.crypto.secp256k1.PubKey", "key": "Ap/w6zWJiX6QCKLTt6jLM1sFJsUmBWaS6VUi7zxqqb0V" }, "mode_info": { "single": { "mode": "SIGN_MODE_DIRECT" } }, "sequence": "794129105682432" }], "fee": { "amount": [], "gas_limit": "8105066556817408", "payer": "", "granter": "" } }, "signatures": [""] }
-        public static fromCosmosJSON(jsonStr: string): MsgSend {
-            const cosmosObj = JSON.parse(jsonStr);
-            if (!cosmosObj.body?.messages) {
-                throw new Error('Missing body or messages in Cosmos JSON');
+        /**
+         * Returns an instance of MsgSend
+         * @param {string} msgJsonStr
+         * @param {Network} network
+         * @returns {MsgSend}
+         */
+        public static fromCosmosMsgJSON(msgJsonStr: string, network: Network): MsgSend {
+            const parsedMsg = JSON.parse(msgJsonStr) as MsgSendRaw;
+            const cro = CroSDK({ network });
+            if (parsedMsg['@type'] !== COSMOS_MSG_TYPEURL.MsgSend) {
+                throw new Error(`Expected ${COSMOS_MSG_TYPEURL.MsgSend} but got ${parsedMsg['@type']}`);
             }
-            throw new Error('Error');
+            if (!parsedMsg.amount || parsedMsg.amount.length != 1) {
+                throw new Error('Invalid amount in the Msg.');
+            }
+
+            return new MsgSend({
+                fromAddress: parsedMsg.from_address,
+                toAddress: parsedMsg.to_address,
+                // TOdo: Handle the complete list
+                amount: cro.Coin.fromCustomAmountDenom(parsedMsg.amount[0].amount, parsedMsg.amount[0].denom),
+            });
         }
 
         /**

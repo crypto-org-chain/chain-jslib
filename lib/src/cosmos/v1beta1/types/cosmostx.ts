@@ -1,19 +1,19 @@
 export interface CosmosTx {
-    body:       Body;
-    auth_info:  AuthInfo;
+    body: Body;
+    auth_info: AuthInfo;
     signatures: string[];
 }
 
- interface AuthInfo {
+interface AuthInfo {
     signer_infos: SignerInfo[];
-    fee:          Fee;
+    fee: Fee;
 }
 
- interface Fee {
-    amount:    Amount[];
+interface Fee {
+    amount: Amount[];
     gas_limit: string;
-    payer:     string;
-    granter:   string;
+    payer: string;
+    granter: string;
 }
 
 interface Amount {
@@ -21,68 +21,65 @@ interface Amount {
     amount: string;
 }
 
- interface SignerInfo {
+interface SignerInfo {
     public_key: SingleSignerInfoPublicKey | MultiSignerInfoPublicKey;
-    mode_info:  SignerInfoModeInfo;
-    sequence:   string;
+    mode_info: SignerInfoModeInfo;
+    sequence: string;
 }
 
- interface SignerInfoModeInfo {
+interface SignerInfoModeInfo {
     single?: Single;
     multi?: Multi;
 }
 
- interface Multi {
-    bitarray:   Bitarray;
+interface Multi {
+    bitarray: Bitarray;
     mode_infos: ModeInfoElement[];
 }
 
- interface Bitarray {
+interface Bitarray {
     extra_bits_stored: number;
-    elems:             string;
+    elems: string;
 }
 
- interface ModeInfoElement {
+interface ModeInfoElement {
     single: Single;
 }
 
- interface Single {
+interface Single {
     mode: string;
 }
 
-
 interface SingleSignerInfoPublicKey {
-    "@type": string;
-    key:     string;
+    '@type': string;
+    key: string;
 }
 
- interface MultiSignerInfoPublicKey {
-    "@type":     string;
-    threshold?:   number;
+interface MultiSignerInfoPublicKey {
+    '@type': string;
+    threshold?: number;
     public_keys: PublicKeyElement[];
 }
 
- interface PublicKeyElement {
-    "@type": string;
-    key:     string;
+interface PublicKeyElement {
+    '@type': string;
+    key: string;
 }
 
- interface Body {
-    messages:                       Message[];
-    memo:                           string;
-    timeout_height:                 string;
-    extension_options:              any[];
+interface Body {
+    messages: Message[];
+    memo: string;
+    timeout_height: string;
+    extension_options: any[];
     non_critical_extension_options: any[];
 }
 
- interface Message {
-    "@type":      string;
-    from_address: string;
-    to_address:   string;
-    amount:       Amount[];
+interface Message {
+    '@type': string;
+    [key: string]: any;
 }
 
- interface Amount {
-    denom:  string;
+interface Amount {
+    denom: string;
     amount: string;
 }

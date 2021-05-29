@@ -6,7 +6,6 @@ import { InitConfigurations, CroNetwork } from '../core/cro';
 import { Network } from '../network/network';
 import { Coin as CosmosCoin, coin as cosmosCoin, coins as cosmosCoins } from '../cosmos/coins';
 
-
 export enum Units {
     BASE = 'base',
     CRO = 'cro',
@@ -29,7 +28,10 @@ export interface ICoin {
 
 export const coin = function (config: InitConfigurations) {
     return class Coin implements ICoin {
-        public static croAllDenoms = [...Object.values(CroNetwork.Mainnet.coin), ...Object.values(CroNetwork.Testnet.coin)];
+        public static croAllDenoms = [
+            ...Object.values(CroNetwork.Mainnet.coin),
+            ...Object.values(CroNetwork.Testnet.coin),
+        ];
 
         /**
          * Total supply in base unit represented as string
@@ -75,6 +77,7 @@ export const coin = function (config: InitConfigurations) {
         public readonly denom: string;
 
         public readonly receivedAmount: Big;
+
         /**
          * Constructor to create a Coin
          * @param {string} amount coins amount represented as string
@@ -99,10 +102,9 @@ export const coin = function (config: InitConfigurations) {
             this.receivedAmount = coins;
         }
 
-
         public static fromCustomAmountDenom = (amount: string, denom: string): Coin => {
-            return new Coin(amount, Units.BASE, denom)
-        }
+            return new Coin(amount, Units.BASE, denom);
+        };
 
         getNetwork(): Network {
             return this.network;
@@ -247,11 +249,11 @@ export const coin = function (config: InitConfigurations) {
 
             if (!Coin.croAllDenoms.includes(this.denom)) {
                 return this.receivedAmount.toString();
-            } else if (unit === Units.BASE) {
-                return this.baseAmount.toString();
-            } else {
-                return this.baseAmount.div(Coin.ONE_CRO_IN_BASE_UNIT).toString();
             }
+            if (unit === Units.BASE) {
+                return this.baseAmount.toString();
+            }
+            return this.baseAmount.div(Coin.ONE_CRO_IN_BASE_UNIT).toString();
         }
     };
 };

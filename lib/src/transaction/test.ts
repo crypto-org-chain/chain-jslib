@@ -60,7 +60,38 @@ export const SignableTransactionParamsSuiteFactory = new Factory<SignableTransac
             const pubKey = keyPair.getPubKey();
 
             return {
-                rawTxJSON: JSON.stringify({ "body": { "messages": [{ "@type": "/cosmos.bank.v1beta1.MsgSend", "amount": [{ "denom": "basetcro", "amount": "1200050000000000" }], "from_address": "tcro165tzcrh2yl83g8qeqxueg2g5gzgu57y3fe3kc3", "to_address": "tcro184lta2lsyu47vwyp2e8zmtca3k5yq85p6c4vp3" }], "memo": "", "timeout_height": "0", "extension_options": [], "non_critical_extension_options": [] }, "auth_info": { "signer_infos": [{ "public_key": { "@type": "/cosmos.crypto.secp256k1.PubKey", "key": "A/0NVgtsSqHKFnIdA5oZKGfDRX4Z2tVT7bmOe6iLFZwn" }, "mode_info": { "single": { "mode": "SIGN_MODE_DIRECT" } }, "sequence": "2" }], "fee": { "amount": [], "gas_limit": "200000", "payer": "", "granter": "" } }, "signatures": ["sozvuDc14FJT9kHQvKeQpvlUgbyFen1XpJMSWvGATtRA3/wICVDW/zne5OoRPl5ob4I16Y00hw2bZLSpoFf2hg=="] }),
+                rawTxJSON: JSON.stringify({
+                    body: {
+                        messages: [
+                            {
+                                '@type': '/cosmos.bank.v1beta1.MsgSend',
+                                amount: [{ denom: 'basetcro', amount: '1200050000000000' }],
+                                from_address: 'tcro165tzcrh2yl83g8qeqxueg2g5gzgu57y3fe3kc3',
+                                to_address: 'tcro184lta2lsyu47vwyp2e8zmtca3k5yq85p6c4vp3',
+                            },
+                        ],
+                        memo: '',
+                        timeout_height: '0',
+                        extension_options: [],
+                        non_critical_extension_options: [],
+                    },
+                    auth_info: {
+                        signer_infos: [
+                            {
+                                public_key: {
+                                    '@type': '/cosmos.crypto.secp256k1.PubKey',
+                                    key: 'A/0NVgtsSqHKFnIdA5oZKGfDRX4Z2tVT7bmOe6iLFZwn',
+                                },
+                                mode_info: { single: { mode: 'SIGN_MODE_DIRECT' } },
+                                sequence: '2',
+                            },
+                        ],
+                        fee: { amount: [], gas_limit: '200000', payer: '', granter: '' },
+                    },
+                    signatures: [
+                        'sozvuDc14FJT9kHQvKeQpvlUgbyFen1XpJMSWvGATtRA3/wICVDW/zne5OoRPl5ob4I16Y00hw2bZLSpoFf2hg==',
+                    ],
+                }),
                 network,
                 signerAccounts: [
                     {

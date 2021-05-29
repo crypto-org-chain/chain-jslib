@@ -3,12 +3,12 @@ import { toBase64, fromBase64 } from '@cosmjs/encoding';
 import { AuthInfo, TxBody, SignerInfo, Tx } from '@cosmjs/proto-signing/build/codec/cosmos/tx/v1beta1/tx';
 import * as snakecaseKeys from 'snakecase-keys';
 import { Any } from '@cosmjs/proto-signing/build/codec/google/protobuf/any';
+import Long from 'long';
 import { cosmos, google } from '../cosmos/v1beta1/codec/generated/codecimpl';
 import { Bytes } from './bytes/bytes';
 import { typeUrlMappings } from '../cosmos/v1beta1/types/typeurls';
 import { SIGN_MODE } from '../transaction/types';
 import { Msg } from '../cosmos/v1beta1/types/msg';
-import Long from 'long';
 import { protoEncodeEd25519PubKey } from '../transaction/msg/staking/MsgCreateValidator';
 
 const cosmJSRegistry = new Registry(Object.entries(typeUrlMappings));
@@ -235,17 +235,20 @@ const encodeTxBodyMsgList = (obj: any) => {
                 msgValueObj[key] = google.protobuf.Any.create({
                     type_url: obj.content.typeUrl || obj.content.type_url,
                     value: protoEncodeTxBodyMessage({ typeUrl: obj.content.typeUrl, value: proposalMsg }),
-                })
+                });
             }
 
             // Dirty handling MsgCreateValidator type
             if (key === 'pubkey') {
                 let pubkey = { ...msgValueObj.pubkey };
-                pubkey = protoEncodeEd25519PubKey(Bytes.fromUint8Array(new Uint8Array(Object.values(pubkey.value))))
+                pubkey = protoEncodeEd25519PubKey(Bytes.fromUint8Array(new Uint8Array(Object.values(pubkey.value))));
                 msgValueObj[key] = google.protobuf.Any.create({
                     type_url: pubkey.type_url,
-                    value: protoEncodeTxBodyMessage({ typeUrl: pubkey.type_url, value: { key: pubkey.value.slice(4, pubkey.value.length) } }),
-                })
+                    value: protoEncodeTxBodyMessage({
+                        typeUrl: pubkey.type_url,
+                        value: { key: pubkey.value.slice(4, pubkey.value.length) },
+                    }),
+                });
             }
         }
     }
@@ -287,17 +290,17 @@ const transformInputJson = (input: string): string => {
     try {
         const typeUrlTransformedString = typeUrlFromCosmosTransformer(input);
 
-        let keysList = recursiveSearch(JSON.parse(typeUrlTransformedString))
+        const keysList = recursiveSearch(JSON.parse(typeUrlTransformedString));
 
-        let oldToTranfsormedKeysMap: { [x: string]: string; } = Object.create({});
-        keysList.forEach(key => {
+        const oldToTranfsormedKeysMap: { [x: string]: string } = Object.create({});
+        keysList.forEach((key) => {
             oldToTranfsormedKeysMap[key] = snakeCaseToCamelCase(key);
-        })
+        });
 
         let finalString: string = typeUrlTransformedString;
         for (const key in oldToTranfsormedKeysMap) {
             if (key !== oldToTranfsormedKeysMap[key]) {
-                finalString = replaceAll(finalString, key, oldToTranfsormedKeysMap[key])
+                finalString = replaceAll(finalString, key, oldToTranfsormedKeysMap[key]);
             }
         }
         return finalString;
@@ -307,8 +310,8 @@ const transformInputJson = (input: string): string => {
 };
 
 const recursiveSearch = (obj: any) => {
-    let keys: string[] = [];
-    Object.keys(obj).forEach(key => {
+    const keys: string[] = [];
+    Object.keys(obj).forEach((key) => {
         const value = obj[key];
         keys.push(key);
         if (typeof value === 'object') {
