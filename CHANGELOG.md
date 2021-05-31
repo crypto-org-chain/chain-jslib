@@ -2,6 +2,9 @@
 
 All notable changes to this project will be documented in this file.
 
+## v0.0.19
+- Release new testnet network Croesied3
+
 ## v0.0.18
 - Remove unused params from MsgTransfer of NFT module
 
