@@ -43,6 +43,7 @@
     "typedoc:theme:build": "cd docs/themes && npm run build"
   },
   "dependencies": {
+    "@cosmjs/amino": "0.25.0-alpha.2",
     "@cosmjs/encoding": "0.23.1",
     "@cosmjs/math": "0.23.1",
     "@cosmjs/proto-signing": "0.24.1",
