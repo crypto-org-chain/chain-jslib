@@ -2,6 +2,10 @@
 
 All notable changes to this project will be documented in this file.
 
+## v0.0.19
+- Release new testnet network croesied-3
+- Fix an issue which would create module error if the project has @cosmjs dependencies
+
 ## v0.0.18
 - Remove unused params from MsgTransfer of NFT module
 
