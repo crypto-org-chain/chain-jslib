@@ -2,14 +2,11 @@ import { Registry } from '@cosmjs/proto-signing';
 import { toBase64, fromBase64 } from '@cosmjs/encoding';
 import { AuthInfo, TxBody, SignerInfo, Tx } from '@cosmjs/proto-signing/build/codec/cosmos/tx/v1beta1/tx';
 import * as snakecaseKeys from 'snakecase-keys';
-import { Any } from '@cosmjs/proto-signing/build/codec/google/protobuf/any';
 import Long from 'long';
-import { cosmos, google } from '../cosmos/v1beta1/codec/generated/codecimpl';
+import { cosmos } from '../cosmos/v1beta1/codec/generated/codecimpl';
 import { Bytes } from './bytes/bytes';
 import { typeUrlMappings } from '../cosmos/v1beta1/types/typeurls';
 import { SIGN_MODE } from '../transaction/types';
-import { Msg } from '../cosmos/v1beta1/types/msg';
-import { protoEncodeEd25519PubKey } from '../transaction/msg/staking/MsgCreateValidator';
 
 const cosmJSRegistry = new Registry(Object.entries(typeUrlMappings));
 
@@ -85,20 +82,6 @@ export class TxDecoder {
         const cosmosApiFormatTxJson = typeUrlToCosmosTransformer(stringifiedTx);
 
         return cosmosApiFormatTxJson;
-    }
-
-    public static fromCosmosJSON(jsonTx: string) {
-        if (!jsonTx) {
-            throw new Error('Error decoding provided Tx JSON.');
-        }
-        if (!isValidJson(jsonTx)) {
-            throw new Error('Provided JSON is not valid.');
-        }
-        const txStringWithoutSignMode = transformInputJson(jsonTx);
-        const txString = placeBackCorrectSignModeText(txStringWithoutSignMode);
-        const txObject = JSON.parse(txString);
-        const decodedTx: Tx = assertAndReturnValidTx(txObject);
-        return decodedTx;
     }
 }
 export const getSignerInfoJson = (signerInfo: SignerInfo) => {
@@ -177,135 +160,11 @@ export const getAuthInfoJson = (authInfo: AuthInfo) => {
 // transforms `type_url` to `@type` to match GoLang's TxDecoder JSON output
 export const typeUrlToCosmosTransformer = (str: string) => str.replace(/type_url/g, '@type');
 
-const assertAndReturnValidTx = (obj: any): Tx => {
-    try {
-        let txToDecode: any = obj;
-        if (obj.tx !== undefined && obj.tx !== null) {
-            txToDecode = obj.tx;
-        }
-        txToDecode.body.messages = txToDecode.body.messages.map((msg: any) => {
-            return encodeTxBodyMsgList(msg);
-        });
-
-        txToDecode.authInfo.signerInfos = txToDecode.authInfo.signerInfos.map((signerInfo: any) => {
-            return encodeAuthInfoSignerInfos(signerInfo);
-        });
-        return Tx.fromJSON(txToDecode);
-    } catch (error) {
-        throw new Error('Provided Tx JSON is not valid.');
-    }
-};
 export const getTxBodyBytes = (txBody: TxBody): Bytes => {
     try {
         return Bytes.fromUint8Array(TxBody.encode(txBody).finish());
     } catch (error) {
         throw new Error('Error getting TxBody bytes');
-    }
-};
-
-const encodeAuthInfoSignerInfos = (signerInfo: any) => {
-    const publicKeyObj = { ...signerInfo.publicKey };
-    delete publicKeyObj.typeUrl;
-
-    const encodedValueBytes = cosmJSRegistry.encode({ typeUrl: signerInfo.publicKey.typeUrl, value: publicKeyObj });
-
-    const signerInfoResult = { ...signerInfo };
-
-    signerInfoResult.publicKey = Any.fromPartial({
-        typeUrl: signerInfo.publicKey.typeUrl,
-        // Removing first 2 elements of bytes array because they are default prefix when encoding
-        value: encodedValueBytes.slice(2, encodedValueBytes.length),
-    });
-    return signerInfoResult;
-};
-
-const encodeTxBodyMsgList = (obj: any) => {
-    if (!obj.typeUrl) {
-        throw new Error('Invalid Msg found in TxBody');
-    }
-
-    const msgValueObj = { ...obj };
-    delete msgValueObj.typeUrl;
-    for (const key in msgValueObj) {
-        if (Object.prototype.hasOwnProperty.call(msgValueObj, key)) {
-            // Dirty handling MsgProposal types
-            if (key === 'content') {
-                const proposalMsg = { ...msgValueObj.content };
-                delete proposalMsg.typeUrl;
-                msgValueObj[key] = google.protobuf.Any.create({
-                    type_url: obj.content.typeUrl || obj.content.type_url,
-                    value: protoEncodeTxBodyMessage({ typeUrl: obj.content.typeUrl, value: proposalMsg }),
-                });
-            }
-
-            // Dirty handling MsgCreateValidator type
-            if (key === 'pubkey') {
-                let pubkey = { ...msgValueObj.pubkey };
-                pubkey = protoEncodeEd25519PubKey(Bytes.fromUint8Array(new Uint8Array(Object.values(pubkey.value))));
-                msgValueObj[key] = google.protobuf.Any.create({
-                    type_url: pubkey.type_url,
-                    value: protoEncodeTxBodyMessage({
-                        typeUrl: pubkey.type_url,
-                        value: { key: pubkey.value.slice(4, pubkey.value.length) },
-                    }),
-                });
-            }
-        }
-    }
-    const encodedValueBytes = cosmJSRegistry.encode({ typeUrl: obj.typeUrl, value: msgValueObj });
-
-    return Any.fromPartial({
-        typeUrl: obj.typeUrl,
-        value: encodedValueBytes,
-    });
-};
-const protoEncodeTxBodyMessage = (message: Msg): Uint8Array => {
-    const type = typeUrlMappings[message.typeUrl];
-    if (!type) {
-        throw new Error(`Unrecognized message type ${message.typeUrl}`);
-    }
-    const created = type.create(message.value);
-    return Uint8Array.from(type.encode(created).finish());
-};
-
-const isValidJson = (str: string): boolean => {
-    try {
-        JSON.parse(str);
-        return true;
-    } catch (error) {
-        return false;
-    }
-};
-
-// transforms `@type` to `type_url`
-const typeUrlFromCosmosTransformer = (str: string) => str.replace(/@type/g, 'type_url');
-
-const snakeCaseToCamelCase = (str: string) => str.replace(/([_]\w)/g, (g) => g[1].toUpperCase());
-
-function replaceAll(original: string, search: string, replace: string) {
-    return original.split(search).join(replace);
-}
-
-const transformInputJson = (input: string): string => {
-    try {
-        const typeUrlTransformedString = typeUrlFromCosmosTransformer(input);
-
-        const keysList = recursiveSearch(JSON.parse(typeUrlTransformedString));
-
-        const oldToTranfsormedKeysMap: { [x: string]: string } = Object.create({});
-        keysList.forEach((key) => {
-            oldToTranfsormedKeysMap[key] = snakeCaseToCamelCase(key);
-        });
-
-        let finalString: string = typeUrlTransformedString;
-        for (const key in oldToTranfsormedKeysMap) {
-            if (key !== oldToTranfsormedKeysMap[key]) {
-                finalString = replaceAll(finalString, key, oldToTranfsormedKeysMap[key]);
-            }
-        }
-        return finalString;
-    } catch (error) {
-        throw new Error('Error transforming the input string.');
     }
 };
 
@@ -319,14 +178,6 @@ const recursiveSearch = (obj: any) => {
         }
     });
     return keys;
-};
-
-const placeBackCorrectSignModeText = (str: string): string => {
-    return str
-        .replace(/SIGNMODEUNSPECIFIED/g, 'SIGN_MODE_UNSPECIFIED')
-        .replace(/SIGNMODEDIRECT/g, 'SIGN_MODE_DIRECT')
-        .replace(/SIGNMODETEXTUAL/g, 'SIGN_MODE_TEXTUAL')
-        .replace(/SIGNMODELEGACYAMINOJSON/g, 'SIGN_MODE_LEGACY_AMINO_JSON');
 };
 
 export const getSignModeFromLibDecodedSignMode = (signModeNumber: number) => {

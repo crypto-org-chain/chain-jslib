@@ -123,5 +123,6 @@ export const msgSend = function (config: InitConfigurations) {
 export type MsgSendOptions = {
     fromAddress: string;
     toAddress: string;
+    // Todo: It should be ICoin[]
     amount: ICoin;
 };

@@ -84,7 +84,7 @@ export const rawTransaction = function (config: InitConfigurations) {
          * @memberof RawTransaction
          * @returns {unknown} Tx-Encoded JSON
          */
-        public toCosmosJSON(): unknown {
+        public toCosmosJSON(): string {
             const txObject = {
                 body: Object.create({}),
                 authInfo: Object.create({}),
@@ -259,7 +259,7 @@ export const rawTransaction = function (config: InitConfigurations) {
                 throw new Error('Expected signer in transaction, got none');
             }
             return new SignableTransaction({
-                rawTxJSON: this.toCosmosJSON() as string,
+                rawTxJSON: this.toCosmosJSON(),
                 network: cloneDeep(this.network),
                 signerAccounts: cloneDeep(this.signerAccounts),
             });

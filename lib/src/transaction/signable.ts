@@ -182,8 +182,8 @@ export class SignableTransaction {
         const signatures =
             cosmosObj.signatures.length > 0
                 ? cosmosObj.signatures.map((sigStr: string) => {
-                      return Bytes.fromBase64String(sigStr);
-                  })
+                    return Bytes.fromBase64String(sigStr);
+                })
                 : authInfo.signerInfos.map(() => EMPTY_SIGNATURE);
 
         const bodyBytes = protoEncodeTxBody(txBody);
@@ -202,45 +202,10 @@ export class SignableTransaction {
     }
 
     /**
-     * Constructor to create a SignableTransaction
-     * @param {SignableTransactionParams} params
-     * @returns {SignableTransaction}
-     * @throws {Error} when params is invalid or the transaction
-     
-    public constructor(params: SignableTransactionParams) {
-        ow(params, 'params', owSignableTransactionParams);
-        if (params.authInfo.signerInfos.length === 0) {
-            throw new TypeError('Expected signer in `signerInfos` of `authInfo` of `params`, got none');
-        }
-        if (params.signerAccounts.length === 0) {
-            throw new TypeError('Expected signer in `signerInfos` of `authInfo` of `params`, got none');
-        }
-
-        this.txBody = params.txBody;
-        this.authInfo = params.authInfo;
-
-        let bodyBytes = Bytes.fromUint8Array(new Uint8Array());
-
-        if (this.txBody.value.messages.length > 0) {
-            bodyBytes = protoEncodeTxBody(params.txBody);
-        }
-
-        const authInfoBytes = protoEncodeAuthInfo(params.authInfo);
-        this.txRaw = {
-            bodyBytes,
-            authInfoBytes,
-            signatures: params.authInfo.signerInfos.map(() => EMPTY_SIGNATURE),
-        };
-        this.network = params.network;
-        this.signerAccounts = params.signerAccounts;
-    } */
-
-    /**
      * Imports SignerAccounts for the transaction.
      * Note: It must be called before setting signature /converting to `Signed`/Setting AccountNumber
      * @param signerAccounts
      */
-
     public importSignerAccounts(signerAccounts: SignerAccount[]) {
         this.signerAccounts = signerAccounts;
         return this;
@@ -280,19 +245,7 @@ export class SignableTransaction {
     }
 
     /**
-     * This function sets the provided bytes to bodyBytes of TxRaw
-     * @param {Bytes} txBodyBytes TxBody Protoencoded bytes
-     * @memberof SignableTransaction
-     */
-    public setTxBodyBytes(txBodyBytes: Bytes): SignableTransaction {
-        ow(txBodyBytes, 'txBodyBytes', owBytes());
-
-        this.txRaw.bodyBytes = txBodyBytes;
-        return this;
-    }
-
-    /**
-     * This function manually set the provided accountNumber at specified index
+     * This function manually set the provided accountNumber at a specified index of signerAccountsList
      * @param {number} index index of the signer
      * @param {Big} accountNumber accountNumber to set
      * @throws {Error} when index is invalid
