@@ -3,7 +3,7 @@ import { Msg } from '../../../cosmos/v1beta1/types/msg';
 import { CosmosMsg } from '../cosmosMsg';
 import { ICoin } from '../../../coin/coin';
 import { owMsgCreateValidatorOptions } from '../ow.types';
-import { InitConfigurations } from '../../../core/cro';
+import { InitConfigurations, CroSDK } from '../../../core/cro';
 import { validateAddress, AddressType } from '../../../utils/address';
 import { IDescription } from '../../common/interface/IDescription';
 import { COSMOS_MSG_TYPEURL } from '../../common/constants/typeurl';
@@ -11,6 +11,7 @@ import { ICommissionRates } from '../../common/interface/ICommissionRates';
 import { google, cosmos } from '../../../cosmos/v1beta1/codec';
 import { Bytes } from '../../../utils/bytes/bytes';
 import * as legacyAmino from '../../../cosmos/amino';
+import { Network } from '../../../network/network';
 
 export const msgCreateValidator = function (config: InitConfigurations) {
     return class MsgCreateValidator implements CosmosMsg {
@@ -74,6 +75,56 @@ export const msgCreateValidator = function (config: InitConfigurations) {
                 },
             };
         }
+        /**
+         * Returns an instance of MsgCreateValidator
+         * @param {string} msgJsonStr
+         * @param {Network} network
+         * @returns {MsgCreateValidator}
+         */
+        public static fromCosmosMsgJSON(msgJsonStr: string, network: Network): MsgCreateValidator {
+            const parsedMsg = JSON.parse(msgJsonStr) as MsgCreateValidatorRaw;
+            if (parsedMsg['@type'] !== COSMOS_MSG_TYPEURL.MsgCreateValidator) {
+                throw new Error(`Expected ${COSMOS_MSG_TYPEURL.MsgCreateValidator} but got ${parsedMsg['@type']}`);
+            }
+
+            if (!parsedMsg.value || Object.keys(parsedMsg.value).length != 2) {
+                throw new Error('Invalid value in the Msg.');
+            }
+
+            if (!parsedMsg.commission || Object.keys(parsedMsg.commission).length < 1) {
+                throw new Error('Invalid commission in the Msg.');
+            }
+
+            if (!parsedMsg.description || Object.keys(parsedMsg.description).length < 1) {
+                throw new Error('Invalid description in the Msg.');
+            }
+
+            if (!parsedMsg.pubkey || Object.keys(parsedMsg.pubkey).length != 2) {
+                throw new Error('Invalid pubkey in the Msg.');
+            }
+
+            const cro = CroSDK({ network });
+
+            return new MsgCreateValidator({
+                description: {
+                    moniker: parsedMsg.description.moniker,
+                    identity: parsedMsg.description.identity,
+                    website: parsedMsg.description.website,
+                    securityContact: parsedMsg.description.security_contact,
+                    details: parsedMsg.description.details,
+                },
+                commission: {
+                    rate: parsedMsg.commission.rate,
+                    maxChangeRate: parsedMsg.commission.max_change_rate,
+                    maxRate: parsedMsg.commission.max_rate
+                },
+                value: cro.Coin.fromCustomAmountDenom(parsedMsg.value.amount, parsedMsg.value.denom),
+                validatorAddress: parsedMsg.validator_address,
+                pubkey: parsedMsg.pubkey.key,
+                minSelfDelegation: parsedMsg.min_self_delegation,
+                delegatorAddress: parsedMsg.delegator_address
+            });
+        }
 
         validateAddresses(): void {
             if (
@@ -98,6 +149,40 @@ export const msgCreateValidator = function (config: InitConfigurations) {
         }
     };
 };
+export interface MsgCreateValidatorRaw {
+    "@type": string;
+    description: Description;
+    commission: Commission;
+    min_self_delegation: string;
+    delegator_address: string;
+    validator_address: string;
+    pubkey: Pubkey;
+    value: Amount;
+}
+
+export interface Commission {
+    rate: string;
+    max_rate: string;
+    max_change_rate: string;
+}
+
+export interface Description {
+    moniker: string;
+    identity: string;
+    website: string;
+    security_contact: string;
+    details: string;
+}
+
+export interface Pubkey {
+    "@type": string;
+    key: string;
+}
+
+export interface Amount {
+    denom: string;
+    amount: string;
+}
 
 export type MsgCreateValidatorParams = {
     description: IDescription;
