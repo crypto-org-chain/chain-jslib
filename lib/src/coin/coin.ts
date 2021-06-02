@@ -2,7 +2,7 @@ import Big from 'big.js';
 import ow from 'ow';
 
 import { owCoin, owCoinUnit } from './ow.types';
-import { InitConfigurations } from '../core/cro';
+import { InitConfigurations, CroNetwork } from '../core/cro';
 import { Network } from '../network/network';
 import { Coin as CosmosCoin, coin as cosmosCoin, coins as cosmosCoins } from '../cosmos/coins';
 
@@ -28,6 +28,11 @@ export interface ICoin {
 
 export const coin = function (config: InitConfigurations) {
     return class Coin implements ICoin {
+        public static croAllDenoms = [
+            ...Object.values(CroNetwork.Mainnet.coin),
+            ...Object.values(CroNetwork.Testnet.coin),
+        ];
+
         /**
          * Total supply in base unit represented as string
          * @type {string}
@@ -69,6 +74,10 @@ export const coin = function (config: InitConfigurations) {
 
         public readonly network: Network;
 
+        public readonly denom: string;
+
+        public readonly receivedAmount: Big;
+
         /**
          * Constructor to create a Coin
          * @param {string} amount coins amount represented as string
@@ -76,8 +85,9 @@ export const coin = function (config: InitConfigurations) {
          * @throws {Error} amount or unit is invalid
          * @returns {Coin}
          */
-        constructor(amount: string, unit: Units) {
+        constructor(amount: string, unit: Units = Units.BASE, denom?: string) {
             ow(amount, 'amount', ow.string);
+            ow(denom, 'denom', ow.optional.string);
             ow(unit, 'unit', owCoinUnit);
 
             let coins: Big;
@@ -88,7 +98,13 @@ export const coin = function (config: InitConfigurations) {
             }
             this.network = config.network;
             this.baseAmount = unit === Units.BASE ? Coin.parseBaseAmount(coins) : Coin.parseCROAmount(coins);
+            this.denom = denom || this.network.coin.baseDenom;
+            this.receivedAmount = coins;
         }
+
+        public static fromCustomAmountDenom = (amount: string, denom: string): Coin => {
+            return new Coin(amount, Units.BASE, denom);
+        };
 
         getNetwork(): Network {
             return this.network;
@@ -209,7 +225,7 @@ export const coin = function (config: InitConfigurations) {
          * @memberof Coin
          * */
         public toCosmosCoin(): CosmosCoin {
-            return cosmosCoin(this.toString(Units.BASE), config.network.coin.baseDenom);
+            return cosmosCoin(this.toString(Units.BASE), this.denom);
         }
 
         /**
@@ -218,7 +234,7 @@ export const coin = function (config: InitConfigurations) {
          * @memberof Coin
          * */
         public toCosmosCoins(): CosmosCoin[] {
-            return cosmosCoins(this.toString(Units.BASE), config.network.coin.baseDenom);
+            return cosmosCoins(this.toString(Units.BASE), this.denom);
         }
 
         /**
@@ -231,6 +247,9 @@ export const coin = function (config: InitConfigurations) {
         public toString(unit: Units = Units.BASE): string {
             ow(unit, owCoinUnit);
 
+            if (!Coin.croAllDenoms.includes(this.denom)) {
+                return this.receivedAmount.toString();
+            }
             if (unit === Units.BASE) {
                 return this.baseAmount.toString();
             }
