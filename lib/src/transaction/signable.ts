@@ -71,7 +71,13 @@ export class SignableTransaction {
         ow(params, 'params', owSignableTransactionParams);
         this.network = params.network;
 
-        const cosmosObj: CosmosTx = JSON.parse(params.rawTxJSON);
+        const cosmosTxDecoded: CosmosTx = JSON.parse(params.rawTxJSON);
+
+        let cosmosObj = cosmosTxDecoded;
+
+        if (cosmosObj.tx) {
+            cosmosObj = cosmosObj.tx;
+        }
 
         if (!cosmosObj.body) {
             throw new Error('Missing body in Cosmos JSON');
