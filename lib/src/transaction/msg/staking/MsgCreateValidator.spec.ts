@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 import 'mocha';
 import { expect } from 'chai';
 import Big from 'big.js';
@@ -211,7 +212,7 @@ describe('Testing MsgCreateValidator', function () {
             'Invalid checksum for tcrocncl1j7pej8kplem4wt50p4hfvndhuw5jprxxxtenr',
         );
     });
-    describe.only('fromCosmosJSON', function () {
+    describe('fromCosmosJSON', function () {
         it('should throw Error if the JSON is not a MsgCreateValidator', function () {
             const json =
                 '{ "@type": "/cosmos.staking.v1beta1.MsgEditValidator", "amount": [{ "denom": "basetcro", "amount": "3478499933290496" }], "from_address": "tcro1x07kkkepfj2hl8etlcuqhej7jj6myqrp48y4hg", "to_address": "tcro184lta2lsyu47vwyp2e8zmtca3k5yq85p6c4vp3" }';
@@ -276,7 +277,8 @@ describe('Testing MsgCreateValidator', function () {
         });
 
         it('should return the MsgCreateValidator corresponding to the JSON', function () {
-            const json = '{"@type":"/cosmos.staking.v1beta1.MsgCreateValidator","description":{"moniker":"hiteshTest","identity":"","website":"","security_contact":"hitesh.goel@crypto.com","details":""},"commission":{"rate":"0.100000000000000000","max_rate":"0.200000000000000000","max_change_rate":"0.010000000000000000"},"min_self_delegation":"1","delegator_address":"tcro1j7pej8kplem4wt50p4hfvndhuw5jprxxn5625q","validator_address":"tcrocncl1j7pej8kplem4wt50p4hfvndhuw5jprxxxtenvr","pubkey":{"@type":"/cosmos.crypto.ed25519.PubKey","key":"EHT8l6A+bKFLLcyuh88Se+eN4mDkfWeUdE7gv5E97a8="},"value":{"denom":"basetcro","amount":"50000000000000"}}';
+            const json =
+                '{"@type":"/cosmos.staking.v1beta1.MsgCreateValidator","description":{"moniker":"hiteshTest","identity":"","website":"","security_contact":"hitesh.goel@crypto.com","details":""},"commission":{"rate":"0.100000000000000000","max_rate":"0.200000000000000000","max_change_rate":"0.010000000000000000"},"min_self_delegation":"1","delegator_address":"tcro1j7pej8kplem4wt50p4hfvndhuw5jprxxn5625q","validator_address":"tcrocncl1j7pej8kplem4wt50p4hfvndhuw5jprxxxtenvr","pubkey":{"@type":"/cosmos.crypto.ed25519.PubKey","key":"EHT8l6A+bKFLLcyuh88Se+eN4mDkfWeUdE7gv5E97a8="},"value":{"denom":"basetcro","amount":"50000000000000"}}';
 
             const MsgCreateValidator = cro.staking.MsgCreateValidator.fromCosmosMsgJSON(json, CroNetwork.Testnet);
             expect(MsgCreateValidator.validatorAddress).to.eql('tcrocncl1j7pej8kplem4wt50p4hfvndhuw5jprxxxtenvr');
@@ -292,7 +294,6 @@ describe('Testing MsgCreateValidator', function () {
 
             expect(MsgCreateValidator.description.securityContact).to.eql('hitesh.goel@crypto.com');
             expect(MsgCreateValidator.description.moniker).to.eql('hiteshTest');
-
         });
     });
 });

@@ -181,7 +181,7 @@ describe('Testing MsgBeginRedelegate', function () {
         });
         it('should throw Error when the amount field is missing', function () {
             const json =
-            '{"@type":"/cosmos.staking.v1beta1.MsgBeginRedelegate","delegator_address":"tcro1j7pej8kplem4wt50p4hfvndhuw5jprxxn5625q","validator_src_address":"tcrocncl16mmzexp3zqfpgqtnn927m5ph560qgxrs52a3wx","validator_dst_address":"tcrocncl1j7pej8kplem4wt50p4hfvndhuw5jprxxxtenvr"}';
+                '{"@type":"/cosmos.staking.v1beta1.MsgBeginRedelegate","delegator_address":"tcro1j7pej8kplem4wt50p4hfvndhuw5jprxxn5625q","validator_src_address":"tcrocncl16mmzexp3zqfpgqtnn927m5ph560qgxrs52a3wx","validator_dst_address":"tcrocncl1j7pej8kplem4wt50p4hfvndhuw5jprxxxtenvr"}';
             expect(() => cro.staking.MsgBeginRedelegate.fromCosmosMsgJSON(json, CroNetwork.Testnet)).to.throw(
                 'Invalid amount in the Msg.',
             );

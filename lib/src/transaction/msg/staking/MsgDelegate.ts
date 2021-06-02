@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 import ow from 'ow';
 import { Msg } from '../../../cosmos/v1beta1/types/msg';
 import { CosmosMsg } from '../cosmosMsg';
@@ -10,14 +11,14 @@ import * as legacyAmino from '../../../cosmos/amino';
 import { Network } from '../../../network/network';
 
 export interface MsgDelegateRaw {
-    "@type":           string;
+    '@type': string;
     delegator_address: string;
     validator_address: string;
-    amount:            Amount;
+    amount: Amount;
 }
 
 export interface Amount {
-    denom:  string;
+    denom: string;
     amount: string;
 }
 
@@ -89,7 +90,7 @@ export const msgDelegate = function (config: InitConfigurations) {
             if (parsedMsg['@type'] !== COSMOS_MSG_TYPEURL.MsgDelegate) {
                 throw new Error(`Expected ${COSMOS_MSG_TYPEURL.MsgDelegate} but got ${parsedMsg['@type']}`);
             }
-            if (!parsedMsg.amount || Object.keys(parsedMsg.amount).length != 2) {
+            if (!parsedMsg.amount || Object.keys(parsedMsg.amount).length !== 2) {
                 throw new Error('Invalid amount in the Msg.');
             }
 

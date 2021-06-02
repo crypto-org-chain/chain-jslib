@@ -1,5 +1,6 @@
+/* eslint-disable camelcase */
 export interface CosmosTx {
-    tx?: undefined | CosmosTx
+    tx?: undefined | CosmosTx;
     body: Body;
     auth_info: AuthInfo;
     signatures: string[];

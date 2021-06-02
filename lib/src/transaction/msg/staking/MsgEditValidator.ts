@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 import ow from 'ow';
 import { Msg } from '../../../cosmos/v1beta1/types/msg';
 import { CosmosMsg } from '../cosmosMsg';
@@ -77,7 +78,7 @@ export const msgEditValidator = function (config: InitConfigurations) {
                 },
                 validatorAddress: parsedMsg.validator_address,
                 commissionRate: parsedMsg.commission_rate,
-                minSelfDelegation: parsedMsg.min_self_delegation
+                minSelfDelegation: parsedMsg.min_self_delegation,
             });
         }
 
@@ -92,7 +93,7 @@ export const msgEditValidator = function (config: InitConfigurations) {
 };
 
 export interface MsgEditValidatorRaw {
-    "@type": string;
+    '@type': string;
     description: DescriptionRaw;
     validator_address: string;
     commission_rate: string;

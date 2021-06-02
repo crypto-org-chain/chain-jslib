@@ -170,7 +170,7 @@ describe('Testing MsgDelegate', function () {
         });
         it('should throw Error when the `validator_address` field is missing', function () {
             const json =
-            '{"@type":"/cosmos.staking.v1beta1.MsgDelegate","delegator_address":"tcro165tzcrh2yl83g8qeqxueg2g5gzgu57y3fe3kc3","amount":{"denom":"basetcro","amount":"1200050000000000"}}';
+                '{"@type":"/cosmos.staking.v1beta1.MsgDelegate","delegator_address":"tcro165tzcrh2yl83g8qeqxueg2g5gzgu57y3fe3kc3","amount":{"denom":"basetcro","amount":"1200050000000000"}}';
             expect(() => cro.staking.MsgDelegate.fromCosmosMsgJSON(json, CroNetwork.Testnet)).to.throw(
                 'Expected property `validatorAddress` to be of type `string` but received type `undefined` in object `options`',
             );
@@ -185,7 +185,7 @@ describe('Testing MsgDelegate', function () {
         });
         it('should throw Error when the amount field is missing', function () {
             const json =
-            '{"@type":"/cosmos.staking.v1beta1.MsgDelegate","delegator_address":"tcro165tzcrh2yl83g8qeqxueg2g5gzgu57y3fe3kc3","validator_address":"tcrocncl1j7pej8kplem4wt50p4hfvndhuw5jprxxxtenvr"}';
+                '{"@type":"/cosmos.staking.v1beta1.MsgDelegate","delegator_address":"tcro165tzcrh2yl83g8qeqxueg2g5gzgu57y3fe3kc3","validator_address":"tcrocncl1j7pej8kplem4wt50p4hfvndhuw5jprxxxtenvr"}';
             expect(() => cro.staking.MsgDelegate.fromCosmosMsgJSON(json, CroNetwork.Testnet)).to.throw(
                 'Invalid amount in the Msg.',
             );

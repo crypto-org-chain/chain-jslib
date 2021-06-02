@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 import ow from 'ow';
 import { Msg } from '../../../cosmos/v1beta1/types/msg';
 import { CosmosMsg } from '../cosmosMsg';
@@ -75,6 +76,7 @@ export const msgCreateValidator = function (config: InitConfigurations) {
                 },
             };
         }
+
         /**
          * Returns an instance of MsgCreateValidator
          * @param {string} msgJsonStr
@@ -87,7 +89,7 @@ export const msgCreateValidator = function (config: InitConfigurations) {
                 throw new Error(`Expected ${COSMOS_MSG_TYPEURL.MsgCreateValidator} but got ${parsedMsg['@type']}`);
             }
 
-            if (!parsedMsg.value || Object.keys(parsedMsg.value).length != 2) {
+            if (!parsedMsg.value || Object.keys(parsedMsg.value).length !== 2) {
                 throw new Error('Invalid value in the Msg.');
             }
 
@@ -98,9 +100,19 @@ export const msgCreateValidator = function (config: InitConfigurations) {
             if (!parsedMsg.description || Object.keys(parsedMsg.description).length < 1) {
                 throw new Error('Invalid description in the Msg.');
             }
+            // console.debug(parsedMsg.pubkey)
 
-            if (!parsedMsg.pubkey || Object.keys(parsedMsg.pubkey).length != 2) {
+            const parsedPubKey: { value?: { [key: string]: number } } = parsedMsg.pubkey as any;
+
+            if (!parsedMsg.pubkey || Object.keys(parsedMsg.pubkey).length !== 2) {
                 throw new Error('Invalid pubkey in the Msg.');
+            }
+            let pubkey: string = parsedMsg.pubkey.key;
+
+            if (parsedPubKey && parsedPubKey.value && Object.keys(parsedPubKey.value).length > 0) {
+                pubkey = Bytes.fromUint8Array(
+                    new Uint8Array(Object.values(parsedPubKey.value).slice(2)),
+                ).toBase64String();
             }
 
             const cro = CroSDK({ network });
@@ -116,13 +128,13 @@ export const msgCreateValidator = function (config: InitConfigurations) {
                 commission: {
                     rate: parsedMsg.commission.rate,
                     maxChangeRate: parsedMsg.commission.max_change_rate,
-                    maxRate: parsedMsg.commission.max_rate
+                    maxRate: parsedMsg.commission.max_rate,
                 },
                 value: cro.Coin.fromCustomAmountDenom(parsedMsg.value.amount, parsedMsg.value.denom),
                 validatorAddress: parsedMsg.validator_address,
-                pubkey: parsedMsg.pubkey.key,
+                pubkey,
                 minSelfDelegation: parsedMsg.min_self_delegation,
-                delegatorAddress: parsedMsg.delegator_address
+                delegatorAddress: parsedMsg.delegator_address,
             });
         }
 
@@ -150,7 +162,7 @@ export const msgCreateValidator = function (config: InitConfigurations) {
     };
 };
 export interface MsgCreateValidatorRaw {
-    "@type": string;
+    '@type': string;
     description: Description;
     commission: Commission;
     min_self_delegation: string;
@@ -175,7 +187,7 @@ export interface Description {
 }
 
 export interface Pubkey {
-    "@type": string;
+    '@type': string;
     key: string;
 }
 

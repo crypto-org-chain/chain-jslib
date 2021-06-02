@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 import ow from 'ow';
 import { Msg } from '../../../cosmos/v1beta1/types/msg';
 import { CosmosMsg } from '../cosmosMsg';
@@ -10,7 +11,7 @@ import * as legacyAmino from '../../../cosmos/amino';
 import { Network } from '../../../network/network';
 
 export interface MsgBeginRedelegateRaw {
-    "@type": string;
+    '@type': string;
     delegator_address: string;
     validator_src_address: string;
     validator_dst_address: string;
@@ -50,6 +51,7 @@ export const msgBeginRedelegate = function (config: InitConfigurations) {
             this.amount = options.amount;
             this.validateAddresses();
         }
+
         /**
          * Returns an instance of MsgBeginRedelegate
          * @param {string} msgJsonStr
@@ -62,7 +64,7 @@ export const msgBeginRedelegate = function (config: InitConfigurations) {
             if (parsedMsg['@type'] !== COSMOS_MSG_TYPEURL.MsgBeginRedelegate) {
                 throw new Error(`Expected ${COSMOS_MSG_TYPEURL.MsgBeginRedelegate} but got ${parsedMsg['@type']}`);
             }
-            if (!parsedMsg.amount || Object.keys(parsedMsg.amount).length != 2) {
+            if (!parsedMsg.amount || Object.keys(parsedMsg.amount).length !== 2) {
                 throw new Error('Invalid amount in the Msg.');
             }
 

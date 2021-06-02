@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 import ow from 'ow';
 import { Msg } from '../../../cosmos/v1beta1/types/msg';
 import { ICoin } from '../../../coin/coin';
@@ -57,7 +58,7 @@ export const msgSend = function (config: InitConfigurations) {
             if (parsedMsg['@type'] !== COSMOS_MSG_TYPEURL.MsgSend) {
                 throw new Error(`Expected ${COSMOS_MSG_TYPEURL.MsgSend} but got ${parsedMsg['@type']}`);
             }
-            if (!parsedMsg.amount || parsedMsg.amount.length != 1) {
+            if (!parsedMsg.amount || parsedMsg.amount.length !== 1) {
                 throw new Error('Invalid amount in the Msg.');
             }
 

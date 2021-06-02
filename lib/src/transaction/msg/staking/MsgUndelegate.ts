@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 import ow from 'ow';
 import { Msg } from '../../../cosmos/v1beta1/types/msg';
 import { CosmosMsg } from '../cosmosMsg';
@@ -10,7 +11,7 @@ import * as legacyAmino from '../../../cosmos/amino';
 import { Network } from '../../../network/network';
 
 export interface MsgUndelegateRaw {
-    "@type": string;
+    '@type': string;
     delegator_address: string;
     validator_address: string;
     amount: Amount;
@@ -89,7 +90,7 @@ export const msgUndelegate = function (config: InitConfigurations) {
             if (parsedMsg['@type'] !== COSMOS_MSG_TYPEURL.MsgUndelegate) {
                 throw new Error(`Expected ${COSMOS_MSG_TYPEURL.MsgUndelegate} but got ${parsedMsg['@type']}`);
             }
-            if (!parsedMsg.amount || Object.keys(parsedMsg.amount).length != 2) {
+            if (!parsedMsg.amount || Object.keys(parsedMsg.amount).length !== 2) {
                 throw new Error('Invalid amount in the Msg.');
             }
 
@@ -99,6 +100,7 @@ export const msgUndelegate = function (config: InitConfigurations) {
                 amount: cro.Coin.fromCustomAmountDenom(parsedMsg.amount.amount, parsedMsg.amount.denom),
             });
         }
+
         /**
          * Validates the user provided addresses
          * @returns {void}

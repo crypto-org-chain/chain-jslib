@@ -206,7 +206,6 @@ describe('Testing MsgEditValidator', function () {
             expect(MsgEditValidator.commissionRate).to.eql('0.100000000000000000');
             expect(MsgEditValidator.description.securityContact).to.eql('hitesh.goel@crypto.com');
             expect(MsgEditValidator.description.moniker).to.eql('hiteshTest');
-
         });
     });
 });
