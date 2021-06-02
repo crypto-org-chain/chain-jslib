@@ -51,7 +51,7 @@ export const msgBeginRedelegate = function (config: InitConfigurations) {
             this.validateAddresses();
         }
         /**
-         * Returns an instance of MsgSend
+         * Returns an instance of MsgBeginRedelegate
          * @param {string} msgJsonStr
          * @param {Network} network
          * @returns {MsgBeginRedelegate}
