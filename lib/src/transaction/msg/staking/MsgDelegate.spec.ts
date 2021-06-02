@@ -168,7 +168,7 @@ describe('Testing MsgDelegate', function () {
                 'Expected /cosmos.staking.v1beta1.MsgDelegate but got /cosmos.bank.v1beta1.MsgCreateValidator',
             );
         });
-        it('should throw Error when the `validator_dst_address` field is missing', function () {
+        it('should throw Error when the `validator_address` field is missing', function () {
             const json =
             '{"@type":"/cosmos.staking.v1beta1.MsgDelegate","delegator_address":"tcro165tzcrh2yl83g8qeqxueg2g5gzgu57y3fe3kc3","amount":{"denom":"basetcro","amount":"1200050000000000"}}';
             expect(() => cro.staking.MsgDelegate.fromCosmosMsgJSON(json, CroNetwork.Testnet)).to.throw(
