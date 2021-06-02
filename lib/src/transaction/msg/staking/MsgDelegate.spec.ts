@@ -161,7 +161,7 @@ describe('Testing MsgDelegate', function () {
     });
 
     describe('fromCosmosJSON', function () {
-        it('should throw Error if the JSON is not a MsgBeginRedelegate', function () {
+        it('should throw Error if the JSON is not a MsgDelegate', function () {
             const json =
                 '{ "@type": "/cosmos.bank.v1beta1.MsgCreateValidator", "amount": [{ "denom": "basetcro", "amount": "3478499933290496" }], "from_address": "tcro1x07kkkepfj2hl8etlcuqhej7jj6myqrp48y4hg", "to_address": "tcro184lta2lsyu47vwyp2e8zmtca3k5yq85p6c4vp3" }';
             expect(() => cro.staking.MsgDelegate.fromCosmosMsgJSON(json, CroNetwork.Testnet)).to.throw(
@@ -190,14 +190,14 @@ describe('Testing MsgDelegate', function () {
                 'Invalid amount in the Msg.',
             );
         });
-        it('should return the MsgBeginRedelegate corresponding to the JSON', function () {
+        it('should return the MsgDelegate corresponding to the JSON', function () {
             const json =
                 '{"@type":"/cosmos.staking.v1beta1.MsgDelegate","delegator_address":"tcro165tzcrh2yl83g8qeqxueg2g5gzgu57y3fe3kc3","validator_address":"tcrocncl1j7pej8kplem4wt50p4hfvndhuw5jprxxxtenvr","amount":{"denom":"basetcro","amount":"1200050000000000"}}';
-            const MsgBeginRedelegate = cro.staking.MsgDelegate.fromCosmosMsgJSON(json, CroNetwork.Testnet);
-            expect(MsgBeginRedelegate.validatorAddress).to.eql('tcrocncl1j7pej8kplem4wt50p4hfvndhuw5jprxxxtenvr');
-            expect(MsgBeginRedelegate.delegatorAddress).to.eql('tcro165tzcrh2yl83g8qeqxueg2g5gzgu57y3fe3kc3');
-            expect(MsgBeginRedelegate.amount.toCosmosCoin().amount).to.eql('1200050000000000');
-            expect(MsgBeginRedelegate.amount.toCosmosCoin().denom).to.eql('basetcro');
+            const MsgDelegate = cro.staking.MsgDelegate.fromCosmosMsgJSON(json, CroNetwork.Testnet);
+            expect(MsgDelegate.validatorAddress).to.eql('tcrocncl1j7pej8kplem4wt50p4hfvndhuw5jprxxxtenvr');
+            expect(MsgDelegate.delegatorAddress).to.eql('tcro165tzcrh2yl83g8qeqxueg2g5gzgu57y3fe3kc3');
+            expect(MsgDelegate.amount.toCosmosCoin().amount).to.eql('1200050000000000');
+            expect(MsgDelegate.amount.toCosmosCoin().denom).to.eql('basetcro');
         });
     });
 });
