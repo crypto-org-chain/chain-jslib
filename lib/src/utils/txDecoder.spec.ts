@@ -6,11 +6,12 @@ import { TxBody } from '@cosmjs/proto-signing/build/codec/cosmos/tx/v1beta1/tx';
 import { Any } from '@cosmjs/stargate/build/codec/google/protobuf/any';
 import Long from 'long';
 import Big from 'big.js';
-import { TxDecoder, getTxBodyBytes } from './txDecoder';
+import { TxDecoder } from './txDecoder';
 import { Bytes } from './bytes/bytes';
 import { Secp256k1KeyPair } from '../keypair/secp256k1';
 import { CroNetwork } from '../core/cro';
 import { SignableTransaction } from '../transaction/signable';
+import { SIGN_MODE } from '../transaction/types';
 
 describe('TxDecoder', function () {
     it('should throw on certain places', function () {
@@ -50,7 +51,7 @@ describe('TxDecoder', function () {
 
         // expect(() => txDecoder.fromHex(txBytes.toHexString())).to.throw('Error');
 
-        console.log(txDecoder.fromHex(txBytes.toHexString()).toCosmosJSON());
+        expect(() => txDecoder.fromHex(txBytes.toHexString()).toCosmosJSON()).to.throw('Unregistered type url: /cosmos.crypto.multisig.LegacyAminoPubKey');
     });
 
     it('should throw on empty messages array', function () {
@@ -80,6 +81,7 @@ describe('TxDecoder', function () {
             network: CroNetwork.Testnet,
             signerAccounts: []
         })
+        signableTx.importSignerAccounts([{ accountNumber: new Big(0), publicKey: Bytes.fromBase64String('AiPJOV1BAT5kcMjSfai3WFBVT6raP+PoEmYMvfRTSoXX'), signMode: SIGN_MODE.DIRECT }])
         signableTx.setSignerAccountNumberAtIndex(0, new Big(179));
         const keyPair = Secp256k1KeyPair.fromPrivKey(
             Bytes.fromHexString('60300d38b56590fe22439d3eaa77d494ba9b5c93d2cec0b3639bdd51c3e3fa49'),
@@ -97,6 +99,7 @@ describe('TxDecoder', function () {
             network: CroNetwork.Testnet,
             signerAccounts: []
         })
+        signableTx.importSignerAccounts([{ accountNumber: new Big(0), publicKey: Bytes.fromBase64String('AiPJOV1BAT5kcMjSfai3WFBVT6raP+PoEmYMvfRTSoXX'), signMode: SIGN_MODE.LEGACY_AMINO_JSON }])
         signableTx.setSignerAccountNumberAtIndex(0, new Big(179));
         const keyPair = Secp256k1KeyPair.fromPrivKey(
             Bytes.fromHexString('60300d38b56590fe22439d3eaa77d494ba9b5c93d2cec0b3639bdd51c3e3fa49'),
@@ -157,7 +160,7 @@ let cosmosTxObject_Legacy = JSON.parse(JSON.stringify(cosmosTxObject));
 cosmosTxObject_Legacy.tx.auth_info.signer_infos[0].mode_info.single.mode = 'SIGN_MODE_LEGACY_AMINO_JSON';
 cosmosTxObject_Legacy.tx.auth_info.fee.amount = [{ denom: 'basetcro', amount: '1000000000000' }];
 cosmosTxObject_Legacy.tx.signatures[0] =
-    'd/GcumOqYkUFSxKz+VNgsDnsPuAUkIq0Oy7DLScbpMV3gd7RGkA36my33ixzKr0mdBUqmHFqok98glxzjJxpyg==';
+    'xYN+yNCrRPCMZG1NsxAY93RmNnl7GpxnkZfz7MGoc9lXKHZiRd8WDVEqnGChTfvsBzU/2om+AGSYrJy/JyPc/w==';
 
 let cosmosTxObject_UNRECOGNIZED = JSON.parse(JSON.stringify(cosmosTxObject));
 cosmosTxObject_UNRECOGNIZED.tx.auth_info.signer_infos[0].mode_info.single.mode = 'UNRECOGNIZED';
