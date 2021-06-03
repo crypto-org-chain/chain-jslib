@@ -1,6 +1,6 @@
 {
   "name": "@crypto-com/chain-jslib",
-  "version": "0.0.18",
+  "version": "0.0.19",
   "description": "Crypto.org Chain JavaScript library",
   "author": "Crypto.org <chain@crypto.org>",
   "license": "Apache-2.0",
@@ -43,6 +43,7 @@
     "typedoc:theme:build": "cd docs/themes && npm run build"
   },
   "dependencies": {
+    "@cosmjs/amino": "0.25.0-alpha.2",
     "@cosmjs/encoding": "0.23.1",
     "@cosmjs/math": "0.23.1",
     "@cosmjs/proto-signing": "0.24.1",
