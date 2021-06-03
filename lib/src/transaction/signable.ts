@@ -107,7 +107,6 @@ export class SignableTransaction {
                 timeoutHeight,
             },
         };
-
         body.messages.forEach((message) => {
             const msgClassInstance = typeUrlToMsgClassMapping(croSdk, message['@type']);
             const nativeMsg: CosmosMsg = msgClassInstance.fromCosmosMsgJSON(JSON.stringify(message), this.getNetwork());
@@ -158,7 +157,7 @@ export class SignableTransaction {
         let feeAmount;
         let feeAmountCoin;
         // Todo: handle multiple fee amounts
-        if (cosmosAuthInfo.fee.amount.length == 1) {
+        if (cosmosAuthInfo.fee.amount.length === 1) {
             feeAmount = cosmosAuthInfo.fee.amount[0];
         }
 
@@ -188,8 +187,8 @@ export class SignableTransaction {
         const signatures =
             cosmosObj.signatures.length > 0
                 ? cosmosObj.signatures.map((sigStr: string) => {
-                    return Bytes.fromBase64String(sigStr);
-                })
+                      return Bytes.fromBase64String(sigStr);
+                  })
                 : authInfo.signerInfos.map(() => EMPTY_SIGNATURE);
 
         const bodyBytes = protoEncodeTxBody(txBody);
