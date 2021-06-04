@@ -19,6 +19,7 @@ export const cancelSoftwareUpgradeProposal = function () {
             this.title = options.title;
             this.description = options.description;
         }
+
         /**
          * Returns an instance of CancelSoftwareUpgradeProposal
          * @param {string} msgJsonStr
@@ -28,14 +29,17 @@ export const cancelSoftwareUpgradeProposal = function () {
         public static fromCosmosMsgJSON(msgJsonStr: string, _network: Network): CancelSoftwareUpgradeProposal {
             const parsedMsg = JSON.parse(msgJsonStr) as CancelSoftwareUpgradeProposalRaw;
             if (parsedMsg['@type'] !== COSMOS_MSG_TYPEURL.upgrade.CancelSoftwareUpgradeProposal) {
-                throw new Error(`Expected ${COSMOS_MSG_TYPEURL.upgrade.CancelSoftwareUpgradeProposal} but got ${parsedMsg['@type']}`);
+                throw new Error(
+                    `Expected ${COSMOS_MSG_TYPEURL.upgrade.CancelSoftwareUpgradeProposal} but got ${parsedMsg['@type']}`,
+                );
             }
 
             return new CancelSoftwareUpgradeProposal({
                 description: parsedMsg.description,
-                title: parsedMsg.title
+                title: parsedMsg.title,
             });
         }
+
         /**
          * Returns the proto encoding representation of CancelSoftwareUpgradeProposal
          * @returns {google.protobuf.Any}
@@ -62,7 +66,7 @@ export type CancelSoftwareUpgradeProposalOptions = {
 };
 
 interface CancelSoftwareUpgradeProposalRaw {
-    "@type": string;
+    '@type': string;
     title: string;
     description: string;
 }

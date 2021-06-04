@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 import ow from 'ow';
 import Long from 'long';
 import { cosmos, google } from '../../../../cosmos/v1beta1/codec';
@@ -35,17 +36,20 @@ export const softwareUpgradeProposal = function () {
         public static fromCosmosMsgJSON(msgJsonStr: string, _network: Network): SoftwareUpgradeProposal {
             const parsedMsg = JSON.parse(msgJsonStr) as SoftwareUpgradeProposalRaw;
             if (parsedMsg['@type'] !== COSMOS_MSG_TYPEURL.upgrade.SoftwareUpgradeProposal) {
-                throw new Error(`Expected ${COSMOS_MSG_TYPEURL.upgrade.SoftwareUpgradeProposal} but got ${parsedMsg['@type']}`);
+                throw new Error(
+                    `Expected ${COSMOS_MSG_TYPEURL.upgrade.SoftwareUpgradeProposal} but got ${parsedMsg['@type']}`,
+                );
             }
 
-            let plan = parsedMsg.plan;
+            const { plan } = parsedMsg;
 
-            let timeSecondsLong = undefined, timeNanos = undefined;
+            let timeSecondsLong;
+            let timeNanos;
 
             // Plan time checks
             if (plan.time) {
                 if (plan.time.seconds) {
-                    timeSecondsLong = Long.fromString(plan.time.seconds, true, 10)
+                    timeSecondsLong = Long.fromString(plan.time.seconds, true, 10);
                 }
                 if (plan.time.nanos) {
                     timeNanos = Number(plan.time.nanos);
@@ -54,17 +58,17 @@ export const softwareUpgradeProposal = function () {
 
             // Plan height checks
             if (!plan.height) {
-                throw new Error("Invalid `height` attribute in Plan.");
+                throw new Error('Invalid `height` attribute in Plan.');
             }
 
             // Plan `upgradedClientState` checks
             // TODO: check for any live example (if any), keeping empty `value` now
-            let upgradedClientState = undefined;
+            let upgradedClientState;
             if (plan.upgraded_client_state && Object.keys(plan.upgraded_client_state).length > 0) {
                 upgradedClientState = google.protobuf.Any.create({
                     type_url: plan.upgraded_client_state?.type_url,
                     value: new Uint8Array(),
-                })
+                });
             }
 
             return new SoftwareUpgradeProposal({
@@ -76,10 +80,10 @@ export const softwareUpgradeProposal = function () {
                     name: plan.name,
                     time: {
                         nanos: timeNanos,
-                        seconds: timeSecondsLong
+                        seconds: timeSecondsLong,
                     },
-                    upgradedClientState
-                }
+                    upgradedClientState,
+                },
             });
         }
 
@@ -138,7 +142,7 @@ export type SoftwareUpgradeProposalOptions = {
 };
 
 interface SoftwareUpgradeProposalRaw {
-    "@type": string;
+    '@type': string;
     title: string;
     description: string;
     plan: PlanRaw;
@@ -151,5 +155,5 @@ interface PlanRaw {
     };
     height: string;
     info: string;
-    upgraded_client_state?: { type_url: string; value: any; };
+    upgraded_client_state?: { type_url: string; value: any };
 }

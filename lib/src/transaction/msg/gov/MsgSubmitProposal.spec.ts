@@ -27,7 +27,7 @@ const PystaportTestNet: Network = {
 };
 const cro = CroSDK({ network: PystaportTestNet });
 
-describe.only('Testing MsgSubmitProposal and its content types', function () {
+describe('Testing MsgSubmitProposal and its content types', function () {
     const anyContent = new cro.gov.proposal.CommunityPoolSpendProposal({
         title: 'Make new cosmos version backward compatible with pre release',
         description: 'Lorem Ipsum ... A great proposal to increate backward compatibility and initial work on IBC',
@@ -213,7 +213,7 @@ describe.only('Testing MsgSubmitProposal and its content types', function () {
                 'Expected /cosmos.gov.v1beta1.MsgSubmitProposal but got /cosmos.bank.v1beta1.MsgCreateValidator',
             );
         });
-        
+
         it('should return the MsgDeposit corresponding to the JSON', function () {
             const json =
                 '{"@type":"/cosmos.gov.v1beta1.MsgSubmitProposal","initial_deposit":[{"denom":"basetcro","amount":"12000000000"}],"content":{"@type":"/cosmos.params.v1beta1.ParameterChangeProposal","changes":[{"subspace":"staking","key":"MaxValidators","value":"12"}],"title":"Change a param to something more optimized","description":"Lorem Ipsum ... The param should be changed to something more optimized"},"proposer":"tcro14sh490wk79dltea4udk95k7mw40wmvf77p0l5a"}';
@@ -222,9 +222,8 @@ describe.only('Testing MsgSubmitProposal and its content types', function () {
             expect(MsgDeposit.initialDeposit.toCosmosCoins()[0].denom).to.eql('basetcro');
 
             expect(MsgDeposit.proposer).to.eql('tcro14sh490wk79dltea4udk95k7mw40wmvf77p0l5a');
-            
+
             expect(MsgDeposit.content.getEncoded().type_url).to.eql('/cosmos.params.v1beta1.ParameterChangeProposal');
-            
         });
     });
 });

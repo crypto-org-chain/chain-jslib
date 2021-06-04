@@ -80,12 +80,18 @@ export const msgSubmitProposal = function (config: InitConfigurations) {
             const cro = CroSDK({ network });
 
             const jsonContentRaw = parsedMsg.content;
-            const contentClassInstance = typeUrlToMsgClassMapping(cro, jsonContentRaw["@type"]); 
-            const nativeContentMsg: IMsgProposalContent = contentClassInstance.fromCosmosMsgJSON(JSON.stringify(jsonContentRaw), network);
+            const contentClassInstance = typeUrlToMsgClassMapping(cro, jsonContentRaw['@type']);
+            const nativeContentMsg: IMsgProposalContent = contentClassInstance.fromCosmosMsgJSON(
+                JSON.stringify(jsonContentRaw),
+                network,
+            );
 
             return new MsgSubmitProposal({
                 proposer: parsedMsg.proposer,
-                initialDeposit: cro.Coin.fromCustomAmountDenom(parsedMsg.initial_deposit[0].amount, parsedMsg.initial_deposit[0].denom),
+                initialDeposit: cro.Coin.fromCustomAmountDenom(
+                    parsedMsg.initial_deposit[0].amount,
+                    parsedMsg.initial_deposit[0].denom,
+                ),
                 content: nativeContentMsg,
             });
         }
@@ -111,13 +117,13 @@ export type ProposalOptions = {
 };
 
 export interface MsgSubmitProposalRaw {
-    "@type": string;
+    '@type': string;
     initial_deposit: Amount[];
     content: Content;
     proposer: string;
 }
 
 export interface Content {
-    "@type": string;
+    '@type': string;
     [key: string]: any;
 }

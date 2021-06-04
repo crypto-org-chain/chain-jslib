@@ -58,6 +58,7 @@ export const communityPoolSpendProposal = function (config: InitConfigurations) 
                 value: cosmos.distribution.v1beta1.CommunityPoolSpendProposal.encode(spendProposal).finish(),
             });
         }
+
         /**
          * Returns an instance of CommunityPoolSpendProposal
          * @param {string} msgJsonStr
@@ -67,7 +68,9 @@ export const communityPoolSpendProposal = function (config: InitConfigurations) 
         public static fromCosmosMsgJSON(msgJsonStr: string, network: Network): CommunityPoolSpendProposal {
             const parsedMsg = JSON.parse(msgJsonStr) as CommunityPoolSpendProposalRaw;
             if (parsedMsg['@type'] !== COSMOS_MSG_TYPEURL.upgrade.CommunityPoolSpendProposal) {
-                throw new Error(`Expected ${COSMOS_MSG_TYPEURL.upgrade.CommunityPoolSpendProposal} but got ${parsedMsg['@type']}`);
+                throw new Error(
+                    `Expected ${COSMOS_MSG_TYPEURL.upgrade.CommunityPoolSpendProposal} but got ${parsedMsg['@type']}`,
+                );
             }
             if (!parsedMsg.amount || parsedMsg.amount.length !== 1) {
                 throw new Error('Invalid amount in the Msg.');
@@ -78,9 +81,10 @@ export const communityPoolSpendProposal = function (config: InitConfigurations) 
                 description: parsedMsg.description,
                 title: parsedMsg.title,
                 recipient: parsedMsg.recipient,
-                amount: cro.Coin.fromCustomAmountDenom(parsedMsg.amount[0].amount, parsedMsg.amount[0].denom)
+                amount: cro.Coin.fromCustomAmountDenom(parsedMsg.amount[0].amount, parsedMsg.amount[0].denom),
             });
         }
+
         validate() {
             if (
                 !validateAddress({
@@ -103,9 +107,9 @@ export type CommunityPoolSpendProposalOptions = {
 };
 
 export interface CommunityPoolSpendProposalRaw {
-    "@type": string;
+    '@type': string;
     title: string;
     description: string;
     recipient: string;
-    amount: Amount[]
+    amount: Amount[];
 }

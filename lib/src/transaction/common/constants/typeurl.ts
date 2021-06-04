@@ -18,7 +18,7 @@ export const COSMOS_MSG_TYPEURL = {
         CancelSoftwareUpgradeProposal: '/cosmos.upgrade.v1beta1.CancelSoftwareUpgradeProposal',
         SoftwareUpgradeProposal: '/cosmos.upgrade.v1beta1.SoftwareUpgradeProposal',
         ParameterChangeProposal: '/cosmos.params.v1beta1.ParameterChangeProposal',
-        CommunityPoolSpendProposal: '/cosmos.distribution.v1beta1.CommunityPoolSpendProposal'
+        CommunityPoolSpendProposal: '/cosmos.distribution.v1beta1.CommunityPoolSpendProposal',
     },
     distribution: {
         MsgSetWithdrawAddress: '/cosmos.distribution.v1beta1.MsgSetWithdrawAddress',

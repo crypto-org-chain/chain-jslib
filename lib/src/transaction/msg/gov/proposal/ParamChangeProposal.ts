@@ -58,13 +58,15 @@ export const paramChangeProposal = function () {
         public static fromCosmosMsgJSON(msgJsonStr: string, _network: Network): ParamChangeProposal {
             const parsedMsg = JSON.parse(msgJsonStr) as ParamChangeProposalRaw;
             if (parsedMsg['@type'] !== COSMOS_MSG_TYPEURL.upgrade.ParameterChangeProposal) {
-                throw new Error(`Expected ${COSMOS_MSG_TYPEURL.upgrade.ParameterChangeProposal} but got ${parsedMsg['@type']}`);
+                throw new Error(
+                    `Expected ${COSMOS_MSG_TYPEURL.upgrade.ParameterChangeProposal} but got ${parsedMsg['@type']}`,
+                );
             }
 
             return new ParamChangeProposal({
                 description: parsedMsg.description,
                 title: parsedMsg.title,
-                paramChanges: parsedMsg.changes
+                paramChanges: parsedMsg.changes,
             });
         }
     };
@@ -88,7 +90,7 @@ export type ParamChangeProposalOptions = {
 };
 
 export interface ParamChangeProposalRaw {
-    "@type": string;
+    '@type': string;
     changes: ParamChange[];
     title: string;
     description: string;
