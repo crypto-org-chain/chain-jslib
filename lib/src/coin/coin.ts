@@ -82,6 +82,7 @@ export const coin = function (config: InitConfigurations) {
          * Constructor to create a Coin
          * @param {string} amount coins amount represented as string
          * @param {Units} unit unit of the coins
+         * @param {string} denom chain compatible denom value (Optional)
          * @throws {Error} amount or unit is invalid
          * @returns {Coin}
          */
