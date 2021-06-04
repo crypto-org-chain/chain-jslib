@@ -204,7 +204,7 @@ export class SignableTransaction {
         this.network = params.network;
 
         // signerAccounts[]: To keep backward compatibility we can import it explicitly as well
-        this.signerAccounts = params.signerAccounts;
+        this.signerAccounts = params.signerAccounts || [];
     }
 
     /**
@@ -413,7 +413,7 @@ export class SignableTransaction {
 
 export type SignableTransactionParams = {
     rawTxJSON: string;
-    signerAccounts: SignerAccount[];
+    signerAccounts?: SignerAccount[];
     network: Network;
 };
 
