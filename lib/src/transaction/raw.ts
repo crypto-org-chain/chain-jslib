@@ -258,6 +258,9 @@ export const rawTransaction = function (config: InitConfigurations) {
             if (this.authInfo.signerInfos.length === 0) {
                 throw new Error('Expected signer in transaction, got none');
             }
+            if (this.txBody.value.messages.length === 0) {
+                throw new Error('Expected message in transaction, got none');
+            }
             return new SignableTransaction({
                 rawTxJSON: this.toCosmosJSON(),
                 network: cloneDeep(this.network),

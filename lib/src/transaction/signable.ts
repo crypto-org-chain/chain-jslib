@@ -119,7 +119,7 @@ export class SignableTransaction {
         const cosmosSignerInfos = cosmosAuthInfo.signer_infos;
         const signerInfos: SignerInfo[] = [];
 
-        for (const signerInfo of cosmosSignerInfos) {
+        cosmosSignerInfos.forEach((signerInfo) => {
             // TODO: Support MultiSig in near future
             const publicKeyObj = signerInfo.public_key as any;
             if (!publicKeyObj.key) {
@@ -148,7 +148,7 @@ export class SignableTransaction {
                 },
                 sequence: new Big(signerInfo.sequence),
             });
-        }
+        });
 
         if (cosmosAuthInfo.fee.amount.length > 1) {
             // TODO: Multi-coin support

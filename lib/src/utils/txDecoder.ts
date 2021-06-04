@@ -134,10 +134,11 @@ function handleSpecialParams(decodedParams: any) {
     // handle all MsgSubmitProposal
     // TODO: Make it generic when encounter new cases
 
+    const clonedDecodedParams = { ...decodedParams };
     if (decodedParams.content && Object.keys(decodedParams.content).length !== 0) {
-        decodedParams.content = decodeAnyType(decodedParams.content.type_url, decodedParams.content.value);
+        clonedDecodedParams.content = decodeAnyType(decodedParams.content.type_url, decodedParams.content.value);
     }
-    return decodedParams;
+    return clonedDecodedParams;
 }
 
 export const getAuthInfoJson = (authInfo: AuthInfo) => {
@@ -166,18 +167,6 @@ export const getTxBodyBytes = (txBody: TxBody): Bytes => {
     } catch (error) {
         throw new Error('Error getting TxBody bytes');
     }
-};
-
-const recursiveSearch = (obj: any) => {
-    const keys: string[] = [];
-    Object.keys(obj).forEach((key) => {
-        const value = obj[key];
-        keys.push(key);
-        if (typeof value === 'object') {
-            keys.push(...recursiveSearch(value));
-        }
-    });
-    return keys;
 };
 
 export const getSignModeFromLibDecodedSignMode = (signModeNumber: number) => {
