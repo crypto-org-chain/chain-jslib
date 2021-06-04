@@ -1,7 +1,6 @@
 import ow from 'ow';
 import Big from 'big.js';
 
-// import { owAuthInfo, owTxBody } from '../cosmos/v1beta1/types/ow.types';
 import { owNetwork } from '../network/ow.types';
 import { owBig, owStrictObject, owOptionalStrictObject } from '../ow.types';
 import { owBytes } from '../utils/bytes/ow.types';
