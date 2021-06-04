@@ -191,8 +191,8 @@ Eg:
 /* Machine 1: */
 const rawTx = new cro.RawTransaction();
 // .... Do rest operations here
-const exportUnsignedCosmosJSON = rawTx.toCosmosJSON() as string;
-const exportSignerInfoToJSON = rawTx.exportSignerAccounts() as string;
+const exportUnsignedCosmosJSON = rawTx.toCosmosJSON();
+const exportSignerInfoToJSON = rawTx.exportSignerAccounts();
 
 /* Machine 2: */
 const signerAccountsOptional: SignerAccount[] = [{
