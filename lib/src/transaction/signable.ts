@@ -119,7 +119,7 @@ export class SignableTransaction {
         const cosmosSignerInfos = cosmosAuthInfo.signer_infos;
         const signerInfos: SignerInfo[] = [];
 
-        for (const signerInfo of cosmosSignerInfos) {
+        cosmosSignerInfos.forEach((signerInfo) => {
             // TODO: Support MultiSig in near future
             const publicKeyObj = signerInfo.public_key as any;
             if (!publicKeyObj.key) {
@@ -148,7 +148,7 @@ export class SignableTransaction {
                 },
                 sequence: new Big(signerInfo.sequence),
             });
-        }
+        });
 
         if (cosmosAuthInfo.fee.amount.length > 1) {
             // TODO: Multi-coin support
@@ -158,8 +158,8 @@ export class SignableTransaction {
         let feeAmount;
         let feeAmountCoin;
         // Todo: handle multiple fee amounts
-        if (cosmosAuthInfo.fee.amount.length == 1) {
-            feeAmount = cosmosAuthInfo.fee.amount[0];
+        if (cosmosAuthInfo.fee.amount.length === 1) {
+            [feeAmount] = cosmosAuthInfo.fee.amount;
         }
 
         if (feeAmount) {
@@ -188,8 +188,8 @@ export class SignableTransaction {
         const signatures =
             cosmosObj.signatures.length > 0
                 ? cosmosObj.signatures.map((sigStr: string) => {
-                    return Bytes.fromBase64String(sigStr);
-                })
+                      return Bytes.fromBase64String(sigStr);
+                  })
                 : authInfo.signerInfos.map(() => EMPTY_SIGNATURE);
 
         const bodyBytes = protoEncodeTxBody(txBody);
