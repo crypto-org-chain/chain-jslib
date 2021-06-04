@@ -2,6 +2,9 @@
 
 All notable changes to this project will be documented in this file.
 
+## v0.0.20
+- Make RpcURL optional - Prevent breaking previous functionalities
+
 ## v0.0.19
 - Release new testnet network croesied-3
 - Fix an issue which would create module error if the project has @cosmjs dependencies

@@ -102,9 +102,10 @@ describe('CroClient', function () {
         context('Getting On-Chain details', function () {
             it('Should fetch correct details from the network', async function () {
                 nock.disableNetConnect();
-                nock(CroNetwork.Testnet.rpcUrl).persist(true).post('/').reply(200, statusQueryResponse);
+                const rpcUrl: string = CroNetwork.Testnet.rpcUrl ?? '';
+                nock(rpcUrl).persist(true).post('/').reply(200, statusQueryResponse);
 
-                const croHttpClient = await cro.CroClient.connect(CroNetwork.Testnet.rpcUrl);
+                const croHttpClient = await cro.CroClient.connect(rpcUrl);
 
                 expect(await croHttpClient.getChainId()).to.be.equal('testnet-croeseid-2');
                 expect(typeof (await croHttpClient.getHeight())).to.equal('number');
@@ -121,8 +122,9 @@ describe('CroClient', function () {
             });
 
             function remockNockForAbciQuery() {
+                const rpcUrl: string = CroNetwork.Testnet.rpcUrl ?? '';
                 nock.cleanAll();
-                nock(CroNetwork.Testnet.rpcUrl).persist(true).post('/').reply(200, abciQueryResponse);
+                nock(rpcUrl).persist(true).post('/').reply(200, abciQueryResponse);
             }
         });
     });
