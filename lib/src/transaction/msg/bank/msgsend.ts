@@ -1,4 +1,3 @@
-/* eslint-disable camelcase */
 import ow from 'ow';
 import { Msg } from '../../../cosmos/v1beta1/types/msg';
 import { ICoin } from '../../../coin/coin';
@@ -28,7 +27,7 @@ export const msgSend = function (config: InitConfigurations) {
 
         public readonly toAddress: string;
 
-        public amount: ICoin[];
+        public amount: ICoin;
 
         /**
          * Constructor to create a new MsgSend
@@ -58,14 +57,15 @@ export const msgSend = function (config: InitConfigurations) {
             if (parsedMsg['@type'] !== COSMOS_MSG_TYPEURL.MsgSend) {
                 throw new Error(`Expected ${COSMOS_MSG_TYPEURL.MsgSend} but got ${parsedMsg['@type']}`);
             }
-            if (!parsedMsg.amount || parsedMsg.amount.length < 1) {
+            if (!parsedMsg.amount || parsedMsg.amount.length != 1) {
                 throw new Error('Invalid amount in the Msg.');
             }
 
             return new MsgSend({
                 fromAddress: parsedMsg.from_address,
                 toAddress: parsedMsg.to_address,
-                amount: parsedMsg.amount.map((coin) => cro.Coin.fromCustomAmountDenom(coin.amount, coin.denom)),
+                // TODO: Handle the complete list
+                amount: cro.Coin.fromCustomAmountDenom(parsedMsg.amount[0].amount, parsedMsg.amount[0].denom),
             });
         }
 
@@ -79,7 +79,7 @@ export const msgSend = function (config: InitConfigurations) {
                 value: {
                     fromAddress: this.fromAddress,
                     toAddress: this.toAddress,
-                    amount: this.amount.map((coin) => coin.toCosmosCoin()),
+                    amount: this.amount.toCosmosCoins(),
                 },
             };
         }
@@ -91,7 +91,7 @@ export const msgSend = function (config: InitConfigurations) {
                 value: {
                     from_address: this.fromAddress,
                     to_address: this.toAddress,
-                    amount: this.amount.map((coin) => coin.toCosmosCoin()),
+                    amount: this.amount.toCosmosCoins(),
                 },
             } as legacyAmino.MsgSend;
         }
@@ -123,5 +123,6 @@ export const msgSend = function (config: InitConfigurations) {
 export type MsgSendOptions = {
     fromAddress: string;
     toAddress: string;
-    amount: ICoin[];
+    // Todo: It should be ICoin[]
+    amount: ICoin;
 };
