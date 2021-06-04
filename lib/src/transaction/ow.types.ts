@@ -42,7 +42,7 @@ export const owTimeoutHeight = ow.string.validate((value) => {
     }
 });
 
-export const owSignerAccount = () =>
+export const owOptionalSignerAccount = () =>
     owOptionalStrictObject().exactShape({
         publicKey: owBytes(),
         accountNumber: owBig(),
@@ -52,5 +52,5 @@ export const owSignerAccount = () =>
 export const owSignableTransactionParams = owStrictObject().exactShape({
     rawTxJSON: ow.string,
     network: owNetwork(),
-    signerAccounts: ow.optional.array.ofType(owSignerAccount()),
+    signerAccounts: ow.optional.array.ofType(owOptionalSignerAccount()),
 });
