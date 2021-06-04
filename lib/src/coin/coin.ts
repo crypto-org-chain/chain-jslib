@@ -98,7 +98,17 @@ export const coin = function (config: InitConfigurations) {
                 throw new TypeError(`Expected amount to be a base10 number represented as string, got \`${amount}\``);
             }
             this.network = config.network;
-            this.baseAmount = unit === Units.BASE ? Coin.parseBaseAmount(coins) : Coin.parseCROAmount(coins);
+
+            this.baseAmount = coins;
+
+            if (unit === Units.BASE) {
+                this.baseAmount = Coin.parseBaseAmount(coins);
+            } else if (unit === Units.CRO) {
+                if (denom && ['cro', 'tcro'].includes(denom.toLowerCase())) {
+                    this.baseAmount = Coin.parseCROAmount(coins);
+                }
+            }
+
             this.denom = denom || this.network.coin.baseDenom;
             this.receivedAmount = coins;
         }
