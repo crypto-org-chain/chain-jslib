@@ -116,8 +116,20 @@ export const owMsgBeginRedelgateOptions = owStrictObject().exactShape({
 /**
  * nft ow types here
  */
+
+const owNFTStartWithAlphabetValidatorFn = (val: string) => ({
+    validator: /^[a-z]/.test(val),
+    message: (label: string) => `Expected ${label} to start with lowercase alphabets`,
+});
+
+const owNFTIsAlphaNumericValidatorFn = (val: string) => ({
+    validator: /^[a-z0-9]+$/.test(val),
+    message: (label: string) => `Expected ${label} to contain only lowercase alphanumeric characters`,
+});
+
+
 export const owMsgIssueDenomOptions = owStrictObject().exactShape({
-    id: ow.string,
+    id: ow.string.minLength(3).maxLength(64).validate(owNFTStartWithAlphabetValidatorFn).validate(owNFTIsAlphaNumericValidatorFn),
     name: ow.string,
     schema: ow.string,
     sender: ow.string,

@@ -49,9 +49,48 @@ describe('Testing MsgIssueDenom', function () {
         });
     });
 
+    it('should throw Error when the denom id is invalid', function() {
+        const anyName = 'anyName';
+        const anySchema = 'anySchema';
+        const anySender = 'tcro165tzcrh2yl83g8qeqxueg2g5gzgu57y3fe3kc3';
+
+        // < 3 characters
+        expect(() => new cro.nft.MsgIssueDenom({
+            id: 'a',
+            name: anyName,
+            schema: anySchema,
+            sender: anySender,
+        })).to.throw('Expected property string `id` to have a minimum length of `3`, got `a` in object `options`');
+        // > 64 characters
+        expect(() => new cro.nft.MsgIssueDenom({
+            id: 'a123456789012345567890123456789012345678901234567890123456789012345',
+            name: anyName,
+            schema: anySchema,
+            sender: anySender,
+        })).to.throw('Expected property string `id` to have a maximum length of `64`, got `a123456789012345567890123456789012345678901234567890123456789012345` in object `options`');
+        expect(() => new cro.nft.MsgIssueDenom({
+            id: '123',
+            name: anyName,
+            schema: anySchema,
+            sender: anySender,
+        })).to.throw('Expected property string `id` to start with lowercase alphabets in object `options`');
+        expect(() => new cro.nft.MsgIssueDenom({
+            id: 'aBC',
+            name: anyName,
+            schema: anySchema,
+            sender: anySender,
+        })).to.throw('Expected property string `id` to start with lowercase alphabets in object `options`');
+        expect(() => new cro.nft.MsgIssueDenom({
+            id: 'abc_123',
+            name: anyName,
+            schema: anySchema,
+            sender: anySender,
+        })).to.throw('Expected property string `id` to start with lowercase alphabets in object `options`');
+    });
+
     it('Test MsgIssueDenom conversion', function () {
         const MsgIssueDenom = new cro.nft.MsgIssueDenom({
-            id: 'alphaNumericID123',
+            id: 'alphanumericid123',
             name: 'nft_name',
             schema: 'schema',
             sender: 'tcro165tzcrh2yl83g8qeqxueg2g5gzgu57y3fe3kc3',
@@ -60,7 +99,7 @@ describe('Testing MsgIssueDenom', function () {
         const rawMsg: Msg = {
             typeUrl: COSMOS_MSG_TYPEURL.nft.MsgIssueDenom,
             value: {
-                id: 'alphaNumericID123',
+                id: 'alphanumericid123',
                 name: 'nft_name',
                 schema: 'schema',
                 sender: 'tcro165tzcrh2yl83g8qeqxueg2g5gzgu57y3fe3kc3',
@@ -76,7 +115,7 @@ describe('Testing MsgIssueDenom', function () {
         );
 
         const MsgIssueDenom = new cro.nft.MsgIssueDenom({
-            id: 'alphaNumericID123',
+            id: 'alphanumericid123',
             name: 'nft_name',
             schema: 'schema',
             sender: 'tcro165tzcrh2yl83g8qeqxueg2g5gzgu57y3fe3kc3',
@@ -96,13 +135,13 @@ describe('Testing MsgIssueDenom', function () {
 
         const signedTxHex = signedTx.encode().toHexString();
         expect(signedTxHex).to.be.eql(
-            '0a770a750a1f2f636861696e6d61696e2e6e66742e76312e4d7367497373756544656e6f6d12520a11616c7068614e756d65726963494431323312086e66745f6e616d651a06736368656d61222b7463726f313635747a63726832796c3833673871657178756567326735677a6775353779336665336b633312580a500a460a1f2f636f736d6f732e63727970746f2e736563703235366b312e5075624b657912230a2103fd0d560b6c4aa1ca16721d039a192867c3457e19dad553edb98e7ba88b159c2712040a0208011802120410c09a0c1a407d8349a3812dcc57307fe17eb8ee6a75dbf442c89becbb8e39060860d64f81587016c6f04e82b413c4ec22444457a14b1ea296c0fba59973c0ec181e1ce98dec',
+            '0a770a750a1f2f636861696e6d61696e2e6e66742e76312e4d7367497373756544656e6f6d12520a11616c7068616e756d65726963696431323312086e66745f6e616d651a06736368656d61222b7463726f313635747a63726832796c3833673871657178756567326735677a6775353779336665336b633312580a500a460a1f2f636f736d6f732e63727970746f2e736563703235366b312e5075624b657912230a2103fd0d560b6c4aa1ca16721d039a192867c3457e19dad553edb98e7ba88b159c2712040a0208011802120410c09a0c1a40045f697ff11da324dd522bcfa50ef6f1c606bd7c7105aba9e7710de0dac15241267973fa680208581e6c5b888d9441443173ab62d5090c88c81869760456a0bb',
         );
     });
 
     it('Should validate MsgIssueDenom provided addresses with network config', function () {
         const params1 = {
-            id: 'alphaNumericID123',
+            id: 'alphanumericid123',
             name: 'nft_name',
             schema: 'schema',
             sender: 'cro1pndm4ywdf4qtmupa0fqe75krmqed2znjyj6x8f',
@@ -113,7 +152,7 @@ describe('Testing MsgIssueDenom', function () {
 
     it('Should throw on getting toRawAminoMsg()', function () {
         const MsgIssueDenom = new cro.nft.MsgIssueDenom({
-            id: 'alphaNumericID123',
+            id: 'alphanumericid123',
             name: 'nft_name',
             schema: 'schema',
             sender: 'tcro165tzcrh2yl83g8qeqxueg2g5gzgu57y3fe3kc3',
