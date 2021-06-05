@@ -122,7 +122,7 @@ export class SignableTransaction {
         cosmosSignerInfos.forEach((signerInfo) => {
             // TODO: Support MultiSig in near future
             const publicKeyObj = signerInfo.public_key as any;
-            if (!publicKeyObj.key) {
+            if (!signerInfo.mode_info.single) {
                 throw new Error('SignableTransaction only supports single signer mode.');
             }
 
