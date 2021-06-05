@@ -119,6 +119,16 @@ describe('TxDecoder', function () {
                 .toCosmosJSON(),
         ).equal(JSON.stringify(cosmosTxObject));
     });
+    it('should decode the transaction correctly FOR CUSTOM MESSAGE PARAMS', function () {
+        const txDecoder = new TxDecoder();
+        expect(
+            txDecoder
+                .fromHex(
+                    '0aaf010a94010a1c2f636f736d6f732e62616e6b2e763162657461312e4d736753656e6412740a2b7463726f3138346c7461326c7379753437767779703265387a6d746361336b357971383570366334767033122b7463726f3138746b3839646472346c6733326535387370356b66726d3065676c646c6366753430777738301a180a08626173657463726f120c39393032323733303630373512116c656761637920616d696e6f206a736f6e1880c2d72f126c0a520a460a1f2f636f736d6f732e63727970746f2e736563703235366b312e5075624b657912230a2103c3d281a28592adce81bee3094f00eae26932cbc682fba239b90f47dac9fe703612040a02087f18b4820112160a100a08626173657463726f12043130303010a0c21e1a40af360b6fc4c6ee0129b16f09da17a126138cccacf2c5c67a9cd5aa79e911f4b30c069c07cbd863164dec3df102f5c622351d489354cc44a5c5f0c6e5614f5835',
+                )
+                .toCosmosJSON(),
+        ).equal(JSON.stringify(nonZeroTimeoutHeight));
+    });
 });
 
 let cosmosTxObject = {
@@ -184,26 +194,7 @@ let emptyAuthInfoTxObject = {
     },
 };
 
-let undefinedAuthInfoTxObject = {
-    tx: {
-        body: {
-            messages: [
-                {
-                    '@type': '/cosmos.gov.v1beta1.MsgVote',
-                    proposal_id: { low: 1244000, high: 0, unsigned: true },
-                    voter: 'tcro184lta2lsyu47vwyp2e8zmtca3k5yq85p6c4vp3',
-                    option: 2,
-                },
-            ],
-            memo: '',
-            timeout_height: '0',
-            extension_options: [],
-            non_critical_extension_options: [],
-        },
-        auth_info: {},
-        signatures: [],
-    },
-};
+const nonZeroTimeoutHeight = { "tx": { "body": { "messages": [{ "@type": "/cosmos.bank.v1beta1.MsgSend", "amount": [{ "denom": "basetcro", "amount": "990227306075" }], "from_address": "tcro184lta2lsyu47vwyp2e8zmtca3k5yq85p6c4vp3", "to_address": "tcro18tk89ddr4lg32e58sp5kfrm0egldlcfu40ww80" }], "memo": "legacy amino json", "timeout_height": "100000000", "extension_options": [], "non_critical_extension_options": [] }, "auth_info": { "signer_infos": [{ "public_key": { "@type": "/cosmos.crypto.secp256k1.PubKey", "key": "A8PSgaKFkq3Ogb7jCU8A6uJpMsvGgvuiObkPR9rJ/nA2" }, "mode_info": { "single": { "mode": "SIGN_MODE_LEGACY_AMINO_JSON" } }, "sequence": "16692" }], "fee": { "amount": [{ "denom": "basetcro", "amount": "1000" }], "gas_limit": "500000", "payer": "", "granter": "" } }, "signatures": ["rzYLb8TG7gEpsW8J2hehJhOMzKzyxcZ6nNWqeekR9LMMBpwHy9hjFk3sPfEC9cYiNR1Ik1TMRKXF8MblYU9YNQ=="] } };
 
 let multipleFeeAmountsTx = JSON.parse(JSON.stringify(cosmosTxObject));
 multipleFeeAmountsTx.tx.auth_info.fee.amount = [
