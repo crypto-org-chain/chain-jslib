@@ -50,43 +50,64 @@ describe('Testing MsgIssueDenom', function () {
         });
     });
 
-    it('should throw Error when the denom id is invalid', function() {
+    it('should throw Error when the denom id is invalid', function () {
         const anyName = 'anyName';
         const anySchema = 'anySchema';
         const anySender = 'tcro165tzcrh2yl83g8qeqxueg2g5gzgu57y3fe3kc3';
 
         // < 3 characters
-        expect(() => new cro.nft.MsgIssueDenom({
-            id: 'a',
-            name: anyName,
-            schema: anySchema,
-            sender: anySender,
-        })).to.throw('Expected property string `id` to have a minimum length of `3`, got `a` in object `options`');
+        expect(
+            () =>
+                new cro.nft.MsgIssueDenom({
+                    id: 'a',
+                    name: anyName,
+                    schema: anySchema,
+                    sender: anySender,
+                }),
+        ).to.throw('Expected property string `id` to have a minimum length of `3`, got `a` in object `options`');
         // > 64 characters
-        expect(() => new cro.nft.MsgIssueDenom({
-            id: 'a123456789012345567890123456789012345678901234567890123456789012345',
-            name: anyName,
-            schema: anySchema,
-            sender: anySender,
-        })).to.throw('Expected property string `id` to have a maximum length of `64`, got `a123456789012345567890123456789012345678901234567890123456789012345` in object `options`');
-        expect(() => new cro.nft.MsgIssueDenom({
-            id: '123',
-            name: anyName,
-            schema: anySchema,
-            sender: anySender,
-        })).to.throw('Expected property string `id` to start with lowercase alphabets in object `options`');
-        expect(() => new cro.nft.MsgIssueDenom({
-            id: 'aBC',
-            name: anyName,
-            schema: anySchema,
-            sender: anySender,
-        })).to.throw('Expected property string `id` to contain only lowercase alphanumeric characters in object `options`');
-        expect(() => new cro.nft.MsgIssueDenom({
-            id: 'abc_123',
-            name: anyName,
-            schema: anySchema,
-            sender: anySender,
-        })).to.throw('Expected property string `id` to contain only lowercase alphanumeric characters in object `options`');
+        expect(
+            () =>
+                new cro.nft.MsgIssueDenom({
+                    id: 'a123456789012345567890123456789012345678901234567890123456789012345',
+                    name: anyName,
+                    schema: anySchema,
+                    sender: anySender,
+                }),
+        ).to.throw(
+            'Expected property string `id` to have a maximum length of `64`, got `a123456789012345567890123456789012345678901234567890123456789012345` in object `options`',
+        );
+        expect(
+            () =>
+                new cro.nft.MsgIssueDenom({
+                    id: '123',
+                    name: anyName,
+                    schema: anySchema,
+                    sender: anySender,
+                }),
+        ).to.throw('Expected property string `id` to start with lowercase alphabets in object `options`');
+        expect(
+            () =>
+                new cro.nft.MsgIssueDenom({
+                    id: 'aBC',
+                    name: anyName,
+                    schema: anySchema,
+                    sender: anySender,
+                }),
+        ).to.throw(
+            'Expected property string `id` to contain only lowercase alphanumeric characters in object `options`',
+        );
+        expect(
+            () =>
+                new cro.nft.MsgIssueDenom({
+                    id: 'abc_123',
+                    name: anyName,
+                    schema: anySchema,
+                    sender: anySender,
+                }),
+        ).to.throw(
+            'Expected property string `id` to contain only lowercase alphanumeric characters in object `options`',
+        );
     });
 
     it('Test MsgIssueDenom conversion', function () {
@@ -116,7 +137,7 @@ describe('Testing MsgIssueDenom', function () {
             name: 'nft_name',
             schema: 'schema',
             sender: 'tcro165tzcrh2yl83g8qeqxueg2g5gzgu57y3fe3kc3',
-        })
+        });
 
         const rawMsg: legacyAmino.Msg = {
             type: 'cosmos-sdk/MsgIssueDenom',

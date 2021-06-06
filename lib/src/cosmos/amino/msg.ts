@@ -337,7 +337,6 @@ export function isMsgUndelegate(msg: Msg): msg is MsgUndelegate {
 
 // upgrade (no messages) - see https://github.com/cosmos/cosmos-sdk/blob/efa73c7/proto/cosmos/upgrade/upgrade.proto
 
-
 export interface MsgIssueDenom extends Msg {
     readonly type: 'cosmos-sdk/MsgIssueDenom';
     readonly value: {

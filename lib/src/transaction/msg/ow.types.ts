@@ -127,7 +127,11 @@ const owNFTIsAlphaNumericValidatorFn = (val: string) => ({
     message: (label: string) => `Expected ${label} to contain only lowercase alphanumeric characters`,
 });
 
-const owNFTId = ow.string.minLength(3).maxLength(64).validate(owNFTStartWithAlphabetValidatorFn).validate(owNFTIsAlphaNumericValidatorFn);
+const owNFTId = ow.string
+    .minLength(3)
+    .maxLength(64)
+    .validate(owNFTStartWithAlphabetValidatorFn)
+    .validate(owNFTIsAlphaNumericValidatorFn);
 
 export const owMsgIssueDenomOptions = owStrictObject().exactShape({
     id: owNFTId,

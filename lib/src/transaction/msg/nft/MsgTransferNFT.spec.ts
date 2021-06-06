@@ -50,82 +50,124 @@ describe('Testing MsgTransferNFT', function () {
         });
     });
 
-    it('should throw Error when the token id is invalid', function() {
+    it('should throw Error when the token id is invalid', function () {
         const anyDenomId = 'anydenomid';
         const anySender = 'tcro165tzcrh2yl83g8qeqxueg2g5gzgu57y3fe3kc3';
         const anyRecipient = 'tcro1j7pej8kplem4wt50p4hfvndhuw5jprxxn5625q';
 
         // < 3 characters
-        expect(() => new cro.nft.MsgTransferNFT({
-            id: 'a',
-            denomId: anyDenomId,
-            recipient: anyRecipient,
-            sender: anySender,
-        })).to.throw('Expected property string `id` to have a minimum length of `3`, got `a` in object `options`');
+        expect(
+            () =>
+                new cro.nft.MsgTransferNFT({
+                    id: 'a',
+                    denomId: anyDenomId,
+                    recipient: anyRecipient,
+                    sender: anySender,
+                }),
+        ).to.throw('Expected property string `id` to have a minimum length of `3`, got `a` in object `options`');
         // > 64 characters
-        expect(() => new cro.nft.MsgTransferNFT({
-            id: 'a123456789012345567890123456789012345678901234567890123456789012345',
-            denomId: anyDenomId,
-            recipient: anyRecipient,
-            sender: anySender,
-        })).to.throw('Expected property string `id` to have a maximum length of `64`, got `a123456789012345567890123456789012345678901234567890123456789012345` in object `options`');
-        expect(() => new cro.nft.MsgTransferNFT({
-            id: '123',
-            denomId: anyDenomId,
-            recipient: anyRecipient,
-            sender: anySender,
-        })).to.throw('Expected property string `id` to start with lowercase alphabets in object `options`');
-        expect(() => new cro.nft.MsgTransferNFT({
-            id: 'aBC',
-            denomId: anyDenomId,
-            recipient: anyRecipient,
-            sender: anySender,
-        })).to.throw('Expected property string `id` to contain only lowercase alphanumeric characters in object `options`');
-        expect(() => new cro.nft.MsgTransferNFT({
-            id: 'abc_123',
-            denomId: anyDenomId,
-            recipient: anyRecipient,
-            sender: anySender,
-        })).to.throw('Expected property string `id` to contain only lowercase alphanumeric characters in object `options`');
+        expect(
+            () =>
+                new cro.nft.MsgTransferNFT({
+                    id: 'a123456789012345567890123456789012345678901234567890123456789012345',
+                    denomId: anyDenomId,
+                    recipient: anyRecipient,
+                    sender: anySender,
+                }),
+        ).to.throw(
+            'Expected property string `id` to have a maximum length of `64`, got `a123456789012345567890123456789012345678901234567890123456789012345` in object `options`',
+        );
+        expect(
+            () =>
+                new cro.nft.MsgTransferNFT({
+                    id: '123',
+                    denomId: anyDenomId,
+                    recipient: anyRecipient,
+                    sender: anySender,
+                }),
+        ).to.throw('Expected property string `id` to start with lowercase alphabets in object `options`');
+        expect(
+            () =>
+                new cro.nft.MsgTransferNFT({
+                    id: 'aBC',
+                    denomId: anyDenomId,
+                    recipient: anyRecipient,
+                    sender: anySender,
+                }),
+        ).to.throw(
+            'Expected property string `id` to contain only lowercase alphanumeric characters in object `options`',
+        );
+        expect(
+            () =>
+                new cro.nft.MsgTransferNFT({
+                    id: 'abc_123',
+                    denomId: anyDenomId,
+                    recipient: anyRecipient,
+                    sender: anySender,
+                }),
+        ).to.throw(
+            'Expected property string `id` to contain only lowercase alphanumeric characters in object `options`',
+        );
     });
 
-    it('should throw Error when the denom id is invalid', function() {
+    it('should throw Error when the denom id is invalid', function () {
         const anyTokenId = 'anytokenid';
         const anySender = 'tcro165tzcrh2yl83g8qeqxueg2g5gzgu57y3fe3kc3';
         const anyRecipient = 'tcro1j7pej8kplem4wt50p4hfvndhuw5jprxxn5625q';
 
         // < 3 characters
-        expect(() => new cro.nft.MsgTransferNFT({
-            denomId: 'a',
-            id: anyTokenId,
-            recipient: anyRecipient,
-            sender: anySender,
-        })).to.throw('Expected property string `denomId` to have a minimum length of `3`, got `a` in object `options`');
+        expect(
+            () =>
+                new cro.nft.MsgTransferNFT({
+                    denomId: 'a',
+                    id: anyTokenId,
+                    recipient: anyRecipient,
+                    sender: anySender,
+                }),
+        ).to.throw('Expected property string `denomId` to have a minimum length of `3`, got `a` in object `options`');
         // > 64 characters
-        expect(() => new cro.nft.MsgTransferNFT({
-            denomId: 'a123456789012345567890123456789012345678901234567890123456789012345',
-            id: anyTokenId,
-            recipient: anyRecipient,
-            sender: anySender,
-        })).to.throw('Expected property string `denomId` to have a maximum length of `64`, got `a123456789012345567890123456789012345678901234567890123456789012345` in object `options`');
-        expect(() => new cro.nft.MsgTransferNFT({
-            denomId: '123',
-            id: anyTokenId,
-            recipient: anyRecipient,
-            sender: anySender,
-        })).to.throw('Expected property string `denomId` to start with lowercase alphabets in object `options`');
-        expect(() => new cro.nft.MsgTransferNFT({
-            denomId: 'aBC',
-            id: anyTokenId,
-            recipient: anyRecipient,
-            sender: anySender,
-        })).to.throw('Expected property string `denomId` to contain only lowercase alphanumeric characters in object `options`');
-        expect(() => new cro.nft.MsgTransferNFT({
-            denomId: 'abc_123',
-            id: anyTokenId,
-            recipient: anyRecipient,
-            sender: anySender,
-        })).to.throw('Expected property string `denomId` to contain only lowercase alphanumeric characters in object `options`');
+        expect(
+            () =>
+                new cro.nft.MsgTransferNFT({
+                    denomId: 'a123456789012345567890123456789012345678901234567890123456789012345',
+                    id: anyTokenId,
+                    recipient: anyRecipient,
+                    sender: anySender,
+                }),
+        ).to.throw(
+            'Expected property string `denomId` to have a maximum length of `64`, got `a123456789012345567890123456789012345678901234567890123456789012345` in object `options`',
+        );
+        expect(
+            () =>
+                new cro.nft.MsgTransferNFT({
+                    denomId: '123',
+                    id: anyTokenId,
+                    recipient: anyRecipient,
+                    sender: anySender,
+                }),
+        ).to.throw('Expected property string `denomId` to start with lowercase alphabets in object `options`');
+        expect(
+            () =>
+                new cro.nft.MsgTransferNFT({
+                    denomId: 'aBC',
+                    id: anyTokenId,
+                    recipient: anyRecipient,
+                    sender: anySender,
+                }),
+        ).to.throw(
+            'Expected property string `denomId` to contain only lowercase alphanumeric characters in object `options`',
+        );
+        expect(
+            () =>
+                new cro.nft.MsgTransferNFT({
+                    denomId: 'abc_123',
+                    id: anyTokenId,
+                    recipient: anyRecipient,
+                    sender: anySender,
+                }),
+        ).to.throw(
+            'Expected property string `denomId` to contain only lowercase alphanumeric characters in object `options`',
+        );
     });
 
     it('Test MsgTransferNFT conversion', function () {
@@ -155,7 +197,7 @@ describe('Testing MsgTransferNFT', function () {
             denomId: 'basetcro',
             sender: 'tcro165tzcrh2yl83g8qeqxueg2g5gzgu57y3fe3kc3',
             recipient: 'tcro1j7pej8kplem4wt50p4hfvndhuw5jprxxn5625q',
-        })
+        });
 
         const rawMsg: legacyAmino.Msg = {
             type: 'cosmos-sdk/MsgTransferNFT',
