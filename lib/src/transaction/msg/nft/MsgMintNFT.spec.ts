@@ -8,6 +8,7 @@ import { Secp256k1KeyPair } from '../../../keypair/secp256k1';
 import { Bytes } from '../../../utils/bytes/bytes';
 import { CroSDK } from '../../../core/cro';
 import { COSMOS_MSG_TYPEURL } from '../../common/constants/typeurl';
+import * as legacyAmino from '../../../cosmos/amino';
 
 const cro = CroSDK({
     network: {
@@ -189,6 +190,33 @@ describe('Testing MsgMintNFT', function () {
         expect(MsgMintNFT.toRawMsg()).to.eqls(rawMsg);
     });
 
+    it('Test MsgMintNFT conversion Json', function () {
+        const msgMintNFT = new cro.nft.MsgMintNFT({
+            id: 'alphanumericid1234',
+            name: 'nft_name',
+            sender: 'tcro165tzcrh2yl83g8qeqxueg2g5gzgu57y3fe3kc3',
+            denomId: 'basetcro',
+            uri: 'https://someuri',
+            data: 'some_data_nft',
+            recipient: 'tcro1j7pej8kplem4wt50p4hfvndhuw5jprxxn5625q',
+        })
+
+        const rawMsg: legacyAmino.Msg = {
+            type: 'cosmos-sdk/MsgMintNFT',
+            value: {
+                id: 'alphanumericid1234',
+                name: 'nft_name',
+                sender: 'tcro165tzcrh2yl83g8qeqxueg2g5gzgu57y3fe3kc3',
+                denom_id: 'basetcro',
+                uri: 'https://someuri',
+                data: 'some_data_nft',
+                recipient: 'tcro1j7pej8kplem4wt50p4hfvndhuw5jprxxn5625q',
+            },
+        };
+
+        expect(msgMintNFT.toRawAminoMsg()).to.eqls(rawMsg);
+    });
+
     it('Test appendTxBody MsgMintNFT Tx signing', function () {
         const anyKeyPair = Secp256k1KeyPair.fromPrivKey(
             Bytes.fromHexString('66633d18513bec30dd11a209f1ceb1787aa9e2069d5d47e590174dc9665102b3'),
@@ -246,19 +274,5 @@ describe('Testing MsgMintNFT', function () {
         };
 
         expect(() => new cro.nft.MsgMintNFT(params2)).to.throw('Provided `recipient` does not match network selected');
-    });
-
-    it('Should throw on getting toRawAminoMsg()', function () {
-        const MsgMintNFT = new cro.nft.MsgMintNFT({
-            id: 'alphanumericid1234',
-            name: 'nft_name',
-            sender: 'tcro165tzcrh2yl83g8qeqxueg2g5gzgu57y3fe3kc3',
-            denomId: 'basetcro',
-            uri: 'https://someuri',
-            data: 'some_data_nft',
-            recipient: 'tcro1j7pej8kplem4wt50p4hfvndhuw5jprxxn5625q',
-        });
-
-        expect(() => MsgMintNFT.toRawAminoMsg()).to.throw('Amino encoding format not support for NFT module.');
     });
 });

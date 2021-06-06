@@ -8,6 +8,7 @@ import { Secp256k1KeyPair } from '../../../keypair/secp256k1';
 import { Bytes } from '../../../utils/bytes/bytes';
 import { CroSDK } from '../../../core/cro';
 import { COSMOS_MSG_TYPEURL } from '../../common/constants/typeurl';
+import * as legacyAmino from '../../../cosmos/amino';
 
 const cro = CroSDK({
     network: {
@@ -131,6 +132,25 @@ describe('Testing MsgBurnNFT', function () {
         expect(MsgBurnNFT.toRawMsg()).to.eqls(rawMsg);
     });
 
+    it('Test MsgMintNFT conversion Json', function () {
+        const msgBurnNFT = new cro.nft.MsgBurnNFT({
+            id: 'alphanumericid123',
+            denomId: 'basetcro',
+            sender: 'tcro165tzcrh2yl83g8qeqxueg2g5gzgu57y3fe3kc3',
+        });
+
+        const rawMsg: legacyAmino.Msg = {
+            type: 'cosmos-sdk/MsgBurnNFT',
+            value: {
+                id: 'alphanumericid123',
+                denom_id: 'basetcro',
+                sender: 'tcro165tzcrh2yl83g8qeqxueg2g5gzgu57y3fe3kc3',
+            },
+        };
+
+        expect(msgBurnNFT.toRawAminoMsg()).to.eqls(rawMsg);
+    });
+
     it('Test appendTxBody MsgBurnNFT Tx signing', function () {
         const anyKeyPair = Secp256k1KeyPair.fromPrivKey(
             Bytes.fromHexString('66633d18513bec30dd11a209f1ceb1787aa9e2069d5d47e590174dc9665102b3'),
@@ -168,15 +188,5 @@ describe('Testing MsgBurnNFT', function () {
         };
 
         expect(() => new cro.nft.MsgBurnNFT(params1)).to.throw('Provided `sender` does not match network selected');
-    });
-
-    it('Should throw on getting toRawAminoMsg()', function () {
-        const MsgBurnNFT = new cro.nft.MsgBurnNFT({
-            id: 'alphanumericid123',
-            denomId: 'basetcro',
-            sender: 'tcro165tzcrh2yl83g8qeqxueg2g5gzgu57y3fe3kc3',
-        });
-
-        expect(() => MsgBurnNFT.toRawAminoMsg()).to.throw('Amino encoding format not support for NFT module.');
     });
 });

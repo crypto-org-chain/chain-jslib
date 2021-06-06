@@ -56,7 +56,15 @@ export const msgIssueDenomNFT = function (config: InitConfigurations) {
 
         // eslint-disable-next-line class-methods-use-this
         toRawAminoMsg(): legacyAmino.Msg {
-            throw new Error('Amino encoding format not support for NFT module.');
+            return {
+                type: 'cosmos-sdk/MsgIssueDenom',
+                value: {
+                    id: this.id,
+                    name: this.name,
+                    schema: this.schema,
+                    sender: this.sender,
+                },
+            } as legacyAmino.MsgIssueDenom;
         }
 
         validateAddress() {
