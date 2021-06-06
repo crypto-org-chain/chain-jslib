@@ -8,6 +8,7 @@ import { Secp256k1KeyPair } from '../../../keypair/secp256k1';
 import { Bytes } from '../../../utils/bytes/bytes';
 import { CroSDK } from '../../../core/cro';
 import { COSMOS_MSG_TYPEURL } from '../../common/constants/typeurl';
+import * as legacyAmino from '../../../cosmos/amino';
 
 const cro = CroSDK({
     network: {
@@ -79,13 +80,13 @@ describe('Testing MsgIssueDenom', function () {
             name: anyName,
             schema: anySchema,
             sender: anySender,
-        })).to.throw('Expected property string `id` to start with lowercase alphabets in object `options`');
+        })).to.throw('Expected property string `id` to contain only lowercase alphanumeric characters in object `options`');
         expect(() => new cro.nft.MsgIssueDenom({
             id: 'abc_123',
             name: anyName,
             schema: anySchema,
             sender: anySender,
-        })).to.throw('Expected property string `id` to start with lowercase alphabets in object `options`');
+        })).to.throw('Expected property string `id` to contain only lowercase alphanumeric characters in object `options`');
     });
 
     it('Test MsgIssueDenom conversion', function () {
@@ -107,6 +108,27 @@ describe('Testing MsgIssueDenom', function () {
         };
 
         expect(MsgIssueDenom.toRawMsg()).to.eqls(rawMsg);
+    });
+
+    it('Test MsgIssueDenom conversion Json', function () {
+        const msgIssueDenom = new cro.nft.MsgIssueDenom({
+            id: 'alphanumericid123',
+            name: 'nft_name',
+            schema: 'schema',
+            sender: 'tcro165tzcrh2yl83g8qeqxueg2g5gzgu57y3fe3kc3',
+        })
+
+        const rawMsg: legacyAmino.Msg = {
+            type: 'cosmos-sdk/MsgIssueDenom',
+            value: {
+                id: 'alphanumericid123',
+                name: 'nft_name',
+                schema: 'schema',
+                sender: 'tcro165tzcrh2yl83g8qeqxueg2g5gzgu57y3fe3kc3',
+            },
+        };
+
+        expect(msgIssueDenom.toRawAminoMsg()).to.eqls(rawMsg);
     });
 
     it('Test appendTxBody MsgIssueDenom Tx signing', function () {
@@ -148,16 +170,5 @@ describe('Testing MsgIssueDenom', function () {
         };
 
         expect(() => new cro.nft.MsgIssueDenom(params1)).to.throw('Provided `sender` does not match network selected');
-    });
-
-    it('Should throw on getting toRawAminoMsg()', function () {
-        const MsgIssueDenom = new cro.nft.MsgIssueDenom({
-            id: 'alphanumericid123',
-            name: 'nft_name',
-            schema: 'schema',
-            sender: 'tcro165tzcrh2yl83g8qeqxueg2g5gzgu57y3fe3kc3',
-        });
-
-        expect(() => MsgIssueDenom.toRawAminoMsg()).to.throw('Amino encoding format not support for NFT module.');
     });
 });

@@ -127,17 +127,18 @@ const owNFTIsAlphaNumericValidatorFn = (val: string) => ({
     message: (label: string) => `Expected ${label} to contain only lowercase alphanumeric characters`,
 });
 
+const owNFTId = ow.string.minLength(3).maxLength(64).validate(owNFTStartWithAlphabetValidatorFn).validate(owNFTIsAlphaNumericValidatorFn);
 
 export const owMsgIssueDenomOptions = owStrictObject().exactShape({
-    id: ow.string.minLength(3).maxLength(64).validate(owNFTStartWithAlphabetValidatorFn).validate(owNFTIsAlphaNumericValidatorFn),
+    id: owNFTId,
     name: ow.string,
     schema: ow.string,
     sender: ow.string,
 });
 
 export const owMsgMintNFTOptions = owStrictObject().exactShape({
-    id: ow.string,
-    denomId: ow.string,
+    id: owNFTId,
+    denomId: owNFTId,
     name: ow.string,
     uri: ow.string,
     data: ow.string,
@@ -146,8 +147,8 @@ export const owMsgMintNFTOptions = owStrictObject().exactShape({
 });
 
 export const owMsgEditNFTOptions = owStrictObject().exactShape({
-    id: ow.string,
-    denomId: ow.string,
+    id: owNFTId,
+    denomId: owNFTId,
     name: ow.string,
     uri: ow.string,
     data: ow.string,
@@ -155,14 +156,14 @@ export const owMsgEditNFTOptions = owStrictObject().exactShape({
 });
 
 export const owMsgTransferNFTOptions = owStrictObject().exactShape({
-    id: ow.string,
-    denomId: ow.string,
+    id: owNFTId,
+    denomId: owNFTId,
     sender: ow.string,
     recipient: ow.string,
 });
 
 export const owMsgBurnNFTOptions = owStrictObject().exactShape({
-    id: ow.string,
-    denomId: ow.string,
+    id: owNFTId,
+    denomId: owNFTId,
     sender: ow.string,
 });

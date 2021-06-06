@@ -31,7 +31,7 @@ const cro = CroSDK({
 describe('Testing MsgMintNFT', function () {
     fuzzyDescribe('should throw Error when options is invalid', function (fuzzy) {
         const anyValidOptions = {
-            id: 'alphaNumericID',
+            id: 'alphanumericid',
             name: 'nft_name',
             schema: 'schema',
             sender: 'tcro165tzcrh2yl83g8qeqxueg2g5gzgu57y3fe3kc3',
@@ -47,9 +47,124 @@ describe('Testing MsgMintNFT', function () {
         });
     });
 
+    it('should throw Error when the token id is invalid', function() {
+        const anyDenomId = 'anydenomid';
+        const anyName = 'anyname';
+        const anyUri = 'anyuri';
+        const anyData = 'anydata';
+        const anySender = 'tcro165tzcrh2yl83g8qeqxueg2g5gzgu57y3fe3kc3';
+        const anyRecipient = 'tcro1j7pej8kplem4wt50p4hfvndhuw5jprxxn5625q';
+
+        // < 3 characters
+        expect(() => new cro.nft.MsgMintNFT({
+            id: 'a',
+            name: anyName,
+            sender: anySender,
+            denomId: anyDenomId,
+            uri: anyUri,
+            data: anyData,
+            recipient: anyRecipient,
+        })).to.throw('Expected property string `id` to have a minimum length of `3`, got `a` in object `options`');
+        // > 64 characters
+        expect(() => new cro.nft.MsgMintNFT({
+            id: 'a123456789012345567890123456789012345678901234567890123456789012345',
+            name: anyName,
+            sender: anySender,
+            denomId: anyDenomId,
+            uri: anyUri,
+            data: anyData,
+            recipient: anyRecipient,
+        })).to.throw('Expected property string `id` to have a maximum length of `64`, got `a123456789012345567890123456789012345678901234567890123456789012345` in object `options`');
+        expect(() => new cro.nft.MsgMintNFT({
+            id: '123',
+            name: anyName,
+            sender: anySender,
+            denomId: anyDenomId,
+            uri: anyUri,
+            data: anyData,
+            recipient: anyRecipient,
+        })).to.throw('Expected property string `id` to start with lowercase alphabets in object `options`');
+        expect(() => new cro.nft.MsgMintNFT({
+            id: 'aBC',
+            name: anyName,
+            sender: anySender,
+            denomId: anyDenomId,
+            uri: anyUri,
+            data: anyData,
+            recipient: anyRecipient,
+        })).to.throw('Expected property string `id` to contain only lowercase alphanumeric characters in object `options`');
+        expect(() => new cro.nft.MsgMintNFT({
+            id: 'abc_123',
+            name: anyName,
+            sender: anySender,
+            denomId: anyDenomId,
+            uri: anyUri,
+            data: anyData,
+            recipient: anyRecipient,
+        })).to.throw('Expected property string `id` to contain only lowercase alphanumeric characters in object `options`');
+    });
+
+    it('should throw Error when the denom id is invalid', function() {
+        const anyTokenId = 'anytokenid';
+        const anyName = 'anyname';
+        const anyUri = 'anyuri';
+        const anyData = 'anydata';
+        const anySender = 'tcro165tzcrh2yl83g8qeqxueg2g5gzgu57y3fe3kc3';
+        const anyRecipient = 'tcro1j7pej8kplem4wt50p4hfvndhuw5jprxxn5625q';
+
+
+        // < 3 characters
+        expect(() => new cro.nft.MsgMintNFT({
+            denomId: 'a',
+            name: anyName,
+            sender: anySender,
+            id: anyTokenId,
+            uri: anyUri,
+            data: anyData,
+            recipient: anyRecipient,
+        })).to.throw('Expected property string `denomId` to have a minimum length of `3`, got `a` in object `options`');
+        // > 64 characters
+        expect(() => new cro.nft.MsgMintNFT({
+            denomId: 'a123456789012345567890123456789012345678901234567890123456789012345',
+            name: anyName,
+            sender: anySender,
+            id: anyTokenId,
+            uri: anyUri,
+            data: anyData,
+            recipient: anyRecipient,
+        })).to.throw('Expected property string `denomId` to have a maximum length of `64`, got `a123456789012345567890123456789012345678901234567890123456789012345` in object `options`');
+        expect(() => new cro.nft.MsgMintNFT({
+            denomId: '123',
+            name: anyName,
+            sender: anySender,
+            id: anyTokenId,
+            uri: anyUri,
+            data: anyData,
+            recipient: anyRecipient,
+        })).to.throw('Expected property string `denomId` to start with lowercase alphabets in object `options`');
+        expect(() => new cro.nft.MsgMintNFT({
+            denomId: 'aBC',
+            name: anyName,
+            sender: anySender,
+            id: anyTokenId,
+            uri: anyUri,
+            data: anyData,
+            recipient: anyRecipient,
+        })).to.throw('Expected property string `denomId` to contain only lowercase alphanumeric characters in object `options`');
+        expect(() => new cro.nft.MsgMintNFT({
+            denomId: 'abc_123',
+            name: anyName,
+            sender: anySender,
+            id: anyTokenId,
+            uri: anyUri,
+            data: anyData,
+            recipient: anyRecipient,
+        })).to.throw('Expected property string `denomId` to contain only lowercase alphanumeric characters in object `options`');
+    });
+
     it('Test MsgMintNFT conversion', function () {
         const MsgMintNFT = new cro.nft.MsgMintNFT({
-            id: 'alphanumericId1234',
+            id: 'alphanumericid1234',
             name: 'nft_name',
             sender: 'tcro165tzcrh2yl83g8qeqxueg2g5gzgu57y3fe3kc3',
             denomId: 'basetcro',
@@ -61,7 +176,7 @@ describe('Testing MsgMintNFT', function () {
         const rawMsg: Msg = {
             typeUrl: COSMOS_MSG_TYPEURL.nft.MsgMintNFT,
             value: {
-                id: 'alphanumericId1234',
+                id: 'alphanumericid1234',
                 name: 'nft_name',
                 sender: 'tcro165tzcrh2yl83g8qeqxueg2g5gzgu57y3fe3kc3',
                 denomId: 'basetcro',
@@ -80,7 +195,7 @@ describe('Testing MsgMintNFT', function () {
         );
 
         const MsgMintNFT = new cro.nft.MsgMintNFT({
-            id: 'alphanumericId1234',
+            id: 'alphanumericid1234',
             name: 'nft_name',
             sender: 'tcro165tzcrh2yl83g8qeqxueg2g5gzgu57y3fe3kc3',
             denomId: 'basetcro',
@@ -103,13 +218,13 @@ describe('Testing MsgMintNFT', function () {
 
         const signedTxHex = signedTx.encode().toHexString();
         expect(signedTxHex).to.be.eql(
-            '0ac6010ac3010a1c2f636861696e6d61696e2e6e66742e76312e4d73674d696e744e465412a2010a12616c7068616e756d657269634964313233341208626173657463726f1a086e66745f6e616d65220f68747470733a2f2f736f6d657572692a0d736f6d655f646174615f6e6674322b7463726f313635747a63726832796c3833673871657178756567326735677a6775353779336665336b63333a2b7463726f316a3770656a386b706c656d347774353070346866766e64687577356a707278786e353632357112580a500a460a1f2f636f736d6f732e63727970746f2e736563703235366b312e5075624b657912230a2103fd0d560b6c4aa1ca16721d039a192867c3457e19dad553edb98e7ba88b159c2712040a0208011802120410c09a0c1a403a4edfd56ad01aa5c0f8fb12f1bb87c069ccfdd33afa1856a0666d447ab80bad7105d285bfc9f684c54ad6411225a955cb2d2e372d543155791f491699ffcd4c',
+            '0ac6010ac3010a1c2f636861696e6d61696e2e6e66742e76312e4d73674d696e744e465412a2010a12616c7068616e756d657269636964313233341208626173657463726f1a086e66745f6e616d65220f68747470733a2f2f736f6d657572692a0d736f6d655f646174615f6e6674322b7463726f313635747a63726832796c3833673871657178756567326735677a6775353779336665336b63333a2b7463726f316a3770656a386b706c656d347774353070346866766e64687577356a707278786e353632357112580a500a460a1f2f636f736d6f732e63727970746f2e736563703235366b312e5075624b657912230a2103fd0d560b6c4aa1ca16721d039a192867c3457e19dad553edb98e7ba88b159c2712040a0208011802120410c09a0c1a401fdc840c63d23e4c4dbf02fffff236c8345d8b5442422fe0e686609f62318a490e8c626d9d9870e23c9086091923198e95731ee06b198e3adee8482b797ae5dd',
         );
     });
 
     it('Should validate MsgMintNFT provided addresses with network config', function () {
         const params1 = {
-            id: 'alphanumericId1234',
+            id: 'alphanumericid1234',
             name: 'nft_name',
             sender: 'cro1pndm4ywdf4qtmupa0fqe75krmqed2znjyj6x8f',
             denomId: 'basetcro',
@@ -121,7 +236,7 @@ describe('Testing MsgMintNFT', function () {
         expect(() => new cro.nft.MsgMintNFT(params1)).to.throw('Provided `sender` does not match network selected');
 
         const params2 = {
-            id: 'alphanumericId1234',
+            id: 'alphanumericid1234',
             name: 'nft_name',
             sender: 'tcro1j7pej8kplem4wt50p4hfvndhuw5jprxxn5625q',
             denomId: 'basetcro',
@@ -135,7 +250,7 @@ describe('Testing MsgMintNFT', function () {
 
     it('Should throw on getting toRawAminoMsg()', function () {
         const MsgMintNFT = new cro.nft.MsgMintNFT({
-            id: 'alphanumericId1234',
+            id: 'alphanumericid1234',
             name: 'nft_name',
             sender: 'tcro165tzcrh2yl83g8qeqxueg2g5gzgu57y3fe3kc3',
             denomId: 'basetcro',
