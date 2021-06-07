@@ -25,6 +25,22 @@ const TestNetwork: Network = {
     rpcUrl: '',
 };
 
+const TestNetworkWithNoRpcUrl: Network = {
+    defaultNodeUrl: '',
+    chainId: 'testnet-croeseid-1',
+    addressPrefix: 'tcro',
+    validatorAddressPrefix: 'tcrocncl',
+    validatorPubKeyPrefix: 'tcrocnclconspub',
+    coin: {
+        baseDenom: 'basetcro',
+        croDenom: 'tcro',
+    },
+    bip44Path: {
+        coinType: 1,
+        account: 0,
+    },
+};
+
 describe('Testing Tx signing with custom parameters', function () {
     it('test passing custom properties', function () {
         const cro = CroSDK({ network: TestNetwork });
@@ -60,6 +76,48 @@ describe('Testing Tx signing with custom parameters', function () {
                 publicKey: keyPair.getPubKey(),
                 accountNumber: new Big('179'),
                 accountSequence: new Big('1'),
+            })
+            .setFee(cro.Coin.fromBaseUnit('10000'))
+            .setGasLimit('100000')
+            .setMemo('amino test')
+            .toSignable();
+
+        const signature = keyPair.sign(signableTx.toSignDocumentHash(0));
+        const expectedSignature =
+            'Zg0SO4Y8lpY1Fo7rBpF1DnxXB46m/EC/1n2BO/p1TDEFWN9zF5DYrvtdKcuLHh+o/lBQ3QJ9lyibsnmOdfy7kA==';
+        expect(signature.toBase64String()).to.eq(expectedSignature);
+
+        const signedTx = signableTx.setSignature(0, signature).toSigned();
+
+        const expectedTxHex =
+            '0a9b010a8c010a1c2f636f736d6f732e62616e6b2e763162657461312e4d736753656e64126c0a2b7463726f31667a63727a61336a3466323637376a667578756c6b6733337a36383532717371733868783530122b7463726f31667a63727a61336a3466323637376a667578756c6b6733337a363835327173717338687835301a100a08626173657463726f120431303030120a616d696e6f2074657374126b0a500a460a1f2f636f736d6f732e63727970746f2e736563703235366b312e5075624b657912230a210223c9395d41013e6470c8d27da8b75850554faada3fe3e812660cbdf4534a85d712040a020801180112170a110a08626173657463726f1205313030303010a08d061a40660d123b863c969635168eeb0691750e7c57078ea6fc40bfd67d813bfa754c310558df731790d8aefb5d29cb8b1e1fa8fe5050dd027d97289bb2798e75fcbb90';
+        expect(signedTx.getHexEncoded()).to.eq(expectedTxHex);
+
+        const expectedTxHash = '7055538EE819D20C8E26948B5EAA19278D2B1C7C7FDFF8ED5049A40C039322C0';
+        expect(signedTx.getTxHash()).to.eq(expectedTxHash);
+    });
+
+    it('sign should with network having optional rpcURL', function () {
+        const mnemonic =
+            'source knee choice chef exact recall craft satoshi coffee intact fun eternal sudden client quote recall sausage injury return duck bottom security like title';
+        const hdKey = HDKey.fromMnemonic(mnemonic);
+        const privKey = hdKey.derivePrivKey("m/44'/1'/0'/0/0");
+        const keyPair = Secp256k1KeyPair.fromPrivKey(privKey);
+
+        const cro = CroSDK({ network: TestNetworkWithNoRpcUrl });
+        const msg = new cro.bank.MsgSend({
+            fromAddress: new cro.Address(keyPair).account(),
+            toAddress: 'tcro1fzcrza3j4f2677jfuxulkg33z6852qsqs8hx50',
+            amount: cro.Coin.fromBaseUnit('1000'),
+        });
+
+        const rawTx = new cro.RawTransaction();
+        const signableTx = rawTx
+            .appendMessage(msg)
+            .addSigner({
+                publicKey: keyPair.getPubKey(),
+                accountNumber: new Big('0'),
+                accountSequence: new Big('230'),
             })
             .setFee(cro.Coin.fromBaseUnit('10000'))
             .setGasLimit('100000')
