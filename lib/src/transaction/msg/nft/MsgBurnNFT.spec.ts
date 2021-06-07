@@ -182,7 +182,7 @@ describe('Testing MsgBurnNFT', function () {
         });
 
         const rawMsg: legacyAmino.Msg = {
-            type: 'cosmos-sdk/MsgBurnNFT',
+            type: 'chainmain/nft/MsgBurnNFT',
             value: {
                 id: 'alphanumericid123',
                 denom_id: 'basetcro',

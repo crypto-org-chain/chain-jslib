@@ -52,7 +52,7 @@ export const msgBurnNFT = function (config: InitConfigurations) {
         // eslint-disable-next-line class-methods-use-this
         toRawAminoMsg(): legacyAmino.Msg {
             return {
-                type: 'cosmos-sdk/MsgBurnNFT',
+                type: 'chainmain/nft/MsgBurnNFT',
                 value: {
                     id: this.id,
                     sender: this.sender,

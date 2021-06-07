@@ -57,7 +57,7 @@ export const msgTransferNFT = function (config: InitConfigurations) {
         // eslint-disable-next-line class-methods-use-this
         toRawAminoMsg(): legacyAmino.Msg {
             return {
-                type: 'cosmos-sdk/MsgTransferNFT',
+                type: 'chainmain/nft/MsgTransferNFT',
                 value: {
                     id: this.id,
                     sender: this.sender,

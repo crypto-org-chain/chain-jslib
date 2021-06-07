@@ -57,7 +57,7 @@ export const msgIssueDenomNFT = function (config: InitConfigurations) {
         // eslint-disable-next-line class-methods-use-this
         toRawAminoMsg(): legacyAmino.Msg {
             return {
-                type: 'cosmos-sdk/MsgIssueDenom',
+                type: 'chainmain/nft/MsgIssueDenom',
                 value: {
                     id: this.id,
                     name: this.name,

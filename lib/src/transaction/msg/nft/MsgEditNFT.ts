@@ -67,7 +67,7 @@ export const msgEditNFT = function (config: InitConfigurations) {
         // eslint-disable-next-line class-methods-use-this
         toRawAminoMsg(): legacyAmino.Msg {
             return {
-                type: 'cosmos-sdk/MsgEditNFT',
+                type: 'chainmain/nft/MsgEditNFT',
                 value: {
                     id: this.id,
                     name: this.name,

@@ -200,7 +200,7 @@ describe('Testing MsgTransferNFT', function () {
         });
 
         const rawMsg: legacyAmino.Msg = {
-            type: 'cosmos-sdk/MsgTransferNFT',
+            type: 'chainmain/nft/MsgTransferNFT',
             value: {
                 id: 'alphanumericid1234',
                 denom_id: 'basetcro',

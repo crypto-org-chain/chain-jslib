@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 import 'mocha';
 import { expect } from 'chai';
 import Big from 'big.js';
@@ -194,6 +195,40 @@ describe('Testing MsgEditNFT', function () {
         );
     });
 
+    it('Should throw when denomName and URI is invalid', function () {
+        const anyTokenId = 'anytokenid';
+        const anyName = '      '; // String only of whitespaces
+        const anyUri = 'anyuri';
+        const anyData = 'anydata';
+        const anySender = 'tcro165tzcrh2yl83g8qeqxueg2g5gzgu57y3fe3kc3';
+        expect(
+            () =>
+                new cro.nft.MsgEditNFT({
+                    denomId: 'abc123',
+                    name: anyName,
+                    sender: anySender,
+                    id: anyTokenId,
+                    uri: anyUri,
+                    data: anyData,
+                }),
+        ).to.throw('Expected property string `name` to be non-empty string in object `options`');
+
+        const invalid_uri =
+            'Iamrandomstringoflengthmorethan2560ac6010ac3010a1c2f636861696e6d61696e2e6e66742e76312e4d73674d696e744e465412a2010a12616c7068616e756d657269636964313233341208626173657463726f1a086e66745f6e616d65220f68747470733a2f2f736f6d657572692a0d736f6d655f646174615f6e6674322b7463726f313635747a63726832796c383367';
+        expect(
+            () =>
+                new cro.nft.MsgEditNFT({
+                    denomId: 'abc123',
+                    name: 'anyName',
+                    sender: anySender,
+                    id: anyTokenId,
+                    uri: invalid_uri,
+                    data: anyData,
+                }),
+        ).to.throw(
+            'Expected property string `uri` to have a maximum length of `256`, got `Iamrandomstringoflengthmorethan2560ac6010ac3010a1c2f636861696e6d61696e2e6e66742e76312e4d73674d696e744e465412a2010a12616c7068616e756d657269636964313233341208626173657463726f1a086e66745f6e616d65220f68747470733a2f2f736f6d657572692a0d736f6d655f646174615f6e6674322b7463726f313635747a63726832796c383367` in object `options`',
+        );
+    });
     it('Test MsgEditNFT conversion', function () {
         const MsgEditNFT = new cro.nft.MsgEditNFT({
             id: 'alphanumericid1234',
@@ -231,7 +266,7 @@ describe('Testing MsgEditNFT', function () {
         });
 
         const rawMsg: legacyAmino.Msg = {
-            type: 'cosmos-sdk/MsgMintNFT',
+            type: 'chainmain/nft/MsgMintNFT',
             value: {
                 id: 'alphanumericid1234',
                 name: 'nft_name',

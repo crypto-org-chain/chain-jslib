@@ -110,6 +110,20 @@ describe('Testing MsgIssueDenom', function () {
         );
     });
 
+    it('Should throw when denomName and URI is invalid', function () {
+        const anyName = '      '; // String only of whitespaces
+        const anySender = 'tcro165tzcrh2yl83g8qeqxueg2g5gzgu57y3fe3kc3';
+        expect(
+            () =>
+                new cro.nft.MsgIssueDenom({
+                    id: 'abc',
+                    name: anyName,
+                    schema: 'anySchema',
+                    sender: anySender,
+                }),
+        ).to.throw('Expected property string `name` to be non-empty string in object `options`');
+    });
+
     it('Test MsgIssueDenom conversion', function () {
         const MsgIssueDenom = new cro.nft.MsgIssueDenom({
             id: 'alphanumericid123',
@@ -140,7 +154,7 @@ describe('Testing MsgIssueDenom', function () {
         });
 
         const rawMsg: legacyAmino.Msg = {
-            type: 'cosmos-sdk/MsgIssueDenom',
+            type: 'chainmain/nft/MsgIssueDenom',
             value: {
                 id: 'alphanumericid123',
                 name: 'nft_name',

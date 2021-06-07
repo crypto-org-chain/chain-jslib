@@ -1,3 +1,5 @@
+/* eslint-disable camelcase */
+// @ts-nocheck
 import 'mocha';
 import { expect } from 'chai';
 import Big from 'big.js';
@@ -13,7 +15,7 @@ import * as legacyAmino from '../../../cosmos/amino';
 const cro = CroSDK({
     network: {
         defaultNodeUrl: '',
-        chainId: 'testnet-croeseid-1',
+        chainId: 'testnet',
         addressPrefix: 'tcro',
         validatorAddressPrefix: 'tcrocncl',
         validatorPubKeyPrefix: 'tcrocnclconspub',
@@ -204,6 +206,44 @@ describe('Testing MsgMintNFT', function () {
         );
     });
 
+    it('Should throw when denomName and URI is invalid', function () {
+        const anyTokenId = 'anytokenid';
+        const anyName = '      '; // String only of whitespaces
+        const anyUri = 'anyuri';
+        const anyData = 'anydata';
+        const anySender = 'tcro165tzcrh2yl83g8qeqxueg2g5gzgu57y3fe3kc3';
+        const anyRecipient = 'tcro1j7pej8kplem4wt50p4hfvndhuw5jprxxn5625q';
+        expect(
+            () =>
+                new cro.nft.MsgMintNFT({
+                    denomId: 'abc123',
+                    name: anyName,
+                    sender: anySender,
+                    id: anyTokenId,
+                    uri: anyUri,
+                    data: anyData,
+                    recipient: anyRecipient,
+                }),
+        ).to.throw('Expected property string `name` to be non-empty string in object `options`');
+
+        const invalid_uri =
+            'Iamrandomstringoflengthmorethan2560ac6010ac3010a1c2f636861696e6d61696e2e6e66742e76312e4d73674d696e744e465412a2010a12616c7068616e756d657269636964313233341208626173657463726f1a086e66745f6e616d65220f68747470733a2f2f736f6d657572692a0d736f6d655f646174615f6e6674322b7463726f313635747a63726832796c383367';
+        expect(
+            () =>
+                new cro.nft.MsgMintNFT({
+                    denomId: 'abc123',
+                    name: 'anyName',
+                    sender: anySender,
+                    id: anyTokenId,
+                    uri: invalid_uri,
+                    data: anyData,
+                    recipient: anyRecipient,
+                }),
+        ).to.throw(
+            'Expected property string `uri` to have a maximum length of `256`, got `Iamrandomstringoflengthmorethan2560ac6010ac3010a1c2f636861696e6d61696e2e6e66742e76312e4d73674d696e744e465412a2010a12616c7068616e756d657269636964313233341208626173657463726f1a086e66745f6e616d65220f68747470733a2f2f736f6d657572692a0d736f6d655f646174615f6e6674322b7463726f313635747a63726832796c383367` in object `options`',
+        );
+    });
+
     it('Test MsgMintNFT conversion', function () {
         const MsgMintNFT = new cro.nft.MsgMintNFT({
             id: 'alphanumericid1234',
@@ -243,7 +283,7 @@ describe('Testing MsgMintNFT', function () {
         });
 
         const rawMsg: legacyAmino.Msg = {
-            type: 'cosmos-sdk/MsgMintNFT',
+            type: 'chainmain/nft/MsgMintNFT',
             value: {
                 id: 'alphanumericid1234',
                 name: 'nft_name',
@@ -287,7 +327,7 @@ describe('Testing MsgMintNFT', function () {
 
         const signedTxHex = signedTx.encode().toHexString();
         expect(signedTxHex).to.be.eql(
-            '0ac6010ac3010a1c2f636861696e6d61696e2e6e66742e76312e4d73674d696e744e465412a2010a12616c7068616e756d657269636964313233341208626173657463726f1a086e66745f6e616d65220f68747470733a2f2f736f6d657572692a0d736f6d655f646174615f6e6674322b7463726f313635747a63726832796c3833673871657178756567326735677a6775353779336665336b63333a2b7463726f316a3770656a386b706c656d347774353070346866766e64687577356a707278786e353632357112580a500a460a1f2f636f736d6f732e63727970746f2e736563703235366b312e5075624b657912230a2103fd0d560b6c4aa1ca16721d039a192867c3457e19dad553edb98e7ba88b159c2712040a0208011802120410c09a0c1a401fdc840c63d23e4c4dbf02fffff236c8345d8b5442422fe0e686609f62318a490e8c626d9d9870e23c9086091923198e95731ee06b198e3adee8482b797ae5dd',
+            '0ac6010ac3010a1c2f636861696e6d61696e2e6e66742e76312e4d73674d696e744e465412a2010a12616c7068616e756d657269636964313233341208626173657463726f1a086e66745f6e616d65220f68747470733a2f2f736f6d657572692a0d736f6d655f646174615f6e6674322b7463726f313635747a63726832796c3833673871657178756567326735677a6775353779336665336b63333a2b7463726f316a3770656a386b706c656d347774353070346866766e64687577356a707278786e353632357112580a500a460a1f2f636f736d6f732e63727970746f2e736563703235366b312e5075624b657912230a2103fd0d560b6c4aa1ca16721d039a192867c3457e19dad553edb98e7ba88b159c2712040a0208011802120410c09a0c1a40b030ef585838ea7abe2157c811412d9c4066a4ff628a5497d96ecf327396ea4d58e601fc784d8f4ad8c6f2c7dad41b4b2291fd8d7510024841a54f302053a24f',
         );
     });
 

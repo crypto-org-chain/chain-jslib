@@ -38,7 +38,6 @@ export const msgMintNFT = function (config: InitConfigurations) {
          */
         constructor(options: MsgMintNFTOptions) {
             ow(options, 'options', owMsgMintNFTOptions);
-
             this.id = options.id;
             this.name = options.name;
             this.sender = options.sender;
@@ -72,7 +71,7 @@ export const msgMintNFT = function (config: InitConfigurations) {
         // eslint-disable-next-line class-methods-use-this
         toRawAminoMsg(): legacyAmino.Msg {
             return {
-                type: 'cosmos-sdk/MsgMintNFT',
+                type: 'chainmain/nft/MsgMintNFT',
                 value: {
                     id: this.id,
                     name: this.name,

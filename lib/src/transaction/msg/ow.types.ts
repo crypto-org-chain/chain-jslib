@@ -133,9 +133,16 @@ const owNFTId = ow.string
     .validate(owNFTStartWithAlphabetValidatorFn)
     .validate(owNFTIsAlphaNumericValidatorFn);
 
+const owNFTDenomNameValidator = (val: string) => ({
+    validator: val.replace(/\s/g, '').length > 0,
+    message: (label: string) => `Expected ${label} to be non-empty string`,
+});
+
+const URI_MAX_LENGTH = 256;
+
 export const owMsgIssueDenomOptions = owStrictObject().exactShape({
     id: owNFTId,
-    name: ow.string,
+    name: ow.string.validate(owNFTDenomNameValidator),
     schema: ow.string,
     sender: ow.string,
 });
@@ -143,8 +150,8 @@ export const owMsgIssueDenomOptions = owStrictObject().exactShape({
 export const owMsgMintNFTOptions = owStrictObject().exactShape({
     id: owNFTId,
     denomId: owNFTId,
-    name: ow.string,
-    uri: ow.string,
+    name: ow.string.validate(owNFTDenomNameValidator),
+    uri: ow.string.maxLength(URI_MAX_LENGTH),
     data: ow.string,
     sender: ow.string,
     recipient: ow.string,
@@ -153,8 +160,8 @@ export const owMsgMintNFTOptions = owStrictObject().exactShape({
 export const owMsgEditNFTOptions = owStrictObject().exactShape({
     id: owNFTId,
     denomId: owNFTId,
-    name: ow.string,
-    uri: ow.string,
+    name: ow.string.validate(owNFTDenomNameValidator),
+    uri: ow.string.maxLength(URI_MAX_LENGTH),
     data: ow.string,
     sender: ow.string,
 });

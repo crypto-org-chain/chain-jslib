@@ -338,7 +338,7 @@ export function isMsgUndelegate(msg: Msg): msg is MsgUndelegate {
 // upgrade (no messages) - see https://github.com/cosmos/cosmos-sdk/blob/efa73c7/proto/cosmos/upgrade/upgrade.proto
 
 export interface MsgIssueDenom extends Msg {
-    readonly type: 'cosmos-sdk/MsgIssueDenom';
+    readonly type: 'chainmain/nft/MsgIssueDenom';
     readonly value: {
         readonly id: string;
         readonly name: string;
@@ -349,11 +349,11 @@ export interface MsgIssueDenom extends Msg {
 }
 
 export function isMsgIssueDenom(msg: Msg): msg is MsgIssueDenom {
-    return (msg as MsgIssueDenom).type === 'cosmos-sdk/MsgIssueDenom';
+    return (msg as MsgIssueDenom).type === 'chainmain/nft/MsgIssueDenom';
 }
 
 export interface MsgMintNFT extends Msg {
-    readonly type: 'cosmos-sdk/MsgMintNFT';
+    readonly type: 'chainmain/nft/MsgMintNFT';
     readonly value: {
         /** Token id */
         readonly id: string;
@@ -369,11 +369,11 @@ export interface MsgMintNFT extends Msg {
 }
 
 export function isMsgMintNFT(msg: Msg): msg is MsgMintNFT {
-    return (msg as MsgMintNFT).type === 'cosmos-sdk/MsgMintNFT';
+    return (msg as MsgMintNFT).type === 'chainmain/nft/MsgMintNFT';
 }
 
 export interface MsgEditNFT extends Msg {
-    readonly type: 'cosmos-sdk/MsgEditNFT';
+    readonly type: 'chainmain/nft/MsgEditNFT';
     readonly value: {
         /** Token id */
         readonly id: string;
@@ -387,11 +387,11 @@ export interface MsgEditNFT extends Msg {
 }
 
 export function isMsgEditNFT(msg: Msg): msg is MsgEditNFT {
-    return (msg as MsgEditNFT).type === 'cosmos-sdk/MsgEditNFT';
+    return (msg as MsgEditNFT).type === 'chainmain/nft/MsgEditNFT';
 }
 
 export interface MsgBurnNFT extends Msg {
-    readonly type: 'cosmos-sdk/MsgBurnNFT';
+    readonly type: 'chainmain/nft/MsgBurnNFT';
     readonly value: {
         /** Token id */
         readonly id: string;
@@ -402,11 +402,11 @@ export interface MsgBurnNFT extends Msg {
 }
 
 export function isMsgBurnNFT(msg: Msg): msg is MsgBurnNFT {
-    return (msg as MsgBurnNFT).type === 'cosmos-sdk/MsgBurnNFT';
+    return (msg as MsgBurnNFT).type === 'chainmain/nft/MsgBurnNFT';
 }
 
 export interface MsgTransferNFT extends Msg {
-    readonly type: 'cosmos-sdk/MsgTransferNFT';
+    readonly type: 'chainmain/nft/MsgTransferNFT';
     readonly value: {
         /** Token id */
         readonly id: string;
@@ -419,5 +419,5 @@ export interface MsgTransferNFT extends Msg {
 }
 
 export function isMsgTransferNFT(msg: Msg): msg is MsgTransferNFT {
-    return (msg as MsgTransferNFT).type === 'cosmos-sdk/MsgTransferNFT';
+    return (msg as MsgTransferNFT).type === 'chainmain/nft/MsgTransferNFT';
 }
