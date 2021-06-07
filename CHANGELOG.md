@@ -2,6 +2,9 @@
 
 All notable changes to this project will be documented in this file.
 
+## v0.0.21
+- Minor update - Making RpcURL optional on OW types definitions
+
 ## v0.0.20
 - Make RpcURL optional - Prevent breaking previous functionalities
 
