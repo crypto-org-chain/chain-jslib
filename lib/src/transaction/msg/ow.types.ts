@@ -142,7 +142,7 @@ const URI_MAX_LENGTH = 256;
 
 export const owMsgIssueDenomOptions = owStrictObject().exactShape({
     id: owNFTId,
-    name: ow.string.validate(owNFTDenomNameValidator),
+    name: ow.string.validate(owNFTNameValidator),
     schema: ow.string,
     sender: ow.string,
 });
