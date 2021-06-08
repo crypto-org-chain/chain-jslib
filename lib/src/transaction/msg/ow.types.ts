@@ -150,7 +150,7 @@ export const owMsgIssueDenomOptions = owStrictObject().exactShape({
 export const owMsgMintNFTOptions = owStrictObject().exactShape({
     id: owNFTId,
     denomId: owNFTId,
-    name: ow.string.validate(owNFTDenomNameValidator),
+    name: ow.string.validate(owNFTNameValidator),
     uri: ow.string.maxLength(URI_MAX_LENGTH),
     data: ow.string,
     sender: ow.string,
