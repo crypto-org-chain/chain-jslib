@@ -84,6 +84,18 @@ export const typeUrlToMsgClassMapping = (cro: any, typeUrl: string) => {
         case COSMOS_MSG_TYPEURL.upgrade.SoftwareUpgradeProposal:
             return cro.gov.proposal.SoftwareUpgradeProposal;
 
+        // nft
+        case COSMOS_MSG_TYPEURL.nft.MsgIssueDenom:
+            return cro.nft.MsgIssueDenom;
+        case COSMOS_MSG_TYPEURL.nft.MsgMintNFT:
+            return cro.nft.MsgMintNFT;
+        case COSMOS_MSG_TYPEURL.nft.MsgEditNFT:
+            return cro.nft.MsgEditNFT;
+        case COSMOS_MSG_TYPEURL.nft.MsgTransferNFT:
+            return cro.gov.nft.MsgTransferNFT;
+        case COSMOS_MSG_TYPEURL.nft.MsgBurnNFT:
+            return cro.gov.nft.MsgBurnNFT;
+
         default:
             throw new Error(`${typeUrl} not supported.`);
     }

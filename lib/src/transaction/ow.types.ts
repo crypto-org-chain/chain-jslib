@@ -2,7 +2,7 @@ import ow from 'ow';
 import Big from 'big.js';
 
 import { owNetwork } from '../network/ow.types';
-import { owBig, owStrictObject, owOptionalStrictObject } from '../ow.types';
+import { owBig, owStrictObject } from '../ow.types';
 import { owBytes } from '../utils/bytes/ow.types';
 import { isBigInteger } from '../utils/big';
 import { SIGN_MODE } from './types';
