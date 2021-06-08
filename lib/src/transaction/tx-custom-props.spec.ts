@@ -25,6 +25,22 @@ const TestNetwork: Network = {
     rpcUrl: '',
 };
 
+const TestNetworkWithNoRpcUrl: Network = {
+    defaultNodeUrl: '',
+    chainId: 'testnet-croeseid-1',
+    addressPrefix: 'tcro',
+    validatorAddressPrefix: 'tcrocncl',
+    validatorPubKeyPrefix: 'tcrocnclconspub',
+    coin: {
+        baseDenom: 'basetcro',
+        croDenom: 'tcro',
+    },
+    bip44Path: {
+        coinType: 1,
+        account: 0,
+    },
+};
+
 describe('Testing Tx signing with custom parameters', function () {
     it('test passing custom properties', function () {
         const cro = CroSDK({ network: TestNetwork });
@@ -78,6 +94,48 @@ describe('Testing Tx signing with custom parameters', function () {
         expect(signedTx.getHexEncoded()).to.eq(expectedTxHex);
 
         const expectedTxHash = '7055538EE819D20C8E26948B5EAA19278D2B1C7C7FDFF8ED5049A40C039322C0';
+        expect(signedTx.getTxHash()).to.eq(expectedTxHash);
+    });
+
+    it('sign should with network having optional rpcURL', function () {
+        const mnemonic =
+            'source knee choice chef exact recall craft satoshi coffee intact fun eternal sudden client quote recall sausage injury return duck bottom security like title';
+        const hdKey = HDKey.fromMnemonic(mnemonic);
+        const privKey = hdKey.derivePrivKey("m/44'/1'/0'/0/0");
+        const keyPair = Secp256k1KeyPair.fromPrivKey(privKey);
+
+        const cro = CroSDK({ network: TestNetworkWithNoRpcUrl });
+        const msg = new cro.bank.MsgSend({
+            fromAddress: new cro.Address(keyPair).account(),
+            toAddress: 'tcro1fzcrza3j4f2677jfuxulkg33z6852qsqs8hx50',
+            amount: cro.Coin.fromBaseUnit('1000'),
+        });
+
+        const rawTx = new cro.RawTransaction();
+        const signableTx = rawTx
+            .appendMessage(msg)
+            .addSigner({
+                publicKey: keyPair.getPubKey(),
+                accountNumber: new Big('0'),
+                accountSequence: new Big('230'),
+            })
+            .setFee(cro.Coin.fromBaseUnit('10000'))
+            .setGasLimit('100000')
+            .setMemo('amino test')
+            .toSignable();
+
+        const signature = keyPair.sign(signableTx.toSignDocumentHash(0));
+        const expectedSignature =
+            'Ac56DE7kDUo+PWnEtOMrV7mfKZaqoc1schRFYjGtxy5BuGLot4ljTaddw6UZoR3XV/2QA8RYOE9PzqpSWWyd+w==';
+        expect(signature.toBase64String()).to.eq(expectedSignature);
+
+        const signedTx = signableTx.setSignature(0, signature).toSigned();
+
+        const expectedTxHex =
+            '0a9b010a8c010a1c2f636f736d6f732e62616e6b2e763162657461312e4d736753656e64126c0a2b7463726f31667a63727a61336a3466323637376a667578756c6b6733337a36383532717371733868783530122b7463726f31667a63727a61336a3466323637376a667578756c6b6733337a363835327173717338687835301a100a08626173657463726f120431303030120a616d696e6f2074657374126c0a510a460a1f2f636f736d6f732e63727970746f2e736563703235366b312e5075624b657912230a210223c9395d41013e6470c8d27da8b75850554faada3fe3e812660cbdf4534a85d712040a02080118e60112170a110a08626173657463726f1205313030303010a08d061a4001ce7a0c4ee40d4a3e3d69c4b4e32b57b99f2996aaa1cd6c7214456231adc72e41b862e8b789634da75dc3a519a11dd757fd9003c458384f4fceaa52596c9dfb';
+        expect(signedTx.getHexEncoded()).to.eq(expectedTxHex);
+
+        const expectedTxHash = '8082810D29980D35749672B4CCD6E1DA17D5996A7AC8BBB0247B6821FF32AC65';
         expect(signedTx.getTxHash()).to.eq(expectedTxHash);
     });
 
