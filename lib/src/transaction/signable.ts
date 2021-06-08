@@ -380,7 +380,7 @@ export class SignableTransaction {
      * @memberof SignableTransaction
      * @returns {unknown} Tx-Encoded JSON
      */
-    public toCosmosJSON(): unknown {
+    public toCosmosJSON(): string {
         const txObject = {
             body: Object.create({}),
             authInfo: Object.create({}),
