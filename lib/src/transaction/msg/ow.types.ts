@@ -133,7 +133,7 @@ const owNFTId = ow.string
     .validate(owNFTStartWithAlphabetValidatorFn)
     .validate(owNFTIsAlphaNumericValidatorFn);
 
-const owNFTDenomNameValidator = (val: string) => ({
+const owNFTNameValidator = (val: string) => ({
     validator: val.replace(/\s/g, '').length > 0,
     message: (label: string) => `Expected ${label} to be non-empty string`,
 });
