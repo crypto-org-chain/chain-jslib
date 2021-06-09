@@ -86,7 +86,7 @@ export const coin = function (config: InitConfigurations) {
          * @throws {Error} amount or unit is invalid
          * @returns {Coin}
          */
-        constructor(amount: string, unit: Units = Units.BASE, denom?: string) {
+        constructor(amount: string, unit: Units, denom?: string) {
             ow(amount, 'amount', ow.string);
             ow(denom, 'denom', ow.optional.string);
             ow(unit, 'unit', owCoinUnit);
