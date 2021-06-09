@@ -88,8 +88,7 @@ export const SignableTransactionParamsSuiteFactory = new Factory<SignableTransac
                         ],
                         fee: { amount: [], gas_limit: '200000', payer: '', granter: '' },
                     },
-                    signatures: [
-                    ],
+                    signatures: [],
                 }),
                 network,
                 signerAccounts: [
