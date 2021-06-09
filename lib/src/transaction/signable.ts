@@ -73,11 +73,7 @@ export class SignableTransaction {
 
         const cosmosTxDecoded: CosmosTx = JSON.parse(params.rawTxJSON);
 
-        let cosmosObj = cosmosTxDecoded;
-
-        if (cosmosObj.tx) {
-            cosmosObj = cosmosObj.tx;
-        }
+        const cosmosObj = cosmosTxDecoded;
 
         if (!cosmosObj.body) {
             throw new Error('Missing body in Cosmos JSON');

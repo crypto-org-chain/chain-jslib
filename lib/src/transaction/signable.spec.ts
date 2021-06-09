@@ -156,7 +156,6 @@ describe('SignableTransaction', function () {
         it('should set the signature', function () {
             const { keyPair, params: anyParams } = SignableTransactionParamsSuiteFactory.build();
             const anyTx = new SignableTransaction(anyParams);
-
             const anyValidIndex = 0;
             const signature = keyPair.sign(anyTx.toSignDocumentHash(0));
 

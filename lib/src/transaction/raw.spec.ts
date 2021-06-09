@@ -102,12 +102,12 @@ describe('Transaction', function () {
     });
 
     describe('toSignable', function () {
-        it('should not throw Error when no message is added', function () {
+        it('should throw Error when no message is added', function () {
             const anySigner = TransactionSignerFactory.build();
             const tx = anyTransaction();
 
             tx.addSigner(anySigner);
-            expect(() => tx.toSignable()).to.not.throw('Expected message in transaction, got none');
+            expect(() => tx.toSignable()).to.throw('Expected message in transaction, got none');
         });
 
         it('should throw Error when no signer is added', function () {
