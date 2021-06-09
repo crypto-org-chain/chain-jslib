@@ -39,7 +39,7 @@ export const assertAndReturnBech32AddressWordBytes = (addr: string): Bytes => {
     try {
         const { words } = bech32.decode(addr);
         // May be maintain a whitelist Array list of possible prefixes. Such as  [cosmos, cro, tcro] ..etc
-        //TODO: Revisit this when working with IBC or custom network addresses
+        // TODO: Revisit this when working with IBC or custom network addresses
         return Bytes.fromUint8Array(new Uint8Array(bech32.fromWords(words)));
     } catch (error) {
         throw new Error('Invalid Bech32 address.');

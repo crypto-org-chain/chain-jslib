@@ -14,13 +14,15 @@ import { isValidSepc256k1PublicKey } from '../utils/secp256k1';
 import { isBigInteger } from '../utils/big';
 import { Network } from '../network/network';
 import { SignerAccount, SIGN_MODE } from './types';
-import { SignableTransaction, protoEncodeAuthInfo, protoEncodeTxBody } from './signable';
+import { SignableTransaction } from './signable';
 import { cloneDeep } from '../utils/clone';
 import { CosmosMsg, owCosmosMsg } from './msg/cosmosMsg';
 import { InitConfigurations } from '../core/cro';
 import { ICoin } from '../coin/coin';
 import { owCoin } from '../coin/ow.types';
 import { getAuthInfoJson, getTxBodyJson, typeUrlToCosmosTransformer } from '../utils/txDecoder';
+import { protoEncodeAuthInfo } from '../utils/proto/encoder/authInfo';
+import { protoEncodeTxBody } from '../utils/proto/encoder/txBodyMessage';
 
 export const rawTransaction = function (config: InitConfigurations) {
     return class RawTransaction {
