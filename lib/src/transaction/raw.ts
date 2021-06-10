@@ -121,7 +121,7 @@ export const rawTransaction = function (config: InitConfigurations) {
          * The result of this function can be imported into `SignableTransaction` instance
          * @memberof RawTransaction
          */
-        public exportSignerAccounts(): unknown {
+        public exportSignerAccounts(): string {
             return JSON.stringify(this.getSignerAccounts());
         }
 
