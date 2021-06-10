@@ -1,3 +1,4 @@
+/* eslint-disable */
 // @ts-nocheck
 import { expect } from 'chai';
 import { fuzzyDescribe } from '../test/mocha-fuzzy/suite';
@@ -264,7 +265,7 @@ describe('Coin', function () {
         });
     });
 
-    describe.skip('add', function () {
+    xdescribe('add', function () {
         fuzzyDescribe('should throw Error when the provided coins is not an instance of Coin', function (fuzzy) {
             const anyValidCoin = cro.Coin.fromBaseUnit('1000');
             const testRunner = fuzzy(fuzzy.ObjArg(anyValidCoin));
@@ -308,7 +309,7 @@ describe('Coin', function () {
         });
     });
 
-    describe.skip('sub', function () {
+    xdescribe('sub', function () {
         fuzzyDescribe('should throw Error when the provided coins is not an instance of Coin', function (fuzzy) {
             const anyValidCoin = cro.Coin.fromBaseUnit('1000');
             const testRunner = fuzzy(fuzzy.ObjArg(anyValidCoin));
