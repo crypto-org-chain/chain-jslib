@@ -21,8 +21,8 @@ import { InitConfigurations } from '../core/cro';
 import { ICoin } from '../coin/coin';
 import { owCoin } from '../coin/ow.types';
 import { getAuthInfoJson, getTxBodyJson, typeUrlToCosmosTransformer } from '../utils/txDecoder';
-import { protoEncodeAuthInfo } from '../utils/proto/encoder/authInfo';
-import { protoEncodeTxBody } from '../utils/proto/encoder/txBodyMessage';
+import { protoEncodeAuthInfo } from '../utils/protoBuf/encoder/authInfo';
+import { protoEncodeTxBody } from '../utils/protoBuf/encoder/txBodyMessage';
 
 export const rawTransaction = function (config: InitConfigurations) {
     return class RawTransaction {

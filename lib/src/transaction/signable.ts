@@ -30,8 +30,8 @@ import { owBig } from '../ow.types';
 import { CroSDK } from '../core/cro';
 import { CosmosTx } from '../cosmos/v1beta1/types/cosmostx';
 import { typeUrlToMsgClassMapping } from './common/constants/typeurl';
-import { protoEncodeTxBody } from '../utils/proto/encoder/txBodyMessage';
-import { protoEncodeAuthInfo } from '../utils/proto/encoder/authInfo';
+import { protoEncodeTxBody } from '../utils/protoBuf/encoder/txBodyMessage';
+import { protoEncodeAuthInfo } from '../utils/protoBuf/encoder/authInfo';
 
 export const DEFAULT_GAS_LIMIT = 200_000;
 
