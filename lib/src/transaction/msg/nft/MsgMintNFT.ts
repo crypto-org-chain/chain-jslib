@@ -38,7 +38,6 @@ export const msgMintNFT = function (config: InitConfigurations) {
          */
         constructor(options: MsgMintNFTOptions) {
             ow(options, 'options', owMsgMintNFTOptions);
-
             this.id = options.id;
             this.name = options.name;
             this.sender = options.sender;
@@ -71,7 +70,18 @@ export const msgMintNFT = function (config: InitConfigurations) {
 
         // eslint-disable-next-line class-methods-use-this
         toRawAminoMsg(): legacyAmino.Msg {
-            throw new Error('Amino encoding format not support for NFT module.');
+            return {
+                type: 'chainmain/nft/MsgMintNFT',
+                value: {
+                    id: this.id,
+                    name: this.name,
+                    sender: this.sender,
+                    denom_id: this.denomId,
+                    uri: this.uri,
+                    data: this.data,
+                    recipient: this.recipient,
+                },
+            } as legacyAmino.MsgMintNFT;
         }
 
         validateAddresses() {
