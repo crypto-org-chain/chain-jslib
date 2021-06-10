@@ -106,6 +106,8 @@ export const coin = function (config: InitConfigurations) {
             } else if (unit === Units.CRO) {
                 if (typeof denom === 'undefined') {
                     this.baseAmount = Coin.parseCROAmount(coins);
+                } else if (['cro', 'tcro'].includes(denom!.toLowerCase())) {
+                    this.baseAmount = Coin.parseCROAmount(coins);
                 } else if (!['cro', 'tcro'].includes(denom!.toLowerCase())) {
                     throw new Error('Provided Units and Denom do not belong to the same network.');
                 }
@@ -114,6 +116,11 @@ export const coin = function (config: InitConfigurations) {
             this.receivedAmount = coins;
         }
 
+        /**
+         *
+         * @param {string} amount amount in base unit
+         * @param {string} denom chain compatible denom value
+         */
         public static fromCustomAmountDenom = (amount: string, denom: string): Coin => {
             return new Coin(amount, Units.BASE, denom);
         };
