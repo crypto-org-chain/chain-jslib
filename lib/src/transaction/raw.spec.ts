@@ -1,10 +1,12 @@
 import 'mocha';
 import { expect } from 'chai';
+import Big from 'big.js';
 import { fuzzyDescribe } from '../test/mocha-fuzzy/suite';
 import { CosmosMsgSuiteFactory, TransactionSignerFactory } from './test';
 
 import { SignableTransaction } from './signable';
 import { CroNetwork, CroSDK } from '../core/cro';
+import { Bytes } from '../utils/bytes/bytes';
 
 const cro = CroSDK({ network: CroNetwork.Testnet });
 
@@ -132,6 +134,47 @@ describe('Transaction', function () {
             tx.addMessage(anyMessage).addSigner(anySigner);
 
             expect(tx.toSignable()).to.be.an.instanceOf(SignableTransaction);
+        });
+    });
+
+    describe('toCosmosJSON', function () {
+        it('should not throw', function () {
+            const anyTx = anyTransaction();
+
+            expect(() => {
+                anyTx.toCosmosJSON();
+            }).not.throw();
+        });
+
+        it('should create correct JSON', function () {
+            const anyTx = anyTransaction();
+
+            anyTx.addMessage(
+                cro.bank.MsgSend.fromCosmosMsgJSON(
+                    `{ "@type": "/cosmos.bank.v1beta1.MsgSend", "amount": [{ "denom": "basetcro", "amount": "3478499933290496" }], "from_address": "tcro1x07kkkepfj2hl8etlcuqhej7jj6myqrp48y4hg", "to_address": "tcro184lta2lsyu47vwyp2e8zmtca3k5yq85p6c4vp3" }`,
+                    CroNetwork.TestnetCroeseid3,
+                ),
+            );
+
+            // { "body": { "messages": [{ "@type": "/cosmos.bank.v1beta1.MsgSend", "amount": [{ "denom": "basetcro", "amount": "3478499933290496" }], "from_address": "tcro1x07kkkepfj2hl8etlcuqhej7jj6myqrp48y4hg", "to_address": "tcro184lta2lsyu47vwyp2e8zmtca3k5yq85p6c4vp3" }], "memo": "", "timeout_height": "0", "extension_options": [], "non_critical_extension_options": [] }, "auth_info": { "signer_infos": [{ "public_key": { "@type": "/cosmos.crypto.secp256k1.PubKey", "key": "Ap/w6zWJiX6QCKLTt6jLM1sFJsUmBWaS6VUi7zxqqb0V" }, "mode_info": { "single": { "mode": "SIGN_MODE_DIRECT" } }, "sequence": "794129105682432" }], "fee": { "amount": [], "gas_limit": "8105066556817408", "payer": "", "granter": "" } }, "signatures": [""] }
+
+            anyTx.addSigner({
+                accountNumber: new Big(0),
+                accountSequence: new Big(79),
+                publicKey: Bytes.fromHexString('03a52c32db89513a187ceb00a4520b52dec06f583f2e12afcf1da78e370a5358e6'),
+            });
+
+            const parsedCosmosJson = JSON.parse(anyTx.toCosmosJSON());
+
+            expect(parsedCosmosJson).to.have.all.keys('body', 'auth_info', 'signatures');
+            expect(parsedCosmosJson.body.messages.length).to.greaterThan(0);
+            expect(parsedCosmosJson.body).to.haveOwnProperty('memo');
+            expect(parsedCosmosJson.body).to.haveOwnProperty('timeout_height');
+            expect(parsedCosmosJson.auth_info).to.haveOwnProperty('signer_infos');
+            expect(parsedCosmosJson.auth_info.signer_infos.length).to.greaterThan(0);
+            expect(parsedCosmosJson.auth_info).to.haveOwnProperty('fee');
+            expect(parsedCosmosJson.auth_info.fee).to.haveOwnProperty('gas_limit');
+            expect(parseInt(parsedCosmosJson.auth_info.fee.gas_limit, 10)).to.greaterThan(0);
         });
     });
 });
