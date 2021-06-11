@@ -56,7 +56,15 @@ export const msgTransferNFT = function (config: InitConfigurations) {
 
         // eslint-disable-next-line class-methods-use-this
         toRawAminoMsg(): legacyAmino.Msg {
-            throw new Error('Amino encoding format not support for NFT module.');
+            return {
+                type: 'chainmain/nft/MsgTransferNFT',
+                value: {
+                    id: this.id,
+                    sender: this.sender,
+                    denom_id: this.denomId,
+                    recipient: this.recipient,
+                },
+            } as legacyAmino.MsgTransferNFT;
         }
 
         validateAddresses() {

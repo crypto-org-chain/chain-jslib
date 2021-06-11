@@ -12,11 +12,9 @@ import {
     TxBody as NativeTxbody,
 } from '@cosmjs/proto-signing/build/codec/cosmos/tx/v1beta1/tx';
 import * as snakecaseKeys from 'snakecase-keys';
-import { cosmos, google } from '../cosmos/v1beta1/codec';
-import { Msg } from '../cosmos/v1beta1/types/msg';
+import { cosmos } from '../cosmos/v1beta1/codec';
 import { omitDefaults } from '../cosmos/v1beta1/adr27';
 import { AuthInfo, SignerInfo, TxBody, TxRaw } from '../cosmos/v1beta1/types/tx';
-import { typeUrlMappings } from '../cosmos/v1beta1/types/typeurls';
 import { sha256 } from '../utils/hash';
 import { Network } from '../network/network';
 import { Bytes } from '../utils/bytes/bytes';
@@ -32,8 +30,10 @@ import { owBig } from '../ow.types';
 import { CroSDK } from '../core/cro';
 import { CosmosTx } from '../cosmos/v1beta1/types/cosmostx';
 import { typeUrlToMsgClassMapping } from './common/constants/typeurl';
+import { protoEncodeTxBody } from '../utils/protoBuf/encoder/txBodyMessage';
+import { protoEncodeAuthInfo } from '../utils/protoBuf/encoder/authInfo';
 
-const DEFAULT_GAS_LIMIT = 200_000;
+export const DEFAULT_GAS_LIMIT = 200_000;
 
 /**
  * SignableTransaction is a prepared transaction ready to be signed
@@ -73,11 +73,7 @@ export class SignableTransaction {
 
         const cosmosTxDecoded: CosmosTx = JSON.parse(params.rawTxJSON);
 
-        let cosmosObj = cosmosTxDecoded;
-
-        if (cosmosObj.tx) {
-            cosmosObj = cosmosObj.tx;
-        }
+        const cosmosObj = cosmosTxDecoded;
 
         if (!cosmosObj.body) {
             throw new Error('Missing body in Cosmos JSON');
@@ -122,7 +118,7 @@ export class SignableTransaction {
         cosmosSignerInfos.forEach((signerInfo) => {
             // TODO: Support MultiSig in near future
             const publicKeyObj = signerInfo.public_key as any;
-            if (!publicKeyObj.key) {
+            if (!signerInfo.mode_info.single) {
                 throw new Error('SignableTransaction only supports single signer mode.');
             }
 
@@ -204,7 +200,7 @@ export class SignableTransaction {
         this.network = params.network;
 
         // signerAccounts[]: To keep backward compatibility we can import it explicitly as well
-        this.signerAccounts = params.signerAccounts;
+        this.signerAccounts = params.signerAccounts || [];
     }
 
     /**
@@ -380,7 +376,7 @@ export class SignableTransaction {
      * @memberof SignableTransaction
      * @returns {unknown} Tx-Encoded JSON
      */
-    public toCosmosJSON(): unknown {
+    public toCosmosJSON(): string {
         const txObject = {
             body: Object.create({}),
             authInfo: Object.create({}),
@@ -413,88 +409,8 @@ export class SignableTransaction {
 
 export type SignableTransactionParams = {
     rawTxJSON: string;
-    signerAccounts: SignerAccount[];
+    signerAccounts?: SignerAccount[];
     network: Network;
-};
-
-/**
- * Encode TxBody to protobuf binary
- */
-export const protoEncodeTxBody = (txBody: TxBody): Bytes => {
-    const wrappedMessages = txBody.value.messages.map((message) => {
-        const rawMessage = message.toRawMsg();
-        const messageBytes = protoEncodeTxBodyMessage(rawMessage);
-        return google.protobuf.Any.create({
-            type_url: rawMessage.typeUrl,
-            value: messageBytes,
-        });
-    });
-    const txBodyProto = cosmos.tx.v1beta1.TxBody.create({
-        ...txBody,
-        messages: wrappedMessages,
-    });
-
-    if (txBody.value.memo) {
-        txBodyProto.memo = txBody.value.memo;
-    }
-
-    if (txBody.value.timeoutHeight && txBody.value.timeoutHeight !== '0') {
-        txBodyProto.timeoutHeight = Long.fromString(txBody.value.timeoutHeight, true);
-    }
-    return Bytes.fromUint8Array(cosmos.tx.v1beta1.TxBody.encode(txBodyProto).finish());
-};
-
-/**
- * Encode TxBody message to protobuf binary
- */
-const protoEncodeTxBodyMessage = (message: Msg): Uint8Array => {
-    const type = typeUrlMappings[message.typeUrl];
-    if (!type) {
-        throw new Error(`Unrecognized message type ${message.typeUrl}`);
-    }
-    const created = type.create(message.value);
-    return Uint8Array.from(type.encode(created).finish());
-};
-
-/**
- * Encode AuthInfo message to protobuf binary
- */
-export const protoEncodeAuthInfo = (authInfo: AuthInfo): Bytes => {
-    const encodableAuthInfo: cosmos.tx.v1beta1.IAuthInfo = {
-        signerInfos: authInfo.signerInfos.map(
-            ({ publicKey, modeInfo, sequence }): cosmos.tx.v1beta1.ISignerInfo => ({
-                publicKey: protoEncodePubKey(publicKey),
-                modeInfo,
-                sequence: sequence ? Long.fromString(sequence.toString()) : undefined,
-            }),
-        ),
-        fee: {
-            amount: authInfo.fee.amount !== undefined ? [authInfo.fee.amount.toCosmosCoin()] : [],
-            gasLimit: protoEncodeGasLimitOrDefault(authInfo),
-        },
-    };
-
-    return Bytes.fromUint8Array(cosmos.tx.v1beta1.AuthInfo.encode(encodableAuthInfo).finish());
-};
-
-const protoEncodeGasLimitOrDefault = (authInfo: AuthInfo): Long.Long => {
-    const defaultGasLimit = Long.fromNumber(DEFAULT_GAS_LIMIT);
-    return authInfo.fee.gasLimit !== undefined && authInfo.fee.gasLimit !== null
-        ? Long.fromNumber(authInfo.fee.gasLimit.toNumber())
-        : defaultGasLimit;
-};
-
-/**
- * Encode public key to protobuf Any JS structure
- */
-const protoEncodePubKey = (pubKey: Bytes): google.protobuf.IAny => {
-    const pubKeyProto = cosmos.crypto.secp256k1.PubKey.create({
-        key: pubKey.toUint8Array(),
-    });
-    return google.protobuf.Any.create({
-        type_url: '/cosmos.crypto.secp256k1.PubKey',
-        value: Uint8Array.from(cosmos.crypto.secp256k1.PubKey.encode(pubKeyProto).finish()),
-    });
 };
 
 /**

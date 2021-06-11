@@ -336,3 +336,88 @@ export function isMsgUndelegate(msg: Msg): msg is MsgUndelegate {
 }
 
 // upgrade (no messages) - see https://github.com/cosmos/cosmos-sdk/blob/efa73c7/proto/cosmos/upgrade/upgrade.proto
+
+export interface MsgIssueDenom extends Msg {
+    readonly type: 'chainmain/nft/MsgIssueDenom';
+    readonly value: {
+        readonly id: string;
+        readonly name: string;
+        readonly schema: string;
+        /** Bech32 encoded sender address */
+        readonly sender: string;
+    };
+}
+
+export function isMsgIssueDenom(msg: Msg): msg is MsgIssueDenom {
+    return (msg as MsgIssueDenom).type === 'chainmain/nft/MsgIssueDenom';
+}
+
+export interface MsgMintNFT extends Msg {
+    readonly type: 'chainmain/nft/MsgMintNFT';
+    readonly value: {
+        /** Token id */
+        readonly id: string;
+        readonly denom_id: string;
+        readonly name: string;
+        readonly uri: string;
+        readonly data: string;
+        /** Bech32 encoded sender address */
+        readonly sender: string;
+        /** Bech32 encoded recipient address */
+        readonly recipient: string;
+    };
+}
+
+export function isMsgMintNFT(msg: Msg): msg is MsgMintNFT {
+    return (msg as MsgMintNFT).type === 'chainmain/nft/MsgMintNFT';
+}
+
+export interface MsgEditNFT extends Msg {
+    readonly type: 'chainmain/nft/MsgEditNFT';
+    readonly value: {
+        /** Token id */
+        readonly id: string;
+        readonly denom_id: string;
+        readonly name: string;
+        readonly uri: string;
+        readonly data: string;
+        /** Bech32 encoded sender address */
+        readonly sender: string;
+    };
+}
+
+export function isMsgEditNFT(msg: Msg): msg is MsgEditNFT {
+    return (msg as MsgEditNFT).type === 'chainmain/nft/MsgEditNFT';
+}
+
+export interface MsgBurnNFT extends Msg {
+    readonly type: 'chainmain/nft/MsgBurnNFT';
+    readonly value: {
+        /** Token id */
+        readonly id: string;
+        readonly denom_id: string;
+        /** Bech32 encoded sender address */
+        readonly sender: string;
+    };
+}
+
+export function isMsgBurnNFT(msg: Msg): msg is MsgBurnNFT {
+    return (msg as MsgBurnNFT).type === 'chainmain/nft/MsgBurnNFT';
+}
+
+export interface MsgTransferNFT extends Msg {
+    readonly type: 'chainmain/nft/MsgTransferNFT';
+    readonly value: {
+        /** Token id */
+        readonly id: string;
+        readonly denom_id: string;
+        /** Bech32 encoded sender address */
+        readonly sender: string;
+        /** Bech32 encoded recipient address */
+        readonly recipient: string;
+    };
+}
+
+export function isMsgTransferNFT(msg: Msg): msg is MsgTransferNFT {
+    return (msg as MsgTransferNFT).type === 'chainmain/nft/MsgTransferNFT';
+}

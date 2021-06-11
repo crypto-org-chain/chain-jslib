@@ -66,16 +66,14 @@ export class TxDecoder {
      */
     public toCosmosJSON() {
         const txObject = {
-            tx: {
-                body: Object.create({}),
-                authInfo: Object.create({}),
-                signatures: Object.create([[]]),
-            },
+            body: Object.create({}),
+            authInfo: Object.create({}),
+            signatures: Object.create([[]]),
         };
 
-        txObject.tx.body = getTxBodyJson(this.libDecodedTxBody);
-        txObject.tx.signatures = getSignaturesJson(this.libDecodedSignatures);
-        txObject.tx.authInfo = getAuthInfoJson(this.libDecodedAuthInfo);
+        txObject.body = getTxBodyJson(this.libDecodedTxBody);
+        txObject.signatures = getSignaturesJson(this.libDecodedSignatures);
+        txObject.authInfo = getAuthInfoJson(this.libDecodedAuthInfo);
 
         const stringifiedTx = JSON.stringify(snakecaseKeys.default(txObject));
 
