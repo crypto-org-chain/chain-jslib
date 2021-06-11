@@ -182,19 +182,23 @@ describe('Testing MsgEditValidator', function () {
             );
         });
 
-        it('should throw Error when the `commission_rate` field is missing', function () {
+        it('should NOT throw Error when the `commission_rate` field is missing', function () {
             const json =
                 '{"@type":"/cosmos.staking.v1beta1.MsgEditValidator","description":{"moniker":"hiteshTest","identity":"","website":"","security_contact":"hitesh.goel@crypto.com","details":""},"validator_address":"tcrocncl1j7pej8kplem4wt50p4hfvndhuw5jprxxxtenvr","min_self_delegation":"1"}';
-            expect(() => cro.staking.MsgEditValidator.fromCosmosMsgJSON(json, CroNetwork.Testnet)).to.throw(
+            expect(() => cro.staking.MsgEditValidator.fromCosmosMsgJSON(json, CroNetwork.Testnet)).to.not.throw(
                 'Expected `commissionRate` to be of type `null` but received type `undefined` in object `options`',
             );
+            const msgEdit = cro.staking.MsgEditValidator.fromCosmosMsgJSON(json, CroNetwork.Testnet);
+            expect(msgEdit.commissionRate).to.be.null;
         });
-        it('should throw Error when the `min_self_delegation` field is missing', function () {
+        it('should NOT throw Error when the `min_self_delegation` field is missing', function () {
             const json =
                 '{"@type":"/cosmos.staking.v1beta1.MsgEditValidator","description":{"moniker":"hiteshTest","identity":"","website":"","security_contact":"hitesh.goel@crypto.com","details":""},"validator_address":"tcrocncl1j7pej8kplem4wt50p4hfvndhuw5jprxxxtenvr","commission_rate":"0.100000000000000000"}';
-            expect(() => cro.staking.MsgEditValidator.fromCosmosMsgJSON(json, CroNetwork.Testnet)).to.throw(
+            expect(() => cro.staking.MsgEditValidator.fromCosmosMsgJSON(json, CroNetwork.Testnet)).to.not.throw(
                 'Expected `minSelfDelegation` to be of type `null` but received type `undefined` in object `options`',
             );
+            const msgEdit = cro.staking.MsgEditValidator.fromCosmosMsgJSON(json, CroNetwork.Testnet);
+            expect(msgEdit.minSelfDelegation).to.be.null;
         });
 
         it('should return the MsgEditValidator corresponding to the JSON', function () {

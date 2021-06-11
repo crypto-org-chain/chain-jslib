@@ -77,8 +77,8 @@ export const msgEditValidator = function (config: InitConfigurations) {
                     details: parsedMsg.description.details,
                 },
                 validatorAddress: parsedMsg.validator_address,
-                commissionRate: parsedMsg.commission_rate,
-                minSelfDelegation: parsedMsg.min_self_delegation,
+                commissionRate: parsedMsg.commission_rate || null,
+                minSelfDelegation: parsedMsg.min_self_delegation || null,
             });
         }
 
