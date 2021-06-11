@@ -20,7 +20,7 @@ export enum AddressType {
  * @returns {boolean}
  * @throws {Error} when Bech32 encoding is not correct
  */
-// Todo: we can rename it to `validateAddressByNetwork`
+// TODO: we can rename it to `validateAddressByNetwork`
 export function validateAddress(addressProps: AddressValidationProperties): boolean | never {
     const { network } = addressProps;
     const bech32Decoded = bech32.decode(addressProps.address);
@@ -39,7 +39,8 @@ export const assertAndReturnBech32AddressWordBytes = (addr: string): Bytes => {
     try {
         const { words } = bech32.decode(addr);
         // May be maintain a whitelist Array list of possible prefixes. Such as  [cosmos, cro, tcro] ..etc
-        return Bytes.fromUint8Array(new Uint8Array(bech32.fromWords(words.slice(5))));
+        // TODO: Revisit this when working with IBC or custom network addresses
+        return Bytes.fromUint8Array(new Uint8Array(bech32.fromWords(words)));
     } catch (error) {
         throw new Error('Invalid Bech32 address.');
     }

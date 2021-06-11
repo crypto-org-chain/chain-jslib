@@ -1,9 +1,8 @@
 import ow from 'ow';
 import Big from 'big.js';
 
-// import { owAuthInfo, owTxBody } from '../cosmos/v1beta1/types/ow.types';
 import { owNetwork } from '../network/ow.types';
-import { owBig, owStrictObject, owOptionalStrictObject } from '../ow.types';
+import { owBig, owStrictObject } from '../ow.types';
 import { owBytes } from '../utils/bytes/ow.types';
 import { isBigInteger } from '../utils/big';
 import { SIGN_MODE } from './types';
@@ -43,7 +42,7 @@ export const owTimeoutHeight = ow.string.validate((value) => {
 });
 
 export const owSignerAccount = () =>
-    owOptionalStrictObject().exactShape({
+    owStrictObject().exactShape({
         publicKey: owBytes(),
         accountNumber: owBig(),
         signMode: owSignMode(),

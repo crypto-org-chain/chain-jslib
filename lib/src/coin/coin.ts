@@ -82,10 +82,11 @@ export const coin = function (config: InitConfigurations) {
          * Constructor to create a Coin
          * @param {string} amount coins amount represented as string
          * @param {Units} unit unit of the coins
+         * @param {string} denom chain compatible denom value (Optional)
          * @throws {Error} amount or unit is invalid
          * @returns {Coin}
          */
-        constructor(amount: string, unit: Units = Units.BASE, denom?: string) {
+        constructor(amount: string, unit: Units, denom?: string) {
             ow(amount, 'amount', ow.string);
             ow(denom, 'denom', ow.optional.string);
             ow(unit, 'unit', owCoinUnit);
@@ -97,11 +98,29 @@ export const coin = function (config: InitConfigurations) {
                 throw new TypeError(`Expected amount to be a base10 number represented as string, got \`${amount}\``);
             }
             this.network = config.network;
-            this.baseAmount = unit === Units.BASE ? Coin.parseBaseAmount(coins) : Coin.parseCROAmount(coins);
+
+            this.baseAmount = coins;
+
+            if (unit === Units.BASE) {
+                this.baseAmount = Coin.parseBaseAmount(coins);
+            } else if (unit === Units.CRO) {
+                if (typeof denom === 'undefined') {
+                    this.baseAmount = Coin.parseCROAmount(coins);
+                } else if (['cro', 'tcro'].includes(denom!.toLowerCase())) {
+                    this.baseAmount = Coin.parseCROAmount(coins);
+                } else if (!['cro', 'tcro'].includes(denom!.toLowerCase())) {
+                    throw new Error('Provided Units and Denom do not belong to the same network.');
+                }
+            }
             this.denom = denom || this.network.coin.baseDenom;
             this.receivedAmount = coins;
         }
 
+        /**
+         *
+         * @param {string} amount amount in base unit
+         * @param {string} denom chain compatible denom value
+         */
         public static fromCustomAmountDenom = (amount: string, denom: string): Coin => {
             return new Coin(amount, Units.BASE, denom);
         };

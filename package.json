@@ -1,6 +1,6 @@
 {
-  "name": "@crypto-com/chain-jslib",
-  "version": "0.0.19",
+  "name": "@crypto-org-chain/chain-jslib",
+  "version": "0.0.22",
   "description": "Crypto.org Chain JavaScript library",
   "author": "Crypto.org <chain@crypto.org>",
   "license": "Apache-2.0",
@@ -14,18 +14,18 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/crypto-com/chain-jslib-nextgen.git"
+    "url": "git+https://github.com/crypto-org-chain/chain-jslib.git"
   },
   "bugs": {
-    "url": "https://github.com/crypto-com/chain-jslib-nextgen/issues"
+    "url": "https://github.com/crypto-org-chain/chain-jslib/issues"
   },
-  "homepage": "https://github.com/crypto-com/chain-jslib-nextgen#readme",
+  "homepage": "https://github.com/crypto-org-chain/chain-jslib#readme",
   "scripts": {
     "prebuild": "mkdir -p lib/dist/cosmos/v1beta1/codec/generated/ && cp -a lib/src/cosmos/v1beta1/codec/generated/.  lib/dist/cosmos/v1beta1/codec/generated/",
     "build": "tsc",
     "lint": "eslint 'lib/**'",
     "test:watch": "nodemon",
-    "test": "NODE_ENV=test mocha --timeout 10000 --require ./node_modules/ts-node/register --exit --color --recursive 'lib/src/**/*.spec.ts'",
+    "test": "NODE_ENV=test mocha --timeout 10000 --require ./node_modules/ts-node/register --exit --color --recursive 'lib/src/**/*.spec.ts' --exclude 'lib/src/transaction/msg/nft/**/*.spec.ts' --exclude 'lib/src/transaction/msg/distribution/**/*.spec.ts' ",
     "test:e2e": "NODE_ENV=test mocha --timeout 30000 --require ./node_modules/ts-node/register --exit --color ./lib/e2e/**/*.spec.ts",
     "preget-proto": "rm -rf proto",
     "get-proto": "REF=v0.42.4 ./lib/src/cosmos/v1beta1/scripts/get-proto.sh",
