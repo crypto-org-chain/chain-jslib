@@ -14,13 +14,15 @@ import { isValidSepc256k1PublicKey } from '../utils/secp256k1';
 import { isBigInteger } from '../utils/big';
 import { Network } from '../network/network';
 import { SignerAccount, SIGN_MODE } from './types';
-import { SignableTransaction, protoEncodeAuthInfo, protoEncodeTxBody } from './signable';
+import { SignableTransaction } from './signable';
 import { cloneDeep } from '../utils/clone';
 import { CosmosMsg, owCosmosMsg } from './msg/cosmosMsg';
 import { InitConfigurations } from '../core/cro';
 import { ICoin } from '../coin/coin';
 import { owCoin } from '../coin/ow.types';
 import { getAuthInfoJson, getTxBodyJson, typeUrlToCosmosTransformer } from '../utils/txDecoder';
+import { protoEncodeAuthInfo } from '../utils/protoBuf/encoder/authInfo';
+import { protoEncodeTxBody } from '../utils/protoBuf/encoder/txBodyMessage';
 
 export const rawTransaction = function (config: InitConfigurations) {
     return class RawTransaction {
@@ -119,7 +121,7 @@ export const rawTransaction = function (config: InitConfigurations) {
          * The result of this function can be imported into `SignableTransaction` instance
          * @memberof RawTransaction
          */
-        public exportSignerAccounts(): unknown {
+        public exportSignerAccounts(): string {
             return JSON.stringify(this.getSignerAccounts());
         }
 
@@ -257,6 +259,9 @@ export const rawTransaction = function (config: InitConfigurations) {
         public toSignable(): SignableTransaction {
             if (this.authInfo.signerInfos.length === 0) {
                 throw new Error('Expected signer in transaction, got none');
+            }
+            if (this.txBody.value.messages.length === 0) {
+                throw new Error('Expected message in transaction, got none');
             }
             return new SignableTransaction({
                 rawTxJSON: this.toCosmosJSON(),

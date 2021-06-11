@@ -15,14 +15,14 @@ Crypto.org Chain and this library is currently in the alpha development phase an
 ### 1.0. Installing the library ⬇️
 
 ```bash
-npm install @crypto-com/chain-jslib
+npm install @crypto-org-chain/chain-jslib
 ```
 
 ### 1.1. Working with private keys and key pairs 🔐
 
 ```javascript
 // Imports
-const sdk = require("@crypto-com/chain-jslib");
+const sdk = require("@crypto-org-chain/chain-jslib");
 const HDKey = sdk.HDKey;
 const Secp256k1KeyPair = sdk.Secp256k1KeyPair;
 const Bytes = sdk.utils.Bytes;
@@ -70,7 +70,7 @@ console.log(address); // tcro1sxe3v6gka3u8j7d2xhl8rmfyjnmggqlh6e82hq
 ```javascript
 // Imports
 
-const sdk = require("@crypto-com/chain-jslib");
+const sdk = require("@crypto-org-chain/chain-jslib");
 const HDKey = sdk.HDKey;
 const Secp256k1KeyPair = sdk.Secp256k1KeyPair;
 const Units = sdk.Units;
@@ -132,7 +132,7 @@ https://github.com/cosmos/cosmjs/tree/main/packages/stargate
 
 ```javascript
 // Imports
-const sdk = require("@crypto-com/chain-jslib");
+const sdk = require("@crypto-org-chain/chain-jslib");
 const cro = sdk.CroSDK({ network: sdk.CroNetwork.Testnet });
 const client = await cro.CroClient.connect();
 await client.broadcastTx(signedTx.encode().toUint8Array());
@@ -144,7 +144,7 @@ https://github.com/cosmos/cosmjs/tree/main/packages/stargate/src/queries
 
 ```javascript
 // Imports
-const sdk = require("@crypto-com/chain-jslib");
+const sdk = require("@crypto-org-chain/chain-jslib");
 const cro = sdk.CroSDK({ network: sdk.CroNetwork.Testnet });
 const client = await cro.CroClient.connect();
 const queryResult = await client.query().<module>.<operation>
@@ -191,8 +191,8 @@ Eg:
 /* Machine 1: */
 const rawTx = new cro.RawTransaction();
 // .... Do rest operations here
-const exportUnsignedCosmosJSON = rawTx.toCosmosJSON() as string;
-const exportSignerInfoToJSON = rawTx.exportSignerAccounts() as string;
+const exportUnsignedCosmosJSON = rawTx.toCosmosJSON();
+const exportSignerInfoToJSON = rawTx.exportSignerAccounts();
 
 /* Machine 2: */
 const signerAccountsOptional: SignerAccount[] = [{
