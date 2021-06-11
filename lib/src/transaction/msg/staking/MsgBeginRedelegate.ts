@@ -72,7 +72,7 @@ export const msgBeginRedelegate = function (config: InitConfigurations) {
                 delegatorAddress: parsedMsg.delegator_address,
                 validatorDstAddress: parsedMsg.validator_dst_address,
                 validatorSrcAddress: parsedMsg.validator_src_address,
-                // TOdo: Handle the complete list
+                // TODO: Handle the complete list
                 amount: cro.Coin.fromCustomAmountDenom(parsedMsg.amount.amount, parsedMsg.amount.denom),
             });
         }
