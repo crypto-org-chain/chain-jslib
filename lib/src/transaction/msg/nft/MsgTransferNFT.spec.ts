@@ -8,6 +8,7 @@ import { Secp256k1KeyPair } from '../../../keypair/secp256k1';
 import { Bytes } from '../../../utils/bytes/bytes';
 import { CroSDK } from '../../../core/cro';
 import { COSMOS_MSG_TYPEURL } from '../../common/constants/typeurl';
+import * as legacyAmino from '../../../cosmos/amino';
 
 const cro = CroSDK({
     network: {
@@ -49,31 +50,166 @@ describe('Testing MsgTransferNFT', function () {
         });
     });
 
+    it('should throw Error when the token id is invalid', function () {
+        const anyDenomId = 'anydenomid';
+        const anySender = 'tcro165tzcrh2yl83g8qeqxueg2g5gzgu57y3fe3kc3';
+        const anyRecipient = 'tcro1j7pej8kplem4wt50p4hfvndhuw5jprxxn5625q';
+
+        // < 3 characters
+        expect(
+            () =>
+                new cro.nft.MsgTransferNFT({
+                    id: 'a',
+                    denomId: anyDenomId,
+                    recipient: anyRecipient,
+                    sender: anySender,
+                }),
+        ).to.throw('Expected property string `id` to have a minimum length of `3`, got `a` in object `options`');
+        // > 64 characters
+        expect(
+            () =>
+                new cro.nft.MsgTransferNFT({
+                    id: 'a123456789012345567890123456789012345678901234567890123456789012345',
+                    denomId: anyDenomId,
+                    recipient: anyRecipient,
+                    sender: anySender,
+                }),
+        ).to.throw(
+            'Expected property string `id` to have a maximum length of `64`, got `a123456789012345567890123456789012345678901234567890123456789012345` in object `options`',
+        );
+        expect(
+            () =>
+                new cro.nft.MsgTransferNFT({
+                    id: '123',
+                    denomId: anyDenomId,
+                    recipient: anyRecipient,
+                    sender: anySender,
+                }),
+        ).to.throw('Expected property string `id` to start with lowercase alphabets in object `options`');
+        expect(
+            () =>
+                new cro.nft.MsgTransferNFT({
+                    id: 'aBC',
+                    denomId: anyDenomId,
+                    recipient: anyRecipient,
+                    sender: anySender,
+                }),
+        ).to.throw(
+            'Expected property string `id` to contain only lowercase alphanumeric characters in object `options`',
+        );
+        expect(
+            () =>
+                new cro.nft.MsgTransferNFT({
+                    id: 'abc_123',
+                    denomId: anyDenomId,
+                    recipient: anyRecipient,
+                    sender: anySender,
+                }),
+        ).to.throw(
+            'Expected property string `id` to contain only lowercase alphanumeric characters in object `options`',
+        );
+    });
+
+    it('should throw Error when the denom id is invalid', function () {
+        const anyTokenId = 'anytokenid';
+        const anySender = 'tcro165tzcrh2yl83g8qeqxueg2g5gzgu57y3fe3kc3';
+        const anyRecipient = 'tcro1j7pej8kplem4wt50p4hfvndhuw5jprxxn5625q';
+
+        // < 3 characters
+        expect(
+            () =>
+                new cro.nft.MsgTransferNFT({
+                    denomId: 'a',
+                    id: anyTokenId,
+                    recipient: anyRecipient,
+                    sender: anySender,
+                }),
+        ).to.throw('Expected property string `denomId` to have a minimum length of `3`, got `a` in object `options`');
+        // > 64 characters
+        expect(
+            () =>
+                new cro.nft.MsgTransferNFT({
+                    denomId: 'a123456789012345567890123456789012345678901234567890123456789012345',
+                    id: anyTokenId,
+                    recipient: anyRecipient,
+                    sender: anySender,
+                }),
+        ).to.throw(
+            'Expected property string `denomId` to have a maximum length of `64`, got `a123456789012345567890123456789012345678901234567890123456789012345` in object `options`',
+        );
+        expect(
+            () =>
+                new cro.nft.MsgTransferNFT({
+                    denomId: '123',
+                    id: anyTokenId,
+                    recipient: anyRecipient,
+                    sender: anySender,
+                }),
+        ).to.throw('Expected property string `denomId` to start with lowercase alphabets in object `options`');
+        expect(
+            () =>
+                new cro.nft.MsgTransferNFT({
+                    denomId: 'aBC',
+                    id: anyTokenId,
+                    recipient: anyRecipient,
+                    sender: anySender,
+                }),
+        ).to.throw(
+            'Expected property string `denomId` to contain only lowercase alphanumeric characters in object `options`',
+        );
+        expect(
+            () =>
+                new cro.nft.MsgTransferNFT({
+                    denomId: 'abc_123',
+                    id: anyTokenId,
+                    recipient: anyRecipient,
+                    sender: anySender,
+                }),
+        ).to.throw(
+            'Expected property string `denomId` to contain only lowercase alphanumeric characters in object `options`',
+        );
+    });
+
     it('Test MsgTransferNFT conversion', function () {
         const MsgTransferNFT = new cro.nft.MsgTransferNFT({
-            id: 'alphanumericId1234',
-            name: 'nft_name',
-            sender: 'tcro165tzcrh2yl83g8qeqxueg2g5gzgu57y3fe3kc3',
+            id: 'alphanumericid1234',
             denomId: 'basetcro',
-            uri: 'https://someuri',
-            data: 'some_data_nft',
+            sender: 'tcro165tzcrh2yl83g8qeqxueg2g5gzgu57y3fe3kc3',
             recipient: 'tcro1j7pej8kplem4wt50p4hfvndhuw5jprxxn5625q',
         });
 
         const rawMsg: Msg = {
             typeUrl: COSMOS_MSG_TYPEURL.nft.MsgTransferNFT,
             value: {
-                id: 'alphanumericId1234',
-                name: 'nft_name',
+                id: 'alphanumericid1234',
                 sender: 'tcro165tzcrh2yl83g8qeqxueg2g5gzgu57y3fe3kc3',
                 denomId: 'basetcro',
-                uri: 'https://someuri',
-                data: 'some_data_nft',
                 recipient: 'tcro1j7pej8kplem4wt50p4hfvndhuw5jprxxn5625q',
             },
         };
 
         expect(MsgTransferNFT.toRawMsg()).to.eqls(rawMsg);
+    });
+
+    it('Test MsgTransferNFT conversion Json', function () {
+        const msgTransferNFT = new cro.nft.MsgTransferNFT({
+            id: 'alphanumericid1234',
+            denomId: 'basetcro',
+            sender: 'tcro165tzcrh2yl83g8qeqxueg2g5gzgu57y3fe3kc3',
+            recipient: 'tcro1j7pej8kplem4wt50p4hfvndhuw5jprxxn5625q',
+        });
+
+        const rawMsg: legacyAmino.Msg = {
+            type: 'chainmain/nft/MsgTransferNFT',
+            value: {
+                id: 'alphanumericid1234',
+                denom_id: 'basetcro',
+                sender: 'tcro165tzcrh2yl83g8qeqxueg2g5gzgu57y3fe3kc3',
+                recipient: 'tcro1j7pej8kplem4wt50p4hfvndhuw5jprxxn5625q',
+            },
+        };
+
+        expect(msgTransferNFT.toRawAminoMsg()).to.eqls(rawMsg);
     });
 
     it('Test appendTxBody MsgTransferNFT Tx signing', function () {
@@ -82,12 +218,9 @@ describe('Testing MsgTransferNFT', function () {
         );
 
         const MsgTransferNFT = new cro.nft.MsgTransferNFT({
-            id: 'alphanumericId1234',
-            name: 'nft_name',
+            id: 'alphanumericid1234',
             sender: 'tcro165tzcrh2yl83g8qeqxueg2g5gzgu57y3fe3kc3',
             denomId: 'basetcro',
-            uri: 'https://someuri',
-            data: 'some_data_nft',
             recipient: 'tcro1j7pej8kplem4wt50p4hfvndhuw5jprxxn5625q',
         });
 
@@ -105,49 +238,29 @@ describe('Testing MsgTransferNFT', function () {
 
         const signedTxHex = signedTx.encode().toHexString();
         expect(signedTxHex).to.be.eql(
-            '0a9f010a9c010a202f636861696e6d61696e2e6e66742e76312e4d73675472616e736665724e465412780a12616c7068616e756d657269634964313233341208626173657463726f1a2b7463726f313635747a63726832796c3833673871657178756567326735677a6775353779336665336b6333222b7463726f316a3770656a386b706c656d347774353070346866766e64687577356a707278786e353632357112580a500a460a1f2f636f736d6f732e63727970746f2e736563703235366b312e5075624b657912230a2103fd0d560b6c4aa1ca16721d039a192867c3457e19dad553edb98e7ba88b159c2712040a0208011802120410c09a0c1a40bcff4a558a22df40a4a6f7932f80f019eaa3f3308e1e72869e125a2618ec531275511913cf8db0e2aa954f2dae56303461a296318912d60e70dd529f1198bc33',
+            '0a9f010a9c010a202f636861696e6d61696e2e6e66742e76312e4d73675472616e736665724e465412780a12616c7068616e756d657269636964313233341208626173657463726f1a2b7463726f313635747a63726832796c3833673871657178756567326735677a6775353779336665336b6333222b7463726f316a3770656a386b706c656d347774353070346866766e64687577356a707278786e353632357112580a500a460a1f2f636f736d6f732e63727970746f2e736563703235366b312e5075624b657912230a2103fd0d560b6c4aa1ca16721d039a192867c3457e19dad553edb98e7ba88b159c2712040a0208011802120410c09a0c1a40fef11b190713be10e984af75cbaf6ee0bc23dbb7a34417815f2ef283dd7417963217f9911bd73f8bd9de37ba23badd314d770cf33dbec016c06213275573bdbb',
         );
     });
 
     it('Should validate MsgTransferNFT provided addresses with network config', function () {
         const params1 = {
-            id: 'alphanumericId1234',
-            name: 'nft_name',
+            id: 'alphanumericid1234',
             sender: 'cro1pndm4ywdf4qtmupa0fqe75krmqed2znjyj6x8f',
             denomId: 'basetcro',
-            uri: 'https://someuri',
-            data: 'some_data_nft',
             recipient: 'tcro1j7pej8kplem4wt50p4hfvndhuw5jprxxn5625q',
         };
 
         expect(() => new cro.nft.MsgTransferNFT(params1)).to.throw('Provided `sender` does not match network selected');
 
         const params2 = {
-            id: 'alphanumericId1234',
-            name: 'nft_name',
+            id: 'alphanumericid1234',
             sender: 'tcro1j7pej8kplem4wt50p4hfvndhuw5jprxxn5625q',
             denomId: 'basetcro',
-            uri: 'https://someuri',
-            data: 'some_data_nft',
             recipient: 'cro1pndm4ywdf4qtmupa0fqe75krmqed2znjyj6x8f',
         };
 
         expect(() => new cro.nft.MsgTransferNFT(params2)).to.throw(
             'Provided `recipient` does not match network selected',
         );
-    });
-
-    it('Should throw on getting toRawAminoMsg()', function () {
-        const MsgTransferNFT = new cro.nft.MsgTransferNFT({
-            id: 'alphanumericId1234',
-            name: 'nft_name',
-            sender: 'tcro165tzcrh2yl83g8qeqxueg2g5gzgu57y3fe3kc3',
-            denomId: 'basetcro',
-            uri: 'https://someuri',
-            data: 'some_data_nft',
-            recipient: 'tcro1j7pej8kplem4wt50p4hfvndhuw5jprxxn5625q',
-        });
-
-        expect(() => MsgTransferNFT.toRawAminoMsg()).to.throw('Amino encoding format not support for NFT module.');
     });
 });

@@ -65,7 +65,7 @@ export const croClient = function (config: InitConfigurations) {
             this.baseDenom = config.network.coin.baseDenom;
         }
 
-        public static async connect(endpoint: string = config.network.rpcUrl): Promise<CroClient> {
+        public static async connect(endpoint: string = config.network.rpcUrl ?? ''): Promise<CroClient> {
             ow(endpoint, 'endpoint', owUrl);
             const tmClient = await Tendermint34Client.connect(endpoint);
             const txClient = await StargateClient.connect(endpoint);
