@@ -184,4 +184,25 @@ describe('Testing MsgSubmitProposal and its content types', function () {
             '0abc020ab9020a252f636f736d6f732e676f762e763162657461312e4d73675375626d697450726f706f73616c128f020ac6010a2e2f636f736d6f732e706172616d732e763162657461312e506172616d657465724368616e676550726f706f73616c1293010a2a4368616e6765206120706172616d20746f20736f6d657468696e67206d6f7265206f7074696d697a656412474c6f72656d20497073756d202e2e2e2054686520706172616d2073686f756c64206265206368616e67656420746f20736f6d657468696e67206d6f7265206f7074696d697a65641a1c0a077374616b696e67120d4d617856616c696461746f72731a02313212170a08626173657463726f120b31323030303030303030301a2b7463726f31347368343930776b3739646c7465613475646b39356b376d773430776d7666373770306c356112580a500a460a1f2f636f736d6f732e63727970746f2e736563703235366b312e5075624b657912230a210280c5e37a2bc3e68cc7c4aac78eac8c769cf58ce269ecd4307427aa16c2ba05a412040a0208011800120410c09a0c1a4072bd47137d440036995ea6b5c4754b4f15609df2fdd17496d6c39f47d6663d0e51d171bcae92fc6078496cf657e2a705cd59b0d882cf0356463e57b26e285941',
         );
     });
+
+    it('should throw on request legacy amino encoded transaction', function () {
+        const communityPoolSpentContent = new cro.gov.proposal.ParamChangeProposal({
+            title: 'Change a param to something more optimized',
+            description: 'Lorem Ipsum ... The param should be changed to something more optimized',
+            paramChanges: [
+                {
+                    subspace: 'staking',
+                    key: 'MaxValidators',
+                    value: '12',
+                },
+            ],
+        });
+        const msgSubmitProposalCommunitySpend = new cro.gov.MsgSubmitProposal({
+            proposer: 'tcro1nhe3qasy0ayhje95mtsvppyg67d3zswf04sda8',
+            initialDeposit: new cro.Coin('120', Units.CRO),
+            content: communityPoolSpentContent,
+        });
+
+        expect(() => msgSubmitProposalCommunitySpend.toRawAminoMsg()).to.throw('Method not implemented.');
+    });
 });

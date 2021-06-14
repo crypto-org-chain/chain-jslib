@@ -117,45 +117,66 @@ export const owMsgBeginRedelgateOptions = owStrictObject().exactShape({
 /**
  * nft ow types here
  */
+
+const owNFTStartWithAlphabetValidatorFn = (val: string) => ({
+    validator: /^[a-z]/.test(val),
+    message: (label: string) => `Expected ${label} to start with lowercase alphabets`,
+});
+
+const owNFTIsAlphaNumericValidatorFn = (val: string) => ({
+    validator: /^[a-z0-9]+$/.test(val),
+    message: (label: string) => `Expected ${label} to contain only lowercase alphanumeric characters`,
+});
+
+const owNFTId = ow.string
+    .minLength(3)
+    .maxLength(64)
+    .validate(owNFTStartWithAlphabetValidatorFn)
+    .validate(owNFTIsAlphaNumericValidatorFn);
+
+const owNFTNameValidator = (val: string) => ({
+    validator: val.replace(/\s/g, '').length > 0,
+    message: (label: string) => `Expected ${label} to be non-empty string`,
+});
+
+const URI_MAX_LENGTH = 256;
+
 export const owMsgIssueDenomOptions = owStrictObject().exactShape({
-    id: ow.string,
-    name: ow.string,
+    id: owNFTId,
+    name: ow.string.validate(owNFTNameValidator),
     schema: ow.string,
     sender: ow.string,
 });
 
 export const owMsgMintNFTOptions = owStrictObject().exactShape({
-    id: ow.string,
-    denomId: ow.string,
-    name: ow.string,
-    uri: ow.string,
+    id: owNFTId,
+    denomId: owNFTId,
+    name: ow.string.validate(owNFTNameValidator),
+    uri: ow.string.maxLength(URI_MAX_LENGTH),
     data: ow.string,
     sender: ow.string,
     recipient: ow.string,
 });
 
 export const owMsgEditNFTOptions = owStrictObject().exactShape({
-    id: ow.string,
-    denomId: ow.string,
-    name: ow.string,
-    uri: ow.string,
+    id: owNFTId,
+    denomId: owNFTId,
+    name: ow.string.validate(owNFTNameValidator),
+    uri: ow.string.maxLength(URI_MAX_LENGTH),
     data: ow.string,
     sender: ow.string,
 });
 
 export const owMsgTransferNFTOptions = owStrictObject().exactShape({
-    id: ow.string,
-    denomId: ow.string,
-    name: ow.string,
-    uri: ow.string,
-    data: ow.string,
+    id: owNFTId,
+    denomId: owNFTId,
     sender: ow.string,
     recipient: ow.string,
 });
 
 export const owMsgBurnNFTOptions = owStrictObject().exactShape({
-    id: ow.string,
-    denomId: ow.string,
+    id: owNFTId,
+    denomId: owNFTId,
     sender: ow.string,
 });
 
