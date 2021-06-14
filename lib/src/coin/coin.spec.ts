@@ -309,7 +309,7 @@ describe('Coin', function () {
         });
     });
 
-    xdescribe('sub', function () {
+    describe('sub', function () {
         fuzzyDescribe('should throw Error when the provided coins is not an instance of Coin', function (fuzzy) {
             const anyValidCoin = cro.Coin.fromBaseUnit('1000');
             const testRunner = fuzzy(fuzzy.ObjArg(anyValidCoin));
