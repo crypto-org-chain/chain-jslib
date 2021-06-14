@@ -2,6 +2,10 @@
 
 All notable changes to this project will be documented in this file.
 
+## v0.0.22
+- Add AminoJs encoding support for NFT message types
+- Enhanced validation for NFT message types
+
 ## v0.0.21
 - Minor update - Making RpcURL optional on OW types definitions
 

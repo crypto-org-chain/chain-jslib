@@ -156,7 +156,6 @@ describe('SignableTransaction', function () {
         it('should set the signature', function () {
             const { keyPair, params: anyParams } = SignableTransactionParamsSuiteFactory.build();
             const anyTx = new SignableTransaction(anyParams);
-
             const anyValidIndex = 0;
             const signature = keyPair.sign(anyTx.toSignDocumentHash(0));
 
@@ -190,6 +189,11 @@ describe('SignableTransaction', function () {
             const anyTx = anySignableTransaction();
             const parsedCosmosJson = JSON.parse(anyTx.toCosmosJSON());
             // { "body": { "messages": [{ "@type": "/cosmos.bank.v1beta1.MsgSend", "amount": [{ "denom": "basetcro", "amount": "3478499933290496" }], "from_address": "tcro1x07kkkepfj2hl8etlcuqhej7jj6myqrp48y4hg", "to_address": "tcro184lta2lsyu47vwyp2e8zmtca3k5yq85p6c4vp3" }], "memo": "", "timeout_height": "0", "extension_options": [], "non_critical_extension_options": [] }, "auth_info": { "signer_infos": [{ "public_key": { "@type": "/cosmos.crypto.secp256k1.PubKey", "key": "Ap/w6zWJiX6QCKLTt6jLM1sFJsUmBWaS6VUi7zxqqb0V" }, "mode_info": { "single": { "mode": "SIGN_MODE_DIRECT" } }, "sequence": "794129105682432" }], "fee": { "amount": [], "gas_limit": "8105066556817408", "payer": "", "granter": "" } }, "signatures": [""] }
+            const expectedTxJSON = `{"body":{"messages":[{"@type":"/cosmos.bank.v1beta1.MsgSend","amount":[{"denom":"basetcro","amount":"1200050000000000"}],"from_address":"tcro165tzcrh2yl83g8qeqxueg2g5gzgu57y3fe3kc3","to_address":"tcro184lta2lsyu47vwyp2e8zmtca3k5yq85p6c4vp3"}],"memo":"","timeout_height":"0","extension_options":[],"non_critical_extension_options":[]},"auth_info":{"signer_infos":[{"public_key":{"@type":"/cosmos.crypto.secp256k1.PubKey","key":"A/0NVgtsSqHKFnIdA5oZKGfDRX4Z2tVT7bmOe6iLFZwn"},"mode_info":{"single":{"mode":"SIGN_MODE_DIRECT"}},"sequence":"2"}],"fee":{"amount":[],"gas_limit":"200000","payer":"","granter":""}},"signatures":[""]}`;
+            const anyTxJSONStr = anyTx.toCosmosJSON();
+            expect(anyTxJSONStr).to.deep.equal(expectedTxJSON);
+
+            expect(() => JSON.parse(anyTxJSONStr)).not.to.throw();
 
             expect(parsedCosmosJson).to.have.all.keys('body', 'auth_info', 'signatures');
             expect(parsedCosmosJson.body.messages.length).to.greaterThan(0);
