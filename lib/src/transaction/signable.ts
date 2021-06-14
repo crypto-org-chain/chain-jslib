@@ -145,28 +145,19 @@ export class SignableTransaction {
             });
         });
 
-        if (cosmosAuthInfo.fee.amount.length > 1) {
-            // TODO: Multi-coin support
-            throw new Error(`More than one fee amount in transaction is not supported`);
-        }
+        const feeAmountList: ICoin[] = [];
 
-        let feeAmount;
-        let feeAmountCoin;
-        // Todo: handle multiple fee amounts
-        if (cosmosAuthInfo.fee.amount.length === 1) {
-            [feeAmount] = cosmosAuthInfo.fee.amount;
-        }
-
-        if (feeAmount) {
-            const feeAmountString = feeAmount.amount!;
+        cosmosAuthInfo.fee.amount.forEach((feeAmount) => {
+            const feeAmountString = feeAmount.amount;
             const feeAmountDenom = feeAmount.denom;
-            feeAmountCoin = croSdk.Coin.fromCustomAmountDenom(feeAmountString, feeAmountDenom);
-        }
+            const feeAmountCoin = croSdk.Coin.fromCustomAmountDenom(feeAmountString, feeAmountDenom);
+            feeAmountList.push(feeAmountCoin);
+        });
 
         const authInfo: AuthInfo = {
             signerInfos,
             fee: {
-                amount: feeAmountCoin || undefined,
+                amount: feeAmountList || undefined,
                 gasLimit: new Big(cosmosAuthInfo.fee.gas_limit || DEFAULT_GAS_LIMIT),
                 payer: cosmosAuthInfo.fee.payer,
                 granter: cosmosAuthInfo.fee.granter,
@@ -435,9 +426,9 @@ const legacyEncodeMsgs = (msgs: CosmosMsg[]): legacyAmino.Msg[] => {
     return msgs.map((msg) => msg.toRawAminoMsg());
 };
 
-const legacyEncodeStdFee = (fee: ICoin | undefined, gas: Big | undefined): legacyAmino.StdFee => {
+const legacyEncodeStdFee = (feeAmountList: ICoin[] | undefined, gas: Big | undefined): legacyAmino.StdFee => {
     return {
-        amount: fee ? fee.toCosmosCoins() : [],
+        amount: feeAmountList ? feeAmountList.map((feeAmount) => feeAmount.toCosmosCoin()) : [],
         gas: gas ? gas.toString() : DEFAULT_GAS_LIMIT.toString(),
     };
 };
