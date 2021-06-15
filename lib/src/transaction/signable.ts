@@ -109,7 +109,9 @@ export class SignableTransaction {
             txBody.value.messages.push(nativeMsg);
         });
 
-        // TODO: structure integrity check
+        if (typeof cosmosObj.auth_info === 'undefined') {
+            throw new Error('Decoded Tx does not have a valid `authInfo`');
+        }
         const cosmosAuthInfo = cosmosObj.auth_info;
         const cosmosSignerInfos = cosmosAuthInfo.signer_infos;
         const signerInfos: SignerInfo[] = [];
@@ -146,6 +148,10 @@ export class SignableTransaction {
         });
 
         const feeAmountList: ICoin[] = [];
+
+        if (typeof cosmosAuthInfo.fee === 'undefined' || typeof cosmosAuthInfo.fee.amount === 'undefined') {
+            throw new Error('Decoded Tx AuthInfo does not have a valid `fee`');
+        }
 
         cosmosAuthInfo.fee.amount.forEach((feeAmount) => {
             const feeAmountString = feeAmount.amount;
