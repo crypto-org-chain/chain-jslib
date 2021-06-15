@@ -206,7 +206,7 @@ describe('Testing MsgSubmitProposal and its content types', function () {
         expect(() => msgSubmitProposalCommunitySpend.toRawAminoMsg()).to.throw('Method not implemented.');
     });
     describe('fromCosmosJSON', function () {
-        it('should throw Error if the JSON is not a MsgDeposit', function () {
+        it('should throw Error if the JSON is not a MsgSubmitProposal', function () {
             const json =
                 '{ "@type": "/cosmos.bank.v1beta1.MsgCreateValidator", "amount": [{ "denom": "basetcro", "amount": "3478499933290496" }], "from_address": "tcro1x07kkkepfj2hl8etlcuqhej7jj6myqrp48y4hg", "to_address": "tcro184lta2lsyu47vwyp2e8zmtca3k5yq85p6c4vp3" }';
             expect(() => cro.gov.MsgSubmitProposal.fromCosmosMsgJSON(json, CroNetwork.Testnet)).to.throw(
