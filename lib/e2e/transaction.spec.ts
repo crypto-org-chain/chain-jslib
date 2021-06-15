@@ -190,7 +190,7 @@ describe('e2e test suite', function () {
         expect(transactionHash).to.match(/^[0-9A-F]{64}$/);
     });
 
-    xit('[STAKING] Creates, signs and broadcasts a `MsgDelegate` Tx', async function () {
+    it('[STAKING] Creates, signs and broadcasts a `MsgDelegate` Tx', async function () {
         const hdKey = HDKey.fromMnemonic(env.mnemonic.ecosystemAccount);
         const privKey = hdKey.derivePrivKey(`m/44'/${customNetwork.bip44Path.coinType}'/0'/0/0`);
 
@@ -223,7 +223,7 @@ describe('e2e test suite', function () {
         expect(broadcastResult.data).to.be.not.undefined;
     });
 
-    xit('[STAKING] Creates, signs and broadcasts a `MsgUndelegate` Tx', async function () {
+    it('[STAKING] Creates, signs and broadcasts a `MsgUndelegate` Tx', async function () {
         const hdKey = HDKey.fromMnemonic(env.mnemonic.ecosystemAccount);
         const privKey = hdKey.derivePrivKey(`m/44'/${customNetwork.bip44Path.coinType}'/0'/0/0`);
 
@@ -256,7 +256,7 @@ describe('e2e test suite', function () {
         expect(broadcastResult.data).to.be.not.undefined;
     });
 
-    xit('[STAKING] Creates, signs and broadcasts a `MsgCreateValidator` Tx', async function () {
+    it('[STAKING] Creates, signs and broadcasts a `MsgCreateValidator` Tx', async function () {
         const hdKey = HDKey.fromMnemonic(env.mnemonic.ecosystemAccount);
         const privKey = hdKey.derivePrivKey(`m/44'/${customNetwork.bip44Path.coinType}'/0'/0/0`);
 
@@ -303,7 +303,7 @@ describe('e2e test suite', function () {
         expect(broadcastResult.data).to.be.not.undefined;
     });
 
-    xit('[STAKING] Creates, signs and broadcasts a `MsgEditValidator` Tx', async function () {
+    it('[STAKING] Creates, signs and broadcasts a `MsgEditValidator` Tx', async function () {
         const hdKey = HDKey.fromMnemonic(env.mnemonic.ecosystemAccount);
         const privKey = hdKey.derivePrivKey(`m/44'/${customNetwork.bip44Path.coinType}'/0'/0/0`);
 
@@ -339,7 +339,7 @@ describe('e2e test suite', function () {
         expect(broadcastResult.data).to.be.not.undefined;
     });
 
-    xit('[STAKING] Creates, signs and broadcasts a `MsgBeginRedelegate` Tx', async function () {
+    it('[STAKING] Creates, signs and broadcasts a `MsgBeginRedelegate` Tx', async function () {
         const hdKey = HDKey.fromMnemonic(env.mnemonic.ecosystemAccount);
         const privKey = hdKey.derivePrivKey(`m/44'/${customNetwork.bip44Path.coinType}'/0'/0/0`);
 

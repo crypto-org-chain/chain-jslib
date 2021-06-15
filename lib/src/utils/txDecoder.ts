@@ -131,12 +131,11 @@ function decodeAnyType(typeUrl: string, value: Uint8Array) {
 function handleSpecialParams(decodedParams: any) {
     // handle all MsgSubmitProposal
     // TODO: Make it generic when encounter new cases
-
-    const clonedDecodedParams = { ...decodedParams };
+    const clonedParams = { ...decodedParams };
     if (decodedParams.content && Object.keys(decodedParams.content).length !== 0) {
-        clonedDecodedParams.content = decodeAnyType(decodedParams.content.type_url, decodedParams.content.value);
+        clonedParams.content = decodeAnyType(decodedParams.content.type_url, decodedParams.content.value);
     }
-    return clonedDecodedParams;
+    return clonedParams;
 }
 
 export const getAuthInfoJson = (authInfo: AuthInfo) => {
