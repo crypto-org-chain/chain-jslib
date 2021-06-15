@@ -214,7 +214,7 @@ describe('Testing MsgSubmitProposal and its content types', function () {
             );
         });
 
-        it('should return the MsgDeposit corresponding to the JSON', function () {
+        it('should return the MsgSubmitProposal corresponding to the JSON', function () {
             const json =
                 '{"@type":"/cosmos.gov.v1beta1.MsgSubmitProposal","initial_deposit":[{"denom":"basetcro","amount":"12000000000"}],"content":{"@type":"/cosmos.params.v1beta1.ParameterChangeProposal","changes":[{"subspace":"staking","key":"MaxValidators","value":"12"}],"title":"Change a param to something more optimized","description":"Lorem Ipsum ... The param should be changed to something more optimized"},"proposer":"tcro14sh490wk79dltea4udk95k7mw40wmvf77p0l5a"}';
             const MsgDeposit = cro.gov.MsgSubmitProposal.fromCosmosMsgJSON(json, CroNetwork.Testnet);
