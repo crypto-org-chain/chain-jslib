@@ -65,7 +65,7 @@ export const msgSend = function (config: InitConfigurations) {
             return new MsgSend({
                 fromAddress: parsedMsg.from_address,
                 toAddress: parsedMsg.to_address,
-                amount: parsedMsg.amount.map(coin => cro.Coin.fromCustomAmountDenom(coin.amount, coin.denom)),
+                amount: parsedMsg.amount.map((coin) => cro.Coin.fromCustomAmountDenom(coin.amount, coin.denom)),
             });
         }
 
@@ -79,7 +79,7 @@ export const msgSend = function (config: InitConfigurations) {
                 value: {
                     fromAddress: this.fromAddress,
                     toAddress: this.toAddress,
-                    amount: this.amount.map(coin => coin.toCosmosCoin()),
+                    amount: this.amount.map((coin) => coin.toCosmosCoin()),
                 },
             };
         }
@@ -91,7 +91,7 @@ export const msgSend = function (config: InitConfigurations) {
                 value: {
                     from_address: this.fromAddress,
                     to_address: this.toAddress,
-                    amount: this.amount.map(coin => coin.toCosmosCoin()),
+                    amount: this.amount.map((coin) => coin.toCosmosCoin()),
                 },
             } as legacyAmino.MsgSend;
         }
