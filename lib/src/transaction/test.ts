@@ -32,7 +32,7 @@ export const CosmosMsgSuiteFactory = new Factory<MessageSuite>()
             new cro.bank.MsgSend({
                 fromAddress: new cro.Address(keyPair.getPubKey()).account(),
                 toAddress,
-                amount: cro.Coin.fromBaseUnit(chance.integer({ min: 0 }).toString()),
+                amount: [cro.Coin.fromBaseUnit(chance.integer({ min: 0 }).toString())],
             }),
     );
 

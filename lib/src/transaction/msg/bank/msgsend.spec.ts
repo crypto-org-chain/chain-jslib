@@ -80,8 +80,8 @@ describe('Testing MsgSend', function () {
             const msgSend = cro.bank.MsgSend.fromCosmosMsgJSON(json, CroNetwork.Testnet);
             expect(msgSend.fromAddress).to.eql('tcro1x07kkkepfj2hl8etlcuqhej7jj6myqrp48y4hg');
             expect(msgSend.toAddress).to.eql('tcro184lta2lsyu47vwyp2e8zmtca3k5yq85p6c4vp3');
-            expect(msgSend.amount.toCosmosCoin().amount).to.eql('3478499933290496');
-            expect(msgSend.amount.toCosmosCoin().denom).to.eql('basetcro');
+            expect(msgSend.amount[0].toCosmosCoin().amount).to.eql('3478499933290496');
+            expect(msgSend.amount[0].toCosmosCoin().denom).to.eql('basetcro');
         });
     });
 
@@ -107,7 +107,7 @@ describe('Testing MsgSend', function () {
         const msgSend = new cro.bank.MsgSend({
             fromAddress: 'tcro165tzcrh2yl83g8qeqxueg2g5gzgu57y3fe3kc3',
             toAddress: 'tcro184lta2lsyu47vwyp2e8zmtca3k5yq85p6c4vp3',
-            amount: coin,
+            amount: [coin],
         });
 
         const rawMsg: Msg = {
@@ -136,7 +136,7 @@ describe('Testing MsgSend', function () {
         const msgSend = new cro.bank.MsgSend({
             fromAddress: 'tcro165tzcrh2yl83g8qeqxueg2g5gzgu57y3fe3kc3',
             toAddress: 'tcro184lta2lsyu47vwyp2e8zmtca3k5yq85p6c4vp3',
-            amount: coin,
+            amount: [coin],
         });
 
         const anySigner = {
@@ -163,19 +163,19 @@ describe('Testing MsgSend', function () {
         const params1 = {
             fromAddress: 'cro1pndm4ywdf4qtmupa0fqe75krmqed2znjyj6x8f',
             toAddress: 'tcro184lta2lsyu47vwyp2e8zmtca3k5yq85p6c4vp3',
-            amount: coin,
+            amount: [coin],
         };
 
         const params2 = {
             fromAddress: 'tcro165tzcrh2yl83g8qeqxueg2g5gzgu57y3fe3kc3',
             toAddress: 'cro1pndm4ywdf4qtmupa0fqe75krmqed2znjyj6x8f',
-            amount: coin,
+            amount: [coin],
         };
 
         const params3 = {
             fromAddress: 'tcro1pndm4ywdf4qtmupa0fqe75krmqed2znjyj6x8fzqa',
             toAddress: 'cro184lta2lsyu47vwyp2e8zmtca3k5yq85p6c4vp3',
-            amount: coin,
+            amount: [coin],
         };
 
         expect(() => new cro.bank.MsgSend(params1)).to.throw('Provided `fromAddress` does not match network selected');

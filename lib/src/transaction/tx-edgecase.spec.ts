@@ -58,7 +58,7 @@ describe('Testing edge case Txs with 0 account numbers or 0 sequence', function 
         const msgSend1 = new cro.bank.MsgSend({
             fromAddress: 'tcro15rsn69ze9r7g52tk0u6cyhu4edep88dxgtzm65',
             toAddress: 'tcro1l4gxejy8qxl3vxcxv7vpk4cqu8qhrz2nfxxr2p',
-            amount: new cro.Coin('1210', Units.BASE),
+            amount: [new cro.Coin('1210', Units.BASE)],
         });
 
         const signableTx = rawTx
@@ -92,7 +92,7 @@ describe('Testing edge case Txs with 0 account numbers or 0 sequence', function 
         const msgSend1 = new cro.bank.MsgSend({
             fromAddress: 'tcro1l4gxejy8qxl3vxcxv7vpk4cqu8qhrz2nfxxr2p',
             toAddress: 'tcro12z3awt3kkh0u58hmw85lhtdg67d44pwu62x8sa',
-            amount: new cro.Coin('2210', Units.BASE),
+            amount: [new cro.Coin('2210', Units.BASE)],
         });
 
         const signableTx = rawTx
@@ -122,7 +122,7 @@ describe('Testing edge case Txs with 0 account numbers or 0 sequence', function 
         const msg = new cro.bank.MsgSend({
             fromAddress: new cro.Address(keyPair).account(),
             toAddress: 'tcro1ca066afeuj52k3r29je25q0auyr32k4plkh33r',
-            amount: cro.Coin.fromBaseUnit('1000'),
+            amount: [cro.Coin.fromBaseUnit('1000')],
         });
 
         const rawTx = new cro.RawTransaction();

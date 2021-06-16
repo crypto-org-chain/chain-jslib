@@ -14,7 +14,7 @@ export const owVoteOption = () => ow.number.validate(voteOptionValidator);
 export const owMsgSendOptions = owStrictObject().exactShape({
     fromAddress: ow.string,
     toAddress: ow.string,
-    amount: owCoin(),
+    amount: ow.array.ofType(owCoin()),
 });
 
 const proposalContentValidatorFn = (val: object) => ({

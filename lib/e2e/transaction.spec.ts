@@ -79,13 +79,13 @@ describe('e2e test suite', function () {
         const msgSend1 = new cro.bank.MsgSend({
             fromAddress: address1.account(),
             toAddress: randomAddress.account(),
-            amount: new cro.Coin('100000', Units.BASE),
+            amount: [new cro.Coin('100000', Units.BASE)],
         });
 
         const msgSend2 = new cro.bank.MsgSend({
             fromAddress: address2.account(),
             toAddress: address1.account(),
-            amount: new cro.Coin('20000', Units.BASE),
+            amount: [new cro.Coin('20000', Units.BASE)],
         });
 
         const account1 = await client.getAccount(address1.account());
@@ -146,13 +146,13 @@ describe('e2e test suite', function () {
         const msgSend1 = new cro.bank.MsgSend({
             fromAddress: address1.account(),
             toAddress: randomAddress.account(),
-            amount: new cro.Coin('100000', Units.BASE),
+            amount: [new cro.Coin('100000', Units.BASE)],
         });
 
         const msgSend2 = new cro.bank.MsgSend({
             fromAddress: address2.account(),
             toAddress: address1.account(),
-            amount: new cro.Coin('20000', Units.BASE),
+            amount: [new cro.Coin('20000', Units.BASE)],
         });
 
         const account1 = await client.getAccount(address1.account());

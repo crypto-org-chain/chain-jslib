@@ -82,7 +82,6 @@ export class SignableTransaction {
         const { memo } = body;
         const timeoutHeight = body.timeout_height;
 
-        // TODO: If extension_options and non_critical_extension_options length > 0, then throw
         if (
             (body.non_critical_extension_options && body.non_critical_extension_options.length > 0) ||
             (body.extension_options && body.extension_options.length > 0)

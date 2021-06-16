@@ -66,7 +66,7 @@ describe('Testing Tx signing with custom parameters', function () {
         const msg = new cro.bank.MsgSend({
             fromAddress: new cro.Address(keyPair).account(),
             toAddress: 'tcro1fzcrza3j4f2677jfuxulkg33z6852qsqs8hx50',
-            amount: cro.Coin.fromBaseUnit('1000'),
+            amount: [cro.Coin.fromBaseUnit('1000')],
         });
 
         const rawTx = new cro.RawTransaction();
@@ -108,7 +108,7 @@ describe('Testing Tx signing with custom parameters', function () {
         const msg = new cro.bank.MsgSend({
             fromAddress: new cro.Address(keyPair).account(),
             toAddress: 'tcro1fzcrza3j4f2677jfuxulkg33z6852qsqs8hx50',
-            amount: cro.Coin.fromBaseUnit('1000'),
+            amount: [cro.Coin.fromBaseUnit('1000')],
         });
 
         const rawTx = new cro.RawTransaction();
@@ -150,7 +150,7 @@ describe('Testing Tx signing with custom parameters', function () {
         const msg = new cro.bank.MsgSend({
             fromAddress: new cro.Address(keyPair).account(),
             toAddress: 'tcro1fzcrza3j4f2677jfuxulkg33z6852qsqs8hx50',
-            amount: cro.Coin.fromBaseUnit('1000'),
+            amount: [cro.Coin.fromBaseUnit('1000')],
         });
 
         const rawTx = new cro.RawTransaction();
@@ -204,7 +204,7 @@ describe('Testing Tx signing with custom parameters', function () {
         const msgSend1 = new cro.bank.MsgSend({
             fromAddress: 'tcro165tzcrh2yl83g8qeqxueg2g5gzgu57y3fe3kc3',
             toAddress: 'tcro165tzcrh2yl83g8qeqxueg2g5gzgu57y3fe3kc3',
-            amount: new cro.Coin('1210', Units.BASE),
+            amount: [new cro.Coin('1210', Units.BASE)],
         });
 
         const signableTx = rawTx
@@ -234,7 +234,7 @@ describe('Testing Tx signing with custom parameters', function () {
         const msg = new cro.bank.MsgSend({
             fromAddress: new cro.Address(keyPair).account(),
             toAddress: 'tcro18tk89ddr4lg32e58sp5kfrm0egldlcfu40ww80',
-            amount: cro.Coin.fromBaseUnit('990227306075'),
+            amount: [cro.Coin.fromBaseUnit('990227306075')],
         });
 
         const rawTx = new cro.RawTransaction();

@@ -48,7 +48,6 @@ export const CroSDK = function (configs: InitConfigurations) {
                 CancelSoftwareUpgradeProposal: cancelSoftwareUpgradeProposal(),
                 SoftwareUpgradeProposal: softwareUpgradeProposal(),
                 TextProposal: textProposal(),
-                // TODO : More type of proposals to be added here
             },
         },
         bank: {

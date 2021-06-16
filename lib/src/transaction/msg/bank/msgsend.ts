@@ -28,7 +28,7 @@ export const msgSend = function (config: InitConfigurations) {
 
         public readonly toAddress: string;
 
-        public amount: ICoin;
+        public amount: ICoin[];
 
         /**
          * Constructor to create a new MsgSend
@@ -58,15 +58,14 @@ export const msgSend = function (config: InitConfigurations) {
             if (parsedMsg['@type'] !== COSMOS_MSG_TYPEURL.MsgSend) {
                 throw new Error(`Expected ${COSMOS_MSG_TYPEURL.MsgSend} but got ${parsedMsg['@type']}`);
             }
-            if (!parsedMsg.amount || parsedMsg.amount.length !== 1) {
+            if (!parsedMsg.amount || parsedMsg.amount.length < 1) {
                 throw new Error('Invalid amount in the Msg.');
             }
 
             return new MsgSend({
                 fromAddress: parsedMsg.from_address,
                 toAddress: parsedMsg.to_address,
-                // TODO: Handle the complete list
-                amount: cro.Coin.fromCustomAmountDenom(parsedMsg.amount[0].amount, parsedMsg.amount[0].denom),
+                amount: parsedMsg.amount.map(coin => cro.Coin.fromCustomAmountDenom(coin.amount, coin.denom)),
             });
         }
 
@@ -80,7 +79,7 @@ export const msgSend = function (config: InitConfigurations) {
                 value: {
                     fromAddress: this.fromAddress,
                     toAddress: this.toAddress,
-                    amount: this.amount.toCosmosCoins(),
+                    amount: this.amount.map(coin => coin.toCosmosCoin()),
                 },
             };
         }
@@ -92,7 +91,7 @@ export const msgSend = function (config: InitConfigurations) {
                 value: {
                     from_address: this.fromAddress,
                     to_address: this.toAddress,
-                    amount: this.amount.toCosmosCoins(),
+                    amount: this.amount.map(coin => coin.toCosmosCoin()),
                 },
             } as legacyAmino.MsgSend;
         }
@@ -124,6 +123,5 @@ export const msgSend = function (config: InitConfigurations) {
 export type MsgSendOptions = {
     fromAddress: string;
     toAddress: string;
-    // Todo: It should be ICoin[]
-    amount: ICoin;
+    amount: ICoin[];
 };

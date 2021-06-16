@@ -36,7 +36,7 @@ describe('Amino JSON sign mode', function () {
         const msg = new cro.bank.MsgSend({
             fromAddress: new cro.Address(keyPair).account(),
             toAddress: 'tcro1fzcrza3j4f2677jfuxulkg33z6852qsqs8hx50',
-            amount: cro.Coin.fromBaseUnit('1000'),
+            amount: [cro.Coin.fromBaseUnit('1000')],
         });
 
         const rawTx = new cro.RawTransaction();
