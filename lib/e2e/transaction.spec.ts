@@ -373,7 +373,7 @@ describe('e2e test suite', function () {
         expect(transactionHash).to.match(/^[0-9A-F]{64}$/);
         expect(broadcastResult.data).to.be.not.undefined;
     });
-    xit('[DISTRIBUTION] Creates, signs and broadasts a `MsgWithdrawDelegatorReward` Tx', async function () {
+    it('[DISTRIBUTION] Creates, signs and broadasts a `MsgWithdrawDelegatorReward` Tx', async function () {
         const hdKey = HDKey.fromMnemonic(env.mnemonic.ecosystemAccount);
         const privKey = hdKey.derivePrivKey(`m/44'/${customNetwork.bip44Path.coinType}'/0'/0/0`);
 
@@ -405,7 +405,7 @@ describe('e2e test suite', function () {
         expect(broadcastResult.data).to.be.not.undefined;
     });
 
-    xit('[DISTRIBUTION] Creates, signs and broadcasts a `MsgWithdrawValidatorCommission` Tx', async function () {
+    it('[DISTRIBUTION] Creates, signs and broadcasts a `MsgWithdrawValidatorCommission` Tx', async function () {
         const hdKey = HDKey.fromMnemonic(env.mnemonic.ecosystemAccount);
         const privKey = hdKey.derivePrivKey(`m/44'/${customNetwork.bip44Path.coinType}'/0'/0/0`);
 

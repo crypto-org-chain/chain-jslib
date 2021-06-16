@@ -103,7 +103,6 @@ export class SignableTransaction {
                 timeoutHeight,
             },
         };
-
         body.messages.forEach((message) => {
             const msgClassInstance = typeUrlToMsgClassMapping(croSdk, message['@type']);
             const nativeMsg: CosmosMsg = msgClassInstance.fromCosmosMsgJSON(JSON.stringify(message), this.getNetwork());
