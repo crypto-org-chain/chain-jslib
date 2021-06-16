@@ -182,7 +182,7 @@ const handleCustomTypes = (obj: any) => {
     Object.keys(obj).forEach((k) => {
         if (typeof obj[k] === 'object' && obj[k] !== null) {
             if (obj[k] instanceof Long) {
-                // todo: I will fix the below unsuggested version
+                // Recursively keeping same object
                 obj[k] = obj[k].toString(10); // eslint-disable-line no-param-reassign
             }
             handleCustomTypes(obj[k]);

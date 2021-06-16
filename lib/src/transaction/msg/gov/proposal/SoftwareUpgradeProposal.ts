@@ -6,7 +6,6 @@ import { IMsgProposalContent } from '../IMsgProposalContent';
 import { owSoftwareUpgradeProposalOptions } from '../ow.types';
 import { COSMOS_MSG_TYPEURL } from '../../../common/constants/typeurl';
 import { Network } from '../../../../network/network';
-// import { Network } from '../../../../network/network';
 
 export const softwareUpgradeProposal = function () {
     return class SoftwareUpgradeProposal implements IMsgProposalContent {
