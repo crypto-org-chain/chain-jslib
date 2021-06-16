@@ -17,8 +17,8 @@ import { msgWithdrawValidatorCommission } from '../transaction/msg/distribution/
 import { msgDeposit } from '../transaction/msg/gov/MsgDeposit';
 import { msgVote } from '../transaction/msg/gov/MsgVote';
 import { msgSubmitProposal } from '../transaction/msg/gov/MsgSubmitProposal';
-import { communityPoolSpendProposal } from '../transaction/msg/gov/CommunityPoolSpendProposal';
-import { paramChangeProposal } from '../transaction/msg/gov/ParamChangeProposal';
+import { communityPoolSpendProposal } from '../transaction/msg/gov/proposal/CommunityPoolSpendProposal';
+import { paramChangeProposal } from '../transaction/msg/gov/proposal/ParamChangeProposal';
 import { cancelSoftwareUpgradeProposal } from '../transaction/msg/gov/proposal/CancelSoftwareUpgradeProposal';
 import { softwareUpgradeProposal } from '../transaction/msg/gov/proposal/SoftwareUpgradeProposal';
 import { msgSetWithdrawAddress } from '../transaction/msg/distribution/MsgSetWithdrawAddress';
