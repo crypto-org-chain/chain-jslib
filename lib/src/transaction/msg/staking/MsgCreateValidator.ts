@@ -100,7 +100,6 @@ export const msgCreateValidator = function (config: InitConfigurations) {
             if (!parsedMsg.description || Object.keys(parsedMsg.description).length < 1) {
                 throw new Error('Invalid description in the Msg.');
             }
-            // console.debug(parsedMsg.pubkey)
 
             const parsedPubKey: { value?: { [key: string]: number } } = parsedMsg.pubkey as any;
 

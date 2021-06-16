@@ -74,7 +74,7 @@ export const msgSubmitProposal = function (config: InitConfigurations) {
             }
 
             if (!parsedMsg.initial_deposit || parsedMsg.initial_deposit.length !== 1) {
-                throw new Error('Invalid amount in the Msg.');
+                throw new Error('Invalid initial_deposit in the Msg.');
             }
 
             const cro = CroSDK({ network });
