@@ -190,6 +190,12 @@ const owIBCHeightOptional = () =>
         revisionNumber: owLong(),
     });
 
+const owGoogleProtoAnyOptional = () =>
+    owOptionalStrictObject().exactShape({
+        type_url: ow.optional.string,
+        value: ow.optional.uint8Array,
+    });
+
 export const owMsgTransferIBCOptions = owStrictObject().exactShape({
     sourcePort: ow.string,
     sourceChannel: ow.string,
@@ -198,4 +204,10 @@ export const owMsgTransferIBCOptions = owStrictObject().exactShape({
     receiver: ow.string,
     timeoutHeight: owIBCHeightOptional(),
     timeoutTimestamp: owLong(),
+});
+
+export const owMsgCreateClientOptions = owStrictObject().exactShape({
+    signer: ow.string,
+    clientState: owGoogleProtoAnyOptional(),
+    consensusState: owGoogleProtoAnyOptional(),
 });

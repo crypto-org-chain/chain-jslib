@@ -29,7 +29,8 @@ import { msgMintNFT } from '../transaction/msg/nft/MsgMintNFT';
 import { msgEditNFT } from '../transaction/msg/nft/MsgEditNFT';
 import { msgTransferNFT } from '../transaction/msg/nft/MsgTransferNFT';
 import { msgBurnNFT } from '../transaction/msg/nft/MsgBurnNFT';
-import { msgTransferIBC } from '../transaction/msg/ibc/MsgTransfer';
+import { msgTransferIBC } from '../transaction/msg/ibc/applications/MsgTransfer';
+import { msgCreateClientIBC } from '../transaction/msg/ibc/core/MsgCreateClient';
 
 export const CroSDK = function (configs: InitConfigurations) {
     ow(configs, 'configs', owCroSDKInitParams);
@@ -77,6 +78,7 @@ export const CroSDK = function (configs: InitConfigurations) {
         },
         ibc: {
             MsgTransfer: msgTransferIBC(configs),
+            MsgCreateClient: msgCreateClientIBC(configs),
         },
         Options: configs,
     };

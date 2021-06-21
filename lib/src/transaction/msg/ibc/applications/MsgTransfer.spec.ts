@@ -3,12 +3,12 @@ import { expect } from 'chai';
 import Big from 'big.js';
 
 import Long from 'long';
-import { fuzzyDescribe } from '../../../test/mocha-fuzzy/suite';
-import { Msg } from '../../../cosmos/v1beta1/types/msg';
-import { Secp256k1KeyPair } from '../../../keypair/secp256k1';
-import { Bytes } from '../../../utils/bytes/bytes';
-import { CroSDK } from '../../../core/cro';
-import { COSMOS_MSG_TYPEURL } from '../../common/constants/typeurl';
+import { fuzzyDescribe } from '../../../../test/mocha-fuzzy/suite';
+import { Msg } from '../../../../cosmos/v1beta1/types/msg';
+import { Secp256k1KeyPair } from '../../../../keypair/secp256k1';
+import { Bytes } from '../../../../utils/bytes/bytes';
+import { CroSDK } from '../../../../core/cro';
+import { COSMOS_MSG_TYPEURL } from '../../../common/constants/typeurl';
 
 const cro = CroSDK({
     network: {
