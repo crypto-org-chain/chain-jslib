@@ -232,7 +232,6 @@ describe('e2e test suite', function () {
 
         const signedTx = signableTx
             .setSignature(0, keyPair.sign(signableTx.toSignDocumentHash(0)))
-            .setSignature(1, keyPair2.sign(signableTx.toSignDocumentHash(1)))
             .toSigned();
 
         expect(msgSend1.fromAddress).to.eq(account1!.address);
