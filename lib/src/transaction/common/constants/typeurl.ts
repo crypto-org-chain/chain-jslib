@@ -37,5 +37,6 @@ export const COSMOS_MSG_TYPEURL = {
         MsgCreateClient: '/ibc.core.client.v1.MsgCreateClient',
         MsgUpdateClient: '/ibc.core.client.v1.MsgUpdateClient',
         MsgUpgradeClient: '/ibc.core.client.v1.MsgUpgradeClient',
+        MsgSubmitMisbehaviour: '/ibc.core.client.v1.MsgSubmitMisbehaviour',
     },
 };

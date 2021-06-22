@@ -35,6 +35,7 @@ export const typeUrlMappings: {
     '/ibc.core.client.v1.MsgCreateClient': ibc.core.client.v1.MsgCreateClient,
     '/ibc.core.client.v1.MsgUpdateClient': ibc.core.client.v1.MsgUpdateClient,
     '/ibc.core.client.v1.MsgUpgradeClient': ibc.core.client.v1.MsgUpgradeClient,
+    '/ibc.core.client.v1.MsgSubmitMisbehaviour': ibc.core.client.v1.MsgSubmitMisbehaviour,
 };
 
 export interface GeneratedType {

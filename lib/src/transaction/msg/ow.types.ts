@@ -226,3 +226,8 @@ export const owMsgUpgradeClientOptions = owStrictObject().exactShape({
     proofUpgradeConsensusState: ow.uint8Array,
     signer: ow.string,
 });
+export const owMsgSubmitMisbehaviourOptions = owStrictObject().exactShape({
+    clientId: ow.string,
+    misbehaviour: ow.optional.any(owGoogleProtoAnyOptional(), ow.optional.null),
+    signer: ow.string,
+});

@@ -33,6 +33,7 @@ import { msgTransferIBC } from '../transaction/msg/ibc/applications/MsgTransfer'
 import { msgCreateClientIBC } from '../transaction/msg/ibc/core/MsgCreateClient';
 import { msgUpdateClientIBC } from '../transaction/msg/ibc/core/MsgUpdateClient';
 import { msgUpgradeClientIBC } from '../transaction/msg/ibc/core/MsgUpgradeClient';
+import { msgSubmitMisbehaviourIBC } from '../transaction/msg/ibc/core/MsgSubmitMisbehaviour';
 
 export const CroSDK = function (configs: InitConfigurations) {
     ow(configs, 'configs', owCroSDKInitParams);
@@ -83,6 +84,7 @@ export const CroSDK = function (configs: InitConfigurations) {
             MsgCreateClient: msgCreateClientIBC(configs),
             MsgUpdateClient: msgUpdateClientIBC(configs),
             MsgUpgradeClient: msgUpgradeClientIBC(configs),
+            MsgSubmitMisbehaviour: msgSubmitMisbehaviourIBC(configs),
         },
         Options: configs,
     };
