@@ -34,7 +34,7 @@ export const msgCreateClientIBC = function (config: InitConfigurations) {
         }
 
         /**
-         * Returns the raw Msg representation of IBCTransfer
+         * Returns the raw Msg representation of Ibc.MsgCreateClient
          * @returns {Msg}
          */
         toRawMsg(): Msg {
