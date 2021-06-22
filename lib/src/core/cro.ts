@@ -31,6 +31,7 @@ import { msgTransferNFT } from '../transaction/msg/nft/MsgTransferNFT';
 import { msgBurnNFT } from '../transaction/msg/nft/MsgBurnNFT';
 import { msgTransferIBC } from '../transaction/msg/ibc/applications/MsgTransfer';
 import { msgCreateClientIBC } from '../transaction/msg/ibc/core/MsgCreateClient';
+import { msgUpdateClientIBC } from '../transaction/msg/ibc/core/MsgUpdateClient';
 
 export const CroSDK = function (configs: InitConfigurations) {
     ow(configs, 'configs', owCroSDKInitParams);
@@ -79,6 +80,7 @@ export const CroSDK = function (configs: InitConfigurations) {
         ibc: {
             MsgTransfer: msgTransferIBC(configs),
             MsgCreateClient: msgCreateClientIBC(configs),
+            MsgUpdateClient: msgUpdateClientIBC(configs),
         },
         Options: configs,
     };

@@ -211,3 +211,9 @@ export const owMsgCreateClientOptions = owStrictObject().exactShape({
     clientState: owGoogleProtoAnyOptional(),
     consensusState: owGoogleProtoAnyOptional(),
 });
+
+export const owMsgUpdateClientOptions = owStrictObject().exactShape({
+    signer: ow.string,
+    clientId: ow.string,
+    header: ow.optional.any(owGoogleProtoAnyOptional(), ow.optional.null),
+});

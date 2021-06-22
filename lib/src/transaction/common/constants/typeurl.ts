@@ -35,5 +35,6 @@ export const COSMOS_MSG_TYPEURL = {
     ibc: {
         MsgTransfer: '/ibc.applications.transfer.v1.MsgTransfer',
         MsgCreateClient: '/ibc.core.client.v1.MsgCreateClient',
+        MsgUpdateClient: '/ibc.core.client.v1.MsgUpdateClient',
     },
 };
