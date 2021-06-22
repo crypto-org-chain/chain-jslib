@@ -217,3 +217,12 @@ export const owMsgUpdateClientOptions = owStrictObject().exactShape({
     clientId: ow.string,
     header: ow.optional.any(owGoogleProtoAnyOptional(), ow.optional.null),
 });
+
+export const owMsgUpgradeClientOptions = owStrictObject().exactShape({
+    clientId: ow.string,
+    clientState: ow.optional.any(owGoogleProtoAnyOptional(), ow.optional.null),
+    consensusState: ow.optional.any(owGoogleProtoAnyOptional(), ow.optional.null),
+    proofUpgradeClient: ow.uint8Array,
+    proofUpgradeConsensusState: ow.uint8Array,
+    signer: ow.string,
+});
