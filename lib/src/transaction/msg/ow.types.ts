@@ -208,8 +208,8 @@ export const owMsgTransferIBCOptions = owStrictObject().exactShape({
 
 export const owMsgCreateClientOptions = owStrictObject().exactShape({
     signer: ow.string,
-    clientState: owGoogleProtoAnyOptional(),
-    consensusState: owGoogleProtoAnyOptional(),
+    clientState: ow.optional.any(owGoogleProtoAnyOptional(), ow.null),
+    consensusState: ow.optional.any(owGoogleProtoAnyOptional(), ow.null),
 });
 
 export const owMsgUpdateClientOptions = owStrictObject().exactShape({
