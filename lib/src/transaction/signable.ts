@@ -109,7 +109,9 @@ export class SignableTransaction {
             txBody.value.messages.push(nativeMsg);
         });
 
-        // TODO: structure integrity check
+        if (typeof cosmosObj.auth_info === 'undefined') {
+            throw new Error('Decoded Tx does not have a valid `authInfo`');
+        }
         const cosmosAuthInfo = cosmosObj.auth_info;
         const cosmosSignerInfos = cosmosAuthInfo.signer_infos;
         const signerInfos: SignerInfo[] = [];
@@ -145,28 +147,21 @@ export class SignableTransaction {
             });
         });
 
-        if (cosmosAuthInfo.fee.amount.length > 1) {
-            // TODO: Multi-coin support
-            throw new Error(`More than one fee amount in transaction is not supported`);
+        if (typeof cosmosAuthInfo.fee === 'undefined' || typeof cosmosAuthInfo.fee.amount === 'undefined') {
+            throw new Error('Decoded Tx AuthInfo does not have a valid `fee`');
         }
 
-        let feeAmount;
-        let feeAmountCoin;
-        // Todo: handle multiple fee amounts
-        if (cosmosAuthInfo.fee.amount.length === 1) {
-            [feeAmount] = cosmosAuthInfo.fee.amount;
-        }
-
-        if (feeAmount) {
-            const feeAmountString = feeAmount.amount!;
+        const feeAmountList: ICoin[] = cosmosAuthInfo.fee.amount.map((feeAmount) => {
+            const feeAmountString = feeAmount.amount;
             const feeAmountDenom = feeAmount.denom;
-            feeAmountCoin = croSdk.Coin.fromCustomAmountDenom(feeAmountString, feeAmountDenom);
-        }
+            const feeAmountCoin = croSdk.Coin.fromCustomAmountDenom(feeAmountString, feeAmountDenom);
+            return feeAmountCoin;
+        });
 
         const authInfo: AuthInfo = {
             signerInfos,
             fee: {
-                amount: feeAmountCoin || undefined,
+                amount: feeAmountList || undefined,
                 gasLimit: new Big(cosmosAuthInfo.fee.gas_limit || DEFAULT_GAS_LIMIT),
                 payer: cosmosAuthInfo.fee.payer,
                 granter: cosmosAuthInfo.fee.granter,
@@ -435,9 +430,9 @@ const legacyEncodeMsgs = (msgs: CosmosMsg[]): legacyAmino.Msg[] => {
     return msgs.map((msg) => msg.toRawAminoMsg());
 };
 
-const legacyEncodeStdFee = (fee: ICoin | undefined, gas: Big | undefined): legacyAmino.StdFee => {
+const legacyEncodeStdFee = (feeAmountList: ICoin[] | undefined, gas: Big | undefined): legacyAmino.StdFee => {
     return {
-        amount: fee ? fee.toCosmosCoins() : [],
+        amount: feeAmountList ? feeAmountList.map((feeAmount) => feeAmount.toCosmosCoin()) : [],
         gas: gas ? gas.toString() : DEFAULT_GAS_LIMIT.toString(),
     };
 };

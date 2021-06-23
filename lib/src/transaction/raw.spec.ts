@@ -77,6 +77,33 @@ describe('Transaction', function () {
             expect(actualSignerInfos[1].sequence).to.deep.eq(anotherSigner.accountSequence);
         });
 
+        it('should set a single fee `amount` to AuthInfo', function () {
+            const tx = anyTransaction();
+            tx.setFee(cro.Coin.fromBaseUnit('10000'));
+
+            expect(tx.getAuthInfo().fee.amount).to.have.length(1);
+            expect(tx.getAuthInfo().fee!.amount![0].toCosmosCoin()).to.deep.eq({
+                amount: '10000',
+                denom: 'basetcro',
+            });
+        });
+
+        it('should append fee `amount` to AuthInfo', function () {
+            const tx = anyTransaction();
+            tx.appendFeeAmount(cro.Coin.fromBaseUnit('88888'));
+            tx.appendFeeAmount(cro.Coin.fromBaseUnit('99999'));
+
+            expect(tx.getAuthInfo().fee.amount).to.have.length(2);
+            expect(tx.getAuthInfo().fee!.amount![0].toCosmosCoin()).to.deep.eq({
+                amount: '88888',
+                denom: 'basetcro',
+            });
+            expect(tx.getAuthInfo().fee!.amount![1].toCosmosCoin()).to.deep.eq({
+                amount: '99999',
+                denom: 'basetcro',
+            });
+        });
+
         it('should append signer to signerAccountNumbers', function () {
             const anySigner = TransactionSignerFactory.build();
 
