@@ -147,17 +147,15 @@ export class SignableTransaction {
             });
         });
 
-        const feeAmountList: ICoin[] = [];
-
         if (typeof cosmosAuthInfo.fee === 'undefined' || typeof cosmosAuthInfo.fee.amount === 'undefined') {
             throw new Error('Decoded Tx AuthInfo does not have a valid `fee`');
         }
 
-        cosmosAuthInfo.fee.amount.forEach((feeAmount) => {
+        const feeAmountList: ICoin[] = cosmosAuthInfo.fee.amount.map((feeAmount) => {
             const feeAmountString = feeAmount.amount;
             const feeAmountDenom = feeAmount.denom;
             const feeAmountCoin = croSdk.Coin.fromCustomAmountDenom(feeAmountString, feeAmountDenom);
-            feeAmountList.push(feeAmountCoin);
+            return feeAmountCoin;
         });
 
         const authInfo: AuthInfo = {
