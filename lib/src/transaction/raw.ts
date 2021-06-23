@@ -180,7 +180,6 @@ export const rawTransaction = function (config: InitConfigurations) {
          * @returns {RawTransaction}
          * @throws {Error} when fee set is invalid
          * @memberof Transaction
-         * @deprecated
          */
         public appendFeeAmount(feeAmount: ICoin): RawTransaction {
             ow(feeAmount, 'feeAmount', owCoin());
