@@ -160,7 +160,7 @@ export const rawTransaction = function (config: InitConfigurations) {
         }
 
         /**
-         * Sets a single fee amount to the raw tx
+         * Sets a `single` only fee amount to the raw tx
          * @param {ICoin} feeAmount amount to be set to the raw tx body
          * @returns {RawTransaction}
          * @throws {Error} when fee set is invalid
@@ -175,12 +175,11 @@ export const rawTransaction = function (config: InitConfigurations) {
         }
 
         /**
-         * Appends a
+         * Appends an `Amount` to the AuthInfo Fee Amount List
          * @param {ICoin} feeAmount to be set to the raw tx body
          * @returns {RawTransaction}
          * @throws {Error} when fee set is invalid
          * @memberof Transaction
-         * @deprecated
          */
         public appendFeeAmount(feeAmount: ICoin): RawTransaction {
             ow(feeAmount, 'feeAmount', owCoin());
