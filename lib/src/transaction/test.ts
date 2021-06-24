@@ -32,6 +32,21 @@ export const CosmosMsgSuiteFactory = new Factory<MessageSuite>()
             new cro.bank.MsgSend({
                 fromAddress: new cro.Address(keyPair.getPubKey()).account(),
                 toAddress,
+                amount: cro.Coin.fromBaseUnit(chance.integer({ min: 0 }).toString()),
+            }),
+    );
+
+export const CosmosMsgSuiteFactoryV2 = new Factory<MessageSuite>()
+    .option('network', CroNetwork.Testnet)
+    .attr('keyPair', () => Secp256k1KeyPair.generateRandom())
+    .attr('toAddress', 'tcro184lta2lsyu47vwyp2e8zmtca3k5yq85p6c4vp3')
+    .attr(
+        'message',
+        ['network', 'keyPair', 'toAddress'],
+        (_: Network, keyPair: Secp256k1KeyPair, toAddress: string): CosmosMsg =>
+            new cro.v2.bank.MsgSend({
+                fromAddress: new cro.Address(keyPair.getPubKey()).account(),
+                toAddress,
                 amount: [cro.Coin.fromBaseUnit(chance.integer({ min: 0 }).toString())],
             }),
     );
