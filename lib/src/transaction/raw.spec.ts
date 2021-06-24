@@ -189,7 +189,9 @@ describe('Transaction', function () {
                 anyTx.addSigner({
                     accountNumber: new Big(0),
                     accountSequence: new Big(79),
-                    publicKey: Bytes.fromHexString('03a52c32db89513a187ceb00a4520b52dec06f583f2e12afcf1da78e370a5358e6'),
+                    publicKey: Bytes.fromHexString(
+                        '03a52c32db89513a187ceb00a4520b52dec06f583f2e12afcf1da78e370a5358e6',
+                    ),
                 });
 
                 const parsedCosmosJson = JSON.parse(anyTx.toCosmosJSON());
@@ -205,7 +207,7 @@ describe('Transaction', function () {
                 expect(parseInt(parsedCosmosJson.auth_info.fee.gas_limit, 10)).to.greaterThan(0);
             });
         });
-    })
+    });
 
     context('v1 messages', function name() {
         describe('appendTxBodyMessage', function () {
@@ -383,7 +385,9 @@ describe('Transaction', function () {
                 anyTx.addSigner({
                     accountNumber: new Big(0),
                     accountSequence: new Big(79),
-                    publicKey: Bytes.fromHexString('03a52c32db89513a187ceb00a4520b52dec06f583f2e12afcf1da78e370a5358e6'),
+                    publicKey: Bytes.fromHexString(
+                        '03a52c32db89513a187ceb00a4520b52dec06f583f2e12afcf1da78e370a5358e6',
+                    ),
                 });
 
                 const parsedCosmosJson = JSON.parse(anyTx.toCosmosJSON());
@@ -399,6 +403,5 @@ describe('Transaction', function () {
                 expect(parseInt(parsedCosmosJson.auth_info.fee.gas_limit, 10)).to.greaterThan(0);
             });
         });
-    })
-
+    });
 });

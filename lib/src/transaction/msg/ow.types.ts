@@ -21,7 +21,7 @@ export const v2 = {
         fromAddress: ow.string,
         toAddress: ow.string,
         amount: ow.array.ofType(owCoin()),
-    })
+    }),
 };
 
 const proposalContentValidatorFn = (val: object) => ({
