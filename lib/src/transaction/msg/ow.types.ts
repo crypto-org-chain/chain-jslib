@@ -16,6 +16,13 @@ export const owMsgSendOptions = owStrictObject().exactShape({
     toAddress: ow.string,
     amount: ow.array.ofType(owCoin()),
 });
+export const v2 = {
+    owMsgSendOptions: owStrictObject().exactShape({
+        fromAddress: ow.string,
+        toAddress: ow.string,
+        amount: ow.array.ofType(owCoin()),
+    }),
+};
 
 const proposalContentValidatorFn = (val: object) => ({
     validator: isMsgProposalContent(val),
