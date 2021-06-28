@@ -78,13 +78,13 @@ describe('e2e test suite', function () {
             const randomAddress = new cro.Address(randomKeyPair.getPubKey());
             const client = await cro.CroClient.connect();
 
-            const msgSend1 = new cro.v2.bank.MsgSend({
+            const msgSend1 = new cro.v2.bank.MsgSendV2({
                 fromAddress: address1.account(),
                 toAddress: randomAddress.account(),
                 amount: [new cro.Coin('100000', Units.BASE)],
             });
 
-            const msgSend2 = new cro.v2.bank.MsgSend({
+            const msgSend2 = new cro.v2.bank.MsgSendV2({
                 fromAddress: address2.account(),
                 toAddress: address1.account(),
                 amount: [new cro.Coin('20000', Units.BASE)],

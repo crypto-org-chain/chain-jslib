@@ -44,7 +44,7 @@ export const CosmosMsgSuiteFactoryV2 = new Factory<MessageSuite>()
         'message',
         ['network', 'keyPair', 'toAddress'],
         (_: Network, keyPair: Secp256k1KeyPair, toAddress: string): CosmosMsg =>
-            new cro.v2.bank.MsgSend({
+            new cro.v2.bank.MsgSendV2({
                 fromAddress: new cro.Address(keyPair.getPubKey()).account(),
                 toAddress,
                 amount: [cro.Coin.fromBaseUnit(chance.integer({ min: 0 }).toString())],

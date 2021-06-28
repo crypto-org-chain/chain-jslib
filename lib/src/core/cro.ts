@@ -76,7 +76,7 @@ export const CroSDK = function (configs: InitConfigurations) {
         },
         v2: {
             bank: {
-                MsgSend: msgSendV2(configs),
+                MsgSendV2: msgSendV2(configs),
             },
         },
         Options: configs,

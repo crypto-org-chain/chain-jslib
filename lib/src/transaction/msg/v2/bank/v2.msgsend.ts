@@ -11,7 +11,7 @@ import * as legacyAmino from '../../../../cosmos/amino';
 import { Network } from '../../../../network/network';
 
 export const msgSendV2 = function (config: InitConfigurations) {
-    return class MsgSend implements CosmosMsg {
+    return class MsgSendV2 implements CosmosMsg {
         public readonly fromAddress: string;
 
         public readonly toAddress: string;
@@ -21,7 +21,7 @@ export const msgSendV2 = function (config: InitConfigurations) {
         /**
          * Constructor to create a new MsgSend
          * @param {MsgSendOptions} options
-         * @returns {MsgSend}
+         * @returns {MsgSendV2}
          * @throws {Error} when options is invalid
          */
         constructor(options: MsgSendOptions) {
@@ -38,9 +38,9 @@ export const msgSendV2 = function (config: InitConfigurations) {
          * Returns an instance of MsgSend
          * @param {string} msgJsonStr
          * @param {Network} network
-         * @returns {MsgSend}
+         * @returns {MsgSendV2}
          */
-        public static fromCosmosMsgJSON(msgJsonStr: string, network: Network): MsgSend {
+        public static fromCosmosMsgJSON(msgJsonStr: string, network: Network): MsgSendV2 {
             const parsedMsg = JSON.parse(msgJsonStr) as MsgSendRaw;
             const cro = CroSDK({ network });
             if (parsedMsg['@type'] !== COSMOS_MSG_TYPEURL.MsgSend) {
@@ -50,7 +50,7 @@ export const msgSendV2 = function (config: InitConfigurations) {
                 throw new Error('Invalid amount in the Msg.');
             }
 
-            return new MsgSend({
+            return new MsgSendV2({
                 fromAddress: parsedMsg.from_address,
                 toAddress: parsedMsg.to_address,
                 amount: parsedMsg.amount.map((coin) => cro.Coin.fromCustomAmountDenom(coin.amount, coin.denom)),
