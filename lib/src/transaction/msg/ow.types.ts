@@ -22,6 +22,10 @@ export const v2 = {
         toAddress: ow.string,
         amount: ow.array.ofType(owCoin()),
     }),
+    owMsgFundCommunityPoolOptions: owStrictObject().exactShape({
+        depositor: ow.string,
+        amount: ow.array.ofType(owCoin()),
+    }),
 };
 
 const proposalContentValidatorFn = (val: object) => ({
@@ -94,7 +98,7 @@ export const owMsgSetWithdrawAddressOptions = owStrictObject().exactShape({
 
 export const owMsgFundCommunityPoolOptions = owStrictObject().exactShape({
     depositor: ow.string,
-    amount: ow.array.ofType(owCoin()),
+    amount: owCoin(),
 });
 
 export const owMsgDelegateOptions = owStrictObject().exactShape({

@@ -14,7 +14,7 @@ export const msgFundCommunityPool = function (config: InitConfigurations) {
         // Normal user addresses with (t)cro prefix
         public readonly depositor: string;
 
-        public amount: ICoin[];
+        public amount: ICoin;
 
         /**
          * Constructor to create a new MsgFundCommunityPool
@@ -37,7 +37,7 @@ export const msgFundCommunityPool = function (config: InitConfigurations) {
                 type: 'cosmos-sdk/MsgFundCommunityPool',
                 value: {
                     depositor: this.depositor,
-                    amount: this.amount.map((coin) => coin.toCosmosCoin()),
+                    amount: this.amount.toCosmosCoins(),
                 },
             } as legacyAmino.MsgFundCommunityPool;
         }
@@ -51,7 +51,7 @@ export const msgFundCommunityPool = function (config: InitConfigurations) {
                 typeUrl: COSMOS_MSG_TYPEURL.distribution.MsgFundCommunityPool,
                 value: {
                     depositor: this.depositor,
-                    amount: this.amount.map((coin) => coin.toCosmosCoin()),
+                    amount: this.amount.toCosmosCoins(),
                 },
             };
         }
@@ -70,13 +70,13 @@ export const msgFundCommunityPool = function (config: InitConfigurations) {
                     `Expected ${COSMOS_MSG_TYPEURL.distribution.MsgFundCommunityPool} but got ${parsedMsg['@type']}`,
                 );
             }
-            if (!parsedMsg.amount || parsedMsg.amount.length < 1) {
+            if (!parsedMsg.amount || parsedMsg.amount.length !== 1) {
                 throw new Error('Invalid amount in the Msg.');
             }
 
             return new MsgFundCommunityPool({
                 depositor: parsedMsg.depositor,
-                amount: parsedMsg.amount.map((coin) => cro.Coin.fromCustomAmountDenom(coin.amount, coin.denom)),
+                amount: cro.Coin.fromCustomAmountDenom(parsedMsg.amount[0].amount, parsedMsg.amount[0].denom),
             });
         }
 
@@ -96,7 +96,7 @@ export const msgFundCommunityPool = function (config: InitConfigurations) {
 
 export type MsgFundCommunityPoolOptions = {
     depositor: string;
-    amount: ICoin[];
+    amount: ICoin;
 };
 interface MsgFundCommunityPoolRaw {
     '@type': string;
