@@ -76,7 +76,6 @@ export const msgFundCommunityPool = function (config: InitConfigurations) {
 
             return new MsgFundCommunityPool({
                 depositor: parsedMsg.depositor,
-                // TOdo: Handle the complete list
                 amount: cro.Coin.fromCustomAmountDenom(parsedMsg.amount[0].amount, parsedMsg.amount[0].denom),
             });
         }
@@ -97,7 +96,6 @@ export const msgFundCommunityPool = function (config: InitConfigurations) {
 
 export type MsgFundCommunityPoolOptions = {
     depositor: string;
-    // Todo: Make it a list instead
     amount: ICoin;
 };
 interface MsgFundCommunityPoolRaw {

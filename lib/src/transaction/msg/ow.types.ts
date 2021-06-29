@@ -31,6 +31,12 @@ export const v2 = {
         proposalId: owBig(),
         amount: ow.array.ofType(owCoin()),
     }),
+    owCommunityPoolSpendProposalOptions: owStrictObject().exactShape({
+        title: ow.string,
+        description: ow.string,
+        recipient: ow.string,
+        amount: ow.array.ofType(owCoin()),
+    }),
 };
 
 const proposalContentValidatorFn = (val: object) => ({
