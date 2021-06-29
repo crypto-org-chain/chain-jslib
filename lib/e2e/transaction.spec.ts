@@ -1,4 +1,3 @@
-// @ts-nocheck
 /* eslint-disable */
 import 'mocha';
 import Big from 'big.js';
@@ -163,7 +162,7 @@ describe('e2e test suite', function () {
         expect(account2).to.be.not.null;
 
         const signableTx = rawTx
-            .appendMessage(`msgSend`)
+            .appendMessage(msgSend1)
             .appendMessage(msgSend2)
             .addSigner({
                 publicKey: keyPair.getPubKey(),
