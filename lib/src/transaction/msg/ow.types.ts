@@ -26,6 +26,11 @@ export const v2 = {
         depositor: ow.string,
         amount: ow.array.ofType(owCoin()),
     }),
+    owMsgDepositOptions: owStrictObject().exactShape({
+        depositor: ow.string,
+        proposalId: owBig(),
+        amount: ow.array.ofType(owCoin()),
+    }),
 };
 
 const proposalContentValidatorFn = (val: object) => ({
