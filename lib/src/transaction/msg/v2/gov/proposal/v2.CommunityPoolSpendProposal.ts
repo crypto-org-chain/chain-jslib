@@ -65,7 +65,7 @@ export const communityPoolSpendProposalV2 = function (config: InitConfigurations
                     `Expected ${COSMOS_MSG_TYPEURL.upgrade.CommunityPoolSpendProposal} but got ${parsedMsg['@type']}`,
                 );
             }
-            if (!parsedMsg.amount || parsedMsg.amount.length !== 1) {
+            if (!parsedMsg.amount || parsedMsg.amount.length < 1) {
                 throw new Error('Invalid amount in the Msg.');
             }
             const cro = CroSDK({ network });
