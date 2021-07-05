@@ -9,6 +9,13 @@ const voteOptionValidator = (val: number) => ({
     message: (label: string) => `Expected ${label} to be one of the Vote options, got \`${val}\``,
 });
 
+const proposalContentValidatorFn = (val: object) => ({
+    validator: isMsgProposalContent(val),
+    message: (label: string) => `Expected ${label} to be an instance of \`IMsgProposalContent\`, got \`${val}\``,
+});
+
+const owContent = () => owStrictObject().validate(proposalContentValidatorFn);
+
 export const owVoteOption = () => ow.number.validate(voteOptionValidator);
 
 export const owMsgSendOptions = owStrictObject().exactShape({
@@ -22,14 +29,27 @@ export const v2 = {
         toAddress: ow.string,
         amount: ow.array.ofType(owCoin()),
     }),
+    owMsgFundCommunityPoolOptions: owStrictObject().exactShape({
+        depositor: ow.string,
+        amount: ow.array.ofType(owCoin()),
+    }),
+    owMsgDepositOptions: owStrictObject().exactShape({
+        depositor: ow.string,
+        proposalId: owBig(),
+        amount: ow.array.ofType(owCoin()),
+    }),
+    owCommunityPoolSpendProposalOptions: owStrictObject().exactShape({
+        title: ow.string,
+        description: ow.string,
+        recipient: ow.string,
+        amount: ow.array.ofType(owCoin()),
+    }),
+    owMsgSubmitProposalOptions: owStrictObject().exactShape({
+        proposer: ow.string,
+        initialDeposit: ow.array.ofType(owCoin()),
+        content: owContent(),
+    }),
 };
-
-const proposalContentValidatorFn = (val: object) => ({
-    validator: isMsgProposalContent(val),
-    message: (label: string) => `Expected ${label} to be an instance of \`IMsgProposalContent\`, got \`${val}\``,
-});
-
-const owContent = () => owStrictObject().validate(proposalContentValidatorFn);
 
 export const owMsgSubmitProposalOptions = owStrictObject().exactShape({
     proposer: ow.string,

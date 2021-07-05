@@ -30,6 +30,10 @@ import { msgEditNFT } from '../transaction/msg/nft/MsgEditNFT';
 import { msgTransferNFT } from '../transaction/msg/nft/MsgTransferNFT';
 import { msgBurnNFT } from '../transaction/msg/nft/MsgBurnNFT';
 import { msgSendV2 } from '../transaction/msg/v2/bank/v2.msgsend';
+import { msgFundCommunityPoolV2 } from '../transaction/msg/v2/distribution/v2.MsgFundCommunityPool';
+import { msgDepositV2 } from '../transaction/msg/v2/gov/v2.MsgDeposit';
+import { communityPoolSpendProposalV2 } from '../transaction/msg/v2/gov/proposal/v2.CommunityPoolSpendProposal';
+import { msgSubmitProposalV2 } from '../transaction/msg/v2/gov/v2.MsgSubmitProposal';
 
 export const CroSDK = function (configs: InitConfigurations) {
     ow(configs, 'configs', owCroSDKInitParams);
@@ -77,6 +81,16 @@ export const CroSDK = function (configs: InitConfigurations) {
         v2: {
             bank: {
                 MsgSendV2: msgSendV2(configs),
+            },
+            distribution: {
+                MsgFundCommunityPoolV2: msgFundCommunityPoolV2(configs),
+            },
+            gov: {
+                MsgDepositV2: msgDepositV2(configs),
+                MsgSubmitProposalV2: msgSubmitProposalV2(configs),
+                proposal: {
+                    CommunityPoolSpendProposalV2: communityPoolSpendProposalV2(configs),
+                },
             },
         },
         Options: configs,
