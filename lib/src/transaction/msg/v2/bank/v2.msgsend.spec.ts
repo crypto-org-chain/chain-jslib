@@ -1,14 +1,13 @@
-/* eslint-disable camelcase */
 import 'mocha';
 import { expect } from 'chai';
 import Big from 'big.js';
 
-import { fuzzyDescribe } from '../../../test/mocha-fuzzy/suite';
-import { Msg } from '../../../cosmos/v1beta1/types/msg';
-import { Secp256k1KeyPair } from '../../../keypair/secp256k1';
-import { Bytes } from '../../../utils/bytes/bytes';
-import { Units } from '../../../coin/coin';
-import { CroSDK, CroNetwork } from '../../../core/cro';
+import { fuzzyDescribe } from '../../../../test/mocha-fuzzy/suite';
+import { Msg } from '../../../../cosmos/v1beta1/types/msg';
+import { Secp256k1KeyPair } from '../../../../keypair/secp256k1';
+import { Bytes } from '../../../../utils/bytes/bytes';
+import { Units } from '../../../../coin/coin';
+import { CroSDK, CroNetwork } from '../../../../core/cro';
 
 const cro = CroSDK({
     network: {
@@ -34,28 +33,28 @@ describe('Testing MsgSend', function () {
         it('should throw Error if the JSON is not a MsgSend', function () {
             const json =
                 '{ "@type": "/cosmos.bank.v1beta1.MsgCreateValidator", "amount": [{ "denom": "basetcro", "amount": "3478499933290496" }], "from_address": "tcro1x07kkkepfj2hl8etlcuqhej7jj6myqrp48y4hg", "to_address": "tcro184lta2lsyu47vwyp2e8zmtca3k5yq85p6c4vp3" }';
-            expect(() => cro.bank.MsgSend.fromCosmosMsgJSON(json, CroNetwork.Testnet)).to.throw(
+            expect(() => cro.v2.bank.MsgSendV2.fromCosmosMsgJSON(json, CroNetwork.Testnet)).to.throw(
                 'Expected /cosmos.bank.v1beta1.MsgSend but got /cosmos.bank.v1beta1.MsgCreateValidator',
             );
         });
         it('should throw Error when the from field is missing', function () {
             const json =
                 '{ "@type": "/cosmos.bank.v1beta1.MsgSend", "amount": [{ "denom": "basetcro", "amount": "3478499933290496" }], "to_address": "tcro184lta2lsyu47vwyp2e8zmtca3k5yq85p6c4vp3" }';
-            expect(() => cro.bank.MsgSend.fromCosmosMsgJSON(json, CroNetwork.Testnet)).to.throw(
+            expect(() => cro.v2.bank.MsgSendV2.fromCosmosMsgJSON(json, CroNetwork.Testnet)).to.throw(
                 'Expected property `fromAddress` to be of type `string` but received type `undefined` in object `options`',
             );
         });
         it('should throw Error when the to field is missing', function () {
             const json =
                 '{ "@type": "/cosmos.bank.v1beta1.MsgSend", "amount": [{ "denom": "basetcro", "amount": "3478499933290496" }], "from_address": "tcro1x07kkkepfj2hl8etlcuqhej7jj6myqrp48y4hg" }';
-            expect(() => cro.bank.MsgSend.fromCosmosMsgJSON(json, CroNetwork.Testnet)).to.throw(
+            expect(() => cro.v2.bank.MsgSendV2.fromCosmosMsgJSON(json, CroNetwork.Testnet)).to.throw(
                 'Expected property `toAddress` to be of type `string` but received type `undefined` in object `options`',
             );
         });
         it('should throw Error when the amount field is missing', function () {
             const json =
                 '{ "@type": "/cosmos.bank.v1beta1.MsgSend", "from_address": "tcro1x07kkkepfj2hl8etlcuqhej7jj6myqrp48y4hg" , "to_address": "tcro184lta2lsyu47vwyp2e8zmtca3k5yq85p6c4vp3" }';
-            expect(() => cro.bank.MsgSend.fromCosmosMsgJSON(json, CroNetwork.Testnet)).to.throw(
+            expect(() => cro.v2.bank.MsgSendV2.fromCosmosMsgJSON(json, CroNetwork.Testnet)).to.throw(
                 'Invalid amount in the Msg.',
             );
         });
@@ -63,7 +62,7 @@ describe('Testing MsgSend', function () {
             const json =
                 '{ "@type": "/cosmos.bank.v1beta1.MsgSend", "amount": [{ "denom": "basetcro", "amount": "3478499933290496" }], "from_address": "cro1pndm4ywdf4qtmupa0fqe75krmqed2znjyj6x8f", "to_address": "tcro184lta2lsyu47vwyp2e8zmtca3k5yq85p6c4vp3" }';
 
-            expect(() => cro.bank.MsgSend.fromCosmosMsgJSON(json, CroNetwork.Testnet)).to.throw(
+            expect(() => cro.v2.bank.MsgSendV2.fromCosmosMsgJSON(json, CroNetwork.Testnet)).to.throw(
                 'Provided `fromAddress` does not match network selected',
             );
         });
@@ -71,18 +70,18 @@ describe('Testing MsgSend', function () {
             const json =
                 '{ "@type": "/cosmos.bank.v1beta1.MsgSend", "amount": [{ "denom": "basetcro", "amount": "3478499933290496" }], "from_address": "tcro184lta2lsyu47vwyp2e8zmtca3k5yq85p6c4vp3", "to_address": "cro1pndm4ywdf4qtmupa0fqe75krmqed2znjyj6x8f" }';
 
-            expect(() => cro.bank.MsgSend.fromCosmosMsgJSON(json, CroNetwork.Testnet)).to.throw(
+            expect(() => cro.v2.bank.MsgSendV2.fromCosmosMsgJSON(json, CroNetwork.Testnet)).to.throw(
                 'Provided `toAddress` does not match network selected',
             );
         });
         it('should return the MsgSend corresponding to the JSON', function () {
             const json =
                 '{ "@type": "/cosmos.bank.v1beta1.MsgSend", "amount": [{ "denom": "basetcro", "amount": "3478499933290496" }], "from_address": "tcro1x07kkkepfj2hl8etlcuqhej7jj6myqrp48y4hg", "to_address": "tcro184lta2lsyu47vwyp2e8zmtca3k5yq85p6c4vp3" }';
-            const msgSend = cro.bank.MsgSend.fromCosmosMsgJSON(json, CroNetwork.Testnet);
+            const msgSend = cro.v2.bank.MsgSendV2.fromCosmosMsgJSON(json, CroNetwork.Testnet);
             expect(msgSend.fromAddress).to.eql('tcro1x07kkkepfj2hl8etlcuqhej7jj6myqrp48y4hg');
             expect(msgSend.toAddress).to.eql('tcro184lta2lsyu47vwyp2e8zmtca3k5yq85p6c4vp3');
-            expect(msgSend.amount.toCosmosCoin().amount).to.eql('3478499933290496');
-            expect(msgSend.amount.toCosmosCoin().denom).to.eql('basetcro');
+            expect(msgSend.amount[0].toCosmosCoin().amount).to.eql('3478499933290496');
+            expect(msgSend.amount[0].toCosmosCoin().denom).to.eql('basetcro');
         });
     });
 
@@ -98,17 +97,19 @@ describe('Testing MsgSend', function () {
             if (options.valid) {
                 return;
             }
-            expect(() => new cro.bank.MsgSend(options.value)).to.throw('Expected `options` to be of type `object`');
+            expect(() => new cro.v2.bank.MsgSendV2(options.value)).to.throw(
+                'Expected `options` to be of type `object`',
+            );
         });
     });
 
     it('Test MsgSend conversion', function () {
         const coin = new cro.Coin('12000500', Units.BASE);
 
-        const msgSend = new cro.bank.MsgSend({
+        const msgSend = new cro.v2.bank.MsgSendV2({
             fromAddress: 'tcro165tzcrh2yl83g8qeqxueg2g5gzgu57y3fe3kc3',
             toAddress: 'tcro184lta2lsyu47vwyp2e8zmtca3k5yq85p6c4vp3',
-            amount: coin,
+            amount: [coin],
         });
 
         const rawMsg: Msg = {
@@ -134,10 +135,10 @@ describe('Testing MsgSend', function () {
         );
         const coin = new cro.Coin('12000500', Units.CRO);
 
-        const msgSend = new cro.bank.MsgSend({
+        const msgSend = new cro.v2.bank.MsgSendV2({
             fromAddress: 'tcro165tzcrh2yl83g8qeqxueg2g5gzgu57y3fe3kc3',
             toAddress: 'tcro184lta2lsyu47vwyp2e8zmtca3k5yq85p6c4vp3',
-            amount: coin,
+            amount: [coin],
         });
 
         const anySigner = {
@@ -164,24 +165,28 @@ describe('Testing MsgSend', function () {
         const params1 = {
             fromAddress: 'cro1pndm4ywdf4qtmupa0fqe75krmqed2znjyj6x8f',
             toAddress: 'tcro184lta2lsyu47vwyp2e8zmtca3k5yq85p6c4vp3',
-            amount: coin,
+            amount: [coin],
         };
 
         const params2 = {
             fromAddress: 'tcro165tzcrh2yl83g8qeqxueg2g5gzgu57y3fe3kc3',
             toAddress: 'cro1pndm4ywdf4qtmupa0fqe75krmqed2znjyj6x8f',
-            amount: coin,
+            amount: [coin],
         };
 
         const params3 = {
             fromAddress: 'tcro1pndm4ywdf4qtmupa0fqe75krmqed2znjyj6x8fzqa',
             toAddress: 'cro184lta2lsyu47vwyp2e8zmtca3k5yq85p6c4vp3',
-            amount: coin,
+            amount: [coin],
         };
 
-        expect(() => new cro.bank.MsgSend(params1)).to.throw('Provided `fromAddress` does not match network selected');
-        expect(() => new cro.bank.MsgSend(params2)).to.throw('Provided `toAddress` does not match network selected');
-        expect(() => new cro.bank.MsgSend(params3)).to.throw(
+        expect(() => new cro.v2.bank.MsgSendV2(params1)).to.throw(
+            'Provided `fromAddress` does not match network selected',
+        );
+        expect(() => new cro.v2.bank.MsgSendV2(params2)).to.throw(
+            'Provided `toAddress` does not match network selected',
+        );
+        expect(() => new cro.v2.bank.MsgSendV2(params3)).to.throw(
             'Invalid checksum for tcro1pndm4ywdf4qtmupa0fqe75krmqed2znjyj6x8fzqa',
         );
     });

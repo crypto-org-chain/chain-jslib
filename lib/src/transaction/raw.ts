@@ -160,16 +160,33 @@ export const rawTransaction = function (config: InitConfigurations) {
         }
 
         /**
-         * Set fee to the raw tx
-         * @param {ICoin} fee to be set to the raw tx body
+         * Sets a `single` only fee amount to the raw tx
+         * @param {ICoin} feeAmount amount to be set to the raw tx body
+         * @returns {RawTransaction}
+         * @throws {Error} when fee set is invalid
+         * @memberof Transaction
+         * @deprecated
+         */
+        public setFee(feeAmount: ICoin): RawTransaction {
+            ow(feeAmount, 'fee', owCoin());
+            this.authInfo.fee.amount = [feeAmount];
+
+            return this;
+        }
+
+        /**
+         * Appends an `Amount` to the AuthInfo Fee Amount List
+         * @param {ICoin} feeAmount to be set to the raw tx body
          * @returns {RawTransaction}
          * @throws {Error} when fee set is invalid
          * @memberof Transaction
          */
-        public setFee(fee: ICoin): RawTransaction {
-            ow(fee, 'fee', owCoin());
-            this.authInfo.fee.amount = fee;
-
+        public appendFeeAmount(feeAmount: ICoin): RawTransaction {
+            ow(feeAmount, 'feeAmount', owCoin());
+            if (typeof this.authInfo.fee.amount === 'undefined') {
+                this.authInfo.fee.amount = [];
+            }
+            this.authInfo.fee.amount.push(feeAmount);
             return this;
         }
 

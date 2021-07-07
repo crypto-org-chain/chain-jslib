@@ -1,22 +1,22 @@
 /* eslint-disable camelcase */
 import ow from 'ow';
-import { InitConfigurations, CroSDK } from '../../../core/cro';
-import { Msg } from '../../../cosmos/v1beta1/types/msg';
-import { ICoin } from '../../../coin/coin';
-import { COSMOS_MSG_TYPEURL, typeUrlToMsgClassMapping } from '../../common/constants/typeurl';
-import { AddressType, validateAddress } from '../../../utils/address';
-import { owMsgSubmitProposalOptions } from '../ow.types';
-import { IMsgProposalContent } from './IMsgProposalContent';
-import { CosmosMsg } from '../cosmosMsg';
-import * as legacyAmino from '../../../cosmos/amino';
-import { Network } from '../../../network/network';
-import { Amount } from '../bank/msgsend';
+import { IMsgProposalContent } from '../../gov/IMsgProposalContent';
+import { InitConfigurations, CroSDK } from '../../../../core/cro';
+import { CosmosMsg } from '../../cosmosMsg';
+import { ICoin } from '../../../../coin/coin';
+import { v2 } from '../../ow.types';
+import { Msg } from '../../../../cosmos/v1beta1/types/msg';
+import { COSMOS_MSG_TYPEURL, typeUrlToMsgClassMapping } from '../../../common/constants/typeurl';
+import { Network } from '../../../../network/network';
+import { validateAddress, AddressType } from '../../../../utils/address';
+import { Amount } from '../../bank/msgsend';
+import * as legacyAmino from '../../../../cosmos/amino';
 
-export const msgSubmitProposal = function (config: InitConfigurations) {
-    return class MsgSubmitProposal implements CosmosMsg {
+export const msgSubmitProposalV2 = function (config: InitConfigurations) {
+    return class MsgSubmitProposalV2 implements CosmosMsg {
         public readonly proposer: string;
 
-        public readonly initialDeposit: ICoin;
+        public readonly initialDeposit: ICoin[];
 
         public readonly content: IMsgProposalContent;
 
@@ -27,7 +27,7 @@ export const msgSubmitProposal = function (config: InitConfigurations) {
          * @throws {Error} when options is invalid
          */
         constructor(options: ProposalOptions) {
-            ow(options, 'options', owMsgSubmitProposalOptions);
+            ow(options, 'options', v2.owMsgSubmitProposalOptions);
             this.proposer = options.proposer;
             this.initialDeposit = options.initialDeposit;
             this.content = options.content;
@@ -45,18 +45,12 @@ export const msgSubmitProposal = function (config: InitConfigurations) {
          * @returns {Msg}
          */
         toRawMsg(): Msg {
-            const cosmosAmount = this.initialDeposit.toCosmosCoin();
             return {
                 typeUrl: COSMOS_MSG_TYPEURL.MsgSubmitProposal,
                 value: {
                     proposer: this.proposer,
                     content: this.content.getEncoded(),
-                    initialDeposit: [
-                        {
-                            denom: cosmosAmount.denom,
-                            amount: cosmosAmount.amount,
-                        },
-                    ],
+                    initialDeposit: this.initialDeposit.map((coin) => coin.toCosmosCoin()),
                 },
             };
         }
@@ -67,13 +61,13 @@ export const msgSubmitProposal = function (config: InitConfigurations) {
          * @param {Network} network
          * @returns {MsgSubmitProposal}
          */
-        public static fromCosmosMsgJSON(msgJsonStr: string, network: Network): MsgSubmitProposal {
+        public static fromCosmosMsgJSON(msgJsonStr: string, network: Network): MsgSubmitProposalV2 {
             const parsedMsg = JSON.parse(msgJsonStr) as MsgSubmitProposalRaw;
             if (parsedMsg['@type'] !== COSMOS_MSG_TYPEURL.MsgSubmitProposal) {
                 throw new Error(`Expected ${COSMOS_MSG_TYPEURL.MsgSubmitProposal} but got ${parsedMsg['@type']}`);
             }
 
-            if (!parsedMsg.initial_deposit || parsedMsg.initial_deposit.length !== 1) {
+            if (!parsedMsg.initial_deposit || parsedMsg.initial_deposit.length < 1) {
                 throw new Error('Invalid initial_deposit in the Msg.');
             }
 
@@ -86,11 +80,10 @@ export const msgSubmitProposal = function (config: InitConfigurations) {
                 network,
             );
 
-            return new MsgSubmitProposal({
+            return new MsgSubmitProposalV2({
                 proposer: parsedMsg.proposer,
-                initialDeposit: cro.Coin.fromCustomAmountDenom(
-                    parsedMsg.initial_deposit[0].amount,
-                    parsedMsg.initial_deposit[0].denom,
+                initialDeposit: parsedMsg.initial_deposit.map((coin) =>
+                    cro.Coin.fromCustomAmountDenom(coin.amount, coin.denom),
                 ),
                 content: nativeContentMsg,
             });
@@ -112,7 +105,7 @@ export const msgSubmitProposal = function (config: InitConfigurations) {
 
 export type ProposalOptions = {
     proposer: string;
-    initialDeposit: ICoin;
+    initialDeposit: ICoin[];
     content: IMsgProposalContent;
 };
 

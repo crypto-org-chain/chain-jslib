@@ -1,43 +1,31 @@
 /* eslint-disable camelcase */
 import ow from 'ow';
-import { Msg } from '../../../cosmos/v1beta1/types/msg';
-import { ICoin } from '../../../coin/coin';
-import { owMsgSendOptions } from '../ow.types';
-import { InitConfigurations, CroSDK } from '../../../core/cro';
-import { AddressType, validateAddress } from '../../../utils/address';
-import { CosmosMsg } from '../cosmosMsg';
-import { COSMOS_MSG_TYPEURL } from '../../common/constants/typeurl';
-import * as legacyAmino from '../../../cosmos/amino';
-import { Network } from '../../../network/network';
+import { Msg } from '../../../../cosmos/v1beta1/types/msg';
+import { ICoin } from '../../../../coin/coin';
+import { v2 } from '../../ow.types';
+import { InitConfigurations, CroSDK } from '../../../../core/cro';
+import { AddressType, validateAddress } from '../../../../utils/address';
+import { CosmosMsg } from '../../cosmosMsg';
+import { COSMOS_MSG_TYPEURL } from '../../../common/constants/typeurl';
+import * as legacyAmino from '../../../../cosmos/amino';
+import { Network } from '../../../../network/network';
 
-export interface MsgSendRaw {
-    '@type': string;
-    amount: Amount[];
-    from_address: string;
-    to_address: string;
-}
-
-export interface Amount {
-    denom: string;
-    amount: string;
-}
-
-export const msgSend = function (config: InitConfigurations) {
-    return class MsgSend implements CosmosMsg {
+export const msgSendV2 = function (config: InitConfigurations) {
+    return class MsgSendV2 implements CosmosMsg {
         public readonly fromAddress: string;
 
         public readonly toAddress: string;
 
-        public amount: ICoin;
+        public amount: ICoin[];
 
         /**
          * Constructor to create a new MsgSend
          * @param {MsgSendOptions} options
-         * @returns {MsgSend}
+         * @returns {MsgSendV2}
          * @throws {Error} when options is invalid
          */
         constructor(options: MsgSendOptions) {
-            ow(options, 'options', owMsgSendOptions);
+            ow(options, 'options', v2.owMsgSendOptions);
 
             this.fromAddress = options.fromAddress;
             this.toAddress = options.toAddress;
@@ -50,22 +38,22 @@ export const msgSend = function (config: InitConfigurations) {
          * Returns an instance of MsgSend
          * @param {string} msgJsonStr
          * @param {Network} network
-         * @returns {MsgSend}
+         * @returns {MsgSendV2}
          */
-        public static fromCosmosMsgJSON(msgJsonStr: string, network: Network): MsgSend {
+        public static fromCosmosMsgJSON(msgJsonStr: string, network: Network): MsgSendV2 {
             const parsedMsg = JSON.parse(msgJsonStr) as MsgSendRaw;
             const cro = CroSDK({ network });
             if (parsedMsg['@type'] !== COSMOS_MSG_TYPEURL.MsgSend) {
                 throw new Error(`Expected ${COSMOS_MSG_TYPEURL.MsgSend} but got ${parsedMsg['@type']}`);
             }
-            if (!parsedMsg.amount || parsedMsg.amount.length !== 1) {
+            if (!parsedMsg.amount || parsedMsg.amount.length < 1) {
                 throw new Error('Invalid amount in the Msg.');
             }
 
-            return new MsgSend({
+            return new MsgSendV2({
                 fromAddress: parsedMsg.from_address,
                 toAddress: parsedMsg.to_address,
-                amount: cro.Coin.fromCustomAmountDenom(parsedMsg.amount[0].amount, parsedMsg.amount[0].denom),
+                amount: parsedMsg.amount.map((coin) => cro.Coin.fromCustomAmountDenom(coin.amount, coin.denom)),
             });
         }
 
@@ -79,7 +67,7 @@ export const msgSend = function (config: InitConfigurations) {
                 value: {
                     fromAddress: this.fromAddress,
                     toAddress: this.toAddress,
-                    amount: this.amount.toCosmosCoins(),
+                    amount: this.amount.map((coin) => coin.toCosmosCoin()),
                 },
             };
         }
@@ -91,7 +79,7 @@ export const msgSend = function (config: InitConfigurations) {
                 value: {
                     from_address: this.fromAddress,
                     to_address: this.toAddress,
-                    amount: this.amount.toCosmosCoins(),
+                    amount: this.amount.map((coin) => coin.toCosmosCoin()),
                 },
             } as legacyAmino.MsgSend;
         }
@@ -120,8 +108,20 @@ export const msgSend = function (config: InitConfigurations) {
     };
 };
 
-export type MsgSendOptions = {
+type MsgSendOptions = {
     fromAddress: string;
     toAddress: string;
-    amount: ICoin;
+    amount: ICoin[];
 };
+
+interface MsgSendRaw {
+    '@type': string;
+    amount: Amount[];
+    from_address: string;
+    to_address: string;
+}
+
+interface Amount {
+    denom: string;
+    amount: string;
+}

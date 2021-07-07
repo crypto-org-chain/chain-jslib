@@ -2,24 +2,24 @@
 import Big from 'big.js';
 import Long from 'long';
 import ow from 'ow';
-import { InitConfigurations, CroSDK } from '../../../core/cro';
-import { CosmosMsg } from '../cosmosMsg';
-import { Msg } from '../../../cosmos/v1beta1/types/msg';
-import { ICoin } from '../../../coin/coin';
-import { AddressType, validateAddress } from '../../../utils/address';
-import { COSMOS_MSG_TYPEURL } from '../../common/constants/typeurl';
-import { owMsgDepositOptions } from '../ow.types';
-import * as legacyAmino from '../../../cosmos/amino';
-import { Amount } from '../bank/msgsend';
-import { Network } from '../../../network/network';
+import { InitConfigurations, CroSDK } from '../../../../core/cro';
+import { CosmosMsg } from '../../cosmosMsg';
+import { Msg } from '../../../../cosmos/v1beta1/types/msg';
+import { ICoin } from '../../../../coin/coin';
+import { AddressType, validateAddress } from '../../../../utils/address';
+import { COSMOS_MSG_TYPEURL } from '../../../common/constants/typeurl';
+import { v2 } from '../../ow.types';
+import * as legacyAmino from '../../../../cosmos/amino';
+import { Amount } from '../../bank/msgsend';
+import { Network } from '../../../../network/network';
 
-export const msgDeposit = function (config: InitConfigurations) {
-    return class MsgDeposit implements CosmosMsg {
+export const msgDepositV2 = function (config: InitConfigurations) {
+    return class MsgDepositV2 implements CosmosMsg {
         public proposalId: Big;
 
         public depositor: string;
 
-        public amount: ICoin;
+        public amount: ICoin[];
 
         /**
          * Constructor to create a new MsgDeposit
@@ -28,7 +28,7 @@ export const msgDeposit = function (config: InitConfigurations) {
          * @throws {Error} when options is invalid
          */
         constructor(options: MsgDepositOptions) {
-            ow(options, 'options', owMsgDepositOptions);
+            ow(options, 'options', v2.owMsgDepositOptions);
 
             this.proposalId = options.proposalId;
             this.depositor = options.depositor;
@@ -47,19 +47,13 @@ export const msgDeposit = function (config: InitConfigurations) {
          * @returns {Msg}
          */
         toRawMsg(): Msg {
-            const cosmosAmount = this.amount.toCosmosCoin();
             const proposal = Long.fromNumber(this.proposalId.toNumber(), true);
             return {
                 typeUrl: COSMOS_MSG_TYPEURL.MsgDeposit,
                 value: {
                     proposalId: proposal,
                     depositor: this.depositor,
-                    amount: [
-                        {
-                            denom: cosmosAmount.denom,
-                            amount: cosmosAmount.amount,
-                        },
-                    ],
+                    amount: this.amount.map((coin) => coin.toCosmosCoin()),
                 },
             };
         }
@@ -70,7 +64,7 @@ export const msgDeposit = function (config: InitConfigurations) {
          * @param {Network} network
          * @returns {MsgDeposit}
          */
-        public static fromCosmosMsgJSON(msgJsonStr: string, network: Network): MsgDeposit {
+        public static fromCosmosMsgJSON(msgJsonStr: string, network: Network): MsgDepositV2 {
             const parsedMsg = JSON.parse(msgJsonStr) as MsgDepositRaw;
             if (parsedMsg['@type'] !== COSMOS_MSG_TYPEURL.MsgDeposit) {
                 throw new Error(`Expected ${COSMOS_MSG_TYPEURL.MsgDeposit} but got ${parsedMsg['@type']}`);
@@ -80,16 +74,16 @@ export const msgDeposit = function (config: InitConfigurations) {
                 throw new Error('Invalid `proposal_id` in JSON.');
             }
 
-            if (!parsedMsg.amount || parsedMsg.amount.length !== 1) {
+            if (!parsedMsg.amount || parsedMsg.amount.length < 1) {
                 throw new Error('Invalid amount in the Msg.');
             }
 
             const cro = CroSDK({ network });
 
-            return new MsgDeposit({
+            return new MsgDepositV2({
                 proposalId: new Big(parsedMsg.proposal_id),
                 depositor: parsedMsg.depositor,
-                amount: cro.Coin.fromCustomAmountDenom(parsedMsg.amount[0].amount, parsedMsg.amount[0].denom),
+                amount: parsedMsg.amount.map((coin) => cro.Coin.fromCustomAmountDenom(coin.amount, coin.denom)),
             });
         }
 
@@ -110,7 +104,7 @@ export const msgDeposit = function (config: InitConfigurations) {
 export type MsgDepositOptions = {
     proposalId: Big;
     depositor: string;
-    amount: ICoin;
+    amount: ICoin[];
 };
 
 interface MsgDepositRaw {

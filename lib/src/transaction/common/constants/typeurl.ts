@@ -17,6 +17,8 @@ export const COSMOS_MSG_TYPEURL = {
     upgrade: {
         CancelSoftwareUpgradeProposal: '/cosmos.upgrade.v1beta1.CancelSoftwareUpgradeProposal',
         SoftwareUpgradeProposal: '/cosmos.upgrade.v1beta1.SoftwareUpgradeProposal',
+        ParameterChangeProposal: '/cosmos.params.v1beta1.ParameterChangeProposal',
+        CommunityPoolSpendProposal: '/cosmos.distribution.v1beta1.CommunityPoolSpendProposal',
     },
     distribution: {
         MsgSetWithdrawAddress: '/cosmos.distribution.v1beta1.MsgSetWithdrawAddress',
@@ -72,16 +74,34 @@ export const typeUrlToMsgClassMapping = (cro: any, typeUrl: string) => {
             return cro.gov.MsgVote;
         case COSMOS_MSG_TYPEURL.MsgSubmitProposal:
             return cro.gov.MsgSubmitProposal;
+
+        // proposal
         case COSMOS_MSG_TYPEURL.gov.TextProposal:
             return cro.gov.proposal.TextProposal;
         case COSMOS_MSG_TYPEURL.upgrade.CancelSoftwareUpgradeProposal:
             return cro.gov.proposal.CancelSoftwareUpgradeProposal;
+        case COSMOS_MSG_TYPEURL.upgrade.CommunityPoolSpendProposal:
+            return cro.gov.proposal.CommunityPoolSpendProposal;
+        case COSMOS_MSG_TYPEURL.upgrade.ParameterChangeProposal:
+            return cro.gov.proposal.ParamChangeProposal;
         case COSMOS_MSG_TYPEURL.upgrade.SoftwareUpgradeProposal:
             return cro.gov.proposal.SoftwareUpgradeProposal;
 
         // ibc
         case COSMOS_MSG_TYPEURL.ibc.MsgTransfer:
             return cro.ibc.MsgTransfer;
+        // nft
+        case COSMOS_MSG_TYPEURL.nft.MsgIssueDenom:
+            return cro.nft.MsgIssueDenom;
+        case COSMOS_MSG_TYPEURL.nft.MsgMintNFT:
+            return cro.nft.MsgMintNFT;
+        case COSMOS_MSG_TYPEURL.nft.MsgEditNFT:
+            return cro.nft.MsgEditNFT;
+        case COSMOS_MSG_TYPEURL.nft.MsgTransferNFT:
+            return cro.nft.MsgTransferNFT;
+        case COSMOS_MSG_TYPEURL.nft.MsgBurnNFT:
+            return cro.nft.MsgBurnNFT;
+
         default:
             throw new Error(`${typeUrl} not supported.`);
     }

@@ -129,9 +129,7 @@ function decodeAnyType(typeUrl: string, value: Uint8Array) {
 }
 
 function handleSpecialParams(decodedParams: any) {
-    // handle all MsgSubmitProposal
-    // TODO: Make it generic when encounter new cases
-
+    // handle all `MsgSubmitProposal` related messages
     const clonedDecodedParams = { ...decodedParams };
     if (decodedParams.content && Object.keys(decodedParams.content).length !== 0) {
         clonedDecodedParams.content = decodeAnyType(decodedParams.content.type_url, decodedParams.content.value);
@@ -182,7 +180,7 @@ const handleCustomTypes = (obj: any) => {
     Object.keys(obj).forEach((k) => {
         if (typeof obj[k] === 'object' && obj[k] !== null) {
             if (obj[k] instanceof Long) {
-                // todo: I will fix the below unsuggested version
+                // Recursively keeping same object
                 obj[k] = obj[k].toString(10); // eslint-disable-line no-param-reassign
             }
             handleCustomTypes(obj[k]);

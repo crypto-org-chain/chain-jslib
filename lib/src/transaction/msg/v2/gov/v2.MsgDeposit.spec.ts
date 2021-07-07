@@ -3,12 +3,12 @@ import { expect } from 'chai';
 import Big from 'big.js';
 import Long from 'long';
 
-import { fuzzyDescribe } from '../../../test/mocha-fuzzy/suite';
-import { Units } from '../../../coin/coin';
-import { CroSDK, CroNetwork } from '../../../core/cro';
-import { Msg } from '../../../cosmos/v1beta1/types/msg';
-import { Secp256k1KeyPair } from '../../../keypair/secp256k1';
-import { HDKey } from '../../../hdkey/hdkey';
+import { fuzzyDescribe } from '../../../../test/mocha-fuzzy/suite';
+import { Units } from '../../../../coin/coin';
+import { CroSDK, CroNetwork } from '../../../../core/cro';
+import { Msg } from '../../../../cosmos/v1beta1/types/msg';
+import { Secp256k1KeyPair } from '../../../../keypair/secp256k1';
+import { HDKey } from '../../../../hdkey/hdkey';
 
 const cro = CroSDK({
     network: {
@@ -42,17 +42,19 @@ describe('Testing MsgDeposit', function () {
             if (options.valid) {
                 return;
             }
-            expect(() => new cro.gov.MsgDeposit(options.value)).to.throw('Expected `options` to be of type `object`');
+            expect(() => new cro.v2.gov.MsgDepositV2(options.value)).to.throw(
+                'Expected `options` to be of type `object`',
+            );
         });
     });
 
     it('Test MsgDeposit conversion', function () {
         const coin = new cro.Coin('12000500', Units.BASE);
 
-        const msgDeposit = new cro.gov.MsgDeposit({
+        const msgDeposit = new cro.v2.gov.MsgDepositV2({
             proposalId: Big(1244000),
             depositor: 'tcro184lta2lsyu47vwyp2e8zmtca3k5yq85p6c4vp3',
-            amount: coin,
+            amount: [coin],
         });
 
         const rawMsg: Msg = {
@@ -81,10 +83,10 @@ describe('Testing MsgDeposit', function () {
 
         const coin = new cro.Coin('12000500', Units.CRO);
 
-        const msgDeposit = new cro.gov.MsgDeposit({
+        const msgDeposit = new cro.v2.gov.MsgDepositV2({
             proposalId: Big(1244000),
             depositor: 'tcro184lta2lsyu47vwyp2e8zmtca3k5yq85p6c4vp3',
-            amount: coin,
+            amount: [coin],
         });
 
         const anySigner = {
@@ -108,39 +110,39 @@ describe('Testing MsgDeposit', function () {
         it('should throw Error if the JSON is not a MsgDeposit', function () {
             const json =
                 '{ "@type": "/cosmos.bank.v1beta1.MsgCreateValidator", "amount": [{ "denom": "basetcro", "amount": "3478499933290496" }], "from_address": "tcro1x07kkkepfj2hl8etlcuqhej7jj6myqrp48y4hg", "to_address": "tcro184lta2lsyu47vwyp2e8zmtca3k5yq85p6c4vp3" }';
-            expect(() => cro.gov.MsgDeposit.fromCosmosMsgJSON(json, CroNetwork.Testnet)).to.throw(
+            expect(() => cro.v2.gov.MsgDepositV2.fromCosmosMsgJSON(json, CroNetwork.Testnet)).to.throw(
                 'Expected /cosmos.gov.v1beta1.MsgDeposit but got /cosmos.bank.v1beta1.MsgCreateValidator',
             );
         });
         it('should throw Error when the `proposal_id` field is missing', function () {
             const json =
                 '{"@type":"/cosmos.gov.v1beta1.MsgDeposit","depositor":"tcro184lta2lsyu47vwyp2e8zmtca3k5yq85p6c4vp3","amount":[{"amount": "1234567890", "denom":"basetcro"}]}';
-            expect(() => cro.gov.MsgDeposit.fromCosmosMsgJSON(json, CroNetwork.Testnet)).to.throw(
+            expect(() => cro.v2.gov.MsgDepositV2.fromCosmosMsgJSON(json, CroNetwork.Testnet)).to.throw(
                 'Invalid `proposal_id` in JSON.',
             );
         });
         it('should throw Error when the `depositor` field is missing', function () {
             const json =
                 '{"@type":"/cosmos.gov.v1beta1.MsgDeposit","proposal_id":"1244000","amount":[{"amount": "1234567890", "denom":"basetcro"}]}';
-            expect(() => cro.gov.MsgDeposit.fromCosmosMsgJSON(json, CroNetwork.Testnet)).to.throw(
+            expect(() => cro.v2.gov.MsgDepositV2.fromCosmosMsgJSON(json, CroNetwork.Testnet)).to.throw(
                 'Expected property `depositor` to be of type `string` but received type `undefined` in object `options`',
             );
         });
         it('should throw Error when the `amount` field is missing', function () {
             const json =
                 '{"@type":"/cosmos.gov.v1beta1.MsgDeposit","proposal_id":"1244000","depositor":"tcro184lta2lsyu47vwyp2e8zmtca3k5yq85p6c4vp3"}';
-            expect(() => cro.gov.MsgDeposit.fromCosmosMsgJSON(json, CroNetwork.Testnet)).to.throw(
+            expect(() => cro.v2.gov.MsgDepositV2.fromCosmosMsgJSON(json, CroNetwork.Testnet)).to.throw(
                 'Invalid amount in the Msg.',
             );
         });
         it('should return the MsgDeposit corresponding to the JSON', function () {
             const json =
                 '{"@type":"/cosmos.gov.v1beta1.MsgDeposit","proposal_id":"1244000","depositor":"tcro184lta2lsyu47vwyp2e8zmtca3k5yq85p6c4vp3","amount":[{"amount": "1234567890", "denom":"basetcro"}]}';
-            const MsgDeposit = cro.gov.MsgDeposit.fromCosmosMsgJSON(json, CroNetwork.Testnet);
+            const MsgDeposit = cro.v2.gov.MsgDepositV2.fromCosmosMsgJSON(json, CroNetwork.Testnet);
             expect(MsgDeposit.depositor).to.eql('tcro184lta2lsyu47vwyp2e8zmtca3k5yq85p6c4vp3');
             expect((MsgDeposit.proposalId as Big).toString()).to.eql('1244000');
-            expect(MsgDeposit.amount.toCosmosCoin().amount).to.eql('1234567890');
-            expect(MsgDeposit.amount.toCosmosCoin().denom).to.eql('basetcro');
+            expect(MsgDeposit.amount[0].toCosmosCoin().amount).to.eql('1234567890');
+            expect(MsgDeposit.amount[0].toCosmosCoin().denom).to.eql('basetcro');
         });
     });
 });

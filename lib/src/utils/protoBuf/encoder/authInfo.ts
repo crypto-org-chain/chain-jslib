@@ -17,7 +17,10 @@ export const protoEncodeAuthInfo = (authInfo: AuthInfo): Bytes => {
             }),
         ),
         fee: {
-            amount: authInfo.fee.amount !== undefined ? [authInfo.fee.amount.toCosmosCoin()] : [],
+            amount:
+                authInfo.fee.amount !== undefined
+                    ? authInfo.fee.amount.map((feeAmount) => feeAmount.toCosmosCoin())
+                    : [],
             gasLimit: protoEncodeGasLimitOrDefault(authInfo),
         },
     };

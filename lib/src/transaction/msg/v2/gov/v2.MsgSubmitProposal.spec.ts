@@ -2,12 +2,12 @@ import 'mocha';
 import { expect } from 'chai';
 
 import Big from 'big.js';
-import { fuzzyDescribe } from '../../../test/mocha-fuzzy/suite';
-import { Units } from '../../../coin/coin';
-import { CroSDK, CroNetwork } from '../../../core/cro';
-import { HDKey } from '../../../hdkey/hdkey';
-import { Secp256k1KeyPair } from '../../../keypair/secp256k1';
-import { Network } from '../../../network/network';
+import { fuzzyDescribe } from '../../../../test/mocha-fuzzy/suite';
+import { Units } from '../../../../coin/coin';
+import { CroSDK, CroNetwork } from '../../../../core/cro';
+import { HDKey } from '../../../../hdkey/hdkey';
+import { Secp256k1KeyPair } from '../../../../keypair/secp256k1';
+import { Network } from '../../../../network/network';
 
 const PystaportTestNet: Network = {
     defaultNodeUrl: '',
@@ -27,18 +27,18 @@ const PystaportTestNet: Network = {
 };
 const cro = CroSDK({ network: PystaportTestNet });
 
-describe('Testing MsgSubmitProposal and its content types', function () {
-    const anyContent = new cro.gov.proposal.CommunityPoolSpendProposal({
+describe('Testing MsgSubmitProposalV2 and its content types', function () {
+    const anyContent = new cro.v2.gov.proposal.CommunityPoolSpendProposalV2({
         title: 'Make new cosmos version backward compatible with pre release',
         description: 'Lorem Ipsum ... A great proposal to increate backward compatibility and initial work on IBC',
         recipient: 'tcro1nhe3qasy0ayhje95mtsvppyg67d3zswf04sda8',
-        amount: new cro.Coin('1200', Units.BASE),
+        amount: [new cro.Coin('1200', Units.BASE)],
     });
 
     fuzzyDescribe('should throw Error when MsgSubmitProposal options is invalid', function (fuzzy) {
         const anyValidProposalSubmission = {
             proposer: 'tcro184lta2lsyu47vwyp2e8zmtca3k5yq85p6c4vp3',
-            initialDeposit: new cro.Coin('1200', Units.BASE),
+            initialDeposit: [new cro.Coin('1200', Units.BASE)],
             content: anyContent,
         };
         const testRunner = fuzzy(fuzzy.ObjArg(anyValidProposalSubmission));
@@ -47,7 +47,7 @@ describe('Testing MsgSubmitProposal and its content types', function () {
             if (options.valid) {
                 return;
             }
-            expect(() => new cro.gov.MsgSubmitProposal(options.value)).to.throw(
+            expect(() => new cro.v2.gov.MsgSubmitProposalV2(options.value)).to.throw(
                 'Expected `options` to be of type `object`',
             );
         });
@@ -58,7 +58,7 @@ describe('Testing MsgSubmitProposal and its content types', function () {
             title: 'Make new cosmos version backward compatible with pre release',
             description: 'Lorem Ipsum ... A great proposal to ...',
             recipient: 'tcro1nhe3qasy0ayhje95mtsvppyg67d3zswf04sda8',
-            amount: new cro.Coin('1200', Units.BASE),
+            amount: [new cro.Coin('1200', Units.BASE)],
         };
         const testRunner = fuzzy(fuzzy.ObjArg(anyValidCommunityPoolSpendProposal));
 
@@ -66,7 +66,7 @@ describe('Testing MsgSubmitProposal and its content types', function () {
             if (options.valid) {
                 return;
             }
-            expect(() => new cro.gov.proposal.CommunityPoolSpendProposal(options.value)).to.throw(
+            expect(() => new cro.v2.gov.proposal.CommunityPoolSpendProposalV2(options.value)).to.throw(
                 'Expected `options` to be of type `object`',
             );
         });
@@ -106,16 +106,16 @@ describe('Testing MsgSubmitProposal and its content types', function () {
 
         const coin = new cro.Coin('120', Units.CRO);
 
-        const communityPoolSpentContent = new cro.gov.proposal.CommunityPoolSpendProposal({
+        const communityPoolSpentContent = new cro.v2.gov.proposal.CommunityPoolSpendProposalV2({
             title: 'Make new cosmos version backward compatible with pre release',
             description: 'Lorem Ipsum ... A great proposal to increate backward compatibility and initial work on IBC',
             recipient: 'tcro1nhe3qasy0ayhje95mtsvppyg67d3zswf04sda8',
-            amount: coin,
+            amount: [coin],
         });
 
-        const msgSubmitProposalCommunitySpend = new cro.gov.MsgSubmitProposal({
+        const msgSubmitProposalCommunitySpend = new cro.v2.gov.MsgSubmitProposalV2({
             proposer: 'tcro1nhe3qasy0ayhje95mtsvppyg67d3zswf04sda8',
-            initialDeposit: coin,
+            initialDeposit: [coin],
             content: communityPoolSpentContent,
         });
 
@@ -160,9 +160,9 @@ describe('Testing MsgSubmitProposal and its content types', function () {
             ],
         });
 
-        const msgSubmitProposalChangeParam = new cro.gov.MsgSubmitProposal({
+        const msgSubmitProposalChangeParam = new cro.v2.gov.MsgSubmitProposalV2({
             proposer: 'tcro14sh490wk79dltea4udk95k7mw40wmvf77p0l5a',
-            initialDeposit: coin,
+            initialDeposit: [coin],
             content: communityPoolSpentContent,
         });
 
@@ -185,31 +185,11 @@ describe('Testing MsgSubmitProposal and its content types', function () {
         );
     });
 
-    it('should throw on request legacy amino encoded transaction', function () {
-        const communityPoolSpentContent = new cro.gov.proposal.ParamChangeProposal({
-            title: 'Change a param to something more optimized',
-            description: 'Lorem Ipsum ... The param should be changed to something more optimized',
-            paramChanges: [
-                {
-                    subspace: 'staking',
-                    key: 'MaxValidators',
-                    value: '12',
-                },
-            ],
-        });
-        const msgSubmitProposalCommunitySpend = new cro.gov.MsgSubmitProposal({
-            proposer: 'tcro1nhe3qasy0ayhje95mtsvppyg67d3zswf04sda8',
-            initialDeposit: new cro.Coin('120', Units.CRO),
-            content: communityPoolSpentContent,
-        });
-
-        expect(() => msgSubmitProposalCommunitySpend.toRawAminoMsg()).to.throw('Method not implemented.');
-    });
     describe('fromCosmosJSON', function () {
         it('should throw Error if the JSON is not a MsgSubmitProposal', function () {
             const json =
                 '{ "@type": "/cosmos.bank.v1beta1.MsgCreateValidator", "amount": [{ "denom": "basetcro", "amount": "3478499933290496" }], "from_address": "tcro1x07kkkepfj2hl8etlcuqhej7jj6myqrp48y4hg", "to_address": "tcro184lta2lsyu47vwyp2e8zmtca3k5yq85p6c4vp3" }';
-            expect(() => cro.gov.MsgSubmitProposal.fromCosmosMsgJSON(json, CroNetwork.Testnet)).to.throw(
+            expect(() => cro.v2.gov.MsgSubmitProposalV2.fromCosmosMsgJSON(json, CroNetwork.Testnet)).to.throw(
                 'Expected /cosmos.gov.v1beta1.MsgSubmitProposal but got /cosmos.bank.v1beta1.MsgCreateValidator',
             );
         });
@@ -217,9 +197,9 @@ describe('Testing MsgSubmitProposal and its content types', function () {
         it('should return the MsgSubmitProposal corresponding to the JSON', function () {
             const json =
                 '{"@type":"/cosmos.gov.v1beta1.MsgSubmitProposal","initial_deposit":[{"denom":"basetcro","amount":"12000000000"}],"content":{"@type":"/cosmos.params.v1beta1.ParameterChangeProposal","changes":[{"subspace":"staking","key":"MaxValidators","value":"12"}],"title":"Change a param to something more optimized","description":"Lorem Ipsum ... The param should be changed to something more optimized"},"proposer":"tcro14sh490wk79dltea4udk95k7mw40wmvf77p0l5a"}';
-            const MsgDeposit = cro.gov.MsgSubmitProposal.fromCosmosMsgJSON(json, CroNetwork.Testnet);
-            expect(MsgDeposit.initialDeposit.toCosmosCoins()[0].amount).to.eql('12000000000');
-            expect(MsgDeposit.initialDeposit.toCosmosCoins()[0].denom).to.eql('basetcro');
+            const MsgDeposit = cro.v2.gov.MsgSubmitProposalV2.fromCosmosMsgJSON(json, CroNetwork.Testnet);
+            expect(MsgDeposit.initialDeposit[0].toCosmosCoin().amount).to.eql('12000000000');
+            expect(MsgDeposit.initialDeposit[0].toCosmosCoin().denom).to.eql('basetcro');
 
             expect(MsgDeposit.proposer).to.eql('tcro14sh490wk79dltea4udk95k7mw40wmvf77p0l5a');
 

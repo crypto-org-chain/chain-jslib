@@ -20,7 +20,6 @@ export enum AddressType {
  * @returns {boolean}
  * @throws {Error} when Bech32 encoding is not correct
  */
-// TODO: we can rename it to `validateAddressByNetwork`
 export function validateAddress(addressProps: AddressValidationProperties): boolean | never {
     const { network } = addressProps;
     const bech32Decoded = bech32.decode(addressProps.address);
