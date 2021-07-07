@@ -34,6 +34,7 @@ import { msgFundCommunityPoolV2 } from '../transaction/msg/v2/distribution/v2.Ms
 import { msgDepositV2 } from '../transaction/msg/v2/gov/v2.MsgDeposit';
 import { communityPoolSpendProposalV2 } from '../transaction/msg/v2/gov/proposal/v2.CommunityPoolSpendProposal';
 import { msgSubmitProposalV2 } from '../transaction/msg/v2/gov/v2.MsgSubmitProposal';
+import { msgTransferIBC } from '../transaction/msg/ibc/MsgTransfer';
 
 export const CroSDK = function (configs: InitConfigurations) {
     ow(configs, 'configs', owCroSDKInitParams);
@@ -77,6 +78,9 @@ export const CroSDK = function (configs: InitConfigurations) {
             MsgEditNFT: msgEditNFT(configs),
             MsgTransferNFT: msgTransferNFT(configs),
             MsgBurnNFT: msgBurnNFT(configs),
+        },
+        ibc: {
+            MsgTransfer: msgTransferIBC(configs),
         },
         v2: {
             bank: {

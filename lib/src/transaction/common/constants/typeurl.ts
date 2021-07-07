@@ -34,6 +34,9 @@ export const COSMOS_MSG_TYPEURL = {
         MsgTransferNFT: '/chainmain.nft.v1.MsgTransferNFT',
         MsgBurnNFT: '/chainmain.nft.v1.MsgBurnNFT',
     },
+    ibc: {
+        MsgTransfer: '/ibc.applications.transfer.v1.MsgTransfer',
+    },
 };
 
 export const typeUrlToMsgClassMapping = (cro: any, typeUrl: string) => {
@@ -84,6 +87,9 @@ export const typeUrlToMsgClassMapping = (cro: any, typeUrl: string) => {
         case COSMOS_MSG_TYPEURL.upgrade.SoftwareUpgradeProposal:
             return cro.gov.proposal.SoftwareUpgradeProposal;
 
+        // ibc
+        case COSMOS_MSG_TYPEURL.ibc.MsgTransfer:
+            return cro.ibc.MsgTransfer;
         // nft
         case COSMOS_MSG_TYPEURL.nft.MsgIssueDenom:
             return cro.nft.MsgIssueDenom;
