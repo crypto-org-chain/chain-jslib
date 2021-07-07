@@ -36,3 +36,50 @@ export const COSMOS_MSG_TYPEURL = {
         MsgTransfer: '/ibc.applications.transfer.v1.MsgTransfer',
     },
 };
+
+export const typeUrlToMsgClassMapping = (cro: any, typeUrl: string) => {
+    switch (typeUrl) {
+        // bank
+        case COSMOS_MSG_TYPEURL.MsgSend:
+            return cro.bank.MsgSend;
+
+        // distribution
+        case COSMOS_MSG_TYPEURL.distribution.MsgFundCommunityPool:
+            return cro.distribution.MsgFundCommunityPool;
+        case COSMOS_MSG_TYPEURL.distribution.MsgSetWithdrawAddress:
+            return cro.distribution.MsgSetWithdrawAddress;
+        case COSMOS_MSG_TYPEURL.MsgWithdrawDelegatorReward:
+            return cro.distribution.MsgWithdrawDelegatorReward;
+        case COSMOS_MSG_TYPEURL.MsgWithdrawValidatorCommission:
+            return cro.distribution.MsgWithdrawValidatorCommission;
+
+        // staking
+        case COSMOS_MSG_TYPEURL.MsgBeginRedelegate:
+            return cro.staking.MsgBeginRedelegate;
+        case COSMOS_MSG_TYPEURL.MsgCreateValidator:
+            return cro.staking.MsgCreateValidator;
+        case COSMOS_MSG_TYPEURL.MsgDelegate:
+            return cro.staking.MsgDelegate;
+        case COSMOS_MSG_TYPEURL.MsgEditValidator:
+            return cro.staking.MsgEditValidator;
+        case COSMOS_MSG_TYPEURL.MsgUndelegate:
+            return cro.staking.MsgUndelegate;
+
+        // governance
+        case COSMOS_MSG_TYPEURL.MsgDeposit:
+            return cro.gov.MsgDeposit;
+        case COSMOS_MSG_TYPEURL.MsgVote:
+            return cro.gov.MsgVote;
+        case COSMOS_MSG_TYPEURL.MsgSubmitProposal:
+            return cro.gov.MsgSubmitProposal;
+        case COSMOS_MSG_TYPEURL.gov.TextProposal:
+            return cro.gov.proposal.TextProposal;
+        case COSMOS_MSG_TYPEURL.upgrade.CancelSoftwareUpgradeProposal:
+            return cro.gov.proposal.CancelSoftwareUpgradeProposal;
+        case COSMOS_MSG_TYPEURL.upgrade.SoftwareUpgradeProposal:
+            return cro.gov.proposal.SoftwareUpgradeProposal;
+
+        default:
+            throw new Error(`${typeUrl} not supported.`);
+    }
+};
