@@ -79,6 +79,9 @@ export const typeUrlToMsgClassMapping = (cro: any, typeUrl: string) => {
         case COSMOS_MSG_TYPEURL.upgrade.SoftwareUpgradeProposal:
             return cro.gov.proposal.SoftwareUpgradeProposal;
 
+        // ibc
+        case COSMOS_MSG_TYPEURL.ibc.MsgTransfer:
+            return cro.ibc.MsgTransfer;
         default:
             throw new Error(`${typeUrl} not supported.`);
     }

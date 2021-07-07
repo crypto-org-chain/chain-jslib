@@ -1,13 +1,15 @@
+/* eslint-disable camelcase */
 import ow from 'ow';
 import Long from 'long';
 import { Msg } from '../../../cosmos/v1beta1/types/msg';
 import { ICoin } from '../../../coin/coin';
 import { owMsgTransferIBCOptions } from '../ow.types';
-import { InitConfigurations } from '../../../core/cro';
+import { InitConfigurations, CroSDK } from '../../../core/cro';
 import { AddressType, validateAddress, isValidBech32Address } from '../../../utils/address';
 import { CosmosMsg } from '../cosmosMsg';
 import { COSMOS_MSG_TYPEURL } from '../../common/constants/typeurl';
 import * as legacyAmino from '../../../cosmos/amino';
+import { Network } from '../../../network/network';
 
 export const msgTransferIBC = function (config: InitConfigurations) {
     return class MsgTransfer implements CosmosMsg {
@@ -75,6 +77,43 @@ export const msgTransferIBC = function (config: InitConfigurations) {
             throw new Error('IBC Module not supported under amino encoding scheme');
         }
 
+        /**
+         * Returns an instance of IBC.MsgTransfer
+         * @param {string} msgJsonStr
+         * @param {Network} network
+         * @returns {MsgTransfer}
+         */
+        public static fromCosmosMsgJSON(msgJsonStr: string, network: Network): MsgTransfer {
+            const parsedMsg = JSON.parse(msgJsonStr) as IBCMsgTransferRaw;
+            const cro = CroSDK({ network });
+            if (parsedMsg['@type'] !== COSMOS_MSG_TYPEURL.ibc.MsgTransfer) {
+                throw new Error(`Expected ${COSMOS_MSG_TYPEURL.ibc.MsgTransfer} but got ${parsedMsg['@type']}`);
+            }
+            if (!parsedMsg.token || Object.keys(parsedMsg.token).length !== 2) {
+                throw new Error('Invalid `token` in the Msg.');
+            }
+            let timeoutHeight;
+            if (typeof parsedMsg.timeout_height === 'object') {
+                timeoutHeight = {
+                    revisionHeight: Long.fromString(parsedMsg.timeout_height?.revision_height!),
+                    revisionNumber: Long.fromString(parsedMsg.timeout_height?.revision_number!),
+                };
+            }
+            if (typeof parsedMsg.timeout_timestamp === 'undefined') {
+                throw new Error('Invalid `timeout_timestamp` in the Msg.');
+            }
+
+            return new MsgTransfer({
+                sourcePort: parsedMsg.source_port,
+                sourceChannel: parsedMsg.source_channel,
+                token: cro.Coin.fromCustomAmountDenom(parsedMsg.token.amount, parsedMsg.token.denom),
+                sender: parsedMsg.sender,
+                receiver: parsedMsg.receiver,
+                timeoutTimestamp: Long.fromString(parsedMsg.timeout_timestamp),
+                timeoutHeight,
+            });
+        }
+
         // @Todo: The `receiver` can belong to other network also? Right?
         // Introduced a new validation method
         validateAddresses() {
@@ -109,3 +148,24 @@ export type IHeight = {
     revisionNumber: Long;
     revisionHeight: Long;
 };
+
+export interface IBCMsgTransferRaw {
+    '@type': string;
+    source_port: string;
+    source_channel: string;
+    token?: Token;
+    sender: string;
+    receiver: string;
+    timeout_height?: TimeoutHeight;
+    timeout_timestamp: string;
+}
+
+export interface TimeoutHeight {
+    revision_number: string;
+    revision_height: string;
+}
+
+export interface Token {
+    denom: string;
+    amount: string;
+}
