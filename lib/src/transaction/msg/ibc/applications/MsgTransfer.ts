@@ -1,15 +1,15 @@
 /* eslint-disable camelcase */
 import ow from 'ow';
 import Long from 'long';
-import { Msg } from '../../../cosmos/v1beta1/types/msg';
-import { ICoin } from '../../../coin/coin';
-import { owMsgTransferIBCOptions } from '../ow.types';
-import { InitConfigurations, CroSDK } from '../../../core/cro';
-import { AddressType, validateAddress, isValidBech32Address } from '../../../utils/address';
-import { CosmosMsg } from '../cosmosMsg';
-import { COSMOS_MSG_TYPEURL } from '../../common/constants/typeurl';
-import * as legacyAmino from '../../../cosmos/amino';
-import { Network } from '../../../network/network';
+import { Msg } from '../../../../cosmos/v1beta1/types/msg';
+import { ICoin } from '../../../../coin/coin';
+import { owMsgTransferIBCOptions } from '../../ow.types';
+import { InitConfigurations, CroSDK } from '../../../../core/cro';
+import { AddressType, validateAddress, isValidBech32Address } from '../../../../utils/address';
+import { CosmosMsg } from '../../cosmosMsg';
+import { COSMOS_MSG_TYPEURL } from '../../../common/constants/typeurl';
+import * as legacyAmino from '../../../../cosmos/amino';
+import { Network } from '../../../../network/network';
 
 export const msgTransferIBC = function (config: InitConfigurations) {
     return class MsgTransfer implements CosmosMsg {

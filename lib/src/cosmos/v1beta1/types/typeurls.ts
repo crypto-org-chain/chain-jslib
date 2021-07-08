@@ -37,6 +37,7 @@ export const typeUrlMappings: {
     '/chainmain.nft.v1.MsgTransferNFT': chainmain.nft.v1.MsgTransferNFT,
     '/chainmain.nft.v1.MsgBurnNFT': chainmain.nft.v1.MsgBurnNFT,
     '/ibc.applications.transfer.v1.MsgTransfer': ibc.applications.transfer.v1.MsgTransfer,
+    '/ibc.core.client.v1.MsgCreateClient': ibc.core.client.v1.MsgCreateClient,
 };
 
 export interface GeneratedType {

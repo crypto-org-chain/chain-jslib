@@ -36,6 +36,7 @@ export const COSMOS_MSG_TYPEURL = {
     },
     ibc: {
         MsgTransfer: '/ibc.applications.transfer.v1.MsgTransfer',
+        MsgCreateClient: '/ibc.core.client.v1.MsgCreateClient',
     },
 };
 
@@ -90,6 +91,9 @@ export const typeUrlToMsgClassMapping = (cro: any, typeUrl: string) => {
         // ibc
         case COSMOS_MSG_TYPEURL.ibc.MsgTransfer:
             return cro.ibc.MsgTransfer;
+        case COSMOS_MSG_TYPEURL.ibc.MsgCreateClient:
+            return cro.ibc.MsgCreateClient;
+
         // nft
         case COSMOS_MSG_TYPEURL.nft.MsgIssueDenom:
             return cro.nft.MsgIssueDenom;

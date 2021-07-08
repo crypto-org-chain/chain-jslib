@@ -29,12 +29,13 @@ import { msgMintNFT } from '../transaction/msg/nft/MsgMintNFT';
 import { msgEditNFT } from '../transaction/msg/nft/MsgEditNFT';
 import { msgTransferNFT } from '../transaction/msg/nft/MsgTransferNFT';
 import { msgBurnNFT } from '../transaction/msg/nft/MsgBurnNFT';
+import { msgTransferIBC } from '../transaction/msg/ibc/applications/MsgTransfer';
+import { msgCreateClientIBC } from '../transaction/msg/ibc/core/MsgCreateClient';
 import { msgSendV2 } from '../transaction/msg/v2/bank/v2.msgsend';
 import { msgFundCommunityPoolV2 } from '../transaction/msg/v2/distribution/v2.MsgFundCommunityPool';
 import { msgDepositV2 } from '../transaction/msg/v2/gov/v2.MsgDeposit';
 import { communityPoolSpendProposalV2 } from '../transaction/msg/v2/gov/proposal/v2.CommunityPoolSpendProposal';
 import { msgSubmitProposalV2 } from '../transaction/msg/v2/gov/v2.MsgSubmitProposal';
-import { msgTransferIBC } from '../transaction/msg/ibc/MsgTransfer';
 
 export const CroSDK = function (configs: InitConfigurations) {
     ow(configs, 'configs', owCroSDKInitParams);
@@ -81,6 +82,7 @@ export const CroSDK = function (configs: InitConfigurations) {
         },
         ibc: {
             MsgTransfer: msgTransferIBC(configs),
+            MsgCreateClient: msgCreateClientIBC(configs),
         },
         v2: {
             bank: {
