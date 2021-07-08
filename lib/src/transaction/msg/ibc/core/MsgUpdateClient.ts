@@ -103,7 +103,7 @@ export type MsgUpdateClientOptions = {
 export interface MsgUpdateClientJsonRaw {
     '@type': string;
     client_id: string;
-    header: any | MsgUpdateClientJsonRawHeader;
+    header?: any | MsgUpdateClientJsonRawHeader;
     signer: string;
 }
 

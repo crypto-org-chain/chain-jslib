@@ -8,7 +8,6 @@ import { Secp256k1KeyPair } from '../../../../keypair/secp256k1';
 import { Bytes } from '../../../../utils/bytes/bytes';
 import { CroSDK, CroNetwork } from '../../../../core/cro';
 import { COSMOS_MSG_TYPEURL } from '../../../common/constants/typeurl';
-import { google } from '../../../../cosmos/v1beta1/codec';
 
 const cro = CroSDK({
     network: {
@@ -71,14 +70,8 @@ describe('Testing MsgCreateClient', function () {
 
         const MsgCreateClient = new cro.ibc.MsgCreateClient({
             signer: 'tcro15sfupd26sp6qf37ll5q6xuf330k7df9tnvrqht',
-            clientState: google.protobuf.Any.create({
-                type_url: '/some.valid.type.url',
-                value: new Uint8Array([1, 2, 35, 5]),
-            }),
-            consensusState: google.protobuf.Any.create({
-                type_url: '/some.valid.type.url',
-                value: new Uint8Array([1, 2, 35, 5]),
-            }),
+            clientState: undefined,
+            consensusState: undefined,
         });
 
         const anySigner = {
@@ -95,7 +88,7 @@ describe('Testing MsgCreateClient', function () {
 
         const signedTxHex = signedTx.encode().toHexString();
         expect(signedTxHex).to.be.eql(
-            '0a5a0a580a232f6962632e636f72652e636c69656e742e76312e4d7367437265617465436c69656e7412310a0012001a2b7463726f313573667570643236737036716633376c6c3571367875663333306b37646639746e767271687412580a500a460a1f2f636f736d6f732e63727970746f2e736563703235366b312e5075624b657912230a2103fd0d560b6c4aa1ca16721d039a192867c3457e19dad553edb98e7ba88b159c2712040a0208011802120410c09a0c1a40b2b3a0e852a19b4656ce172adbaa95f69d7ab85a9283b9f0f1692b6a1ed094ec63210407a3912a44bec37f3c7ed467a2b77bc90b364db30a913103ca23ba7197',
+            '0a560a540a232f6962632e636f72652e636c69656e742e76312e4d7367437265617465436c69656e74122d1a2b7463726f313573667570643236737036716633376c6c3571367875663333306b37646639746e767271687412580a500a460a1f2f636f736d6f732e63727970746f2e736563703235366b312e5075624b657912230a2103fd0d560b6c4aa1ca16721d039a192867c3457e19dad553edb98e7ba88b159c2712040a0208011802120410c09a0c1a4015d479781ae26136f291374111f39c137d363c6fd466d3694d17db9cac18e9852dd87f9ffb1c56a80e96c11051d51f1eb3d06b0929f715c6e0c99b78fd89f7eb',
         );
     });
 

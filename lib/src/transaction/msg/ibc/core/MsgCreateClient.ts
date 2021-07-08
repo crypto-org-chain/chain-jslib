@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 import ow from 'ow';
 import { google } from '../../../../cosmos/v1beta1/codec/generated/codecimpl';
 import { InitConfigurations } from '../../../../core/cro';
@@ -61,20 +62,24 @@ export const msgCreateClientIBC = function (config: InitConfigurations) {
          * @returns {MsgCreateClient}
          */
         public static fromCosmosMsgJSON(msgJsonStr: string, _network: Network): MsgCreateClient {
-            const parsedMsg = JSON.parse(msgJsonStr) as IBCMsgCreateClientRaw;
+            const parsedMsg = JSON.parse(msgJsonStr) as MsgCreateClientJsonRaw;
             if (parsedMsg['@type'] !== COSMOS_MSG_TYPEURL.ibc.MsgCreateClient) {
                 throw new Error(`Expected ${COSMOS_MSG_TYPEURL.ibc.MsgCreateClient} but got ${parsedMsg['@type']}`);
             }
 
+            // TODO: The `client_state` value needs to be handled, currently keeping it as `null`
+            if (typeof parsedMsg.client_state === 'object' && Object.keys(parsedMsg.client_state).length > 0) {
+                throw new Error('IBC MsgUpdateClient does not support `client_state` decoding.');
+            }
+
+            // TODO: The `consensus_state` value needs to be handled, currently keeping it as `null`
+            if (typeof parsedMsg.consensus_state === 'object' && Object.keys(parsedMsg.consensus_state).length > 0) {
+                throw new Error('IBC MsgUpdateClient does not support `consensus_state` decoding.');
+            }
+
             return new MsgCreateClient({
-                clientState: google.protobuf.Any.create({
-                    type_url: parsedMsg.clientState?.['@type'],
-                    value: parsedMsg.clientState?.value,
-                }),
-                consensusState: google.protobuf.Any.create({
-                    type_url: parsedMsg.consensusState?.['@type'],
-                    value: parsedMsg.consensusState?.value,
-                }),
+                clientState: null,
+                consensusState: null,
                 signer: parsedMsg.signer,
             });
         }
@@ -100,9 +105,69 @@ export type MsgCreateClientOptions = {
     signer: string;
 };
 
-interface IBCMsgCreateClientRaw {
+export interface MsgCreateClientJsonRaw {
     '@type': string;
+    client_state?: ClientState;
+    consensus_state?: ConsensusState;
     signer: string;
-    clientState?: { '@type': string; value: any };
-    consensusState?: { '@type': string; value: any };
+}
+
+export interface ClientState {
+    '@type': string;
+    chain_id: string;
+    trust_level: TrustLevel;
+    trusting_period: string;
+    unbonding_period: string;
+    max_clock_drift: string;
+    frozen_height: Height;
+    latest_height: Height;
+    proof_specs: ProofSpec[];
+    upgrade_path: string[];
+    allow_update_after_expiry: boolean;
+    allow_update_after_misbehaviour: boolean;
+}
+
+export interface Height {
+    revision_number: string;
+    revision_height: string;
+}
+
+export interface ProofSpec {
+    leaf_spec: LeafSpec;
+    inner_spec: InnerSpec;
+    max_depth: number;
+    min_depth: number;
+}
+
+export interface InnerSpec {
+    child_order: number[];
+    child_size: number;
+    min_prefix_length: number;
+    max_prefix_length: number;
+    empty_child: null;
+    hash: string;
+}
+
+export interface LeafSpec {
+    hash: string;
+    prehash_key: string;
+    prehash_value: string;
+    length: string;
+    prefix: string;
+}
+
+export interface TrustLevel {
+    numerator: string;
+    denominator: string;
+}
+
+export interface ConsensusState {
+    '@type': string;
+    timestamp: Date;
+    root: Root;
+    next_validators_hash: string;
+}
+
+export interface Root {
+    hash: string;
 }
