@@ -91,6 +91,9 @@ export const typeUrlToMsgClassMapping = (cro: any, typeUrl: string) => {
         // ibc
         case COSMOS_MSG_TYPEURL.ibc.MsgTransfer:
             return cro.ibc.MsgTransfer;
+        case COSMOS_MSG_TYPEURL.ibc.MsgCreateClient:
+            return cro.ibc.MsgCreateClient;
+
         // nft
         case COSMOS_MSG_TYPEURL.nft.MsgIssueDenom:
             return cro.nft.MsgIssueDenom;
