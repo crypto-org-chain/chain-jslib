@@ -7,7 +7,7 @@ import { owTimeoutHeight } from '../../../transaction/ow.types';
 import { owBytes } from '../../../utils/bytes/ow.types';
 import { cosmos } from '../codec';
 
-export const owTxBody = () =>
+export const owOptionalTxBody = () =>
     owOptionalStrictObject().exactShape({
         typeUrl: ow.string.equals('/cosmos.tx.v1beta1.TxBody'),
         value: owStrictObject().exactShape({

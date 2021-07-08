@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 import 'mocha';
 import { expect } from 'chai';
 import Big from 'big.js';
@@ -7,7 +8,7 @@ import { fuzzyDescribe } from '../../../../test/mocha-fuzzy/suite';
 import { Msg } from '../../../../cosmos/v1beta1/types/msg';
 import { Secp256k1KeyPair } from '../../../../keypair/secp256k1';
 import { Bytes } from '../../../../utils/bytes/bytes';
-import { CroSDK } from '../../../../core/cro';
+import { CroSDK, CroNetwork } from '../../../../core/cro';
 import { COSMOS_MSG_TYPEURL } from '../../../common/constants/typeurl';
 
 const cro = CroSDK({
@@ -159,5 +160,170 @@ describe('Testing MsgTransfer', function () {
         });
 
         expect(() => MsgTransfer.toRawAminoMsg()).to.throw('IBC Module not supported under amino encoding scheme');
+    });
+
+    describe('fromCosmosJSON', function () {
+        it('should throw Error if the JSON is not a IBC MsgTransfer', function () {
+            const json =
+                '{ "@type": "/cosmos.bank.v1beta1.MsgCreateValidator", "amount": [{ "denom": "basetcro", "amount": "3478499933290496" }], "from_address": "tcro1x07kkkepfj2hl8etlcuqhej7jj6myqrp48y4hg", "to_address": "tcro184lta2lsyu47vwyp2e8zmtca3k5yq85p6c4vp3" }';
+            expect(() => cro.ibc.MsgTransfer.fromCosmosMsgJSON(json, CroNetwork.Testnet)).to.throw(
+                'Expected /ibc.applications.transfer.v1.MsgTransfer but got /cosmos.bank.v1beta1.MsgCreateValidator',
+            );
+        });
+        it('should throw Error when the `timeout_timestamp` field is missing', function () {
+            const json = `{
+                "@type": "/ibc.applications.transfer.v1.MsgTransfer",
+                "source_port": "transfer",
+                "source_channel": "channel-33",
+                "token": {
+                  "denom": "basetcro",
+                  "amount": "1234"
+                },
+                "sender": "tcro1agr5hwr6gxljf4kpg6fm7l7ehjxtyazg86nef8",
+                "receiver": "tcro1agr5hwr6gxljf4kpg6fm7l7ehjxtyazg86nef8"
+                }
+            `;
+            expect(() => cro.ibc.MsgTransfer.fromCosmosMsgJSON(json, CroNetwork.Testnet)).to.throw(
+                'Invalid `timeout_timestamp` in the Msg.',
+            );
+        });
+        it('should throw Error when the `token` field is missing', function () {
+            const json = `{
+                "@type": "/ibc.applications.transfer.v1.MsgTransfer",
+                "source_port": "transfer",
+                "source_channel": "channel-33",
+                "sender": "tcro1agr5hwr6gxljf4kpg6fm7l7ehjxtyazg86nef8",
+                "receiver": "tcro1agr5hwr6gxljf4kpg6fm7l7ehjxtyazg86nef8",
+                "timeout_height": {
+                  "revision_number": "0",
+                  "revision_height": "2390451"
+                },
+                "timeout_timestamp": "1624612912351977705"
+              }
+            `;
+            expect(() => cro.ibc.MsgTransfer.fromCosmosMsgJSON(json, CroNetwork.Testnet)).to.throw(
+                'Invalid `token` in the Msg.',
+            );
+        });
+        it('should throw when `source_port` is missing', function () {
+            const json = `{
+                "@type": "/ibc.applications.transfer.v1.MsgTransfer",
+                "source_channel": "channel-33",
+                "token": {
+                  "denom": "basetcro",
+                  "amount": "1234"
+                },
+                "sender": "tcro1agr5hwr6gxljf4kpg6fm7l7ehjxtyazg86nef8",
+                "receiver": "tcro1agr5hwr6gxljf4kpg6fm7l7ehjxtyazg86nef8",
+                "timeout_height": {
+                  "revision_number": "0",
+                  "revision_height": "2390451"
+                },
+                "timeout_timestamp": "1624612912351977705"
+              }
+            `;
+
+            expect(() => cro.ibc.MsgTransfer.fromCosmosMsgJSON(json, CroNetwork.Testnet)).to.throw(
+                'Expected property `sourcePort` to be of type `string` but received type `undefined` in object `options`',
+            );
+        });
+        it('should throw when `source_channel` is missing', function () {
+            const json = `{
+                "@type": "/ibc.applications.transfer.v1.MsgTransfer",
+                "source_port": "transfer",
+                "token": {
+                  "denom": "basetcro",
+                  "amount": "1234"
+                },
+                "sender": "tcro1agr5hwr6gxljf4kpg6fm7l7ehjxtyazg86nef8",
+                "receiver": "tcro1agr5hwr6gxljf4kpg6fm7l7ehjxtyazg86nef8",
+                "timeout_height": {
+                  "revision_number": "0",
+                  "revision_height": "2390451"
+                },
+                "timeout_timestamp": "1624612912351977705"
+              }`;
+
+            expect(() => cro.ibc.MsgTransfer.fromCosmosMsgJSON(json, CroNetwork.Testnet)).to.throw(
+                'Expected property `sourceChannel` to be of type `string` but received type `undefined` in object `options`',
+            );
+        });
+        it('should throw on invalid `receiver`', function () {
+            const json = `{
+                "@type": "/ibc.applications.transfer.v1.MsgTransfer",
+                "source_port": "transfer",
+                "source_channel": "channel-33",
+                "token": {
+                  "denom": "basetcro",
+                  "amount": "1234"
+                },
+                "sender": "tcro1agr5hwr6gxljf4kpg6fm7l7ehjxtyazg86nef8",
+                "receiver": "cro1pndm4ywdf4qtmupa0fqe75krmqed2znjyj6x8",
+                "timeout_height": {
+                  "revision_number": "0",
+                  "revision_height": "2390451"
+                },
+                "timeout_timestamp": "1624612912351977705"
+              }
+            `;
+
+            expect(() => cro.ibc.MsgTransfer.fromCosmosMsgJSON(json, CroNetwork.Testnet)).to.throw(
+                'Provided `receiver` is not a valid Bech-32 encoded address',
+            );
+        });
+        it('should throw on invalid `sender`', function () {
+            const json = `{
+                "@type": "/ibc.applications.transfer.v1.MsgTransfer",
+                "source_port": "transfer",
+                "source_channel": "channel-33",
+                "token": {
+                  "denom": "basetcro",
+                  "amount": "1234"
+                },
+                "sender": "cosmos1u8prj0rj3ur7kr23dhjgyteuq55ntahfuzlf6g",
+                "receiver": "tcro1agr5hwr6gxljf4kpg6fm7l7ehjxtyazg86nef8",
+                "timeout_height": {
+                  "revision_number": "0",
+                  "revision_height": "2390451"
+                },
+                "timeout_timestamp": "1624612912351977705"
+              }
+            `;
+
+            expect(() => cro.ibc.MsgTransfer.fromCosmosMsgJSON(json, CroNetwork.Testnet)).to.throw(
+                'Provided `sender` does not match network selected',
+            );
+        });
+        it('should return the IBC MsgTransfer corresponding to the JSON', function () {
+            const json = `{
+                    "@type": "/ibc.applications.transfer.v1.MsgTransfer",
+                    "source_port": "transfer",
+                    "source_channel": "channel-33",
+                    "token": {
+                      "denom": "basetcro",
+                      "amount": "1234"
+                    },
+                    "sender": "tcro1agr5hwr6gxljf4kpg6fm7l7ehjxtyazg86nef8",
+                    "receiver": "tcro1agr5hwr6gxljf4kpg6fm7l7ehjxtyazg86nef8",
+                    "timeout_height": {
+                      "revision_number": "0",
+                      "revision_height": "2390451"
+                    },
+                    "timeout_timestamp": "1624612912351977705"
+                  }
+                `;
+
+            const MsgTransfer = cro.ibc.MsgTransfer.fromCosmosMsgJSON(json, CroNetwork.Testnet);
+            expect(MsgTransfer.sender).to.eql('tcro1agr5hwr6gxljf4kpg6fm7l7ehjxtyazg86nef8');
+            expect(MsgTransfer.receiver).to.eql('tcro1agr5hwr6gxljf4kpg6fm7l7ehjxtyazg86nef8');
+            expect(MsgTransfer.sourceChannel).to.eql('channel-33');
+            expect(MsgTransfer.sourcePort).to.eql('transfer');
+            expect(MsgTransfer.token?.toCosmosCoin().amount).to.eql('1234');
+            expect(MsgTransfer.token?.toCosmosCoin().denom).to.eql('basetcro');
+            expect(MsgTransfer.timeoutTimestamp.toString()).to.eql('1624612912351977705');
+            expect(MsgTransfer.timeoutHeight).to.not.be.undefined;
+            expect(MsgTransfer.timeoutHeight?.revisionHeight!.toString()).to.eql('2390451');
+            expect(MsgTransfer.timeoutHeight?.revisionNumber!.toString()).to.eql('0');
+        });
     });
 });

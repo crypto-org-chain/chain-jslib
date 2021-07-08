@@ -7,6 +7,7 @@ import { COSMOS_MSG_TYPEURL } from '../../../common/constants/typeurl';
 import { validateAddress, AddressType } from '../../../../utils/address';
 import { owMsgCreateClientOptions } from '../../ow.types';
 import * as legacyAmino from '../../../../cosmos/amino';
+import { Network } from '../../../../network/network';
 
 export const msgCreateClientIBC = function (config: InitConfigurations) {
     return class MsgCreateClient implements CosmosMsg {
@@ -53,6 +54,31 @@ export const msgCreateClientIBC = function (config: InitConfigurations) {
             throw new Error('IBC Module not supported under amino encoding scheme');
         }
 
+        /**
+         * Returns an instance of IBC.MsgCreateClient
+         * @param {string} msgJsonStr
+         * @param {Network} network
+         * @returns {MsgCreateClient}
+         */
+        public static fromCosmosMsgJSON(msgJsonStr: string, _network: Network): MsgCreateClient {
+            const parsedMsg = JSON.parse(msgJsonStr) as IBCMsgCreateClientRaw;
+            if (parsedMsg['@type'] !== COSMOS_MSG_TYPEURL.ibc.MsgCreateClient) {
+                throw new Error(`Expected ${COSMOS_MSG_TYPEURL.ibc.MsgCreateClient} but got ${parsedMsg['@type']}`);
+            }
+
+            return new MsgCreateClient({
+                clientState: google.protobuf.Any.create({
+                    type_url: parsedMsg.clientState?.['@type'],
+                    value: parsedMsg.clientState?.value,
+                }),
+                consensusState: google.protobuf.Any.create({
+                    type_url: parsedMsg.consensusState?.['@type'],
+                    value: parsedMsg.consensusState?.value,
+                }),
+                signer: parsedMsg.signer,
+            });
+        }
+
         validateAddresses() {
             // TODO: Can `signer` be from non-CRO network
             if (
@@ -73,3 +99,10 @@ export type MsgCreateClientOptions = {
     consensusState?: google.protobuf.IAny | null;
     signer: string;
 };
+
+interface IBCMsgCreateClientRaw {
+    '@type': string;
+    signer: string;
+    clientState?: { '@type': string; value: any };
+    consensusState?: { '@type': string; value: any };
+}
