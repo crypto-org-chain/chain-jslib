@@ -17,8 +17,8 @@ import { msgWithdrawValidatorCommission } from '../transaction/msg/distribution/
 import { msgDeposit } from '../transaction/msg/gov/MsgDeposit';
 import { msgVote } from '../transaction/msg/gov/MsgVote';
 import { msgSubmitProposal } from '../transaction/msg/gov/MsgSubmitProposal';
-import { communityPoolSpendProposal } from '../transaction/msg/gov/CommunityPoolSpendProposal';
-import { paramChangeProposal } from '../transaction/msg/gov/ParamChangeProposal';
+import { communityPoolSpendProposal } from '../transaction/msg/gov/proposal/CommunityPoolSpendProposal';
+import { paramChangeProposal } from '../transaction/msg/gov/proposal/ParamChangeProposal';
 import { cancelSoftwareUpgradeProposal } from '../transaction/msg/gov/proposal/CancelSoftwareUpgradeProposal';
 import { softwareUpgradeProposal } from '../transaction/msg/gov/proposal/SoftwareUpgradeProposal';
 import { msgSetWithdrawAddress } from '../transaction/msg/distribution/MsgSetWithdrawAddress';
@@ -31,6 +31,11 @@ import { msgTransferNFT } from '../transaction/msg/nft/MsgTransferNFT';
 import { msgBurnNFT } from '../transaction/msg/nft/MsgBurnNFT';
 import { msgTransferIBC } from '../transaction/msg/ibc/applications/MsgTransfer';
 import { msgCreateClientIBC } from '../transaction/msg/ibc/core/MsgCreateClient';
+import { msgSendV2 } from '../transaction/msg/v2/bank/v2.msgsend';
+import { msgFundCommunityPoolV2 } from '../transaction/msg/v2/distribution/v2.MsgFundCommunityPool';
+import { msgDepositV2 } from '../transaction/msg/v2/gov/v2.MsgDeposit';
+import { communityPoolSpendProposalV2 } from '../transaction/msg/v2/gov/proposal/v2.CommunityPoolSpendProposal';
+import { msgSubmitProposalV2 } from '../transaction/msg/v2/gov/v2.MsgSubmitProposal';
 import { msgUpdateClientIBC } from '../transaction/msg/ibc/core/MsgUpdateClient';
 import { msgUpgradeClientIBC } from '../transaction/msg/ibc/core/MsgUpgradeClient';
 
@@ -52,7 +57,6 @@ export const CroSDK = function (configs: InitConfigurations) {
                 CancelSoftwareUpgradeProposal: cancelSoftwareUpgradeProposal(),
                 SoftwareUpgradeProposal: softwareUpgradeProposal(),
                 TextProposal: textProposal(),
-                // TODO : More type of proposals to be added here
             },
         },
         bank: {
@@ -83,6 +87,21 @@ export const CroSDK = function (configs: InitConfigurations) {
             MsgCreateClient: msgCreateClientIBC(configs),
             MsgUpdateClient: msgUpdateClientIBC(configs),
             MsgUpgradeClient: msgUpgradeClientIBC(configs),
+        },
+        v2: {
+            bank: {
+                MsgSendV2: msgSendV2(configs),
+            },
+            distribution: {
+                MsgFundCommunityPoolV2: msgFundCommunityPoolV2(configs),
+            },
+            gov: {
+                MsgDepositV2: msgDepositV2(configs),
+                MsgSubmitProposalV2: msgSubmitProposalV2(configs),
+                proposal: {
+                    CommunityPoolSpendProposalV2: communityPoolSpendProposalV2(configs),
+                },
+            },
         },
         Options: configs,
     };
