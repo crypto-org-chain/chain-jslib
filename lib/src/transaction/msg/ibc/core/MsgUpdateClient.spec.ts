@@ -6,9 +6,8 @@ import { fuzzyDescribe } from '../../../../test/mocha-fuzzy/suite';
 import { Msg } from '../../../../cosmos/v1beta1/types/msg';
 import { Secp256k1KeyPair } from '../../../../keypair/secp256k1';
 import { Bytes } from '../../../../utils/bytes/bytes';
-import { CroSDK } from '../../../../core/cro';
+import { CroSDK, CroNetwork } from '../../../../core/cro';
 import { COSMOS_MSG_TYPEURL } from '../../../common/constants/typeurl';
-import { google } from '../../../../cosmos/v1beta1/codec';
 
 const cro = CroSDK({
     network: {
@@ -73,10 +72,7 @@ describe('Testing MsgUpdateClient', function () {
 
         const MsgUpdateClient = new cro.ibc.MsgUpdateClient({
             signer: 'tcro15sfupd26sp6qf37ll5q6xuf330k7df9tnvrqht',
-            header: google.protobuf.Any.create({
-                type_url: '/some.valid.type.url',
-                value: new Uint8Array([1, 2, 35, 5]),
-            }),
+            header: undefined,
             clientId: 'clientId',
         });
 
@@ -94,7 +90,7 @@ describe('Testing MsgUpdateClient', function () {
 
         const signedTxHex = signedTx.encode().toHexString();
         expect(signedTxHex).to.be.eql(
-            '0a7e0a7c0a232f6962632e636f72652e636c69656e742e76312e4d7367557064617465436c69656e7412550a08636c69656e744964121c0a142f736f6d652e76616c69642e747970652e75726c1204010223051a2b7463726f313573667570643236737036716633376c6c3571367875663333306b37646639746e767271687412580a500a460a1f2f636f736d6f732e63727970746f2e736563703235366b312e5075624b657912230a2103fd0d560b6c4aa1ca16721d039a192867c3457e19dad553edb98e7ba88b159c2712040a0208011802120410c09a0c1a40a3e29655c317f80832e34c978220cbd8d9f38a80353228b6d3b2db4a3d7eafe5717f449fa2ab5afacb0531ca63afb55b9088571248cf07876896595459487cd2',
+            '0a600a5e0a232f6962632e636f72652e636c69656e742e76312e4d7367557064617465436c69656e7412370a08636c69656e7449641a2b7463726f313573667570643236737036716633376c6c3571367875663333306b37646639746e767271687412580a500a460a1f2f636f736d6f732e63727970746f2e736563703235366b312e5075624b657912230a2103fd0d560b6c4aa1ca16721d039a192867c3457e19dad553edb98e7ba88b159c2712040a0208011802120410c09a0c1a40c8529d07e0c51b9d14a2fc77475c6ffbefd4fed6305392f5979f489164e6102546f3e5c537fcbee75587e36eb0206326639c6807d0e2afd1d1c3c3c16e7ec5ec',
         );
     });
 
@@ -116,5 +112,52 @@ describe('Testing MsgUpdateClient', function () {
         });
 
         expect(() => MsgUpdateClient.toRawAminoMsg()).to.throw('IBC Module not supported under amino encoding scheme');
+    });
+    describe('fromCosmosJSON', function () {
+        it('should throw Error if the JSON is not a IBC MsgUpdateClient', function () {
+            const json =
+                '{ "@type": "/cosmos.bank.v1beta1.MsgCreateValidator", "amount": [{ "denom": "basetcro", "amount": "3478499933290496" }], "from_address": "tcro1x07kkkepfj2hl8etlcuqhej7jj6myqrp48y4hg", "to_address": "tcro184lta2lsyu47vwyp2e8zmtca3k5yq85p6c4vp3" }';
+            expect(() => cro.ibc.MsgUpdateClient.fromCosmosMsgJSON(json, CroNetwork.Testnet)).to.throw(
+                'Expected /ibc.core.client.v1.MsgUpdateClient but got /cosmos.bank.v1beta1.MsgCreateValidator',
+            );
+        });
+        it('should throw on invalid `signer`', function () {
+            const json = `
+              {
+                "@type": "/ibc.core.client.v1.MsgUpdateClient",
+                "signer": "cosmos1u8prj0rj3ur7kr23dhjgyteuq55ntahfuzlf6g",
+                "client_id": "07-tendermint-33"
+              }
+            `;
+
+            expect(() => cro.ibc.MsgUpdateClient.fromCosmosMsgJSON(json, CroNetwork.Testnet)).to.throw(
+                'Provided `signer` does not match network selected',
+            );
+        });
+        it('should throw on invalid `clientId`', function () {
+            const json = `
+              {
+                "@type": "/ibc.core.client.v1.MsgUpdateClient",
+                "signer": "cosmos1u8prj0rj3ur7kr23dhjgyteuq55ntahfuzlf6g"
+              }
+            `;
+
+            expect(() => cro.ibc.MsgUpdateClient.fromCosmosMsgJSON(json, CroNetwork.Testnet)).to.throw(
+                'Expected property `clientId` to be of type `string` but received type `undefined` in object `options`',
+            );
+        });
+        it('should return the IBC MsgUpdateClient corresponding to the JSON', function () {
+            const json = `{
+                    "@type": "/ibc.core.client.v1.MsgUpdateClient",
+                    "signer": "tcro1agr5hwr6gxljf4kpg6fm7l7ehjxtyazg86nef8",
+                    "client_id": "07-tendermint-33"
+                }
+                `;
+
+            const MsgUpdateClient = cro.ibc.MsgUpdateClient.fromCosmosMsgJSON(json, CroNetwork.Testnet);
+            expect(MsgUpdateClient.signer).to.eql('tcro1agr5hwr6gxljf4kpg6fm7l7ehjxtyazg86nef8');
+            expect(MsgUpdateClient.clientId).to.eql('07-tendermint-33');
+            expect(MsgUpdateClient.header).to.be.null;
+        });
     });
 });
