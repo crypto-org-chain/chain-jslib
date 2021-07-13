@@ -107,6 +107,14 @@ describe('Testing CommunityPoolSpendProposalV2 and its content types', function 
             );
         });
 
+        it('Should throw on invalid depositor', function () {
+            const json =
+                '{"@type":"/cosmos.distribution.v1beta1.CommunityPoolSpendProposal","title": "Text Proposal Title", "description": "Lorem Ipsum ... Checking text proposal","amount": [{ "denom": "basetcro", "amount": "3478499933290496" }], "recipient": "cro1xh3dqgljnydpwelzqf265edryrqrq7wzacx2nr"}';
+            expect(() =>
+                cro.v2.gov.proposal.CommunityPoolSpendProposalV2.fromCosmosMsgJSON(json, CroNetwork.Testnet),
+            ).to.throw('Provided `recipient` doesnt match network selected');
+        });
+
         it('should return the CommunityPoolSpendProposalV2 corresponding to the JSON', function () {
             const json =
                 '{"@type":"/cosmos.distribution.v1beta1.CommunityPoolSpendProposal","title": "Text Proposal Title", "description": "Lorem Ipsum ... Checking text proposal","amount": [{ "denom": "basetcro", "amount": "3478499933290496" }], "recipient": "tcro1x07kkkepfj2hl8etlcuqhej7jj6myqrp48y4hg"}';

@@ -6,7 +6,6 @@ import Long from 'long';
 import { cosmos } from '../cosmos/v1beta1/codec/generated/codecimpl';
 import { Bytes } from './bytes/bytes';
 import { typeUrlMappings } from '../cosmos/v1beta1/types/typeurls';
-import { SIGN_MODE } from '../transaction/types';
 
 const cosmJSRegistry = new Registry(Object.entries(typeUrlMappings));
 
@@ -156,25 +155,6 @@ export const getAuthInfoJson = (authInfo: AuthInfo) => {
 
 // transforms `type_url` to `@type` to match GoLang's TxDecoder JSON output
 export const typeUrlToCosmosTransformer = (str: string) => str.replace(/type_url/g, '@type');
-
-export const getTxBodyBytes = (txBody: TxBody): Bytes => {
-    try {
-        return Bytes.fromUint8Array(TxBody.encode(txBody).finish());
-    } catch (error) {
-        throw new Error('Error getting TxBody bytes');
-    }
-};
-
-export const getSignModeFromLibDecodedSignMode = (signModeNumber: number) => {
-    switch (signModeNumber) {
-        case SIGN_MODE.DIRECT:
-            return SIGN_MODE.DIRECT;
-        case SIGN_MODE.LEGACY_AMINO_JSON:
-            return SIGN_MODE.LEGACY_AMINO_JSON;
-        default:
-            throw new Error(`Received Sign Mode ${signModeNumber} not supported`);
-    }
-};
 
 const handleCustomTypes = (obj: any) => {
     Object.keys(obj).forEach((k) => {
