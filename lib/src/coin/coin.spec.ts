@@ -108,11 +108,6 @@ describe('Coin', function () {
                     'Provided Units and Denom do not belong to the same network.',
                 );
             });
-            // it('should throw Error on empty `denom`', function () {
-            //     expect(() => new cro.Coin('1000000', cro.Coin.UNIT_CRO, '')).to.throw(
-            //         'Expected string `denom` to have a minimum length of `1`, got ``',
-            //     );
-            // });
             it('should set the `denom` correctly', function () {
                 expect(() => new cro.Coin('1000000', cro.Coin.UNIT_BASE, 'cosmos')).to.not.throw();
 
