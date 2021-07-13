@@ -39,6 +39,7 @@ export const COSMOS_MSG_TYPEURL = {
         MsgCreateClient: '/ibc.core.client.v1.MsgCreateClient',
         MsgUpdateClient: '/ibc.core.client.v1.MsgUpdateClient',
         MsgUpgradeClient: '/ibc.core.client.v1.MsgUpgradeClient',
+        MsgSubmitMisbehaviour: '/ibc.core.client.v1.MsgSubmitMisbehaviour',
     },
 };
 
@@ -99,6 +100,8 @@ export const typeUrlToMsgClassMapping = (cro: any, typeUrl: string) => {
             return cro.ibc.MsgUpdateClient;
         case COSMOS_MSG_TYPEURL.ibc.MsgUpgradeClient:
             return cro.ibc.MsgUpgradeClient;
+        case COSMOS_MSG_TYPEURL.ibc.MsgSubmitMisbehaviour:
+            return cro.ibc.MsgSubmitMisbehaviour;
 
         // nft
         case COSMOS_MSG_TYPEURL.nft.MsgIssueDenom:

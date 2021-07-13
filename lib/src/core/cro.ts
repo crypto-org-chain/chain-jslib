@@ -38,6 +38,7 @@ import { communityPoolSpendProposalV2 } from '../transaction/msg/v2/gov/proposal
 import { msgSubmitProposalV2 } from '../transaction/msg/v2/gov/v2.MsgSubmitProposal';
 import { msgUpdateClientIBC } from '../transaction/msg/ibc/core/MsgUpdateClient';
 import { msgUpgradeClientIBC } from '../transaction/msg/ibc/core/MsgUpgradeClient';
+import { msgSubmitMisbehaviourIBC } from '../transaction/msg/ibc/core/MsgSubmitMisbehaviour';
 
 export const CroSDK = function (configs: InitConfigurations) {
     ow(configs, 'configs', owCroSDKInitParams);
@@ -87,6 +88,7 @@ export const CroSDK = function (configs: InitConfigurations) {
             MsgCreateClient: msgCreateClientIBC(configs),
             MsgUpdateClient: msgUpdateClientIBC(configs),
             MsgUpgradeClient: msgUpgradeClientIBC(configs),
+            MsgSubmitMisbehaviour: msgSubmitMisbehaviourIBC(configs),
         },
         v2: {
             bank: {
