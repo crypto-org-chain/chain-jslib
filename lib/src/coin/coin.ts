@@ -74,7 +74,7 @@ export const coin = function (config: InitConfigurations) {
 
         public readonly network: Network;
 
-        public readonly denom: string;
+        public readonly denom?: string;
 
         public readonly receivedAmount: Big;
 
@@ -244,7 +244,7 @@ export const coin = function (config: InitConfigurations) {
          * @memberof Coin
          * */
         public toCosmosCoin(): CosmosCoin {
-            return cosmosCoin(this.toString(Units.BASE), this.denom);
+            return cosmosCoin(this.toString(Units.BASE), this.denom!);
         }
 
         /**
@@ -253,7 +253,7 @@ export const coin = function (config: InitConfigurations) {
          * @memberof Coin
          * */
         public toCosmosCoins(): CosmosCoin[] {
-            return cosmosCoins(this.toString(Units.BASE), this.denom);
+            return cosmosCoins(this.toString(Units.BASE), this.denom!);
         }
 
         /**
@@ -266,7 +266,7 @@ export const coin = function (config: InitConfigurations) {
         public toString(unit: Units = Units.BASE): string {
             ow(unit, owCoinUnit);
 
-            if (!Coin.croAllDenoms.includes(this.denom)) {
+            if (!Coin.croAllDenoms.includes(this.denom!)) {
                 return this.receivedAmount.toString();
             }
             if (unit === Units.BASE) {
