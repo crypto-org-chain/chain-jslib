@@ -6,22 +6,22 @@ import {
     TxBody as NativeTxbody,
 } from '@cosmjs/proto-signing/build/codec/cosmos/tx/v1beta1/tx';
 import * as snakecaseKeys from 'snakecase-keys';
-import { cosmos } from '../../../cosmos/v1beta1/codec';
-import { AuthInfoV2, TxBody } from '../../../cosmos/v1beta1/types/tx';
-import { owRawTransactionSigner, owTimeoutHeight } from '../../ow.types';
-import { Bytes } from '../../../utils/bytes/bytes';
-import { isValidSepc256k1PublicKey } from '../../../utils/secp256k1';
-import { isBigInteger } from '../../../utils/big';
-import { Network } from '../../../network/network';
-import { SignerAccount, SIGN_MODE } from '../../types';
-import { cloneDeep } from '../../../utils/clone';
-import { CosmosMsg, owCosmosMsg } from '../cosmosMsg';
-import { InitConfigurations } from '../../../core/cro';
-import { ICoin } from '../../../coin/coin';
-import { owCoin } from '../../../coin/ow.types';
-import { getAuthInfoJson, getTxBodyJson, typeUrlToCosmosTransformer } from '../../../utils/txDecoder';
-import { protoEncodeAuthInfoV2 } from '../../../utils/protoBuf/encoder/v2.authInfo';
-import { protoEncodeTxBody } from '../../../utils/protoBuf/encoder/txBodyMessage';
+import { cosmos } from '../cosmos/v1beta1/codec';
+import { AuthInfoV2, TxBody } from '../cosmos/v1beta1/types/tx';
+import { owRawTransactionSigner, owTimeoutHeight } from './ow.types';
+import { Bytes } from '../utils/bytes/bytes';
+import { isValidSepc256k1PublicKey } from '../utils/secp256k1';
+import { isBigInteger } from '../utils/big';
+import { Network } from '../network/network';
+import { SignerAccount, SIGN_MODE } from './types';
+import { cloneDeep } from '../utils/clone';
+import { CosmosMsg, owCosmosMsg } from './msg/cosmosMsg';
+import { InitConfigurations } from '../core/cro';
+import { ICoin } from '../coin/coin';
+import { owCoin } from '../coin/ow.types';
+import { getAuthInfoJson, getTxBodyJson, typeUrlToCosmosTransformer } from '../utils/txDecoder';
+import { protoEncodeAuthInfoV2 } from '../utils/protoBuf/encoder/v2.authInfo';
+import { protoEncodeTxBody } from '../utils/protoBuf/encoder/txBodyMessage';
 import { SignableTransactionV2 } from './v2.signable';
 
 export const rawTransactionV2 = function (config: InitConfigurations) {

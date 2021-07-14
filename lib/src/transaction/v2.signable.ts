@@ -12,31 +12,26 @@ import {
     TxBody as NativeTxbody,
 } from '@cosmjs/proto-signing/build/codec/cosmos/tx/v1beta1/tx';
 import * as snakecaseKeys from 'snakecase-keys';
-import { cosmos } from '../../../cosmos/v1beta1/codec';
-import { omitDefaults } from '../../../cosmos/v1beta1/adr27';
-import { SignerInfo, TxBody, TxRaw, AuthInfoV2 } from '../../../cosmos/v1beta1/types/tx';
-import { sha256 } from '../../../utils/hash';
-import { Network } from '../../../network/network';
-import { Bytes } from '../../../utils/bytes/bytes';
-import { EMPTY_SIGNATURE, SignerAccount, SIGN_MODE } from '../../types';
-import { owSignableTransactionParamsV2 } from '../../ow.types';
-import { owBytes } from '../../../utils/bytes/ow.types';
-import { SignedTransaction } from '../../signed';
-import * as legacyAmino from '../../../cosmos/amino';
-import { ICoin } from '../../../coin/coin';
-import { CosmosMsg } from '../cosmosMsg';
-import {
-    typeUrlToCosmosTransformer,
-    getAuthInfoJson,
-    getTxBodyJson,
-    getSignaturesJson,
-} from '../../../utils/txDecoder';
-import { owBig } from '../../../ow.types';
-import { CroSDK } from '../../../core/cro';
-import { CosmosTx } from '../../../cosmos/v1beta1/types/cosmostx';
-import { typeUrlToMsgClassMapping } from '../../common/constants/typeurl';
-import { protoEncodeTxBody } from '../../../utils/protoBuf/encoder/txBodyMessage';
-import { protoEncodeAuthInfoV2 } from '../../../utils/protoBuf/encoder/v2.authInfo';
+import { cosmos } from '../cosmos/v1beta1/codec';
+import { omitDefaults } from '../cosmos/v1beta1/adr27';
+import { SignerInfo, TxBody, TxRaw, AuthInfoV2 } from '../cosmos/v1beta1/types/tx';
+import { sha256 } from '../utils/hash';
+import { Network } from '../network/network';
+import { Bytes } from '../utils/bytes/bytes';
+import { EMPTY_SIGNATURE, SignerAccount, SIGN_MODE } from './types';
+import { owSignableTransactionParamsV2 } from './ow.types';
+import { owBytes } from '../utils/bytes/ow.types';
+import { SignedTransaction } from './signed';
+import * as legacyAmino from '../cosmos/amino';
+import { ICoin } from '../coin/coin';
+import { typeUrlToCosmosTransformer, getAuthInfoJson, getTxBodyJson, getSignaturesJson } from '../utils/txDecoder';
+import { owBig } from '../ow.types';
+import { CroSDK } from '../core/cro';
+import { CosmosTx } from '../cosmos/v1beta1/types/cosmostx';
+import { typeUrlToMsgClassMapping } from './common/constants/typeurl';
+import { protoEncodeTxBody } from '../utils/protoBuf/encoder/txBodyMessage';
+import { protoEncodeAuthInfoV2 } from '../utils/protoBuf/encoder/v2.authInfo';
+import { CosmosMsg } from './msg/cosmosMsg';
 
 export const DEFAULT_GAS_LIMIT = 200_000;
 

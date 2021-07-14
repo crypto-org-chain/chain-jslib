@@ -1,11 +1,11 @@
 import 'mocha';
 import { expect } from 'chai';
 import Big from 'big.js';
-import { fuzzyDescribe } from '../../../test/mocha-fuzzy/suite';
-import { CosmosMsgSuiteFactoryV2, TransactionSignerFactory, CosmosMsgSuiteFactory } from '../../test';
+import { fuzzyDescribe } from '../test/mocha-fuzzy/suite';
+import { CosmosMsgSuiteFactoryV2, TransactionSignerFactory, CosmosMsgSuiteFactory } from './test';
 
-import { CroNetwork, CroSDK } from '../../../core/cro';
-import { Bytes } from '../../../utils/bytes/bytes';
+import { CroNetwork, CroSDK } from '../core/cro';
+import { Bytes } from '../utils/bytes/bytes';
 import { SignableTransactionV2 } from './v2.signable';
 
 const cro = CroSDK({ network: CroNetwork.Testnet });

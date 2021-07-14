@@ -39,7 +39,7 @@ import { msgSubmitProposalV2 } from '../transaction/msg/v2/gov/v2.MsgSubmitPropo
 import { msgUpdateClientIBC } from '../transaction/msg/ibc/core/MsgUpdateClient';
 import { msgUpgradeClientIBC } from '../transaction/msg/ibc/core/MsgUpgradeClient';
 import { msgSubmitMisbehaviourIBC } from '../transaction/msg/ibc/core/MsgSubmitMisbehaviour';
-import { rawTransactionV2 } from '../transaction/msg/v2/v2.raw';
+import { rawTransactionV2 } from '../transaction/v2.raw';
 
 export const CroSDK = function (configs: InitConfigurations) {
     ow(configs, 'configs', owCroSDKInitParams);

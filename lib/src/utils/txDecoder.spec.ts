@@ -1,4 +1,3 @@
-// @ts-nocheck
 /* eslint-disable */
 import 'mocha';
 import { expect } from 'chai';
@@ -11,7 +10,7 @@ import { Bytes } from './bytes/bytes';
 import { Secp256k1KeyPair } from '../keypair/secp256k1';
 import { CroNetwork } from '../core/cro';
 import { SIGN_MODE } from '../transaction/types';
-import { SignableTransactionV2 } from '../transaction/msg/v2/v2.signable';
+import { SignableTransactionV2 } from '../transaction/v2.signable';
 
 describe('TxDecoder', function () {
     it('should throw on certain places', function () {

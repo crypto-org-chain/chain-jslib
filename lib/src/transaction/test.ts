@@ -10,8 +10,8 @@ import { TxRaw } from '../cosmos/v1beta1/types/tx';
 import { CroNetwork, CroSDK } from '../core/cro';
 import { CosmosMsg } from './msg/cosmosMsg';
 import { SIGN_MODE } from './types';
-import { SignableTransactionV2Params, SignableTransactionV2 } from './msg/v2/v2.signable';
 import { cosmos } from '../cosmos/v1beta1/codec';
+import { SignableTransactionV2Params, SignableTransactionV2 } from './v2.signable';
 
 const chance = new Chance();
 

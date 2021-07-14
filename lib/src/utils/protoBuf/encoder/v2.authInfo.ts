@@ -2,7 +2,7 @@ import Long from 'long';
 import { AuthInfoV2 } from '../../../cosmos/v1beta1/types/tx';
 import { cosmos, google } from '../../../cosmos/v1beta1/codec';
 import { Bytes } from '../../bytes/bytes';
-import { DEFAULT_GAS_LIMIT } from '../../../transaction/msg/v2/v2.signable';
+import { DEFAULT_GAS_LIMIT } from '../../../transaction/v2.signable';
 
 /**
  * Encode AuthInfo message to protobuf binary

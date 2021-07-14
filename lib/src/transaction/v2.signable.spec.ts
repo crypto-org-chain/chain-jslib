@@ -1,9 +1,9 @@
 import 'mocha';
 import { expect } from 'chai';
-import { fuzzyDescribe } from '../../../test/mocha-fuzzy/suite';
-import { SignableTransactionParamsSuiteFactoryV2 } from '../../test';
+import { fuzzyDescribe } from '../test/mocha-fuzzy/suite';
+import { SignableTransactionParamsSuiteFactoryV2 } from './test';
 import { SignableTransactionV2 } from './v2.signable';
-import { Bytes } from '../../../utils/bytes/bytes';
+import { Bytes } from '../utils/bytes/bytes';
 
 const anySignableTransaction = (): SignableTransactionV2 => {
     const { params: anyParams } = SignableTransactionParamsSuiteFactoryV2.build();
