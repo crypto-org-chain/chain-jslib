@@ -364,10 +364,34 @@ describe('Transaction', function () {
         describe('toCosmosJSON', function () {
             it('should not throw', function () {
                 const anyTx = anyTransaction();
-
                 expect(() => {
                     anyTx.toCosmosJSON();
                 }).not.throw();
+            });
+
+            it('should throw', function () {
+                const anyTx = anyTransaction();
+                // @ts-ignore
+                anyTx.txBody = undefined;
+                expect(() => {
+                    anyTx.toCosmosJSON();
+                }).to.throw('Error converting RawTransaction to Cosmos compatible JSON.');
+            });
+
+            it('should output correct `signer` array', function () {
+                const anyTx = anyTransaction();
+                const { message: anyMessage } = CosmosMsgSuiteFactory.build();
+                anyTx.addMessage(anyMessage);
+                anyTx.addSigner({
+                    publicKey: Bytes.fromHexString(
+                        '03a52c32db89513a187ceb00a4520b52dec06f583f2e12afcf1da78e370a5358e6',
+                    ),
+                    accountNumber: new Big(1),
+                    accountSequence: new Big(2),
+                });
+                expect(anyTx.exportSignerAccounts()).to.eq(
+                    `[{"publicKey":"A6UsMtuJUToYfOsApFILUt7Ab1g/LhKvzx2njjcKU1jm","accountNumber":"1","signMode":"1"}]`,
+                );
             });
 
             it('should create correct JSON', function () {

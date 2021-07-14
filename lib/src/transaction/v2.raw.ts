@@ -122,7 +122,15 @@ export const rawTransactionV2 = function (config: InitConfigurations) {
          * @memberof RawTransaction
          */
         public exportSignerAccounts(): string {
-            return JSON.stringify(this.getSignerAccounts());
+            return JSON.stringify(
+                this.getSignerAccounts().map((signerAccount) => {
+                    return {
+                        publicKey: signerAccount.publicKey.toBase64String(),
+                        accountNumber: signerAccount.accountNumber.toString(),
+                        signMode: signerAccount.signMode.toString(),
+                    };
+                }),
+            );
         }
 
         /**
