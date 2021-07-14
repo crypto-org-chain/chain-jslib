@@ -17,6 +17,15 @@ export const owOptionalTxBody = () =>
         }),
     });
 
+export const owTxBody = () =>
+    owStrictObject().exactShape({
+        typeUrl: ow.string.equals('/cosmos.tx.v1beta1.TxBody'),
+        value: owStrictObject().exactShape({
+            messages: ow.array.ofType(owCosmosMsg()),
+            memo: ow.string,
+            timeoutHeight: owTimeoutHeight,
+        }),
+    });
 export const owAuthInfo = () =>
     owStrictObject().exactShape({
         signerInfos: ow.array.ofType(owSignerInfo()),

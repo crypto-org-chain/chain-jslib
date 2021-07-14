@@ -1,23 +1,31 @@
 import ow from 'ow';
 import Big from 'big.js';
 
-import { cosmos } from '../cosmos/v1beta1/codec';
-import { AuthInfo, TxBody } from '../cosmos/v1beta1/types/tx';
-import { owRawTransactionSigner, owTimeoutHeight } from './ow.types';
-import { Bytes } from '../utils/bytes/bytes';
-import { isValidSepc256k1PublicKey } from '../utils/secp256k1';
-import { isBigInteger } from '../utils/big';
-import { Network } from '../network/network';
-import { SignerAccount, SIGN_MODE } from './types';
-import { SignableTransaction } from './signable';
-import { cloneDeep } from '../utils/clone';
-import { CosmosMsg, owCosmosMsg } from './msg/cosmosMsg';
-import { InitConfigurations } from '../core/cro';
-import { ICoin } from '../coin/coin';
-import { owCoin } from '../coin/ow.types';
+import {
+    AuthInfo as NativeAuthInfo,
+    TxBody as NativeTxbody,
+} from '@cosmjs/proto-signing/build/codec/cosmos/tx/v1beta1/tx';
+import * as snakecaseKeys from 'snakecase-keys';
+import { cosmos } from '../../../cosmos/v1beta1/codec';
+import { AuthInfoV2, TxBody } from '../../../cosmos/v1beta1/types/tx';
+import { owRawTransactionSigner, owTimeoutHeight } from '../../ow.types';
+import { Bytes } from '../../../utils/bytes/bytes';
+import { isValidSepc256k1PublicKey } from '../../../utils/secp256k1';
+import { isBigInteger } from '../../../utils/big';
+import { Network } from '../../../network/network';
+import { SignerAccount, SIGN_MODE } from '../../types';
+import { cloneDeep } from '../../../utils/clone';
+import { CosmosMsg, owCosmosMsg } from '../cosmosMsg';
+import { InitConfigurations } from '../../../core/cro';
+import { ICoin } from '../../../coin/coin';
+import { owCoin } from '../../../coin/ow.types';
+import { getAuthInfoJson, getTxBodyJson, typeUrlToCosmosTransformer } from '../../../utils/txDecoder';
+import { protoEncodeAuthInfoV2 } from '../../../utils/protoBuf/encoder/v2.authInfo';
+import { protoEncodeTxBody } from '../../../utils/protoBuf/encoder/txBodyMessage';
+import { SignableTransactionV2 } from './v2.signable';
 
-export const rawTransaction = function (config: InitConfigurations) {
-    return class RawTransaction {
+export const rawTransactionV2 = function (config: InitConfigurations) {
+    return class RawTransactionV2 {
         public readonly txBody: TxBody = {
             typeUrl: '/cosmos.tx.v1beta1.TxBody',
             value: {
@@ -27,7 +35,7 @@ export const rawTransaction = function (config: InitConfigurations) {
             },
         };
 
-        public readonly authInfo: AuthInfo = {
+        public readonly authInfo: AuthInfoV2 = {
             signerInfos: [],
             fee: {
                 gasLimit: new Big(200000),
@@ -40,7 +48,7 @@ export const rawTransaction = function (config: InitConfigurations) {
 
         /**
          * Constructor to create a new Transaction
-         * @returns {RawTransaction}
+         * @returns {RawTransactionV2}
          * @throws {Error} when options is invalid
          */
         public constructor() {
@@ -50,11 +58,11 @@ export const rawTransaction = function (config: InitConfigurations) {
         /**
          * Add Cosmos message to transaction. The message orders will follow the add order.
          * @param {CosmosMsg} message one of the supported Cosmos message
-         * @returns {RawTransaction}
+         * @returns {RawTransactionV2}
          * @throws {Error} when message is invalid
          * @memberof Transaction
          */
-        public addMessage(message: CosmosMsg): RawTransaction {
+        public addMessage(message: CosmosMsg): RawTransactionV2 {
             ow(message, 'message', owCosmosMsg());
 
             this.txBody.value.messages.push(message);
@@ -65,22 +73,66 @@ export const rawTransaction = function (config: InitConfigurations) {
         /**
          * Append Cosmos MsgSend to transaction
          * @param {CosmosMsg} message one of the supported Cosmos message
-         * @returns {RawTransaction}
+         * @returns {RawTransactionV2}
          * @throws {Error} when message is invalid
          * @memberof Transaction
          */
-        public appendMessage(message: CosmosMsg): RawTransaction {
+        public appendMessage(message: CosmosMsg): RawTransactionV2 {
             return this.addMessage(message);
+        }
+
+        /**
+         * Returns the Chain-maind encoded JSON
+         * @memberof RawTransaction
+         * @returns {unknown} Tx-Encoded JSON
+         */
+        public toCosmosJSON(): string {
+            const txObject = {
+                body: Object.create({}),
+                authInfo: Object.create({}),
+                signatures: [],
+            };
+
+            try {
+                // Convert to native types
+                const authInfoBytes = protoEncodeAuthInfoV2(this.getAuthInfo());
+                const txBodyBytes = protoEncodeTxBody(this.getTxBody());
+                const nativeAuthInfo = NativeAuthInfo.decode(authInfoBytes.toUint8Array());
+                const nativeTxBody = NativeTxbody.decode(txBodyBytes.toUint8Array());
+
+                // Construct JSON bodies individually
+                txObject.authInfo = getAuthInfoJson(nativeAuthInfo);
+                txObject.body = getTxBodyJson(nativeTxBody);
+
+                // CamelCase to snake_case convertor
+                const stringifiedTx = JSON.stringify(snakecaseKeys.default(txObject));
+
+                // type_url to @type transformer for matching Cosmos JSON Format
+                const cosmosApiFormatTxJson = typeUrlToCosmosTransformer(stringifiedTx);
+
+                return cosmosApiFormatTxJson;
+            } catch (error) {
+                throw new Error('Error converting RawTransaction to Cosmos compatible JSON.');
+            }
+        }
+
+        /**
+         * Export the added SignerAccounts in JSON.
+         * The result of this function can be imported into `SignableTransactionV2` instance
+         * @memberof RawTransaction
+         */
+        public exportSignerAccounts(): string {
+            return JSON.stringify(this.getSignerAccounts());
         }
 
         /**
          * Set a memo value to the raw tx body
          * @param {string} memo to be set to the raw tx body
-         * @returns {RawTransaction}
+         * @returns {RawTransactionV2}
          * @throws {Error} when memo is invalid
          * @memberof Transaction
          */
-        public setMemo(memo: string): RawTransaction {
+        public setMemo(memo: string): RawTransactionV2 {
             ow(memo, 'memo', ow.string);
             this.txBody.value.memo = memo;
 
@@ -90,11 +142,11 @@ export const rawTransaction = function (config: InitConfigurations) {
         /**
          * Set gas limit value to tx
          * @param {string} gasLimit to be set to the raw tx body, default value is 200_000
-         * @returns {RawTransaction}
+         * @returns {RawTransactionV2}
          * @throws {Error} when gasLimit set is invalid
          * @memberof Transaction
          */
-        public setGasLimit(gasLimit: string): RawTransaction {
+        public setGasLimit(gasLimit: string): RawTransactionV2 {
             ow(gasLimit, 'gasLimit', ow.string);
             try {
                 this.authInfo.fee.gasLimit = new Big(gasLimit);
@@ -108,27 +160,44 @@ export const rawTransaction = function (config: InitConfigurations) {
         }
 
         /**
-         * Set fee to the raw tx
-         * @param {ICoin} fee to be set to the raw tx body
-         * @returns {RawTransaction}
+         * Sets a `single` only fee amount to the raw tx
+         * @param {ICoin} feeAmount amount to be set to the raw tx body
+         * @returns {RawTransactionV2}
+         * @throws {Error} when fee set is invalid
+         * @memberof Transaction
+         * @deprecated
+         */
+        public setFee(feeAmount: ICoin): RawTransactionV2 {
+            ow(feeAmount, 'fee', owCoin());
+            this.authInfo.fee.amount = [feeAmount];
+
+            return this;
+        }
+
+        /**
+         * Appends an `Amount` to the AuthInfo Fee Amount List
+         * @param {ICoin} feeAmount to be set to the raw tx body
+         * @returns {RawTransactionV2}
          * @throws {Error} when fee set is invalid
          * @memberof Transaction
          */
-        public setFee(fee: ICoin): RawTransaction {
-            ow(fee, 'fee', owCoin());
-            this.authInfo.fee.amount = fee;
-
+        public appendFeeAmount(feeAmount: ICoin): RawTransactionV2 {
+            ow(feeAmount, 'feeAmount', owCoin());
+            if (typeof this.authInfo.fee.amount === 'undefined') {
+                this.authInfo.fee.amount = [];
+            }
+            this.authInfo.fee.amount.push(feeAmount);
             return this;
         }
 
         /**
          * Set a timeout param to tx body
          * @param {string} timeoutHeight to best to the broad-casted tx
-         * @returns {RawTransaction}
+         * @returns {RawTransactionV2}
          * @throws {Error} when timeoutHeight is invalid
          * @memberof Transaction
          */
-        public setTimeOutHeight(timeoutHeight: string): RawTransaction {
+        public setTimeOutHeight(timeoutHeight: string): RawTransactionV2 {
             ow(timeoutHeight, 'timeoutHeight', owTimeoutHeight);
             this.txBody.value.timeoutHeight = timeoutHeight;
 
@@ -141,13 +210,12 @@ export const rawTransaction = function (config: InitConfigurations) {
          * @param {Bytes} signer.publicKey signer public key
          * @param {Big} signer.accountNumber  account number of the signer address
          * @param {Big} signer.accountSequence account sequence of the signer address
-         * @returns {RawTransaction}
+         * @returns {RawTransactionV2}
          * @throws {Error} when argument is invalid
          * @memberof Transaction
          */
-        public addSigner(signer: TransactionSigner): RawTransaction {
+        public addSigner(signer: TransactionSigner): RawTransactionV2 {
             ow(signer, 'signer', owRawTransactionSigner);
-
             const publicKeyResult = isValidSepc256k1PublicKey(signer.publicKey);
             if (!publicKeyResult.ok) {
                 throw new TypeError(publicKeyResult.err('signer'));
@@ -160,7 +228,7 @@ export const rawTransaction = function (config: InitConfigurations) {
             }
             if (!isBigInteger(signer.accountSequence) && signer.accountSequence.gte(0)) {
                 throw new TypeError(
-                    `Expected accountNumber to be of positive integer, got \`${signer.accountNumber}\``,
+                    `Expected accountSequence to be of positive integer, got \`${signer.accountSequence}\``,
                 );
             }
 
@@ -201,20 +269,19 @@ export const rawTransaction = function (config: InitConfigurations) {
 
         /**
          * Returns signable transaction
-         * @returns {SignableTransaction}
+         * @returns {SignableTransactionV2}
          * @throws {Error} when the transaction is incompleted
          * @memberof RawTransaction
          */
-        public toSignable(): SignableTransaction {
-            if (this.txBody.value.messages.length === 0) {
-                throw new Error('Expected message in transaction, got none');
-            }
+        public toSignable(): SignableTransactionV2 {
             if (this.authInfo.signerInfos.length === 0) {
                 throw new Error('Expected signer in transaction, got none');
             }
-            return new SignableTransaction({
-                txBody: cloneDeep(this.txBody),
-                authInfo: cloneDeep(this.authInfo),
+            if (this.txBody.value.messages.length === 0) {
+                throw new Error('Expected message in transaction, got none');
+            }
+            return new SignableTransactionV2({
+                rawTxJSON: this.toCosmosJSON(),
                 network: cloneDeep(this.network),
                 signerAccounts: cloneDeep(this.signerAccounts),
             });
@@ -231,10 +298,10 @@ export const rawTransaction = function (config: InitConfigurations) {
 
         /**
          * Returns AuthInfo
-         * @returns {AuthInfo}
+         * @returns {AuthInfoV2}
          * @memberof Transaction
          */
-        public getAuthInfo(): Readonly<AuthInfo> {
+        public getAuthInfo(): Readonly<AuthInfoV2> {
             return this.authInfo;
         }
 
