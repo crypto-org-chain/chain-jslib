@@ -64,10 +64,7 @@ export const softwareUpgradeProposal = function () {
             // TODO: check for any live example (if any), keeping empty `value` now
             let upgradedClientState;
             if (plan.upgraded_client_state && Object.keys(plan.upgraded_client_state).length > 0) {
-                upgradedClientState = google.protobuf.Any.create({
-                    type_url: plan.upgraded_client_state?.type_url,
-                    value: new Uint8Array(),
-                });
+                upgradedClientState = undefined;
             }
 
             return new SoftwareUpgradeProposal({
@@ -154,5 +151,5 @@ interface PlanRaw {
     };
     height: string;
     info: string;
-    upgraded_client_state?: { type_url: string; value: any };
+    upgraded_client_state?: any;
 }

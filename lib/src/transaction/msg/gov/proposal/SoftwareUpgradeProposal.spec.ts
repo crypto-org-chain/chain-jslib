@@ -4,7 +4,7 @@ import { expect } from 'chai';
 import Big from 'big.js';
 import Long from 'long';
 import { Network } from '../../../../network/network';
-import { CroSDK } from '../../../../core/cro';
+import { CroSDK, CroNetwork } from '../../../../core/cro';
 import { Units } from '../../../../coin/coin';
 import { fuzzyDescribe } from '../../../../test/mocha-fuzzy/suite';
 import { HDKey } from '../../../../hdkey/hdkey';
@@ -103,5 +103,32 @@ describe('Testing SoftwareUpgradeProposal and its content types', function () {
         expect(signedTxHex).to.be.eql(
             '0aa3020aa0020a252f636f736d6f732e676f762e763162657461312e4d73675375626d697450726f706f73616c12f6010aad010a2f2f636f736d6f732e757067726164652e763162657461312e536f6674776172655570677261646550726f706f73616c127a0a2750726f706f73652061206e657720736f66747761726520757067726164652070726f706f73616c12324c6f72656d20497073756d202e2e2e20436865636b696e6720736f66747761726520757067726164652070726f706f73616c1a1b0a046e616d65120a08f8bdef051080ade20418e8072204696e666f12170a08626173657463726f120b31323030303030303030301a2b7463726f31347368343930776b3739646c7465613475646b39356b376d773430776d7666373770306c356112580a500a460a1f2f636f736d6f732e63727970746f2e736563703235366b312e5075624b657912230a210280c5e37a2bc3e68cc7c4aac78eac8c769cf58ce269ecd4307427aa16c2ba05a412040a0208011800120410c09a0c1a40a5b7174278f1cc4caae7a8b098ac477ea282595a8d0cc318587992ca7a42434a49923c2a85cd058516d538823868c141f4f5dc6975738d3e22f5bf347cb08da3',
         );
+    });
+    describe('fromCosmosJSON', function () {
+        it('should throw Error if the JSON is not a SoftwareUpgradeProposal', function () {
+            const json =
+                '{ "@type": "/cosmos.bank.v1beta1.MsgCreateValidator", "amount": [{ "denom": "basetcro", "amount": "3478499933290496" }], "from_address": "tcro1x07kkkepfj2hl8etlcuqhej7jj6myqrp48y4hg", "to_address": "tcro184lta2lsyu47vwyp2e8zmtca3k5yq85p6c4vp3" }';
+            expect(() => cro.gov.proposal.SoftwareUpgradeProposal.fromCosmosMsgJSON(json, CroNetwork.Testnet)).to.throw(
+                'Expected /cosmos.upgrade.v1beta1.SoftwareUpgradeProposal but got /cosmos.bank.v1beta1.MsgCreateValidator',
+            );
+        });
+
+        it('should return the SoftwareUpgradeProposal corresponding to the JSON', function () {
+            const json = `{"@type":"/cosmos.upgrade.v1beta1.SoftwareUpgradeProposal","title": "Text Proposal Title", "description": "Lorem Ipsum ... Checking text proposal",
+             "plan": {
+                    "height": "1000",
+                    "name": "name",
+                    "info": "info",
+                    "time": { "nanos": "10000000", "seconds": "12312312" }
+                }}`;
+            const SoftwareUpgradeProposal = cro.gov.proposal.SoftwareUpgradeProposal.fromCosmosMsgJSON(
+                json,
+                CroNetwork.Testnet,
+            );
+
+            expect(SoftwareUpgradeProposal.title).to.eql('Text Proposal Title');
+
+            expect(SoftwareUpgradeProposal.description).to.eql('Lorem Ipsum ... Checking text proposal');
+        });
     });
 });
