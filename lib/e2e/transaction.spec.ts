@@ -71,7 +71,7 @@ describe('e2e test suite', function () {
             const randomKeyPair = Secp256k1KeyPair.fromPrivKey(randomPrivKey);
 
             const cro = CroSDK({ network: customNetwork });
-            const rawTx = new cro.RawTransaction();
+            const rawTx = new cro.v2.RawTransactionV2();
             const address1 = new cro.Address(keyPair.getPubKey());
             const address2 = new cro.Address(keyPair2.getPubKey());
             const randomAddress = new cro.Address(randomKeyPair.getPubKey());

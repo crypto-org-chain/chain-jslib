@@ -1,13 +1,13 @@
 import Long from 'long';
-import { AuthInfo } from '../../../cosmos/v1beta1/types/tx';
+import { AuthInfoV2 } from '../../../cosmos/v1beta1/types/tx';
 import { cosmos, google } from '../../../cosmos/v1beta1/codec';
 import { Bytes } from '../../bytes/bytes';
-import { DEFAULT_GAS_LIMIT } from '../../../transaction/signable';
+import { DEFAULT_GAS_LIMIT } from '../../../transaction/v2.signable';
 
 /**
  * Encode AuthInfo message to protobuf binary
  */
-export const protoEncodeAuthInfo = (authInfo: AuthInfo): Bytes => {
+export const protoEncodeAuthInfoV2 = (authInfo: AuthInfoV2): Bytes => {
     const encodableAuthInfo: cosmos.tx.v1beta1.IAuthInfo = {
         signerInfos: authInfo.signerInfos.map(
             ({ publicKey, modeInfo, sequence }): cosmos.tx.v1beta1.ISignerInfo => ({
@@ -21,13 +21,13 @@ export const protoEncodeAuthInfo = (authInfo: AuthInfo): Bytes => {
                 authInfo.fee.amount !== undefined
                     ? authInfo.fee.amount.map((feeAmount) => feeAmount.toCosmosCoin())
                     : [],
-            gasLimit: protoEncodeGasLimitOrDefault(authInfo),
+            gasLimit: protoEncodeGasLimitOrDefaultV2(authInfo),
         },
     };
     return Bytes.fromUint8Array(cosmos.tx.v1beta1.AuthInfo.encode(encodableAuthInfo).finish());
 };
 
-const protoEncodeGasLimitOrDefault = (authInfo: AuthInfo): Long.Long => {
+const protoEncodeGasLimitOrDefaultV2 = (authInfo: AuthInfoV2): Long.Long => {
     const defaultGasLimit = Long.fromNumber(DEFAULT_GAS_LIMIT);
     return authInfo.fee.gasLimit !== undefined && authInfo.fee.gasLimit !== null
         ? Long.fromNumber(authInfo.fee.gasLimit.toNumber())

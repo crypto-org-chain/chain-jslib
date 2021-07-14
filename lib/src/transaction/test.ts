@@ -10,6 +10,8 @@ import { TxRaw } from '../cosmos/v1beta1/types/tx';
 import { CroNetwork, CroSDK } from '../core/cro';
 import { CosmosMsg } from './msg/cosmosMsg';
 import { SIGN_MODE } from './types';
+import { cosmos } from '../cosmos/v1beta1/codec';
+import { SignableTransactionV2Params, SignableTransactionV2 } from './v2.signable';
 
 const chance = new Chance();
 
@@ -60,18 +62,18 @@ export const TransactionSignerFactory = new Factory<TransactionSigner & { keyPai
         signMode: SIGN_MODE.DIRECT,
     });
 
-export type SignableTransactionParamsSuite = {
+export type SignableTransactionParamsSuiteV2 = {
     network: Network; // option
     keyPair: Secp256k1KeyPair;
-    params: SignableTransactionParams;
+    params: SignableTransactionV2Params;
 };
-export const SignableTransactionParamsSuiteFactory = new Factory<SignableTransactionParamsSuite>()
+export const SignableTransactionParamsSuiteFactoryV2 = new Factory<SignableTransactionParamsSuiteV2>()
     .option('network', CroNetwork.Testnet)
     .attr('keyPair', () => Secp256k1KeyPair.generateRandom())
     .attr(
         'params',
         ['network', 'keyPair'],
-        (network: Network, keyPair: Secp256k1KeyPair): SignableTransactionParams => {
+        (network: Network, keyPair: Secp256k1KeyPair): SignableTransactionV2Params => {
             const pubKey = keyPair.getPubKey();
 
             return {
@@ -105,6 +107,76 @@ export const SignableTransactionParamsSuiteFactory = new Factory<SignableTransac
                     },
                     signatures: [],
                 }),
+                network,
+                signerAccounts: [
+                    {
+                        publicKey: pubKey,
+                        accountNumber: new Big(chance.integer({ min: 0 })),
+                        signMode: SIGN_MODE.DIRECT,
+                    },
+                ],
+            };
+        },
+    );
+
+export const txRawFactoryV2 = {
+    build: (): TxRaw => {
+        const { keyPair, params } = SignableTransactionParamsSuiteFactoryV2.build();
+        const signableTx = new SignableTransactionV2(params);
+        const signDoc = signableTx.toSignDocumentHash(0);
+
+        const signature = keyPair.sign(signDoc);
+        signableTx.setSignature(0, signature);
+
+        return signableTx.getTxRaw();
+    },
+};
+
+export type SignableTransactionParamsSuite = {
+    network: Network; // option
+    keyPair: Secp256k1KeyPair;
+    params: SignableTransactionParams;
+};
+export const SignableTransactionParamsSuiteFactory = new Factory<SignableTransactionParamsSuite>()
+    .option('network', CroNetwork.Testnet)
+    .attr('keyPair', () => Secp256k1KeyPair.generateRandom())
+    .attr(
+        'params',
+        ['network', 'keyPair'],
+        (network: Network, keyPair: Secp256k1KeyPair): SignableTransactionParams => {
+            const { message } = CosmosMsgSuiteFactory.build(
+                {},
+                {
+                    keyPair,
+                },
+            );
+            const pubKey = keyPair.getPubKey();
+
+            return {
+                txBody: {
+                    typeUrl: '/cosmos.tx.v1beta1.TxBody',
+                    value: {
+                        messages: [message],
+                        memo: '',
+                        timeoutHeight: '0',
+                    },
+                },
+                authInfo: {
+                    signerInfos: [
+                        {
+                            publicKey: pubKey,
+                            modeInfo: {
+                                single: {
+                                    mode: cosmos.tx.signing.v1beta1.SignMode.SIGN_MODE_DIRECT,
+                                },
+                            },
+                            sequence: new Big(chance.integer({ min: 0 })),
+                        },
+                    ],
+                    fee: {
+                        gasLimit: new Big(chance.integer({ min: 0 })),
+                    },
+                },
                 network,
                 signerAccounts: [
                     {

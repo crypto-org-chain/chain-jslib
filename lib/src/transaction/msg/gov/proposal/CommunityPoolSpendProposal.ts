@@ -30,6 +30,7 @@ export const communityPoolSpendProposal = function (config: InitConfigurations) 
             this.description = options.description;
             this.recipient = options.recipient;
             this.amount = options.amount;
+            this.validate();
         }
 
         /**

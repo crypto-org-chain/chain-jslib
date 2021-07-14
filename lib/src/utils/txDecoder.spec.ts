@@ -1,4 +1,3 @@
-// @ts-nocheck
 /* eslint-disable */
 import 'mocha';
 import { expect } from 'chai';
@@ -10,8 +9,8 @@ import { TxDecoder } from './txDecoder';
 import { Bytes } from './bytes/bytes';
 import { Secp256k1KeyPair } from '../keypair/secp256k1';
 import { CroNetwork } from '../core/cro';
-import { SignableTransaction } from '../transaction/signable';
 import { SIGN_MODE } from '../transaction/types';
+import { SignableTransactionV2 } from '../transaction/v2.signable';
 
 describe('TxDecoder', function () {
     it('should throw on certain places', function () {
@@ -72,7 +71,7 @@ describe('TxDecoder', function () {
     });
 
     it('should decode and re-encode Cosmos JSON tx correctly', function () {
-        const signableTx = new SignableTransaction({
+        const signableTx = new SignableTransactionV2({
             rawTxJSON: JSON.stringify(cosmosTxObject),
             network: CroNetwork.Testnet,
             signerAccounts: []
@@ -90,7 +89,7 @@ describe('TxDecoder', function () {
     });
 
     it('should decode and re-encode Cosmos JSON tx correctly for LEGACY MODE', function () {
-        const signableTx = new SignableTransaction({
+        const signableTx = new SignableTransactionV2({
             rawTxJSON: JSON.stringify(cosmosTxObject_Legacy),
             network: CroNetwork.Testnet,
             signerAccounts: []
