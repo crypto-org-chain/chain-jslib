@@ -83,7 +83,7 @@ export const msgDepositV2 = function (config: InitConfigurations) {
             return new MsgDepositV2({
                 proposalId: new Big(parsedMsg.proposal_id),
                 depositor: parsedMsg.depositor,
-                amount: parsedMsg.amount.map((coin) => cro.Coin.fromCustomAmountDenom(coin.amount, coin.denom)),
+                amount: parsedMsg.amount.map((coin) => cro.v2.CoinV2.fromCustomAmountDenom(coin.amount, coin.denom)),
             });
         }
 

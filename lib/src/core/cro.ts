@@ -40,6 +40,7 @@ import { msgUpdateClientIBC } from '../transaction/msg/ibc/core/MsgUpdateClient'
 import { msgUpgradeClientIBC } from '../transaction/msg/ibc/core/MsgUpgradeClient';
 import { msgSubmitMisbehaviourIBC } from '../transaction/msg/ibc/core/MsgSubmitMisbehaviour';
 import { rawTransactionV2 } from '../transaction/v2.raw';
+import { coinv2 } from '../coin/v2.coin/v2.coin';
 
 export const CroSDK = function (configs: InitConfigurations) {
     ow(configs, 'configs', owCroSDKInitParams);
@@ -106,6 +107,7 @@ export const CroSDK = function (configs: InitConfigurations) {
                 },
             },
             RawTransactionV2: rawTransactionV2(configs),
+            CoinV2: coinv2(configs),
         },
         Options: configs,
     };

@@ -83,7 +83,7 @@ export const msgSubmitProposalV2 = function (config: InitConfigurations) {
             return new MsgSubmitProposalV2({
                 proposer: parsedMsg.proposer,
                 initialDeposit: parsedMsg.initial_deposit.map((coin) =>
-                    cro.Coin.fromCustomAmountDenom(coin.amount, coin.denom),
+                    cro.v2.CoinV2.fromCustomAmountDenom(coin.amount, coin.denom),
                 ),
                 content: nativeContentMsg,
             });

@@ -53,7 +53,7 @@ export const msgSendV2 = function (config: InitConfigurations) {
             return new MsgSendV2({
                 fromAddress: parsedMsg.from_address,
                 toAddress: parsedMsg.to_address,
-                amount: parsedMsg.amount.map((coin) => cro.Coin.fromCustomAmountDenom(coin.amount, coin.denom)),
+                amount: parsedMsg.amount.map((coin) => cro.v2.CoinV2.fromCustomAmountDenom(coin.amount, coin.denom)),
             });
         }
 

@@ -172,12 +172,12 @@ Our SDK supports offline signing for secure external transaction management.
 
 #### Flow:
 Machine 1(Online):
-1. Build a `RawTransaction` instance. 
+1. Build a `RawTransactionV2` instance. 
 2. Export Cosmos compatible JSON by using `.toCosmosJSON()`. 
 3. Export Signer(s) list using `.exportSignerAccounts()`. 
 
 Machine 2 (Offline/Online):
-1. Create a `SignableTransaction` instance from a stringified cosmos compatible JSON string.
+1. Create a `SignableTransactionV2` instance from a stringified cosmos compatible JSON string.
 2. You can import Signer(s) list using two methods:
    1. call `importSignerAccounts()` on the instance above **OR**
    2. (Advance usage) call `setSignerAccountNumberAtIndex()` to manually set AccountNumber at a specified index.
@@ -189,7 +189,7 @@ Eg:
 // ....
 
 /* Machine 1: */
-const rawTx = new cro.RawTransaction();
+const rawTx = new cro.v2.RawTransactionV2();
 // .... Do rest operations here
 const exportUnsignedCosmosJSON = rawTx.toCosmosJSON();
 const exportSignerInfoToJSON = rawTx.exportSignerAccounts();
@@ -243,7 +243,61 @@ console.log(signedTx.getHexEncoded());
 
 ```
 
-## 2. Cosmos Protobuf Definitions
+
+### 1.8. Create a message from Cosmos compatible JSON
+All **Cosmos message** types supported on our SDK can be instantiated using the function `.fromCosmosMsgJSON()` on respective classes. You need to pass a valid Msg `JSON` string and a `network` instance.
+Eg.
+```typescript
+const msgSendJson ='{ "@type": "/cosmos.bank.v1beta1.MsgSend", "amount": [{ "denom": "basetcro", "amount":   "3478499933290496" }], "from_address": "tcro1x07kkkepfj2hl8etlcuqhej7jj6myqrp48y4hg", "to_address": "tcro184lta2lsyu47vwyp2e8zmtca3k5yq85p6c4vp3" }';
+            
+            const msgSend = cro.v2.bank.MsgSendV2.fromCosmosMsgJSON(msgSendJson, CroNetwork.Testnet);
+            // `msgSend` is a valid instance of `MsgSendV2` and can be used for Transaction building
+
+
+const msgFundCommunityPoolJson =
+                '{"@type":"/cosmos.distribution.v1beta1.MsgFundCommunityPool","amount":[{ "denom": "basetcro", "amount": "3478499933290496" }],"depositor":"tcro165tzcrh2yl83g8qeqxueg2g5gzgu57y3fe3kc3"}';
+
+            const msgFundCommPool = cro.v2.distribution.MsgFundCommunityPoolV2.fromCosmosMsgJSON(msgFundCommunityPoolJson, CroNetwork.Testnet);
+            // `msgFundCommPool`is a valid instance of `MsgFundCommunityPoolV2` and can be used for Transaction building
+            
+```  
+
+## 2. Introducing `V2` message types
+Our SDK has introduced `V2` message types in order to support:
+- Custom `denom`
+- Multiple `amount` in several Cosmos Message types
+- Multiple `fee` amount in `SignerInfo` 
+
+You can use the `v2` property on the `CroSDK` instance like in the example below:  
+
+```typescript
+// imports here
+
+const cro = CroSDK({ network: sdk.CroNetwork.Testnet });
+
+// v2 methods below
+const coin1 = new cro.Coin('88888888', Units.BASE);
+const coin2 = new cro.Coin('99999999', Units.BASE);
+const msgSendV2 = new cro.v2.bank.MsgSendV2({
+          fromAddress: 'tcro165tzcrh2yl83g8qeqxueg2g5gzgu57y3fe3kc3',
+          toAddress: 'tcro184lta2lsyu47vwyp2e8zmtca3k5yq85p6c4vp3',
+          amount: [coin1, coin2],
+        });
+```
+
+### 2.1 List of new `V2` methods
+
+* New classes for external transaction management:
+  - `RawTransactionV2`
+    - `.toCosmosJSON()` : Get a Cosmos-sdk compatible JSON string
+    - `.exportSignerAccounts()` : Exports a human readable JSON of `SignerAccount`
+    - `appendFeeAmount(...)` : Add multiple fee amount to `SignerInfo` list
+  - `CoinV2` : Supports custom denom support
+  - `SignableTransactionV2` : Load your Cosmos Tx JSON for transaction management.
+  
+Please note new message types may be added under the `CroSDK` instance.
+
+## 3. Cosmos Protobuf Definitions
 
 ### Generate Cosmos Protobuf Definitions in JavaScript
 

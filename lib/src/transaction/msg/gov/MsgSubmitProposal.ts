@@ -88,7 +88,7 @@ export const msgSubmitProposal = function (config: InitConfigurations) {
 
             return new MsgSubmitProposal({
                 proposer: parsedMsg.proposer,
-                initialDeposit: cro.Coin.fromCustomAmountDenom(
+                initialDeposit: cro.v2.CoinV2.fromCustomAmountDenom(
                     parsedMsg.initial_deposit[0].amount,
                     parsedMsg.initial_deposit[0].denom,
                 ),
