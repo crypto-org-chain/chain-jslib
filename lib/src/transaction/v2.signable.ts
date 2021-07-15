@@ -155,7 +155,7 @@ export class SignableTransactionV2 {
         const feeAmountList: ICoin[] = cosmosAuthInfo.fee.amount.map((feeAmount) => {
             const feeAmountString = feeAmount.amount;
             const feeAmountDenom = feeAmount.denom;
-            const feeAmountCoin = croSdk.Coin.fromCustomAmountDenom(feeAmountString, feeAmountDenom);
+            const feeAmountCoin = croSdk.v2.CoinV2.fromCustomAmountDenom(feeAmountString, feeAmountDenom);
             return feeAmountCoin;
         });
 

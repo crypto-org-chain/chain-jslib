@@ -129,7 +129,7 @@ export const msgCreateValidator = function (config: InitConfigurations) {
                     maxChangeRate: parsedMsg.commission.max_change_rate,
                     maxRate: parsedMsg.commission.max_rate,
                 },
-                value: cro.Coin.fromCustomAmountDenom(parsedMsg.value.amount, parsedMsg.value.denom),
+                value: cro.v2.CoinV2.fromCustomAmountDenom(parsedMsg.value.amount, parsedMsg.value.denom),
                 validatorAddress: parsedMsg.validator_address,
                 pubkey,
                 minSelfDelegation: parsedMsg.min_self_delegation,

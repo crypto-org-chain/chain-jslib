@@ -1,10 +1,10 @@
 import Big from 'big.js';
 import ow from 'ow';
 
-import { owCoin, owCoinUnit } from './ow.types';
-import { InitConfigurations } from '../core/cro';
-import { Network } from '../network/network';
-import { Coin as CosmosCoin, coin as cosmosCoin, coins as cosmosCoins } from '../cosmos/coins';
+import { owCoinUnit } from '../ow.types';
+import { InitConfigurations, CroNetwork } from '../../core/cro';
+import { Network } from '../../network/network';
+import { Coin as CosmosCoin, coin as cosmosCoin, coins as cosmosCoins } from '../../cosmos/coins';
 
 export enum Units {
     BASE = 'base',
@@ -26,8 +26,13 @@ export interface ICoin {
     getNetwork(): Network;
 }
 
-export const coin = function (config: InitConfigurations) {
-    return class Coin implements ICoin {
+export const coinv2 = function (config: InitConfigurations) {
+    return class CoinV2 implements ICoin {
+        public static croAllDenoms = [
+            ...Object.values(CroNetwork.Mainnet.coin),
+            ...Object.values(CroNetwork.Testnet.coin),
+        ];
+
         /**
          * Total supply in base unit represented as string
          * @type {string}
@@ -36,7 +41,7 @@ export const coin = function (config: InitConfigurations) {
          */
         public static TOTAL_SUPPLY_STRING = '10000000000000000000';
 
-        public static TOTAL_SUPPLY = new Coin(Coin.TOTAL_SUPPLY_STRING, Units.BASE);
+        public static TOTAL_SUPPLY = new CoinV2(CoinV2.TOTAL_SUPPLY_STRING, Units.BASE);
 
         /**
          * One CRO in base unit represented as Big object
@@ -69,15 +74,21 @@ export const coin = function (config: InitConfigurations) {
 
         public readonly network: Network;
 
+        public readonly denom: string;
+
+        public readonly receivedAmount: Big;
+
         /**
          * Constructor to create a Coin
          * @param {string} amount coins amount represented as string
          * @param {Units} unit unit of the coins
+         * @param {string} denom chain compatible denom value (Optional)
          * @throws {Error} amount or unit is invalid
-         * @returns {Coin}
+         * @returns {CoinV2}
          */
-        constructor(amount: string, unit: Units) {
+        constructor(amount: string, unit: Units, denom?: string) {
             ow(amount, 'amount', ow.string);
+            ow(denom, 'denom', ow.optional.string);
             ow(unit, 'unit', owCoinUnit);
 
             let coins: Big;
@@ -87,8 +98,32 @@ export const coin = function (config: InitConfigurations) {
                 throw new TypeError(`Expected amount to be a base10 number represented as string, got \`${amount}\``);
             }
             this.network = config.network;
-            this.baseAmount = unit === Units.BASE ? Coin.parseBaseAmount(coins) : Coin.parseCROAmount(coins);
+
+            this.baseAmount = coins;
+
+            if (unit === Units.BASE) {
+                this.baseAmount = CoinV2.parseBaseAmount(coins);
+            } else if (unit === Units.CRO) {
+                if (typeof denom === 'undefined') {
+                    this.baseAmount = CoinV2.parseCROAmount(coins);
+                } else if (['cro', 'tcro'].includes(denom.toLowerCase())) {
+                    this.baseAmount = CoinV2.parseCROAmount(coins);
+                } else if (!['cro', 'tcro'].includes(denom.toLowerCase())) {
+                    throw new Error('Provided Units and Denom do not belong to the same network.');
+                }
+            }
+            this.denom = denom || this.network.coin.baseDenom;
+            this.receivedAmount = coins;
         }
+
+        /**
+         *
+         * @param {string} amount amount in base unit
+         * @param {string} denom chain compatible denom value
+         */
+        public static fromCustomAmountDenom = (amount: string, denom: string): CoinV2 => {
+            return new CoinV2(amount, Units.BASE, denom);
+        };
 
         getNetwork(): Network {
             return this.network;
@@ -108,7 +143,7 @@ export const coin = function (config: InitConfigurations) {
                 throw new TypeError(`Expected base amount to be positive, got \`${baseAmount}\``);
             }
 
-            if (baseAmount.gt(Coin.TOTAL_SUPPLY_STRING)) {
+            if (baseAmount.gt(CoinV2.TOTAL_SUPPLY_STRING)) {
                 throw new TypeError(`Expected base amount to be within total supply, got \`${baseAmount}\``);
             }
 
@@ -122,7 +157,7 @@ export const coin = function (config: InitConfigurations) {
          * @throws {TypeError} coins amount is invalid
          */
         static parseCROAmount(croAmount: Big): Big {
-            const baseAmount = croAmount.mul(Coin.ONE_CRO_IN_BASE_UNIT);
+            const baseAmount = croAmount.mul(CoinV2.ONE_CRO_IN_BASE_UNIT);
             if (baseAmount.cmp(baseAmount.toFixed(0)) !== 0) {
                 throw new TypeError(`Expected CRO amount to have at most 8 decimal places, got \`${croAmount}\``);
             }
@@ -131,7 +166,7 @@ export const coin = function (config: InitConfigurations) {
                 throw new TypeError(`Expected CRO amount to be positive, got \`${croAmount}\``);
             }
 
-            if (baseAmount.gt(Coin.TOTAL_SUPPLY_STRING)) {
+            if (baseAmount.gt(CoinV2.TOTAL_SUPPLY_STRING)) {
                 throw new TypeError(`Expected CRO amount to be within total supply, got \`${croAmount}\``);
             }
 
@@ -141,57 +176,23 @@ export const coin = function (config: InitConfigurations) {
         /**
          * Create a Coin from the base unit
          * @param {string} baseValue coins value in base unit
-         * @returns {Coin}
+         * @returns {CoinV2}
          * @throws {Error} base value is invalid
          * @memberof Coin
          */
-        public static fromBaseUnit(baseValue: string): Coin {
-            return new Coin(baseValue, Units.BASE);
+        public static fromBaseUnit(baseValue: string): CoinV2 {
+            return new CoinV2(baseValue, Units.BASE);
         }
 
         /**
          * Create a Coin from CRO unit
          * @param {string} croValue coins value in CRO unit
-         * @returns {Coin}
+         * @returns {CoinV2}
          * @throws {Error} cro value is invalid
          * @memberof Coin
          */
-        public static fromCRO(croValue: string): Coin {
-            return new Coin(croValue, Units.CRO);
-        }
-
-        /**
-         * Add two coins together and returns a new Coin
-         * @param {Coin} anotherCoin coins to add
-         * @returns {Coin}
-         * @throws {Error} adding two coins would exceed total supply
-         * @memberof Coin
-         */
-        public add(anotherCoin: Coin): Coin {
-            ow(anotherCoin, owCoin());
-
-            const newAmount = this.baseAmount.add(anotherCoin.toBig());
-            if (newAmount.gt(Coin.TOTAL_SUPPLY_STRING)) {
-                throw new Error('Adding two Coin together exceed total supply');
-            }
-            return new Coin(newAmount.toString(), Units.BASE);
-        }
-
-        /**
-         * Subtract another Coin and returns a new Coin
-         * @param {Coin} anotherCoin coins to subtract
-         * @returns {Coin}
-         * @throws {Error} subtracting two coins would become negative
-         * @memberof Coin
-         */
-        public sub(anotherCoin: Coin): Coin {
-            ow(anotherCoin, owCoin());
-
-            const newAmount = this.baseAmount.sub(anotherCoin.toBig());
-            if (newAmount.lt(0)) {
-                throw new Error('Subtracting the Coin results in negation Coin');
-            }
-            return new Coin(newAmount.toString(), Units.BASE);
+        public static fromCRO(croValue: string): CoinV2 {
+            return new CoinV2(croValue, Units.CRO);
         }
 
         /**
@@ -209,7 +210,7 @@ export const coin = function (config: InitConfigurations) {
          * @memberof Coin
          * */
         public toCosmosCoin(): CosmosCoin {
-            return cosmosCoin(this.toString(Units.BASE), config.network.coin.baseDenom);
+            return cosmosCoin(this.toString(Units.BASE), this.denom);
         }
 
         /**
@@ -218,7 +219,7 @@ export const coin = function (config: InitConfigurations) {
          * @memberof Coin
          * */
         public toCosmosCoins(): CosmosCoin[] {
-            return cosmosCoins(this.toString(Units.BASE), config.network.coin.baseDenom);
+            return cosmosCoins(this.toString(Units.BASE), this.denom);
         }
 
         /**
@@ -231,10 +232,13 @@ export const coin = function (config: InitConfigurations) {
         public toString(unit: Units = Units.BASE): string {
             ow(unit, owCoinUnit);
 
+            if (!CoinV2.croAllDenoms.includes(this.denom)) {
+                return this.receivedAmount.toString();
+            }
             if (unit === Units.BASE) {
                 return this.baseAmount.toString();
             }
-            return this.baseAmount.div(Coin.ONE_CRO_IN_BASE_UNIT).toString();
+            return this.baseAmount.div(CoinV2.ONE_CRO_IN_BASE_UNIT).toString();
         }
     };
 };

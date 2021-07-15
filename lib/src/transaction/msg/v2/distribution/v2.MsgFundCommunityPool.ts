@@ -76,7 +76,7 @@ export const msgFundCommunityPoolV2 = function (config: InitConfigurations) {
 
             return new MsgFundCommunityPoolV2({
                 depositor: parsedMsg.depositor,
-                amount: parsedMsg.amount.map((coin) => cro.Coin.fromCustomAmountDenom(coin.amount, coin.denom)),
+                amount: parsedMsg.amount.map((coin) => cro.v2.CoinV2.fromCustomAmountDenom(coin.amount, coin.denom)),
             });
         }
 

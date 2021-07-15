@@ -106,7 +106,7 @@ export const msgTransferIBC = function (config: InitConfigurations) {
             return new MsgTransfer({
                 sourcePort: parsedMsg.source_port,
                 sourceChannel: parsedMsg.source_channel,
-                token: cro.Coin.fromCustomAmountDenom(parsedMsg.token.amount, parsedMsg.token.denom),
+                token: cro.v2.CoinV2.fromCustomAmountDenom(parsedMsg.token.amount, parsedMsg.token.denom),
                 sender: parsedMsg.sender,
                 receiver: parsedMsg.receiver,
                 timeoutTimestamp: Long.fromString(parsedMsg.timeout_timestamp),

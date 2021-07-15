@@ -82,7 +82,7 @@ export const communityPoolSpendProposal = function (config: InitConfigurations) 
                 description: parsedMsg.description,
                 title: parsedMsg.title,
                 recipient: parsedMsg.recipient,
-                amount: cro.Coin.fromCustomAmountDenom(parsedMsg.amount[0].amount, parsedMsg.amount[0].denom),
+                amount: cro.v2.CoinV2.fromCustomAmountDenom(parsedMsg.amount[0].amount, parsedMsg.amount[0].denom),
             });
         }
 

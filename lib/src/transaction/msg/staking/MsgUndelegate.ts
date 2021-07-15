@@ -97,7 +97,7 @@ export const msgUndelegate = function (config: InitConfigurations) {
             return new MsgUndelegate({
                 delegatorAddress: parsedMsg.delegator_address,
                 validatorAddress: parsedMsg.validator_address,
-                amount: cro.Coin.fromCustomAmountDenom(parsedMsg.amount.amount, parsedMsg.amount.denom),
+                amount: cro.v2.CoinV2.fromCustomAmountDenom(parsedMsg.amount.amount, parsedMsg.amount.denom),
             });
         }
 
