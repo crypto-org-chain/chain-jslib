@@ -171,7 +171,7 @@ console.log(decodedTx.toCosmosJSON())
 Our SDK supports offline signing for secure external transaction management.
 
 #### Flow:
-Machine 1(Online):
+Machine 1 (Online):
 1. Build a `RawTransactionV2` instance. 
 2. Export Cosmos compatible JSON by using `.toCosmosJSON()`. 
 3. Export Signer(s) list using `.exportSignerAccounts()`. 
@@ -202,10 +202,10 @@ const signerAccountsOptional: SignerAccount[] = [{
 }];
 
 const signableTx = new SignableTransaction({
-                rawTxJSON: exportUnsignedCosmosJSON,
-                network: <CroNetwork>,
-                signerAccounts: signerAccountsOptional,
-            });
+    rawTxJSON: exportUnsignedCosmosJSON,
+    network: <CroNetwork>,
+    signerAccounts: signerAccountsOptional,
+});
 
 /* `Import SignerAccounts` starts */
 
@@ -250,15 +250,14 @@ Eg.
 ```typescript
 const msgSendJson ='{ "@type": "/cosmos.bank.v1beta1.MsgSend", "amount": [{ "denom": "basetcro", "amount":   "3478499933290496" }], "from_address": "tcro1x07kkkepfj2hl8etlcuqhej7jj6myqrp48y4hg", "to_address": "tcro184lta2lsyu47vwyp2e8zmtca3k5yq85p6c4vp3" }';
             
-            const msgSend = cro.v2.bank.MsgSendV2.fromCosmosMsgJSON(msgSendJson, CroNetwork.Testnet);
-            // `msgSend` is a valid instance of `MsgSendV2` and can be used for Transaction building
+const msgSend = cro.v2.bank.MsgSendV2.fromCosmosMsgJSON(msgSendJson, CroNetwork.Testnet);
+// `msgSend` is a valid instance of `MsgSendV2` and can be used for Transaction building
 
 
-const msgFundCommunityPoolJson =
-                '{"@type":"/cosmos.distribution.v1beta1.MsgFundCommunityPool","amount":[{ "denom": "basetcro", "amount": "3478499933290496" }],"depositor":"tcro165tzcrh2yl83g8qeqxueg2g5gzgu57y3fe3kc3"}';
+const msgFundCommunityPoolJson = '{"@type":"/cosmos.distribution.v1beta1.MsgFundCommunityPool","amount":[{ "denom": "basetcro", "amount": "3478499933290496" }],"depositor":"tcro165tzcrh2yl83g8qeqxueg2g5gzgu57y3fe3kc3"}';
 
-            const msgFundCommPool = cro.v2.distribution.MsgFundCommunityPoolV2.fromCosmosMsgJSON(msgFundCommunityPoolJson, CroNetwork.Testnet);
-            // `msgFundCommPool`is a valid instance of `MsgFundCommunityPoolV2` and can be used for Transaction building
+const msgFundCommPool = cro.v2.distribution.MsgFundCommunityPoolV2.fromCosmosMsgJSON(msgFundCommunityPoolJson, CroNetwork.Testnet);
+// `msgFundCommPool`is a valid instance of `MsgFundCommunityPoolV2` and can be used for Transaction building
             
 ```  
 
@@ -279,10 +278,10 @@ const cro = CroSDK({ network: sdk.CroNetwork.Testnet });
 const coin1 = new cro.Coin('88888888', Units.BASE);
 const coin2 = new cro.Coin('99999999', Units.BASE);
 const msgSendV2 = new cro.v2.bank.MsgSendV2({
-          fromAddress: 'tcro165tzcrh2yl83g8qeqxueg2g5gzgu57y3fe3kc3',
-          toAddress: 'tcro184lta2lsyu47vwyp2e8zmtca3k5yq85p6c4vp3',
-          amount: [coin1, coin2],
-        });
+    fromAddress: 'tcro165tzcrh2yl83g8qeqxueg2g5gzgu57y3fe3kc3',
+    toAddress: 'tcro184lta2lsyu47vwyp2e8zmtca3k5yq85p6c4vp3',
+     amount: [coin1, coin2],
+});
 ```
 
 ### 2.1 List of new `V2` methods
