@@ -1,6 +1,6 @@
 import { expect } from 'chai';
 import Big from 'big.js';
-import { CroSDK, CroNetwork } from '../../../core/cro';
+import { CroSDK } from '../../../core/cro';
 import { fuzzyDescribe } from '../../../test/mocha-fuzzy/suite';
 import { Secp256k1KeyPair } from '../../../keypair/secp256k1';
 import { Bytes } from '../../../utils/bytes/bytes';
@@ -74,18 +74,14 @@ describe('Testing MsgWithdrawValidatorCommission', function () {
         it('should throw Error if the JSON is not a MsgWithdrawValidatorCommission', function () {
             const json =
                 '{ "@type": "/cosmos.bank.v1beta1.MsgCreateValidator", "amount": [{ "denom": "basetcro", "amount": "3478499933290496" }], "from_address": "tcro1x07kkkepfj2hl8etlcuqhej7jj6myqrp48y4hg", "to_address": "tcro184lta2lsyu47vwyp2e8zmtca3k5yq85p6c4vp3" }';
-            expect(() =>
-                cro.distribution.MsgWithdrawValidatorCommission.fromCosmosMsgJSON(json, CroNetwork.Testnet),
-            ).to.throw(
+            expect(() => cro.distribution.MsgWithdrawValidatorCommission.fromCosmosMsgJSON(json)).to.throw(
                 'Expected /cosmos.distribution.v1beta1.MsgWithdrawValidatorCommission but got /cosmos.bank.v1beta1.MsgCreateValidator',
             );
         });
 
         it('should throw Error when the `validator_address` field is missing', function () {
             const json = '{"@type":"/cosmos.distribution.v1beta1.MsgWithdrawValidatorCommission"}';
-            expect(() =>
-                cro.distribution.MsgWithdrawValidatorCommission.fromCosmosMsgJSON(json, CroNetwork.Testnet),
-            ).to.throw(
+            expect(() => cro.distribution.MsgWithdrawValidatorCommission.fromCosmosMsgJSON(json)).to.throw(
                 'Expected property `validatorAddress` to be of type `string` but received type `undefined` in object `commissionWithdrawalOptions`',
             );
         });
@@ -96,7 +92,6 @@ describe('Testing MsgWithdrawValidatorCommission', function () {
 
             const MsgWithdrawValidatorCommission = cro.distribution.MsgWithdrawValidatorCommission.fromCosmosMsgJSON(
                 json,
-                CroNetwork.Testnet,
             );
             expect(MsgWithdrawValidatorCommission.validatorAddress).to.eql(
                 'tcrocncl1reyshfdygf7673xm9p8v0xvtd96m6cd6canhu3',

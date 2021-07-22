@@ -8,7 +8,6 @@ import { InitConfigurations, CroSDK } from '../../../core/cro';
 import { validateAddress, AddressType } from '../../../utils/address';
 import { COSMOS_MSG_TYPEURL } from '../../common/constants/typeurl';
 import * as legacyAmino from '../../../cosmos/amino';
-import { Network } from '../../../network/network';
 
 export interface MsgBeginRedelegateRaw {
     '@type': string;
@@ -58,9 +57,9 @@ export const msgBeginRedelegate = function (config: InitConfigurations) {
          * @param {Network} network
          * @returns {MsgBeginRedelegate}
          */
-        public static fromCosmosMsgJSON(msgJsonStr: string, network: Network): MsgBeginRedelegate {
+        public static fromCosmosMsgJSON(msgJsonStr: string): MsgBeginRedelegate {
             const parsedMsg = JSON.parse(msgJsonStr) as MsgBeginRedelegateRaw;
-            const cro = CroSDK({ network });
+            const cro = CroSDK({ network: config.network });
             if (parsedMsg['@type'] !== COSMOS_MSG_TYPEURL.MsgBeginRedelegate) {
                 throw new Error(`Expected ${COSMOS_MSG_TYPEURL.MsgBeginRedelegate} but got ${parsedMsg['@type']}`);
             }

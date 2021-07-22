@@ -7,7 +7,6 @@ import { ICoin } from '../../../../coin/coin';
 import { v2 } from '../../ow.types';
 import { Msg } from '../../../../cosmos/v1beta1/types/msg';
 import { COSMOS_MSG_TYPEURL, typeUrlToMsgClassMapping } from '../../../common/constants/typeurl';
-import { Network } from '../../../../network/network';
 import { validateAddress, AddressType } from '../../../../utils/address';
 import { Amount } from '../../bank/msgsend';
 import * as legacyAmino from '../../../../cosmos/amino';
@@ -61,7 +60,7 @@ export const msgSubmitProposalV2 = function (config: InitConfigurations) {
          * @param {Network} network
          * @returns {MsgSubmitProposal}
          */
-        public static fromCosmosMsgJSON(msgJsonStr: string, network: Network): MsgSubmitProposalV2 {
+        public static fromCosmosMsgJSON(msgJsonStr: string): MsgSubmitProposalV2 {
             const parsedMsg = JSON.parse(msgJsonStr) as MsgSubmitProposalRaw;
             if (parsedMsg['@type'] !== COSMOS_MSG_TYPEURL.MsgSubmitProposal) {
                 throw new Error(`Expected ${COSMOS_MSG_TYPEURL.MsgSubmitProposal} but got ${parsedMsg['@type']}`);
@@ -71,13 +70,12 @@ export const msgSubmitProposalV2 = function (config: InitConfigurations) {
                 throw new Error('Invalid initial_deposit in the Msg.');
             }
 
-            const cro = CroSDK({ network });
+            const cro = CroSDK({ network: config.network });
 
             const jsonContentRaw = parsedMsg.content;
             const contentClassInstance = typeUrlToMsgClassMapping(cro, jsonContentRaw['@type']);
             const nativeContentMsg: IMsgProposalContent = contentClassInstance.fromCosmosMsgJSON(
                 JSON.stringify(jsonContentRaw),
-                network,
             );
 
             return new MsgSubmitProposalV2({

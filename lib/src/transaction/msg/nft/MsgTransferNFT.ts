@@ -7,7 +7,6 @@ import { AddressType, validateAddress } from '../../../utils/address';
 import { CosmosMsg } from '../cosmosMsg';
 import { COSMOS_MSG_TYPEURL } from '../../common/constants/typeurl';
 import * as legacyAmino from '../../../cosmos/amino';
-import { Network } from '../../../network/network';
 
 export const msgTransferNFT = function (config: InitConfigurations) {
     return class MsgTransferNFT implements CosmosMsg {
@@ -75,7 +74,7 @@ export const msgTransferNFT = function (config: InitConfigurations) {
          * @param {Network} network
          * @returns {MsgTransferNFT}
          */
-        public static fromCosmosMsgJSON(msgJsonStr: string, _network: Network): MsgTransferNFT {
+        public static fromCosmosMsgJSON(msgJsonStr: string): MsgTransferNFT {
             const parsedMsg = JSON.parse(msgJsonStr) as MsgTransferNFTRaw;
             if (parsedMsg['@type'] !== COSMOS_MSG_TYPEURL.nft.MsgTransferNFT) {
                 throw new Error(`Expected ${COSMOS_MSG_TYPEURL.nft.MsgTransferNFT} but got ${parsedMsg['@type']}`);

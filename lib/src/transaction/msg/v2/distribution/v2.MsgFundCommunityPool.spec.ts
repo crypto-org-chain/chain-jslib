@@ -2,7 +2,7 @@
 import { expect } from 'chai';
 import Big from 'big.js';
 import { fuzzyDescribe } from '../../../../test/mocha-fuzzy/suite';
-import { CroSDK, CroNetwork } from '../../../../core/cro';
+import { CroSDK } from '../../../../core/cro';
 import { Secp256k1KeyPair } from '../../../../keypair/secp256k1';
 import { Bytes } from '../../../../utils/bytes/bytes';
 import * as legacyAmino from '../../../../cosmos/amino';
@@ -107,7 +107,7 @@ describe('Testing MsgFundCommunityPool', function () {
         it('should throw Error if the JSON is not a MsgFundCommunityPool', function () {
             const json =
                 '{ "@type": "/cosmos.bank.v1beta1.MsgCreateValidator", "amount": [{ "denom": "basetcro", "amount": "3478499933290496" }], "from_address": "tcro1x07kkkepfj2hl8etlcuqhej7jj6myqrp48y4hg", "to_address": "tcro184lta2lsyu47vwyp2e8zmtca3k5yq85p6c4vp3" }';
-            expect(() => cro.v2.distribution.MsgFundCommunityPoolV2.fromCosmosMsgJSON(json, CroNetwork.Testnet)).to.throw(
+            expect(() => cro.v2.distribution.MsgFundCommunityPoolV2.fromCosmosMsgJSON(json)).to.throw(
                 'Expected /cosmos.distribution.v1beta1.MsgFundCommunityPool but got /cosmos.bank.v1beta1.MsgCreateValidator',
             );
         });
@@ -115,14 +115,14 @@ describe('Testing MsgFundCommunityPool', function () {
         it('should throw Error when the `depositor` field is missing', function () {
             const json =
                 '{"@type":"/cosmos.distribution.v1beta1.MsgFundCommunityPool","amount":[{ "denom": "basetcro", "amount": "3478499933290496" }]}';
-            expect(() => cro.v2.distribution.MsgFundCommunityPoolV2.fromCosmosMsgJSON(json, CroNetwork.Testnet)).to.throw(
+            expect(() => cro.v2.distribution.MsgFundCommunityPoolV2.fromCosmosMsgJSON(json)).to.throw(
                 'Expected property `depositor` to be of type `string` but received type `undefined` in object `communityPoolOptions`',
             );
         });
         it('should throw Error when the amount field is missing', function () {
             const json =
                 '{"@type":"/cosmos.distribution.v1beta1.MsgFundCommunityPool","depositor":"tcro165tzcrh2yl83g8qeqxueg2g5gzgu57y3fe3kc3"}';
-            expect(() => cro.v2.distribution.MsgFundCommunityPoolV2.fromCosmosMsgJSON(json, CroNetwork.Testnet)).to.throw(
+            expect(() => cro.v2.distribution.MsgFundCommunityPoolV2.fromCosmosMsgJSON(json)).to.throw(
                 'Invalid amount in the Msg.',
             );
         });
@@ -130,7 +130,7 @@ describe('Testing MsgFundCommunityPool', function () {
             const json =
                 '{"@type":"/cosmos.distribution.v1beta1.MsgFundCommunityPool","amount":[{ "denom": "basetcro", "amount": "3478499933290496" }],"depositor":"tcro165tzcrh2yl83g8qeqxueg2g5gzgu57y3fe3kc3"}';
 
-            const msgFundCommPool = cro.v2.distribution.MsgFundCommunityPoolV2.fromCosmosMsgJSON(json, CroNetwork.Testnet);
+            const msgFundCommPool = cro.v2.distribution.MsgFundCommunityPoolV2.fromCosmosMsgJSON(json);
             expect(msgFundCommPool.depositor).to.eql('tcro165tzcrh2yl83g8qeqxueg2g5gzgu57y3fe3kc3');
             expect(msgFundCommPool.amount[0].toCosmosCoin().amount).to.eql('3478499933290496');
             expect(msgFundCommPool.amount[0].toCosmosCoin().denom).to.eql('basetcro');

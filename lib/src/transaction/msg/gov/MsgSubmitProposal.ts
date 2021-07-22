@@ -9,7 +9,6 @@ import { owMsgSubmitProposalOptions } from '../ow.types';
 import { IMsgProposalContent } from './IMsgProposalContent';
 import { CosmosMsg } from '../cosmosMsg';
 import * as legacyAmino from '../../../cosmos/amino';
-import { Network } from '../../../network/network';
 import { Amount } from '../bank/msgsend';
 
 export const msgSubmitProposal = function (config: InitConfigurations) {
@@ -67,7 +66,7 @@ export const msgSubmitProposal = function (config: InitConfigurations) {
          * @param {Network} network
          * @returns {MsgSubmitProposal}
          */
-        public static fromCosmosMsgJSON(msgJsonStr: string, network: Network): MsgSubmitProposal {
+        public static fromCosmosMsgJSON(msgJsonStr: string): MsgSubmitProposal {
             const parsedMsg = JSON.parse(msgJsonStr) as MsgSubmitProposalRaw;
             if (parsedMsg['@type'] !== COSMOS_MSG_TYPEURL.MsgSubmitProposal) {
                 throw new Error(`Expected ${COSMOS_MSG_TYPEURL.MsgSubmitProposal} but got ${parsedMsg['@type']}`);
@@ -77,13 +76,12 @@ export const msgSubmitProposal = function (config: InitConfigurations) {
                 throw new Error('Invalid initial_deposit in the Msg.');
             }
 
-            const cro = CroSDK({ network });
+            const cro = CroSDK({ network: config.network });
 
             const jsonContentRaw = parsedMsg.content;
             const contentClassInstance = typeUrlToMsgClassMapping(cro, jsonContentRaw['@type']);
             const nativeContentMsg: IMsgProposalContent = contentClassInstance.fromCosmosMsgJSON(
                 JSON.stringify(jsonContentRaw),
-                network,
             );
 
             return new MsgSubmitProposal({

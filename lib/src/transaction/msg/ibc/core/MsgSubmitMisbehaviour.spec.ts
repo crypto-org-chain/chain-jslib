@@ -6,7 +6,7 @@ import { fuzzyDescribe } from '../../../../test/mocha-fuzzy/suite';
 import { Msg } from '../../../../cosmos/v1beta1/types/msg';
 import { Secp256k1KeyPair } from '../../../../keypair/secp256k1';
 import { Bytes } from '../../../../utils/bytes/bytes';
-import { CroSDK, CroNetwork } from '../../../../core/cro';
+import { CroSDK } from '../../../../core/cro';
 import { COSMOS_MSG_TYPEURL } from '../../../common/constants/typeurl';
 
 const cro = CroSDK({
@@ -120,7 +120,7 @@ describe('Testing MsgSubmitMisbehaviour', function () {
         it('should throw Error if the JSON is not a IBC MsgSubmitMisbehaviour', function () {
             const json =
                 '{ "@type": "/cosmos.bank.v1beta1.MsgCreateValidator", "amount": [{ "denom": "basetcro", "amount": "3478499933290496" }], "from_address": "tcro1x07kkkepfj2hl8etlcuqhej7jj6myqrp48y4hg", "to_address": "tcro184lta2lsyu47vwyp2e8zmtca3k5yq85p6c4vp3" }';
-            expect(() => cro.ibc.MsgSubmitMisbehaviour.fromCosmosMsgJSON(json, CroNetwork.Testnet)).to.throw(
+            expect(() => cro.ibc.MsgSubmitMisbehaviour.fromCosmosMsgJSON(json)).to.throw(
                 'Expected /ibc.core.client.v1.MsgSubmitMisbehaviour but got /cosmos.bank.v1beta1.MsgCreateValidator',
             );
         });
@@ -133,7 +133,7 @@ describe('Testing MsgSubmitMisbehaviour', function () {
               }
             `;
 
-            expect(() => cro.ibc.MsgSubmitMisbehaviour.fromCosmosMsgJSON(json, CroNetwork.Testnet)).to.throw(
+            expect(() => cro.ibc.MsgSubmitMisbehaviour.fromCosmosMsgJSON(json)).to.throw(
                 'Provided `signer` does not match network selected',
             );
         });
@@ -145,7 +145,7 @@ describe('Testing MsgSubmitMisbehaviour', function () {
               }
             `;
 
-            expect(() => cro.ibc.MsgSubmitMisbehaviour.fromCosmosMsgJSON(json, CroNetwork.Testnet)).to.throw(
+            expect(() => cro.ibc.MsgSubmitMisbehaviour.fromCosmosMsgJSON(json)).to.throw(
                 'Expected property `clientId` to be of type `string` but received type `undefined` in object `options`',
             );
         });
@@ -159,7 +159,7 @@ describe('Testing MsgSubmitMisbehaviour', function () {
             }
             `;
 
-            expect(() => cro.ibc.MsgSubmitMisbehaviour.fromCosmosMsgJSON(json, CroNetwork.Testnet)).to.throw(
+            expect(() => cro.ibc.MsgSubmitMisbehaviour.fromCosmosMsgJSON(json)).to.throw(
                 'IBC MsgSubmitMisbehaviour does not support `misbehaviour` decoding.',
             );
         });
@@ -171,7 +171,7 @@ describe('Testing MsgSubmitMisbehaviour', function () {
                 }
                 `;
 
-            const MsgSubmitMisbehaviour = cro.ibc.MsgSubmitMisbehaviour.fromCosmosMsgJSON(json, CroNetwork.Testnet);
+            const MsgSubmitMisbehaviour = cro.ibc.MsgSubmitMisbehaviour.fromCosmosMsgJSON(json);
             expect(MsgSubmitMisbehaviour.signer).to.eql('tcro1agr5hwr6gxljf4kpg6fm7l7ehjxtyazg86nef8');
             expect(MsgSubmitMisbehaviour.clientId).to.eql('07-tendermint-33');
             expect(MsgSubmitMisbehaviour.misbehaviour).to.be.null;

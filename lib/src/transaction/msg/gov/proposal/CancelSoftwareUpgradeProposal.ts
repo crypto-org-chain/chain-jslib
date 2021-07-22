@@ -3,7 +3,6 @@ import { cosmos, google } from '../../../../cosmos/v1beta1/codec';
 import { IMsgProposalContent } from '../IMsgProposalContent';
 import { owCancelSoftwareUpgradeProposalOptions } from '../ow.types';
 import { COSMOS_MSG_TYPEURL } from '../../../common/constants/typeurl';
-import { Network } from '../../../../network/network';
 
 export const cancelSoftwareUpgradeProposal = function () {
     return class CancelSoftwareUpgradeProposal implements IMsgProposalContent {
@@ -26,7 +25,7 @@ export const cancelSoftwareUpgradeProposal = function () {
          * @param {Network} network
          * @returns {CancelSoftwareUpgradeProposal}
          */
-        public static fromCosmosMsgJSON(msgJsonStr: string, _network: Network): CancelSoftwareUpgradeProposal {
+        public static fromCosmosMsgJSON(msgJsonStr: string): CancelSoftwareUpgradeProposal {
             const parsedMsg = JSON.parse(msgJsonStr) as CancelSoftwareUpgradeProposalRaw;
             if (parsedMsg['@type'] !== COSMOS_MSG_TYPEURL.upgrade.CancelSoftwareUpgradeProposal) {
                 throw new Error(

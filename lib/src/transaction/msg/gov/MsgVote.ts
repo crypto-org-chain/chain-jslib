@@ -9,7 +9,6 @@ import { COSMOS_MSG_TYPEURL } from '../../common/constants/typeurl';
 import { owMsgVoteOptions } from '../ow.types';
 import { CosmosMsg } from '../cosmosMsg';
 import * as legacyAmino from '../../../cosmos/amino';
-import { Network } from '../../../network/network';
 
 export enum VoteOption {
     VOTE_OPTION_UNSPECIFIED = 0,
@@ -88,7 +87,7 @@ export const msgVote = function (config: InitConfigurations) {
          * @param {Network} network
          * @returns {MsgVote}
          */
-        public static fromCosmosMsgJSON(msgJsonStr: string, _network: Network): MsgVote {
+        public static fromCosmosMsgJSON(msgJsonStr: string): MsgVote {
             const parsedMsg = JSON.parse(msgJsonStr) as MsgVoteRaw;
             if (parsedMsg['@type'] !== COSMOS_MSG_TYPEURL.MsgVote) {
                 throw new Error(`Expected ${COSMOS_MSG_TYPEURL.MsgVote} but got ${parsedMsg['@type']}`);

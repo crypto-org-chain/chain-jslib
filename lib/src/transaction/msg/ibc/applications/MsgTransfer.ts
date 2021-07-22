@@ -9,7 +9,6 @@ import { AddressType, validateAddress, isValidBech32Address } from '../../../../
 import { CosmosMsg } from '../../cosmosMsg';
 import { COSMOS_MSG_TYPEURL } from '../../../common/constants/typeurl';
 import * as legacyAmino from '../../../../cosmos/amino';
-import { Network } from '../../../../network/network';
 
 export const msgTransferIBC = function (config: InitConfigurations) {
     return class MsgTransfer implements CosmosMsg {
@@ -83,9 +82,9 @@ export const msgTransferIBC = function (config: InitConfigurations) {
          * @param {Network} network
          * @returns {MsgTransfer}
          */
-        public static fromCosmosMsgJSON(msgJsonStr: string, network: Network): MsgTransfer {
+        public static fromCosmosMsgJSON(msgJsonStr: string): MsgTransfer {
             const parsedMsg = JSON.parse(msgJsonStr) as IBCMsgTransferRaw;
-            const cro = CroSDK({ network });
+            const cro = CroSDK({ network: config.network });
             if (parsedMsg['@type'] !== COSMOS_MSG_TYPEURL.ibc.MsgTransfer) {
                 throw new Error(`Expected ${COSMOS_MSG_TYPEURL.ibc.MsgTransfer} but got ${parsedMsg['@type']}`);
             }

@@ -180,7 +180,6 @@ describe('Transaction', function () {
                 anyTx.addMessage(
                     cro.bank.MsgSend.fromCosmosMsgJSON(
                         `{ "@type": "/cosmos.bank.v1beta1.MsgSend", "amount": [{ "denom": "basetcro", "amount": "3478499933290496" }], "from_address": "tcro1x07kkkepfj2hl8etlcuqhej7jj6myqrp48y4hg", "to_address": "tcro184lta2lsyu47vwyp2e8zmtca3k5yq85p6c4vp3" }`,
-                        CroNetwork.TestnetCroeseid3,
                     ),
                 );
 
@@ -400,7 +399,6 @@ describe('Transaction', function () {
                 anyTx.addMessage(
                     cro.bank.MsgSend.fromCosmosMsgJSON(
                         `{ "@type": "/cosmos.bank.v1beta1.MsgSend", "amount": [{ "denom": "basetcro", "amount": "3478499933290496" }], "from_address": "tcro1x07kkkepfj2hl8etlcuqhej7jj6myqrp48y4hg", "to_address": "tcro184lta2lsyu47vwyp2e8zmtca3k5yq85p6c4vp3" }`,
-                        CroNetwork.TestnetCroeseid3,
                     ),
                 );
 

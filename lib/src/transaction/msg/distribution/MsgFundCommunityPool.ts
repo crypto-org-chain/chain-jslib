@@ -7,7 +7,6 @@ import { owMsgFundCommunityPoolOptions } from '../ow.types';
 import { COSMOS_MSG_TYPEURL } from '../../common/constants/typeurl';
 import * as legacyAmino from '../../../cosmos/amino';
 import { ICoin } from '../../../coin/coin';
-import { Network } from '../../../network/network';
 
 export const msgFundCommunityPool = function (config: InitConfigurations) {
     return class MsgFundCommunityPool implements CosmosMsg {
@@ -62,9 +61,9 @@ export const msgFundCommunityPool = function (config: InitConfigurations) {
          * @param {Network} network
          * @returns {MsgFundCommunityPool}
          */
-        public static fromCosmosMsgJSON(msgJsonStr: string, network: Network): MsgFundCommunityPool {
+        public static fromCosmosMsgJSON(msgJsonStr: string): MsgFundCommunityPool {
             const parsedMsg = JSON.parse(msgJsonStr) as MsgFundCommunityPoolRaw;
-            const cro = CroSDK({ network });
+            const cro = CroSDK({ network: config.network });
             if (parsedMsg['@type'] !== COSMOS_MSG_TYPEURL.distribution.MsgFundCommunityPool) {
                 throw new Error(
                     `Expected ${COSMOS_MSG_TYPEURL.distribution.MsgFundCommunityPool} but got ${parsedMsg['@type']}`,

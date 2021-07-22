@@ -5,7 +5,6 @@ import { IMsgProposalContent } from '../../../gov/IMsgProposalContent';
 import { ICoin } from '../../../../../coin/coin';
 import { google, cosmos } from '../../../../../cosmos/v1beta1/codec';
 import { COSMOS_MSG_TYPEURL } from '../../../../common/constants/typeurl';
-import { Network } from '../../../../../network/network';
 import { validateAddress, AddressType } from '../../../../../utils/address';
 import { Amount } from '../../../bank/msgsend';
 
@@ -59,7 +58,7 @@ export const communityPoolSpendProposalV2 = function (config: InitConfigurations
          * @param {Network} network
          * @returns {CommunityPoolSpendProposal}
          */
-        public static fromCosmosMsgJSON(msgJsonStr: string, network: Network): CommunityPoolSpendProposalV2 {
+        public static fromCosmosMsgJSON(msgJsonStr: string): CommunityPoolSpendProposalV2 {
             const parsedMsg = JSON.parse(msgJsonStr) as CommunityPoolSpendProposalRaw;
             if (parsedMsg['@type'] !== COSMOS_MSG_TYPEURL.upgrade.CommunityPoolSpendProposal) {
                 throw new Error(
@@ -69,7 +68,7 @@ export const communityPoolSpendProposalV2 = function (config: InitConfigurations
             if (!parsedMsg.amount || parsedMsg.amount.length < 1) {
                 throw new Error('Invalid amount in the Msg.');
             }
-            const cro = CroSDK({ network });
+            const cro = CroSDK({ network: config.network });
 
             return new CommunityPoolSpendProposalV2({
                 description: parsedMsg.description,
