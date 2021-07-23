@@ -196,15 +196,6 @@ export const coinv2 = function (config: InitConfigurations) {
         }
 
         /**
-         * Returns the Big representation of the Coin in base unit
-         * @returns {Big}
-         * @memberof Coin
-         */
-        public toBig(): Big {
-            return this.baseAmount;
-        }
-
-        /**
          * Returns the Cosmos-compatible Coin object representation
          * @returns {CosmosCoin}
          * @memberof Coin

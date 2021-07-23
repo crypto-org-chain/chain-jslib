@@ -3,7 +3,6 @@ import { cosmos, google } from '../../../../cosmos/v1beta1/codec';
 import { IMsgProposalContent } from '../IMsgProposalContent';
 import { owParamChangeProposalOptions } from '../ow.types';
 import { COSMOS_MSG_TYPEURL } from '../../../common/constants/typeurl';
-import { Network } from '../../../../network/network';
 
 export const paramChangeProposal = function () {
     return class ParamChangeProposal implements IMsgProposalContent {
@@ -55,7 +54,7 @@ export const paramChangeProposal = function () {
          * @param {Network} network
          * @returns {ParamChangeProposal}
          */
-        public static fromCosmosMsgJSON(msgJsonStr: string, _network: Network): ParamChangeProposal {
+        public static fromCosmosMsgJSON(msgJsonStr: string): ParamChangeProposal {
             const parsedMsg = JSON.parse(msgJsonStr) as ParamChangeProposalRaw;
             if (parsedMsg['@type'] !== COSMOS_MSG_TYPEURL.upgrade.ParameterChangeProposal) {
                 throw new Error(

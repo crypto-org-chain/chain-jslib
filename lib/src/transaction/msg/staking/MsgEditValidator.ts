@@ -8,7 +8,6 @@ import { validateAddress, AddressType } from '../../../utils/address';
 import { IDescription } from '../../common/interface/IDescription';
 import { COSMOS_MSG_TYPEURL } from '../../common/constants/typeurl';
 import * as legacyAmino from '../../../cosmos/amino';
-import { Network } from '../../../network/network';
 
 export const msgEditValidator = function (config: InitConfigurations) {
     return class MsgEditValidator implements CosmosMsg {
@@ -62,7 +61,7 @@ export const msgEditValidator = function (config: InitConfigurations) {
          * @param {Network} network
          * @returns {MsgEditValidator}
          */
-        public static fromCosmosMsgJSON(msgJsonStr: string, _network: Network): MsgEditValidator {
+        public static fromCosmosMsgJSON(msgJsonStr: string): MsgEditValidator {
             const parsedMsg = JSON.parse(msgJsonStr) as MsgEditValidatorRaw;
             if (parsedMsg['@type'] !== COSMOS_MSG_TYPEURL.MsgEditValidator) {
                 throw new Error(`Expected ${COSMOS_MSG_TYPEURL.MsgEditValidator} but got ${parsedMsg['@type']}`);

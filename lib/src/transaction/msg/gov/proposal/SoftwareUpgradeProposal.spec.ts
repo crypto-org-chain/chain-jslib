@@ -4,7 +4,7 @@ import { expect } from 'chai';
 import Big from 'big.js';
 import Long from 'long';
 import { Network } from '../../../../network/network';
-import { CroSDK, CroNetwork } from '../../../../core/cro';
+import { CroSDK } from '../../../../core/cro';
 import { Units } from '../../../../coin/coin';
 import { fuzzyDescribe } from '../../../../test/mocha-fuzzy/suite';
 import { HDKey } from '../../../../hdkey/hdkey';
@@ -108,7 +108,7 @@ describe('Testing SoftwareUpgradeProposal and its content types', function () {
         it('should throw Error if the JSON is not a SoftwareUpgradeProposal', function () {
             const json =
                 '{ "@type": "/cosmos.bank.v1beta1.MsgCreateValidator", "amount": [{ "denom": "basetcro", "amount": "3478499933290496" }], "from_address": "tcro1x07kkkepfj2hl8etlcuqhej7jj6myqrp48y4hg", "to_address": "tcro184lta2lsyu47vwyp2e8zmtca3k5yq85p6c4vp3" }';
-            expect(() => cro.gov.proposal.SoftwareUpgradeProposal.fromCosmosMsgJSON(json, CroNetwork.Testnet)).to.throw(
+            expect(() => cro.gov.proposal.SoftwareUpgradeProposal.fromCosmosMsgJSON(json)).to.throw(
                 'Expected /cosmos.upgrade.v1beta1.SoftwareUpgradeProposal but got /cosmos.bank.v1beta1.MsgCreateValidator',
             );
         });
@@ -121,10 +121,7 @@ describe('Testing SoftwareUpgradeProposal and its content types', function () {
                     "info": "info",
                     "time": { "nanos": "10000000", "seconds": "12312312" }
                 }}`;
-            const SoftwareUpgradeProposal = cro.gov.proposal.SoftwareUpgradeProposal.fromCosmosMsgJSON(
-                json,
-                CroNetwork.Testnet,
-            );
+            const SoftwareUpgradeProposal = cro.gov.proposal.SoftwareUpgradeProposal.fromCosmosMsgJSON(json);
 
             expect(SoftwareUpgradeProposal.title).to.eql('Text Proposal Title');
 

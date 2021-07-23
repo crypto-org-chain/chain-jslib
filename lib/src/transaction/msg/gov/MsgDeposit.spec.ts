@@ -5,7 +5,7 @@ import Long from 'long';
 
 import { fuzzyDescribe } from '../../../test/mocha-fuzzy/suite';
 import { Units } from '../../../coin/coin';
-import { CroSDK, CroNetwork } from '../../../core/cro';
+import { CroSDK } from '../../../core/cro';
 import { Msg } from '../../../cosmos/v1beta1/types/msg';
 import { Secp256k1KeyPair } from '../../../keypair/secp256k1';
 import { HDKey } from '../../../hdkey/hdkey';
@@ -108,35 +108,31 @@ describe('Testing MsgDeposit', function () {
         it('should throw Error if the JSON is not a MsgDeposit', function () {
             const json =
                 '{ "@type": "/cosmos.bank.v1beta1.MsgCreateValidator", "amount": [{ "denom": "basetcro", "amount": "3478499933290496" }], "from_address": "tcro1x07kkkepfj2hl8etlcuqhej7jj6myqrp48y4hg", "to_address": "tcro184lta2lsyu47vwyp2e8zmtca3k5yq85p6c4vp3" }';
-            expect(() => cro.gov.MsgDeposit.fromCosmosMsgJSON(json, CroNetwork.Testnet)).to.throw(
+            expect(() => cro.gov.MsgDeposit.fromCosmosMsgJSON(json)).to.throw(
                 'Expected /cosmos.gov.v1beta1.MsgDeposit but got /cosmos.bank.v1beta1.MsgCreateValidator',
             );
         });
         it('should throw Error when the `proposal_id` field is missing', function () {
             const json =
                 '{"@type":"/cosmos.gov.v1beta1.MsgDeposit","depositor":"tcro184lta2lsyu47vwyp2e8zmtca3k5yq85p6c4vp3","amount":[{"amount": "1234567890", "denom":"basetcro"}]}';
-            expect(() => cro.gov.MsgDeposit.fromCosmosMsgJSON(json, CroNetwork.Testnet)).to.throw(
-                'Invalid `proposal_id` in JSON.',
-            );
+            expect(() => cro.gov.MsgDeposit.fromCosmosMsgJSON(json)).to.throw('Invalid `proposal_id` in JSON.');
         });
         it('should throw Error when the `depositor` field is missing', function () {
             const json =
                 '{"@type":"/cosmos.gov.v1beta1.MsgDeposit","proposal_id":"1244000","amount":[{"amount": "1234567890", "denom":"basetcro"}]}';
-            expect(() => cro.gov.MsgDeposit.fromCosmosMsgJSON(json, CroNetwork.Testnet)).to.throw(
+            expect(() => cro.gov.MsgDeposit.fromCosmosMsgJSON(json)).to.throw(
                 'Expected property `depositor` to be of type `string` but received type `undefined` in object `options`',
             );
         });
         it('should throw Error when the `amount` field is missing', function () {
             const json =
                 '{"@type":"/cosmos.gov.v1beta1.MsgDeposit","proposal_id":"1244000","depositor":"tcro184lta2lsyu47vwyp2e8zmtca3k5yq85p6c4vp3"}';
-            expect(() => cro.gov.MsgDeposit.fromCosmosMsgJSON(json, CroNetwork.Testnet)).to.throw(
-                'Invalid amount in the Msg.',
-            );
+            expect(() => cro.gov.MsgDeposit.fromCosmosMsgJSON(json)).to.throw('Invalid amount in the Msg.');
         });
         it('should return the MsgDeposit corresponding to the JSON', function () {
             const json =
                 '{"@type":"/cosmos.gov.v1beta1.MsgDeposit","proposal_id":"1244000","depositor":"tcro184lta2lsyu47vwyp2e8zmtca3k5yq85p6c4vp3","amount":[{"amount": "1234567890", "denom":"basetcro"}]}';
-            const MsgDeposit = cro.gov.MsgDeposit.fromCosmosMsgJSON(json, CroNetwork.Testnet);
+            const MsgDeposit = cro.gov.MsgDeposit.fromCosmosMsgJSON(json);
             expect(MsgDeposit.depositor).to.eql('tcro184lta2lsyu47vwyp2e8zmtca3k5yq85p6c4vp3');
             expect((MsgDeposit.proposalId as Big).toString()).to.eql('1244000');
             expect(MsgDeposit.amount.toCosmosCoin().amount).to.eql('1234567890');

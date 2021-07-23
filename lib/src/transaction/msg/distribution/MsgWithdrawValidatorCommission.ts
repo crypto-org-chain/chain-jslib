@@ -7,7 +7,6 @@ import { AddressType, validateAddress } from '../../../utils/address';
 import { owMsgWithdrawValidatorCommissionOptions } from '../ow.types';
 import { COSMOS_MSG_TYPEURL } from '../../common/constants/typeurl';
 import * as legacyAmino from '../../../cosmos/amino';
-import { Network } from '../../../network/network';
 
 export const msgWithdrawValidatorCommission = function (config: InitConfigurations) {
     return class MsgWithdrawValidatorCommission implements CosmosMsg {
@@ -50,7 +49,7 @@ export const msgWithdrawValidatorCommission = function (config: InitConfiguratio
          * @param {Network} network
          * @returns {MsgWithdrawValidatorCommission}
          */
-        public static fromCosmosMsgJSON(msgJsonStr: string, _network: Network): MsgWithdrawValidatorCommission {
+        public static fromCosmosMsgJSON(msgJsonStr: string): MsgWithdrawValidatorCommission {
             const parsedMsg = JSON.parse(msgJsonStr) as MsgWithdrawValidatorCommissionRaw;
             if (parsedMsg['@type'] !== COSMOS_MSG_TYPEURL.MsgWithdrawValidatorCommission) {
                 throw new Error(

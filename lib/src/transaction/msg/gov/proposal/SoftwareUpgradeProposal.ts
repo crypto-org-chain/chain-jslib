@@ -5,7 +5,6 @@ import { cosmos, google } from '../../../../cosmos/v1beta1/codec';
 import { IMsgProposalContent } from '../IMsgProposalContent';
 import { owSoftwareUpgradeProposalOptions } from '../ow.types';
 import { COSMOS_MSG_TYPEURL } from '../../../common/constants/typeurl';
-import { Network } from '../../../../network/network';
 
 export const softwareUpgradeProposal = function () {
     return class SoftwareUpgradeProposal implements IMsgProposalContent {
@@ -32,7 +31,7 @@ export const softwareUpgradeProposal = function () {
          * @param {Network} network
          * @returns {SoftwareUpgradeProposal}
          */
-        public static fromCosmosMsgJSON(msgJsonStr: string, _network: Network): SoftwareUpgradeProposal {
+        public static fromCosmosMsgJSON(msgJsonStr: string): SoftwareUpgradeProposal {
             const parsedMsg = JSON.parse(msgJsonStr) as SoftwareUpgradeProposalRaw;
             if (parsedMsg['@type'] !== COSMOS_MSG_TYPEURL.upgrade.SoftwareUpgradeProposal) {
                 throw new Error(

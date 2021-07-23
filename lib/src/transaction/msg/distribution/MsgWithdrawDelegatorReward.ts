@@ -7,7 +7,6 @@ import { AddressType, validateAddress } from '../../../utils/address';
 import { owMsgWithdrawDelegatorRewardOptions } from '../ow.types';
 import { COSMOS_MSG_TYPEURL } from '../../common/constants/typeurl';
 import * as legacyAmino from '../../../cosmos/amino';
-import { Network } from '../../../network/network';
 
 export const msgWithdrawDelegateReward = function (config: InitConfigurations) {
     return class MsgWithdrawDelegatorReward implements CosmosMsg {
@@ -63,7 +62,7 @@ export const msgWithdrawDelegateReward = function (config: InitConfigurations) {
          * @param {Network} network
          * @returns {MsgWithdrawDelegatorReward}
          */
-        public static fromCosmosMsgJSON(msgJsonStr: string, _network: Network): MsgWithdrawDelegatorReward {
+        public static fromCosmosMsgJSON(msgJsonStr: string): MsgWithdrawDelegatorReward {
             const parsedMsg = JSON.parse(msgJsonStr) as MsgWithdrawDelegatorRewardRaw;
             if (parsedMsg['@type'] !== COSMOS_MSG_TYPEURL.MsgWithdrawDelegatorReward) {
                 throw new Error(

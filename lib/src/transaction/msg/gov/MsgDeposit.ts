@@ -11,7 +11,6 @@ import { COSMOS_MSG_TYPEURL } from '../../common/constants/typeurl';
 import { owMsgDepositOptions } from '../ow.types';
 import * as legacyAmino from '../../../cosmos/amino';
 import { Amount } from '../bank/msgsend';
-import { Network } from '../../../network/network';
 
 export const msgDeposit = function (config: InitConfigurations) {
     return class MsgDeposit implements CosmosMsg {
@@ -70,7 +69,7 @@ export const msgDeposit = function (config: InitConfigurations) {
          * @param {Network} network
          * @returns {MsgDeposit}
          */
-        public static fromCosmosMsgJSON(msgJsonStr: string, network: Network): MsgDeposit {
+        public static fromCosmosMsgJSON(msgJsonStr: string): MsgDeposit {
             const parsedMsg = JSON.parse(msgJsonStr) as MsgDepositRaw;
             if (parsedMsg['@type'] !== COSMOS_MSG_TYPEURL.MsgDeposit) {
                 throw new Error(`Expected ${COSMOS_MSG_TYPEURL.MsgDeposit} but got ${parsedMsg['@type']}`);
@@ -84,7 +83,7 @@ export const msgDeposit = function (config: InitConfigurations) {
                 throw new Error('Invalid amount in the Msg.');
             }
 
-            const cro = CroSDK({ network });
+            const cro = CroSDK({ network: config.network });
 
             return new MsgDeposit({
                 proposalId: new Big(parsedMsg.proposal_id),

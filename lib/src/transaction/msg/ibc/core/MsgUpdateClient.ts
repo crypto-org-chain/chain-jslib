@@ -8,7 +8,6 @@ import { COSMOS_MSG_TYPEURL } from '../../../common/constants/typeurl';
 import { validateAddress, AddressType } from '../../../../utils/address';
 import { owMsgUpdateClientOptions } from '../../ow.types';
 import * as legacyAmino from '../../../../cosmos/amino';
-import { Network } from '../../../../network/network';
 
 export const msgUpdateClientIBC = function (config: InitConfigurations) {
     return class MsgUpdateClient implements CosmosMsg {
@@ -61,7 +60,7 @@ export const msgUpdateClientIBC = function (config: InitConfigurations) {
          * @param {Network} network
          * @returns {MsgUpdateClient}
          */
-        public static fromCosmosMsgJSON(msgJsonStr: string, _network: Network): MsgUpdateClient {
+        public static fromCosmosMsgJSON(msgJsonStr: string): MsgUpdateClient {
             const parsedMsg = JSON.parse(msgJsonStr) as MsgUpdateClientJsonRaw;
             if (parsedMsg['@type'] !== COSMOS_MSG_TYPEURL.ibc.MsgUpdateClient) {
                 throw new Error(`Expected ${COSMOS_MSG_TYPEURL.ibc.MsgUpdateClient} but got ${parsedMsg['@type']}`);

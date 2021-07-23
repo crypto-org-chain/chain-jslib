@@ -12,7 +12,6 @@ import { ICommissionRates } from '../../common/interface/ICommissionRates';
 import { google, cosmos } from '../../../cosmos/v1beta1/codec';
 import { Bytes } from '../../../utils/bytes/bytes';
 import * as legacyAmino from '../../../cosmos/amino';
-import { Network } from '../../../network/network';
 
 export const msgCreateValidator = function (config: InitConfigurations) {
     return class MsgCreateValidator implements CosmosMsg {
@@ -83,7 +82,7 @@ export const msgCreateValidator = function (config: InitConfigurations) {
          * @param {Network} network
          * @returns {MsgCreateValidator}
          */
-        public static fromCosmosMsgJSON(msgJsonStr: string, network: Network): MsgCreateValidator {
+        public static fromCosmosMsgJSON(msgJsonStr: string): MsgCreateValidator {
             const parsedMsg = JSON.parse(msgJsonStr) as MsgCreateValidatorRaw;
             if (parsedMsg['@type'] !== COSMOS_MSG_TYPEURL.MsgCreateValidator) {
                 throw new Error(`Expected ${COSMOS_MSG_TYPEURL.MsgCreateValidator} but got ${parsedMsg['@type']}`);
@@ -114,7 +113,7 @@ export const msgCreateValidator = function (config: InitConfigurations) {
                 ).toBase64String();
             }
 
-            const cro = CroSDK({ network });
+            const cro = CroSDK({ network: config.network });
 
             return new MsgCreateValidator({
                 description: {

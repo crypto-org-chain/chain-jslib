@@ -106,7 +106,7 @@ export class SignableTransactionV2 {
         };
         body.messages.forEach((message) => {
             const msgClassInstance = typeUrlToMsgClassMapping(croSdk, message['@type']);
-            const nativeMsg: CosmosMsg = msgClassInstance.fromCosmosMsgJSON(JSON.stringify(message), this.getNetwork());
+            const nativeMsg: CosmosMsg = msgClassInstance.fromCosmosMsgJSON(JSON.stringify(message));
             txBody.value.messages.push(nativeMsg);
         });
 

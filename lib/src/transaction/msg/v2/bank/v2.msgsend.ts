@@ -8,7 +8,6 @@ import { AddressType, validateAddress } from '../../../../utils/address';
 import { CosmosMsg } from '../../cosmosMsg';
 import { COSMOS_MSG_TYPEURL } from '../../../common/constants/typeurl';
 import * as legacyAmino from '../../../../cosmos/amino';
-import { Network } from '../../../../network/network';
 
 export const msgSendV2 = function (config: InitConfigurations) {
     return class MsgSendV2 implements CosmosMsg {
@@ -40,9 +39,9 @@ export const msgSendV2 = function (config: InitConfigurations) {
          * @param {Network} network
          * @returns {MsgSendV2}
          */
-        public static fromCosmosMsgJSON(msgJsonStr: string, network: Network): MsgSendV2 {
+        public static fromCosmosMsgJSON(msgJsonStr: string): MsgSendV2 {
             const parsedMsg = JSON.parse(msgJsonStr) as MsgSendRaw;
-            const cro = CroSDK({ network });
+            const cro = CroSDK({ network: config.network });
             if (parsedMsg['@type'] !== COSMOS_MSG_TYPEURL.MsgSend) {
                 throw new Error(`Expected ${COSMOS_MSG_TYPEURL.MsgSend} but got ${parsedMsg['@type']}`);
             }

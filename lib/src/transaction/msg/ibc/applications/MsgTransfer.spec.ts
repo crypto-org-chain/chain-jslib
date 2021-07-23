@@ -8,7 +8,7 @@ import { fuzzyDescribe } from '../../../../test/mocha-fuzzy/suite';
 import { Msg } from '../../../../cosmos/v1beta1/types/msg';
 import { Secp256k1KeyPair } from '../../../../keypair/secp256k1';
 import { Bytes } from '../../../../utils/bytes/bytes';
-import { CroSDK, CroNetwork } from '../../../../core/cro';
+import { CroSDK } from '../../../../core/cro';
 import { COSMOS_MSG_TYPEURL } from '../../../common/constants/typeurl';
 
 const cro = CroSDK({
@@ -166,7 +166,7 @@ describe('Testing MsgTransfer', function () {
         it('should throw Error if the JSON is not a IBC MsgTransfer', function () {
             const json =
                 '{ "@type": "/cosmos.bank.v1beta1.MsgCreateValidator", "amount": [{ "denom": "basetcro", "amount": "3478499933290496" }], "from_address": "tcro1x07kkkepfj2hl8etlcuqhej7jj6myqrp48y4hg", "to_address": "tcro184lta2lsyu47vwyp2e8zmtca3k5yq85p6c4vp3" }';
-            expect(() => cro.ibc.MsgTransfer.fromCosmosMsgJSON(json, CroNetwork.Testnet)).to.throw(
+            expect(() => cro.ibc.MsgTransfer.fromCosmosMsgJSON(json)).to.throw(
                 'Expected /ibc.applications.transfer.v1.MsgTransfer but got /cosmos.bank.v1beta1.MsgCreateValidator',
             );
         });
@@ -183,7 +183,7 @@ describe('Testing MsgTransfer', function () {
                 "receiver": "tcro1agr5hwr6gxljf4kpg6fm7l7ehjxtyazg86nef8"
                 }
             `;
-            expect(() => cro.ibc.MsgTransfer.fromCosmosMsgJSON(json, CroNetwork.Testnet)).to.throw(
+            expect(() => cro.ibc.MsgTransfer.fromCosmosMsgJSON(json)).to.throw(
                 'Invalid `timeout_timestamp` in the Msg.',
             );
         });
@@ -201,9 +201,7 @@ describe('Testing MsgTransfer', function () {
                 "timeout_timestamp": "1624612912351977705"
               }
             `;
-            expect(() => cro.ibc.MsgTransfer.fromCosmosMsgJSON(json, CroNetwork.Testnet)).to.throw(
-                'Invalid `token` in the Msg.',
-            );
+            expect(() => cro.ibc.MsgTransfer.fromCosmosMsgJSON(json)).to.throw('Invalid `token` in the Msg.');
         });
         it('should throw when `source_port` is missing', function () {
             const json = `{
@@ -223,7 +221,7 @@ describe('Testing MsgTransfer', function () {
               }
             `;
 
-            expect(() => cro.ibc.MsgTransfer.fromCosmosMsgJSON(json, CroNetwork.Testnet)).to.throw(
+            expect(() => cro.ibc.MsgTransfer.fromCosmosMsgJSON(json)).to.throw(
                 'Expected property `sourcePort` to be of type `string` but received type `undefined` in object `options`',
             );
         });
@@ -244,7 +242,7 @@ describe('Testing MsgTransfer', function () {
                 "timeout_timestamp": "1624612912351977705"
               }`;
 
-            expect(() => cro.ibc.MsgTransfer.fromCosmosMsgJSON(json, CroNetwork.Testnet)).to.throw(
+            expect(() => cro.ibc.MsgTransfer.fromCosmosMsgJSON(json)).to.throw(
                 'Expected property `sourceChannel` to be of type `string` but received type `undefined` in object `options`',
             );
         });
@@ -267,7 +265,7 @@ describe('Testing MsgTransfer', function () {
               }
             `;
 
-            expect(() => cro.ibc.MsgTransfer.fromCosmosMsgJSON(json, CroNetwork.Testnet)).to.throw(
+            expect(() => cro.ibc.MsgTransfer.fromCosmosMsgJSON(json)).to.throw(
                 'Provided `receiver` is not a valid Bech-32 encoded address',
             );
         });
@@ -290,7 +288,7 @@ describe('Testing MsgTransfer', function () {
               }
             `;
 
-            expect(() => cro.ibc.MsgTransfer.fromCosmosMsgJSON(json, CroNetwork.Testnet)).to.throw(
+            expect(() => cro.ibc.MsgTransfer.fromCosmosMsgJSON(json)).to.throw(
                 'Provided `sender` does not match network selected',
             );
         });
@@ -313,7 +311,7 @@ describe('Testing MsgTransfer', function () {
                   }
                 `;
 
-            const MsgTransfer = cro.ibc.MsgTransfer.fromCosmosMsgJSON(json, CroNetwork.Testnet);
+            const MsgTransfer = cro.ibc.MsgTransfer.fromCosmosMsgJSON(json);
             expect(MsgTransfer.sender).to.eql('tcro1agr5hwr6gxljf4kpg6fm7l7ehjxtyazg86nef8');
             expect(MsgTransfer.receiver).to.eql('tcro1agr5hwr6gxljf4kpg6fm7l7ehjxtyazg86nef8');
             expect(MsgTransfer.sourceChannel).to.eql('channel-33');

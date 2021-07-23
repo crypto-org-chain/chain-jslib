@@ -8,7 +8,6 @@ import { COSMOS_MSG_TYPEURL } from '../../../common/constants/typeurl';
 import { validateAddress, AddressType } from '../../../../utils/address';
 import { owMsgSubmitMisbehaviourOptions } from '../../ow.types';
 import * as legacyAmino from '../../../../cosmos/amino';
-import { Network } from '../../../../network/network';
 
 export const msgSubmitMisbehaviourIBC = function (config: InitConfigurations) {
     return class MsgSubmitMisbehaviour implements CosmosMsg {
@@ -61,7 +60,7 @@ export const msgSubmitMisbehaviourIBC = function (config: InitConfigurations) {
          * @param {Network} network
          * @returns {MsgSubmitMisbehaviour}
          */
-        public static fromCosmosMsgJSON(msgJsonStr: string, _network: Network): MsgSubmitMisbehaviour {
+        public static fromCosmosMsgJSON(msgJsonStr: string): MsgSubmitMisbehaviour {
             const parsedMsg = JSON.parse(msgJsonStr) as MsgSubmitMisbehaviourJsonRaw;
             if (parsedMsg['@type'] !== COSMOS_MSG_TYPEURL.ibc.MsgSubmitMisbehaviour) {
                 throw new Error(

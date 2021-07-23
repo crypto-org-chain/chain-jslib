@@ -3,7 +3,7 @@ import { expect } from 'chai';
 
 import Big from 'big.js';
 import { Network } from '../../../../network/network';
-import { CroSDK, CroNetwork } from '../../../../core/cro';
+import { CroSDK } from '../../../../core/cro';
 import { Units } from '../../../../coin/coin';
 import { fuzzyDescribe } from '../../../../test/mocha-fuzzy/suite';
 import { HDKey } from '../../../../hdkey/hdkey';
@@ -98,9 +98,7 @@ describe('Testing CancelSoftwareUpgradeProposal and its content types', function
         it('should throw Error if the JSON is not a CancelSoftwareUpgradeProposal', function () {
             const json =
                 '{ "@type": "/cosmos.bank.v1beta1.MsgCreateValidator", "amount": [{ "denom": "basetcro", "amount": "3478499933290496" }], "from_address": "tcro1x07kkkepfj2hl8etlcuqhej7jj6myqrp48y4hg", "to_address": "tcro184lta2lsyu47vwyp2e8zmtca3k5yq85p6c4vp3" }';
-            expect(() =>
-                cro.gov.proposal.CancelSoftwareUpgradeProposal.fromCosmosMsgJSON(json, CroNetwork.Testnet),
-            ).to.throw(
+            expect(() => cro.gov.proposal.CancelSoftwareUpgradeProposal.fromCosmosMsgJSON(json)).to.throw(
                 'Expected /cosmos.upgrade.v1beta1.CancelSoftwareUpgradeProposal but got /cosmos.bank.v1beta1.MsgCreateValidator',
             );
         });
@@ -110,7 +108,6 @@ describe('Testing CancelSoftwareUpgradeProposal and its content types', function
                 '{"@type":"/cosmos.upgrade.v1beta1.CancelSoftwareUpgradeProposal","title": "Text Proposal Title", "description": "Lorem Ipsum ... Checking text proposal"}';
             const CancelSoftwareUpgradeProposal = cro.gov.proposal.CancelSoftwareUpgradeProposal.fromCosmosMsgJSON(
                 json,
-                CroNetwork.Testnet,
             );
 
             expect(CancelSoftwareUpgradeProposal.title).to.eql('Text Proposal Title');

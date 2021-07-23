@@ -7,7 +7,6 @@ import { AddressType, validateAddress } from '../../../utils/address';
 import { owMsgSetWithdrawAddressOptions } from '../ow.types';
 import { COSMOS_MSG_TYPEURL } from '../../common/constants/typeurl';
 import * as legacyAmino from '../../../cosmos/amino';
-import { Network } from '../../../network/network';
 
 export const msgSetWithdrawAddress = function (config: InitConfigurations) {
     return class MsgSetWithdrawAddress implements CosmosMsg {
@@ -63,7 +62,7 @@ export const msgSetWithdrawAddress = function (config: InitConfigurations) {
          * @param {Network} network
          * @returns {MsgSetWithdrawAddress}
          */
-        public static fromCosmosMsgJSON(msgJsonStr: string, _network: Network): MsgSetWithdrawAddress {
+        public static fromCosmosMsgJSON(msgJsonStr: string): MsgSetWithdrawAddress {
             const parsedMsg = JSON.parse(msgJsonStr) as MsgSetWithdrawAddressRaw;
             if (parsedMsg['@type'] !== COSMOS_MSG_TYPEURL.distribution.MsgSetWithdrawAddress) {
                 throw new Error(

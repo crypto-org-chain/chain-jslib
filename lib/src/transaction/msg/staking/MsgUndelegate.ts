@@ -8,7 +8,6 @@ import { validateAddress, AddressType } from '../../../utils/address';
 import { ICoin } from '../../../coin/coin';
 import { COSMOS_MSG_TYPEURL } from '../../common/constants/typeurl';
 import * as legacyAmino from '../../../cosmos/amino';
-import { Network } from '../../../network/network';
 
 export interface MsgUndelegateRaw {
     '@type': string;
@@ -84,9 +83,9 @@ export const msgUndelegate = function (config: InitConfigurations) {
          * @param {Network} network
          * @returns {MsgUndelegate}
          */
-        public static fromCosmosMsgJSON(msgJsonStr: string, network: Network): MsgUndelegate {
+        public static fromCosmosMsgJSON(msgJsonStr: string): MsgUndelegate {
             const parsedMsg = JSON.parse(msgJsonStr) as MsgUndelegateRaw;
-            const cro = CroSDK({ network });
+            const cro = CroSDK({ network: config.network });
             if (parsedMsg['@type'] !== COSMOS_MSG_TYPEURL.MsgUndelegate) {
                 throw new Error(`Expected ${COSMOS_MSG_TYPEURL.MsgUndelegate} but got ${parsedMsg['@type']}`);
             }

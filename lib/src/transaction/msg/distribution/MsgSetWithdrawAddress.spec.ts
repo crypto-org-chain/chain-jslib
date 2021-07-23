@@ -2,7 +2,7 @@
 import { expect } from 'chai';
 import Big from 'big.js';
 import { fuzzyDescribe } from '../../../test/mocha-fuzzy/suite';
-import { CroSDK, CroNetwork } from '../../../core/cro';
+import { CroSDK } from '../../../core/cro';
 import { Secp256k1KeyPair } from '../../../keypair/secp256k1';
 import { Bytes } from '../../../utils/bytes/bytes';
 import * as legacyAmino from '../../../cosmos/amino';
@@ -114,7 +114,7 @@ describe('Testing MsgSetWithdrawAddress', function () {
         it('should throw Error if the JSON is not a MsgSetWithdrawAddress', function () {
             const json =
                 '{ "@type": "/cosmos.bank.v1beta1.MsgCreateValidator", "amount": [{ "denom": "basetcro", "amount": "3478499933290496" }], "from_address": "tcro1x07kkkepfj2hl8etlcuqhej7jj6myqrp48y4hg", "to_address": "tcro184lta2lsyu47vwyp2e8zmtca3k5yq85p6c4vp3" }';
-            expect(() => cro.distribution.MsgSetWithdrawAddress.fromCosmosMsgJSON(json, CroNetwork.Testnet)).to.throw(
+            expect(() => cro.distribution.MsgSetWithdrawAddress.fromCosmosMsgJSON(json)).to.throw(
                 'Expected /cosmos.distribution.v1beta1.MsgSetWithdrawAddress but got /cosmos.bank.v1beta1.MsgCreateValidator',
             );
         });
@@ -122,14 +122,14 @@ describe('Testing MsgSetWithdrawAddress', function () {
         it('should throw Error when the `withdraw_address` field is missing', function () {
             const json =
                 '{"@type":"/cosmos.distribution.v1beta1.MsgSetWithdrawAddress","delegator_address":"tcro165tzcrh2yl83g8qeqxueg2g5gzgu57y3fe3kc3"}';
-            expect(() => cro.distribution.MsgSetWithdrawAddress.fromCosmosMsgJSON(json, CroNetwork.Testnet)).to.throw(
+            expect(() => cro.distribution.MsgSetWithdrawAddress.fromCosmosMsgJSON(json)).to.throw(
                 'Expected property `withdrawAddress` to be of type `string` but received type `undefined` in object `setWithdrawOptions`',
             );
         });
         it('should throw Error when the `delegator_address` field is missing', function () {
             const json =
                 '{"@type":"/cosmos.distribution.v1beta1.MsgSetWithdrawAddress","withdraw_address":"tcro165tzcrh2yl83g8qeqxueg2g5gzgu57y3fe3kc3"}';
-            expect(() => cro.distribution.MsgSetWithdrawAddress.fromCosmosMsgJSON(json, CroNetwork.Testnet)).to.throw(
+            expect(() => cro.distribution.MsgSetWithdrawAddress.fromCosmosMsgJSON(json)).to.throw(
                 'Expected property `delegatorAddress` to be of type `string` but received type `undefined` in object `setWithdrawOptions`',
             );
         });
@@ -137,7 +137,7 @@ describe('Testing MsgSetWithdrawAddress', function () {
             const json =
                 '{"@type":"/cosmos.distribution.v1beta1.MsgSetWithdrawAddress","delegator_address":"tcro165tzcrh2yl83g8qeqxueg2g5gzgu57y3fe3kc3","withdraw_address":"tcro165tzcrh2yl83g8qeqxueg2g5gzgu57y3fe3kc3"}';
 
-            const MsgSetWithdrawAddress = cro.distribution.MsgSetWithdrawAddress.fromCosmosMsgJSON(json, CroNetwork.Testnet);
+            const MsgSetWithdrawAddress = cro.distribution.MsgSetWithdrawAddress.fromCosmosMsgJSON(json);
             expect(MsgSetWithdrawAddress.withdrawAddress).to.eql('tcro165tzcrh2yl83g8qeqxueg2g5gzgu57y3fe3kc3');
             expect(MsgSetWithdrawAddress.delegatorAddress).to.eql('tcro165tzcrh2yl83g8qeqxueg2g5gzgu57y3fe3kc3');
         });
