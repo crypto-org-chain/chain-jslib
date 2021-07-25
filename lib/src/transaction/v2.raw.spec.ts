@@ -376,7 +376,9 @@ describe('Transaction', function () {
                 anyTx.txBody = undefined;
                 expect(() => {
                     anyTx.toCosmosJSON();
-                }).to.throw('Error converting RawTransaction to Cosmos compatible JSON.');
+                }).to.throw(
+                    "Error converting RawTransaction to Cosmos compatible JSON: TypeError: Cannot read property 'value' of undefined",
+                );
             });
 
             it('should output correct `signer` array', function () {
