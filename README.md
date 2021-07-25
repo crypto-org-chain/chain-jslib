@@ -195,11 +195,17 @@ const exportUnsignedCosmosJSON = rawTx.toCosmosJSON();
 const exportSignerInfoToJSON = rawTx.exportSignerAccounts();
 
 /* Machine 2: */
-const signerAccountsOptional: SignerAccount[] = [{
+const signerAccountsOptional: SignerAccount[] = cro
+  .v2
+  .RawTransactionV2
+  .parseSignerAccounts(exportSignerInfoToJSON);
+/* SignerAccount[] has the structure of
+[{
     publicKey: <Bytes>;
     accountNumber: new Big(0);
     signMode: SIGN_MODE.DIRECT;
 }];
+*/
 
 const signableTx = new SignableTransactionV2({
     rawTxJSON: exportUnsignedCosmosJSON,
