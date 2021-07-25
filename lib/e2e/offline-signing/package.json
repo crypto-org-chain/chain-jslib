@@ -1,0 +1,8 @@
+{
+  "dependencies": {
+    "@types/json-stable-stringify": "1.0.33",
+    "@types/temp": "0.9.1",
+    "json-stable-stringify": "1.0.1",
+    "temp": "0.9.4"
+  }
+}

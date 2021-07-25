@@ -8,12 +8,12 @@ import {
 import * as snakecaseKeys from 'snakecase-keys';
 import { cosmos } from '../cosmos/v1beta1/codec';
 import { AuthInfoV2, TxBody } from '../cosmos/v1beta1/types/tx';
-import { owRawTransactionSigner, owTimeoutHeight } from './ow.types';
+import { owRawSignerAccount, owRawTransactionSigner, owTimeoutHeight } from './ow.types';
 import { Bytes } from '../utils/bytes/bytes';
 import { isValidSepc256k1PublicKey } from '../utils/secp256k1';
 import { isBigInteger } from '../utils/big';
 import { Network } from '../network/network';
-import { SignerAccount, SIGN_MODE } from './types';
+import { getSignModeFromValue, SignerAccount, SIGN_MODE } from './types';
 import { cloneDeep } from '../utils/clone';
 import { CosmosMsg, owCosmosMsg } from './msg/cosmosMsg';
 import { InitConfigurations } from '../core/cro';
@@ -23,6 +23,7 @@ import { getAuthInfoJson, getTxBodyJson, typeUrlToCosmosTransformer } from '../u
 import { protoEncodeAuthInfoV2 } from '../utils/protoBuf/encoder/v2.authInfo';
 import { protoEncodeTxBody } from '../utils/protoBuf/encoder/txBodyMessage';
 import { SignableTransactionV2 } from './v2.signable';
+import utils from '../utils';
 
 export const rawTransactionV2 = function (config: InitConfigurations) {
     return class RawTransactionV2 {
@@ -60,7 +61,7 @@ export const rawTransactionV2 = function (config: InitConfigurations) {
          * @param {CosmosMsg} message one of the supported Cosmos message
          * @returns {RawTransactionV2}
          * @throws {Error} when message is invalid
-         * @memberof Transaction
+         * @memberof RawTransactionV2
          */
         public addMessage(message: CosmosMsg): RawTransactionV2 {
             ow(message, 'message', owCosmosMsg());
@@ -75,7 +76,7 @@ export const rawTransactionV2 = function (config: InitConfigurations) {
          * @param {CosmosMsg} message one of the supported Cosmos message
          * @returns {RawTransactionV2}
          * @throws {Error} when message is invalid
-         * @memberof Transaction
+         * @memberof RawTransactionV2
          */
         public appendMessage(message: CosmosMsg): RawTransactionV2 {
             return this.addMessage(message);
@@ -83,7 +84,7 @@ export const rawTransactionV2 = function (config: InitConfigurations) {
 
         /**
          * Returns the Chain-maind encoded JSON
-         * @memberof RawTransaction
+         * @memberof RawTransactionV2
          * @returns {unknown} Tx-Encoded JSON
          */
         public toCosmosJSON(): string {
@@ -112,14 +113,14 @@ export const rawTransactionV2 = function (config: InitConfigurations) {
 
                 return cosmosApiFormatTxJson;
             } catch (error) {
-                throw new Error('Error converting RawTransaction to Cosmos compatible JSON.');
+                throw new Error(`error converting RawTransaction to Cosmos compatible JSON: ${error.toString()}`);
             }
         }
 
         /**
          * Export the added SignerAccounts in JSON.
          * The result of this function can be imported into `SignableTransactionV2` instance
-         * @memberof RawTransaction
+         * @memberof RawTransactionV2
          */
         public exportSignerAccounts(): string {
             return JSON.stringify(
@@ -131,6 +132,47 @@ export const rawTransactionV2 = function (config: InitConfigurations) {
                     };
                 }),
             );
+        }
+
+        /**
+         * Parse SignerAccounts in JSON.
+         * The result of this function can be used to instantiate `SignableTransactionV2`
+         * @static
+         * @return {SignerAccount[]}
+         * @memberof RawTransactionV2
+         */
+        public static parseSignerAccounts(rawSignerAccounts: string): SignerAccount[] {
+            ow(rawSignerAccounts, 'rawSignerAccounts', ow.string);
+
+            let signerAccounts: RawSignerAccount[];
+            try {
+                signerAccounts = JSON.parse(rawSignerAccounts);
+            } catch (err) {
+                throw new Error(`Invalid raw signer accounts: ${err.toString()}`);
+            }
+
+            ow(signerAccounts, 'rawSignerAccounts', ow.array.ofType(owRawSignerAccount()));
+
+            return signerAccounts.map((account, i) => {
+                let publicKey: Bytes;
+                try {
+                    publicKey = Bytes.fromBase64String(account.publicKey);
+                } catch (err) {
+                    throw new Error(`Invalid signer account ${i}: invalid public key ${err.toString()}`);
+                }
+
+                const parsedSignMode = parseInt(account.signMode, 10);
+                const signMode = getSignModeFromValue(parsedSignMode);
+                if (!signMode) {
+                    throw new Error(`Invalid signer account ${i}: invalid sign mode ${account.signMode}`);
+                }
+
+                return {
+                    publicKey,
+                    accountNumber: new utils.Big(account.accountNumber),
+                    signMode,
+                };
+            });
         }
 
         /**
@@ -168,16 +210,30 @@ export const rawTransactionV2 = function (config: InitConfigurations) {
         }
 
         /**
-         * Sets a `single` only fee amount to the raw tx
-         * @param {ICoin} feeAmount amount to be set to the raw tx body
-         * @returns {RawTransactionV2}
+         * Set fee to the raw tx
+         * @param {ICoin} fee to be set to the raw tx body
+         * @returns {RawTransaction}
          * @throws {Error} when fee set is invalid
          * @memberof Transaction
          * @deprecated
          */
-        public setFee(feeAmount: ICoin): RawTransactionV2 {
-            ow(feeAmount, 'fee', owCoin());
-            this.authInfo.fee.amount = [feeAmount];
+        public setFee(fee: ICoin): RawTransactionV2 {
+            ow(fee, 'fee', owCoin());
+            this.authInfo.fee.amount = [fee];
+
+            return this;
+        }
+
+        /**
+         * Sets the fees to the raw tx
+         * @param {ICoin[]} list of fee to be set to the raw tx body
+         * @returns {RawTransactionV2}
+         * @throws {Error} when fee set is invalid
+         * @memberof Transaction
+         */
+        public setFees(fees: ICoin[]): RawTransactionV2 {
+            ow(fees, 'fees', ow.array.ofType(owCoin()));
+            this.authInfo.fee.amount = fees;
 
             return this;
         }
@@ -338,4 +394,10 @@ export type TransactionSigner = {
     accountNumber: Big;
     accountSequence: Big;
     signMode?: SIGN_MODE;
+};
+
+type RawSignerAccount = {
+    publicKey: string;
+    accountNumber: string;
+    signMode: string;
 };
