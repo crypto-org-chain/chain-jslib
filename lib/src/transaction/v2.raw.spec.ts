@@ -377,7 +377,7 @@ describe('Transaction', function () {
                 expect(() => {
                     anyTx.toCosmosJSON();
                 }).to.throw(
-                    "Error converting RawTransaction to Cosmos compatible JSON: TypeError: Cannot read property 'value' of undefined",
+                    "error converting RawTransaction to Cosmos compatible JSON: TypeError: Cannot read property 'value' of undefined",
                 );
             });
 

@@ -6,8 +6,8 @@ import axios from 'axios';
 import { exec as childProcessExec } from 'child_process';
 import { inspect, promisify } from 'util';
 import { writeFileSync, existsSync, mkdirSync } from 'fs';
-
 import { detailedDiff } from 'deep-object-diff';
+
 import { TxDecoder } from '../../src/utils/txDecoder';
 import { Bytes } from '../../src/utils/bytes/bytes';
 
