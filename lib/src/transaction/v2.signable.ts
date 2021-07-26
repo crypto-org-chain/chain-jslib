@@ -12,7 +12,6 @@ import {
     TxBody as NativeTxbody,
 } from '@cosmjs/proto-signing/build/codec/cosmos/tx/v1beta1/tx';
 import * as snakecaseKeys from 'snakecase-keys';
-import _ from 'lodash';
 import { cosmos } from '../cosmos/v1beta1/codec';
 import { omitDefaults } from '../cosmos/v1beta1/adr27';
 import { SignerInfo, TxBody, TxRaw, AuthInfoV2 } from '../cosmos/v1beta1/types/tx';
