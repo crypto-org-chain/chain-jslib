@@ -4281,6 +4281,63 @@ export namespace cosmos {
                     ): cosmos.crypto.multisig.v1beta1.CompactBitArray;
                 }
             }
+
+            /** Properties of a LegacyAminoPubKey. */
+            interface ILegacyAminoPubKey {
+                /** LegacyAminoPubKey threshold */
+                threshold?: number | null;
+
+                /** LegacyAminoPubKey publicKeys */
+                publicKeys?: google.protobuf.IAny[] | null;
+            }
+
+            /** Represents a LegacyAminoPubKey. */
+            class LegacyAminoPubKey implements ILegacyAminoPubKey {
+                /**
+                 * Constructs a new LegacyAminoPubKey.
+                 * @param [p] Properties to set
+                 */
+                constructor(p?: cosmos.crypto.multisig.ILegacyAminoPubKey);
+
+                /** LegacyAminoPubKey threshold. */
+                public threshold: number;
+
+                /** LegacyAminoPubKey publicKeys. */
+                public publicKeys: google.protobuf.IAny[];
+
+                /**
+                 * Creates a new LegacyAminoPubKey instance using the specified properties.
+                 * @param [properties] Properties to set
+                 * @returns LegacyAminoPubKey instance
+                 */
+                public static create(
+                    properties?: cosmos.crypto.multisig.ILegacyAminoPubKey,
+                ): cosmos.crypto.multisig.LegacyAminoPubKey;
+
+                /**
+                 * Encodes the specified LegacyAminoPubKey message. Does not implicitly {@link cosmos.crypto.multisig.LegacyAminoPubKey.verify|verify} messages.
+                 * @param m LegacyAminoPubKey message or plain object to encode
+                 * @param [w] Writer to encode to
+                 * @returns Writer
+                 */
+                public static encode(
+                    m: cosmos.crypto.multisig.ILegacyAminoPubKey,
+                    w?: $protobuf.Writer,
+                ): $protobuf.Writer;
+
+                /**
+                 * Decodes a LegacyAminoPubKey message from the specified reader or buffer.
+                 * @param r Reader or buffer to decode from
+                 * @param [l] Message length if known beforehand
+                 * @returns LegacyAminoPubKey
+                 * @throws {Error} If the payload is not a reader or valid buffer
+                 * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                 */
+                public static decode(
+                    r: $protobuf.Reader | Uint8Array,
+                    l?: number,
+                ): cosmos.crypto.multisig.LegacyAminoPubKey;
+            }
         }
 
         /** Namespace secp256k1. */

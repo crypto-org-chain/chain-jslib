@@ -36,6 +36,7 @@ mkdir -p "$GENERATED_DIR"
   "$COSMOS_PROTO_DIR/slashing/v1beta1/tx.proto" \
   "$COSMOS_PROTO_DIR/base/v1beta1/coin.proto" \
   "$COSMOS_PROTO_DIR/crypto/multisig/v1beta1/multisig.proto" \
+  "$COSMOS_PROTO_DIR/crypto/multisig/keys.proto" \
   "$COSMOS_PROTO_DIR/crypto/secp256k1/keys.proto" \
   "$COSMOS_PROTO_DIR/crypto/ed25519/keys.proto" \
   "$COSMOS_PROTO_DIR/tx/v1beta1/tx.proto" \
