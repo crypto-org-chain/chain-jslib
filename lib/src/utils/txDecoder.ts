@@ -141,6 +141,23 @@ function handleSpecialParams(decodedParams: any, typeUrl: string) {
         clonedDecodedParams.pubkey = decodeAnyType(decodedParams.pubkey.type_url, decodedParams.pubkey.value);
         clonedDecodedParams.pubkey.key = Bytes.fromUint8Array(clonedDecodedParams.pubkey.key).toBase64String();
 
+        // Check if the `description` object values are correctly stringified.
+        if (typeof decodedParams.description.moniker === 'undefined') {
+            clonedDecodedParams.description.moniker = '';
+        }
+        if (typeof decodedParams.description.identity === 'undefined') {
+            clonedDecodedParams.description.identity = '';
+        }
+        if (typeof decodedParams.description.website === 'undefined') {
+            clonedDecodedParams.description.website = '';
+        }
+        if (typeof decodedParams.description.securityContact === 'undefined') {
+            clonedDecodedParams.description.securityContact = '';
+        }
+        if (typeof decodedParams.description.details === 'undefined') {
+            clonedDecodedParams.description.details = '';
+        }
+
         // Check if the `commission` object values are represented already in `float`
         /*eslint-disable */
         for (const key in decodedParams.commission) {
@@ -162,6 +179,37 @@ function handleSpecialParams(decodedParams: any, typeUrl: string) {
                 clonedDecodedParams.commission[key] = rateToBig.toFixed(18);
             }
         }
+    }
+
+    // handle `MsgEditValidator`
+    if (typeUrl === COSMOS_MSG_TYPEURL.MsgEditValidator) {
+        if (typeof decodedParams.commission_rate === "undefined") {
+            clonedDecodedParams.commission_rate = null;
+        } else {
+            const rateString = decodedParams.commission_rate;
+            const splitRateByDecimal = rateString.split('.');
+
+            if (!splitRateByDecimal) {
+                clonedDecodedParams.commission_rate = null;
+            }
+
+            // if `string` has `NO` decimal place
+            if (splitRateByDecimal.length === 1) {
+                const rateToBig = new Big(rateString);
+                clonedDecodedParams.commission_rate = rateToBig.div(new Big(1e18)).toFixed(18);
+            }
+            // If `string` has `ONE` decimal place
+            else if (splitRateByDecimal.length === 2) {
+                const rateToBig = new Big(rateString);
+                clonedDecodedParams.commission_rate = rateToBig.toFixed(18);
+            }
+        }
+
+        // use `null` in case min_self_delegation is undefined
+        if (typeof decodedParams.min_self_delegation === "undefined") {
+            clonedDecodedParams.min_self_delegation = null;
+        }
+
     }
     /* eslint-enable */
     return clonedDecodedParams;
