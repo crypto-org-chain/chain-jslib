@@ -1,4 +1,4 @@
-/* eslint-disable no-console */
+/* eslint-disable*/
 import 'mocha';
 import { expect } from 'chai';
 import Big from 'big.js';
