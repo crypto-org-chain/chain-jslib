@@ -164,10 +164,6 @@ function handleSpecialParams(decodedParams: any, typeUrl: string) {
             const rateString = decodedParams.commission[key];
             const splitRateByDecimal = rateString.split('.');
 
-            if (!splitRateByDecimal) {
-                continue;
-            }
-
             // if `string` has `NO` decimal place
             if (splitRateByDecimal.length === 1) {
                 const rateToBig = new Big(rateString);
