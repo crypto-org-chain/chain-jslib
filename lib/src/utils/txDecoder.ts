@@ -183,31 +183,31 @@ function handleSpecialParams(decodedParams: any, typeUrl: string) {
 
     // handle `MsgEditValidator`
     if (typeUrl === COSMOS_MSG_TYPEURL.MsgEditValidator) {
-        if (typeof decodedParams.commission_rate === "undefined") {
-            clonedDecodedParams.commission_rate = null;
+        if (typeof decodedParams.commissionRate === "undefined") {
+            clonedDecodedParams.commissionRate = null;
         } else {
-            const rateString = decodedParams.commission_rate;
+            const rateString = decodedParams.commissionRate;
             const splitRateByDecimal = rateString.split('.');
 
             if (!splitRateByDecimal) {
-                clonedDecodedParams.commission_rate = null;
+                clonedDecodedParams.commissionRate = null;
             }
 
             // if `string` has `NO` decimal place
             if (splitRateByDecimal.length === 1) {
                 const rateToBig = new Big(rateString);
-                clonedDecodedParams.commission_rate = rateToBig.div(new Big(1e18)).toFixed(18);
+                clonedDecodedParams.commissionRate = rateToBig.div(new Big(1e18)).toFixed(18);
             }
             // If `string` has `ONE` decimal place
             else if (splitRateByDecimal.length === 2) {
                 const rateToBig = new Big(rateString);
-                clonedDecodedParams.commission_rate = rateToBig.toFixed(18);
+                clonedDecodedParams.commissionRate = rateToBig.toFixed(18);
             }
         }
 
-        // use `null` in case min_self_delegation is undefined
-        if (typeof decodedParams.min_self_delegation === "undefined") {
-            clonedDecodedParams.min_self_delegation = null;
+        // use `null` in case minSelfDelegation is undefined
+        if (typeof decodedParams.minSelfDelegation === "undefined") {
+            clonedDecodedParams.minSelfDelegation = null;
         }
 
     }
