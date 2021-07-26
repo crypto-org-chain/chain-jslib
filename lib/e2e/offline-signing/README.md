@@ -1,4 +1,4 @@
-# Offling Signing End-to-End Test
+# Offline Signing End-to-End Test
 
 This test will compare the offline signing results of chain-maind and the JSlib.
 
