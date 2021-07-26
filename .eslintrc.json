@@ -15,7 +15,7 @@
         // https://github.com/benmosher/eslint-plugin-import/issues/1615
         "import/resolver": {
             "node": {
-                "extensions": [".js", ".ts"]
+                "extensions": [".js", ".ts", ".json"]
             }
         }
     },
