@@ -3,9 +3,11 @@ import { toBase64, fromBase64 } from '@cosmjs/encoding';
 import { AuthInfo, TxBody, SignerInfo, Tx } from '@cosmjs/proto-signing/build/codec/cosmos/tx/v1beta1/tx';
 import * as snakecaseKeys from 'snakecase-keys';
 import Long from 'long';
+import Big from 'big.js';
 import { cosmos } from '../cosmos/v1beta1/codec/generated/codecimpl';
 import { Bytes } from './bytes/bytes';
 import { typeUrlMappings } from '../cosmos/v1beta1/types/typeurls';
+import { COSMOS_MSG_TYPEURL } from '../transaction/common/constants/typeurl';
 
 const cosmJSRegistry = new Registry(Object.entries(typeUrlMappings));
 
@@ -123,16 +125,45 @@ function decodeAnyType(typeUrl: string, value: Uint8Array) {
     }
     const decodedParams = cosmJSRegistry.decode({ typeUrl, value });
     handleCustomTypes(decodedParams);
-    const finalDecodedParams = handleSpecialParams(decodedParams);
+    const finalDecodedParams = handleSpecialParams(decodedParams, typeUrl);
     return { typeUrl, ...finalDecodedParams };
 }
 
-function handleSpecialParams(decodedParams: any) {
+function handleSpecialParams(decodedParams: any, typeUrl: string) {
     // handle all `MsgSubmitProposal` related messages
     const clonedDecodedParams = { ...decodedParams };
     if (decodedParams.content && Object.keys(decodedParams.content).length !== 0) {
         clonedDecodedParams.content = decodeAnyType(decodedParams.content.type_url, decodedParams.content.value);
     }
+
+    // handle `MsgCreateValidator`
+    if (typeUrl === COSMOS_MSG_TYPEURL.MsgCreateValidator) {
+        clonedDecodedParams.pubkey = decodeAnyType(decodedParams.pubkey.type_url, decodedParams.pubkey.value);
+        clonedDecodedParams.pubkey.key = Bytes.fromUint8Array(clonedDecodedParams.pubkey.key).toBase64String();
+
+        // Check if the `commission` object values are represented already in `float`
+        /*eslint-disable */
+        for (const key in decodedParams.commission) {
+            const rateString = decodedParams.commission[key];
+            const splitRateByDecimal = rateString.split('.');
+
+            if (!splitRateByDecimal) {
+                continue;
+            }
+
+            // if `string` has `NO` decimal place
+            if (splitRateByDecimal.length === 1) {
+                const rateToBig = new Big(rateString);
+                clonedDecodedParams.commission[key] = rateToBig.div(new Big(1e18)).toFixed(18);
+            }
+            // If `string` has `ONE` decimal place
+            else if (splitRateByDecimal.length === 2) {
+                const rateToBig = new Big(rateString);
+                clonedDecodedParams.commission[key] = rateToBig.toFixed(18);
+            }
+        }
+    }
+    /* eslint-enable */
     return clonedDecodedParams;
 }
 
