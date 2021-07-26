@@ -142,11 +142,41 @@ describe('Testing MsgBeginRedelegate', function () {
             amount: coin,
         };
 
+        const params4 = {
+            delegatorAddress: 'cro1pndm4ywdf4qtmupa0fqe75krmqed2znjyj6x8f',
+            validatorDstAddress: 'tcrocncl1j7pej8kplem4wt50p4hfvndhuw5jprxxxtenvr',
+            validatorSrcAddress: 'tcrocncl16mmzexp3zqfpgqtnn927m5ph560qgxrs52a3wx',
+            amount: coin,
+        };
+
+        const params5 = {
+            delegatorAddress: 'tcro1j7pej8kplem4wt50p4hfvndhuw5jprxxn5625q',
+            validatorDstAddress: 'crocncl1pndm4ywdf4qtmupa0fqe75krmqed2znj8le094',
+            validatorSrcAddress: 'tcrocncl16mmzexp3zqfpgqtnn927m5ph560qgxrs52a3wx',
+            amount: coin,
+        };
+
+        const params6 = {
+            delegatorAddress: 'tcro1j7pej8kplem4wt50p4hfvndhuw5jprxxn5625q',
+            validatorDstAddress: 'tcrocncl16mmzexp3zqfpgqtnn927m5ph560qgxrs52a3wx',
+            validatorSrcAddress: 'crocncl1pndm4ywdf4qtmupa0fqe75krmqed2znj8le094',
+            amount: coin,
+        };
+
         expect(() => new cro.staking.MsgBeginRedelegate(params2)).to.throw(
             'Source and destination validator addresses cannot be the same.',
         );
         expect(() => new cro.staking.MsgBeginRedelegate(params3)).to.throw(
             'Invalid checksum for tcro1j7pej8kplem4wt50p4hfvndhuw5jprxxn5625',
+        );
+        expect(() => new cro.staking.MsgBeginRedelegate(params4)).to.throw(
+            'Provided `delegatorAddress` does not match with selected network',
+        );
+        expect(() => new cro.staking.MsgBeginRedelegate(params5)).to.throw(
+            'Provided `validatorDstAddress` does not match with selected network',
+        );
+        expect(() => new cro.staking.MsgBeginRedelegate(params6)).to.throw(
+            'Provided `validatorSrcAddress` does not match with selected network',
         );
     });
     describe('fromCosmosJSON', function () {
