@@ -179,15 +179,11 @@ function handleSpecialParams(decodedParams: any, typeUrl: string) {
 
     // handle `MsgEditValidator`
     if (typeUrl === COSMOS_MSG_TYPEURL.MsgEditValidator) {
-        if (typeof decodedParams.commissionRate === "undefined") {
+        if (decodedParams.commissionRate === "" || typeof decodedParams.commissionRate === "undefined") {
             clonedDecodedParams.commissionRate = null;
         } else {
             const rateString = decodedParams.commissionRate;
             const splitRateByDecimal = rateString.split('.');
-
-            if (!splitRateByDecimal) {
-                clonedDecodedParams.commissionRate = null;
-            }
 
             // if `string` has `NO` decimal place
             if (splitRateByDecimal.length === 1) {
@@ -202,7 +198,7 @@ function handleSpecialParams(decodedParams: any, typeUrl: string) {
         }
 
         // use `null` in case minSelfDelegation is undefined
-        if (typeof decodedParams.minSelfDelegation === "undefined") {
+        if (decodedParams.minSelfDelegation === "" || typeof decodedParams.minSelfDelegation === "undefined") {
             clonedDecodedParams.minSelfDelegation = null;
         }
 

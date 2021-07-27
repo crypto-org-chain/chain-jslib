@@ -127,5 +127,34 @@ describe('Testing SoftwareUpgradeProposal and its content types', function () {
 
             expect(SoftwareUpgradeProposal.description).to.eql('Lorem Ipsum ... Checking text proposal');
         });
+        it('should set `upgradedClientState` as undefined when non-empty', function () {
+            const json = `{"@type":"/cosmos.upgrade.v1beta1.SoftwareUpgradeProposal","title": "Text Proposal Title", "description": "Lorem Ipsum ... Checking text proposal",
+             "plan": {
+                    "height": "1000",
+                    "name": "name",
+                    "info": "info",
+                    "time": { "nanos": "10000000", "seconds": "12312312" },
+                    "upgradedClientState": { "typeUrl": "someTypeUrl", "value": "someValue"}
+                }
+            }`;
+            const SoftwareUpgradeProposal = cro.gov.proposal.SoftwareUpgradeProposal.fromCosmosMsgJSON(json);
+
+            expect(SoftwareUpgradeProposal.title).to.eql('Text Proposal Title');
+
+            expect(SoftwareUpgradeProposal.description).to.eql('Lorem Ipsum ... Checking text proposal');
+            // @ts-ignore
+            expect(SoftwareUpgradeProposal.plan.upgradedClientState).to.be.undefined;
+        });
+        it('should throw on invalid plan.height', function () {
+            const json = `{"@type":"/cosmos.upgrade.v1beta1.SoftwareUpgradeProposal","title": "Text Proposal Title", "description": "Lorem Ipsum ... Checking text proposal",
+             "plan": {
+                    "name": "name",
+                    "info": "info",
+                    "time": { "nanos": "10000000", "seconds": "12312312" }
+                }}`;
+            expect(() => {
+                cro.gov.proposal.SoftwareUpgradeProposal.fromCosmosMsgJSON(json);
+            }).to.throw('Invalid `height` attribute in Plan.');
+        });
     });
 });
