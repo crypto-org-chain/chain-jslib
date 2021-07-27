@@ -469,6 +469,15 @@ describe('Transaction', function () {
                 '(array `rawSignerAccounts`) Expected property string `signMode` to be SignMode in string, got `100` in object `t`',
             );
         });
+        it('should throw Error when the `pubKey` is an invalid value', function () {
+            expect(() =>
+                cro.v2.RawTransactionV2.parseSignerAccounts(
+                    '[{"publicKey":"A+eBCWOq3Tv","accountNumber":"1","signMode":"1"}]',
+                ),
+            ).to.throw(
+                '(array `rawSignerAccounts`) (string `publicKey`) Expected property valid base64 string of length be multiple of 4, got `"A+eBCWOq3Tv"` in object `t`',
+            );
+        });
 
         it('should work', function () {
             expect(
