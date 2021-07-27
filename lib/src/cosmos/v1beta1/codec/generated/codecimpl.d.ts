@@ -11944,6 +11944,1445 @@ export namespace ibc {
             }
         }
     }
+
+    /** Namespace lightclients. */
+    namespace lightclients {
+        /** Namespace tendermint. */
+        namespace tendermint {
+            /** Namespace v1. */
+            namespace v1 {
+                /** Properties of a ClientState. */
+                interface IClientState {
+                    /** ClientState chainId */
+                    chainId?: string | null;
+
+                    /** ClientState trustLevel */
+                    trustLevel?: ibc.lightclients.tendermint.v1.IFraction | null;
+
+                    /** ClientState trustingPeriod */
+                    trustingPeriod?: google.protobuf.IDuration | null;
+
+                    /** ClientState unbondingPeriod */
+                    unbondingPeriod?: google.protobuf.IDuration | null;
+
+                    /** ClientState maxClockDrift */
+                    maxClockDrift?: google.protobuf.IDuration | null;
+
+                    /** ClientState frozenHeight */
+                    frozenHeight?: ibc.core.client.v1.IHeight | null;
+
+                    /** ClientState latestHeight */
+                    latestHeight?: ibc.core.client.v1.IHeight | null;
+
+                    /** ClientState proofSpecs */
+                    proofSpecs?: ics23.IProofSpec[] | null;
+
+                    /** ClientState upgradePath */
+                    upgradePath?: string[] | null;
+
+                    /** ClientState allowUpdateAfterExpiry */
+                    allowUpdateAfterExpiry?: boolean | null;
+
+                    /** ClientState allowUpdateAfterMisbehaviour */
+                    allowUpdateAfterMisbehaviour?: boolean | null;
+                }
+
+                /** Represents a ClientState. */
+                class ClientState implements IClientState {
+                    /**
+                     * Constructs a new ClientState.
+                     * @param [p] Properties to set
+                     */
+                    constructor(p?: ibc.lightclients.tendermint.v1.IClientState);
+
+                    /** ClientState chainId. */
+                    public chainId: string;
+
+                    /** ClientState trustLevel. */
+                    public trustLevel?: ibc.lightclients.tendermint.v1.IFraction | null;
+
+                    /** ClientState trustingPeriod. */
+                    public trustingPeriod?: google.protobuf.IDuration | null;
+
+                    /** ClientState unbondingPeriod. */
+                    public unbondingPeriod?: google.protobuf.IDuration | null;
+
+                    /** ClientState maxClockDrift. */
+                    public maxClockDrift?: google.protobuf.IDuration | null;
+
+                    /** ClientState frozenHeight. */
+                    public frozenHeight?: ibc.core.client.v1.IHeight | null;
+
+                    /** ClientState latestHeight. */
+                    public latestHeight?: ibc.core.client.v1.IHeight | null;
+
+                    /** ClientState proofSpecs. */
+                    public proofSpecs: ics23.IProofSpec[];
+
+                    /** ClientState upgradePath. */
+                    public upgradePath: string[];
+
+                    /** ClientState allowUpdateAfterExpiry. */
+                    public allowUpdateAfterExpiry: boolean;
+
+                    /** ClientState allowUpdateAfterMisbehaviour. */
+                    public allowUpdateAfterMisbehaviour: boolean;
+
+                    /**
+                     * Creates a new ClientState instance using the specified properties.
+                     * @param [properties] Properties to set
+                     * @returns ClientState instance
+                     */
+                    public static create(
+                        properties?: ibc.lightclients.tendermint.v1.IClientState,
+                    ): ibc.lightclients.tendermint.v1.ClientState;
+
+                    /**
+                     * Encodes the specified ClientState message. Does not implicitly {@link ibc.lightclients.tendermint.v1.ClientState.verify|verify} messages.
+                     * @param m ClientState message or plain object to encode
+                     * @param [w] Writer to encode to
+                     * @returns Writer
+                     */
+                    public static encode(
+                        m: ibc.lightclients.tendermint.v1.IClientState,
+                        w?: $protobuf.Writer,
+                    ): $protobuf.Writer;
+
+                    /**
+                     * Decodes a ClientState message from the specified reader or buffer.
+                     * @param r Reader or buffer to decode from
+                     * @param [l] Message length if known beforehand
+                     * @returns ClientState
+                     * @throws {Error} If the payload is not a reader or valid buffer
+                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                     */
+                    public static decode(
+                        r: $protobuf.Reader | Uint8Array,
+                        l?: number,
+                    ): ibc.lightclients.tendermint.v1.ClientState;
+                }
+
+                /** Properties of a ConsensusState. */
+                interface IConsensusState {
+                    /** ConsensusState timestamp */
+                    timestamp?: google.protobuf.ITimestamp | null;
+
+                    /** ConsensusState root */
+                    root?: ibc.core.commitment.v1.IMerkleRoot | null;
+
+                    /** ConsensusState nextValidatorsHash */
+                    nextValidatorsHash?: Uint8Array | null;
+                }
+
+                /** Represents a ConsensusState. */
+                class ConsensusState implements IConsensusState {
+                    /**
+                     * Constructs a new ConsensusState.
+                     * @param [p] Properties to set
+                     */
+                    constructor(p?: ibc.lightclients.tendermint.v1.IConsensusState);
+
+                    /** ConsensusState timestamp. */
+                    public timestamp?: google.protobuf.ITimestamp | null;
+
+                    /** ConsensusState root. */
+                    public root?: ibc.core.commitment.v1.IMerkleRoot | null;
+
+                    /** ConsensusState nextValidatorsHash. */
+                    public nextValidatorsHash: Uint8Array;
+
+                    /**
+                     * Creates a new ConsensusState instance using the specified properties.
+                     * @param [properties] Properties to set
+                     * @returns ConsensusState instance
+                     */
+                    public static create(
+                        properties?: ibc.lightclients.tendermint.v1.IConsensusState,
+                    ): ibc.lightclients.tendermint.v1.ConsensusState;
+
+                    /**
+                     * Encodes the specified ConsensusState message. Does not implicitly {@link ibc.lightclients.tendermint.v1.ConsensusState.verify|verify} messages.
+                     * @param m ConsensusState message or plain object to encode
+                     * @param [w] Writer to encode to
+                     * @returns Writer
+                     */
+                    public static encode(
+                        m: ibc.lightclients.tendermint.v1.IConsensusState,
+                        w?: $protobuf.Writer,
+                    ): $protobuf.Writer;
+
+                    /**
+                     * Decodes a ConsensusState message from the specified reader or buffer.
+                     * @param r Reader or buffer to decode from
+                     * @param [l] Message length if known beforehand
+                     * @returns ConsensusState
+                     * @throws {Error} If the payload is not a reader or valid buffer
+                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                     */
+                    public static decode(
+                        r: $protobuf.Reader | Uint8Array,
+                        l?: number,
+                    ): ibc.lightclients.tendermint.v1.ConsensusState;
+                }
+
+                /** Properties of a Misbehaviour. */
+                interface IMisbehaviour {
+                    /** Misbehaviour clientId */
+                    clientId?: string | null;
+
+                    /** Misbehaviour header_1 */
+                    header_1?: ibc.lightclients.tendermint.v1.IHeader | null;
+
+                    /** Misbehaviour header_2 */
+                    header_2?: ibc.lightclients.tendermint.v1.IHeader | null;
+                }
+
+                /** Represents a Misbehaviour. */
+                class Misbehaviour implements IMisbehaviour {
+                    /**
+                     * Constructs a new Misbehaviour.
+                     * @param [p] Properties to set
+                     */
+                    constructor(p?: ibc.lightclients.tendermint.v1.IMisbehaviour);
+
+                    /** Misbehaviour clientId. */
+                    public clientId: string;
+
+                    /** Misbehaviour header_1. */
+                    public header_1?: ibc.lightclients.tendermint.v1.IHeader | null;
+
+                    /** Misbehaviour header_2. */
+                    public header_2?: ibc.lightclients.tendermint.v1.IHeader | null;
+
+                    /**
+                     * Creates a new Misbehaviour instance using the specified properties.
+                     * @param [properties] Properties to set
+                     * @returns Misbehaviour instance
+                     */
+                    public static create(
+                        properties?: ibc.lightclients.tendermint.v1.IMisbehaviour,
+                    ): ibc.lightclients.tendermint.v1.Misbehaviour;
+
+                    /**
+                     * Encodes the specified Misbehaviour message. Does not implicitly {@link ibc.lightclients.tendermint.v1.Misbehaviour.verify|verify} messages.
+                     * @param m Misbehaviour message or plain object to encode
+                     * @param [w] Writer to encode to
+                     * @returns Writer
+                     */
+                    public static encode(
+                        m: ibc.lightclients.tendermint.v1.IMisbehaviour,
+                        w?: $protobuf.Writer,
+                    ): $protobuf.Writer;
+
+                    /**
+                     * Decodes a Misbehaviour message from the specified reader or buffer.
+                     * @param r Reader or buffer to decode from
+                     * @param [l] Message length if known beforehand
+                     * @returns Misbehaviour
+                     * @throws {Error} If the payload is not a reader or valid buffer
+                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                     */
+                    public static decode(
+                        r: $protobuf.Reader | Uint8Array,
+                        l?: number,
+                    ): ibc.lightclients.tendermint.v1.Misbehaviour;
+                }
+
+                /** Properties of a Header. */
+                interface IHeader {
+                    /** Header signedHeader */
+                    signedHeader?: tendermint.types.ISignedHeader | null;
+
+                    /** Header validatorSet */
+                    validatorSet?: tendermint.types.IValidatorSet | null;
+
+                    /** Header trustedHeight */
+                    trustedHeight?: ibc.core.client.v1.IHeight | null;
+
+                    /** Header trustedValidators */
+                    trustedValidators?: tendermint.types.IValidatorSet | null;
+                }
+
+                /** Represents a Header. */
+                class Header implements IHeader {
+                    /**
+                     * Constructs a new Header.
+                     * @param [p] Properties to set
+                     */
+                    constructor(p?: ibc.lightclients.tendermint.v1.IHeader);
+
+                    /** Header signedHeader. */
+                    public signedHeader?: tendermint.types.ISignedHeader | null;
+
+                    /** Header validatorSet. */
+                    public validatorSet?: tendermint.types.IValidatorSet | null;
+
+                    /** Header trustedHeight. */
+                    public trustedHeight?: ibc.core.client.v1.IHeight | null;
+
+                    /** Header trustedValidators. */
+                    public trustedValidators?: tendermint.types.IValidatorSet | null;
+
+                    /**
+                     * Creates a new Header instance using the specified properties.
+                     * @param [properties] Properties to set
+                     * @returns Header instance
+                     */
+                    public static create(
+                        properties?: ibc.lightclients.tendermint.v1.IHeader,
+                    ): ibc.lightclients.tendermint.v1.Header;
+
+                    /**
+                     * Encodes the specified Header message. Does not implicitly {@link ibc.lightclients.tendermint.v1.Header.verify|verify} messages.
+                     * @param m Header message or plain object to encode
+                     * @param [w] Writer to encode to
+                     * @returns Writer
+                     */
+                    public static encode(
+                        m: ibc.lightclients.tendermint.v1.IHeader,
+                        w?: $protobuf.Writer,
+                    ): $protobuf.Writer;
+
+                    /**
+                     * Decodes a Header message from the specified reader or buffer.
+                     * @param r Reader or buffer to decode from
+                     * @param [l] Message length if known beforehand
+                     * @returns Header
+                     * @throws {Error} If the payload is not a reader or valid buffer
+                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                     */
+                    public static decode(
+                        r: $protobuf.Reader | Uint8Array,
+                        l?: number,
+                    ): ibc.lightclients.tendermint.v1.Header;
+                }
+
+                /** Properties of a Fraction. */
+                interface IFraction {
+                    /** Fraction numerator */
+                    numerator?: Long | null;
+
+                    /** Fraction denominator */
+                    denominator?: Long | null;
+                }
+
+                /** Represents a Fraction. */
+                class Fraction implements IFraction {
+                    /**
+                     * Constructs a new Fraction.
+                     * @param [p] Properties to set
+                     */
+                    constructor(p?: ibc.lightclients.tendermint.v1.IFraction);
+
+                    /** Fraction numerator. */
+                    public numerator: Long;
+
+                    /** Fraction denominator. */
+                    public denominator: Long;
+
+                    /**
+                     * Creates a new Fraction instance using the specified properties.
+                     * @param [properties] Properties to set
+                     * @returns Fraction instance
+                     */
+                    public static create(
+                        properties?: ibc.lightclients.tendermint.v1.IFraction,
+                    ): ibc.lightclients.tendermint.v1.Fraction;
+
+                    /**
+                     * Encodes the specified Fraction message. Does not implicitly {@link ibc.lightclients.tendermint.v1.Fraction.verify|verify} messages.
+                     * @param m Fraction message or plain object to encode
+                     * @param [w] Writer to encode to
+                     * @returns Writer
+                     */
+                    public static encode(
+                        m: ibc.lightclients.tendermint.v1.IFraction,
+                        w?: $protobuf.Writer,
+                    ): $protobuf.Writer;
+
+                    /**
+                     * Decodes a Fraction message from the specified reader or buffer.
+                     * @param r Reader or buffer to decode from
+                     * @param [l] Message length if known beforehand
+                     * @returns Fraction
+                     * @throws {Error} If the payload is not a reader or valid buffer
+                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                     */
+                    public static decode(
+                        r: $protobuf.Reader | Uint8Array,
+                        l?: number,
+                    ): ibc.lightclients.tendermint.v1.Fraction;
+                }
+            }
+        }
+
+        /** Namespace localhost. */
+        namespace localhost {
+            /** Namespace v1. */
+            namespace v1 {
+                /** Properties of a ClientState. */
+                interface IClientState {
+                    /** ClientState chainId */
+                    chainId?: string | null;
+
+                    /** ClientState height */
+                    height?: ibc.core.client.v1.IHeight | null;
+                }
+
+                /** Represents a ClientState. */
+                class ClientState implements IClientState {
+                    /**
+                     * Constructs a new ClientState.
+                     * @param [p] Properties to set
+                     */
+                    constructor(p?: ibc.lightclients.localhost.v1.IClientState);
+
+                    /** ClientState chainId. */
+                    public chainId: string;
+
+                    /** ClientState height. */
+                    public height?: ibc.core.client.v1.IHeight | null;
+
+                    /**
+                     * Creates a new ClientState instance using the specified properties.
+                     * @param [properties] Properties to set
+                     * @returns ClientState instance
+                     */
+                    public static create(
+                        properties?: ibc.lightclients.localhost.v1.IClientState,
+                    ): ibc.lightclients.localhost.v1.ClientState;
+
+                    /**
+                     * Encodes the specified ClientState message. Does not implicitly {@link ibc.lightclients.localhost.v1.ClientState.verify|verify} messages.
+                     * @param m ClientState message or plain object to encode
+                     * @param [w] Writer to encode to
+                     * @returns Writer
+                     */
+                    public static encode(
+                        m: ibc.lightclients.localhost.v1.IClientState,
+                        w?: $protobuf.Writer,
+                    ): $protobuf.Writer;
+
+                    /**
+                     * Decodes a ClientState message from the specified reader or buffer.
+                     * @param r Reader or buffer to decode from
+                     * @param [l] Message length if known beforehand
+                     * @returns ClientState
+                     * @throws {Error} If the payload is not a reader or valid buffer
+                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                     */
+                    public static decode(
+                        r: $protobuf.Reader | Uint8Array,
+                        l?: number,
+                    ): ibc.lightclients.localhost.v1.ClientState;
+                }
+            }
+        }
+
+        /** Namespace solomachine. */
+        namespace solomachine {
+            /** Namespace v1. */
+            namespace v1 {
+                /** Properties of a ClientState. */
+                interface IClientState {
+                    /** ClientState sequence */
+                    sequence?: Long | null;
+
+                    /** ClientState frozenSequence */
+                    frozenSequence?: Long | null;
+
+                    /** ClientState consensusState */
+                    consensusState?: ibc.lightclients.solomachine.v1.IConsensusState | null;
+
+                    /** ClientState allowUpdateAfterProposal */
+                    allowUpdateAfterProposal?: boolean | null;
+                }
+
+                /** Represents a ClientState. */
+                class ClientState implements IClientState {
+                    /**
+                     * Constructs a new ClientState.
+                     * @param [p] Properties to set
+                     */
+                    constructor(p?: ibc.lightclients.solomachine.v1.IClientState);
+
+                    /** ClientState sequence. */
+                    public sequence: Long;
+
+                    /** ClientState frozenSequence. */
+                    public frozenSequence: Long;
+
+                    /** ClientState consensusState. */
+                    public consensusState?: ibc.lightclients.solomachine.v1.IConsensusState | null;
+
+                    /** ClientState allowUpdateAfterProposal. */
+                    public allowUpdateAfterProposal: boolean;
+
+                    /**
+                     * Creates a new ClientState instance using the specified properties.
+                     * @param [properties] Properties to set
+                     * @returns ClientState instance
+                     */
+                    public static create(
+                        properties?: ibc.lightclients.solomachine.v1.IClientState,
+                    ): ibc.lightclients.solomachine.v1.ClientState;
+
+                    /**
+                     * Encodes the specified ClientState message. Does not implicitly {@link ibc.lightclients.solomachine.v1.ClientState.verify|verify} messages.
+                     * @param m ClientState message or plain object to encode
+                     * @param [w] Writer to encode to
+                     * @returns Writer
+                     */
+                    public static encode(
+                        m: ibc.lightclients.solomachine.v1.IClientState,
+                        w?: $protobuf.Writer,
+                    ): $protobuf.Writer;
+
+                    /**
+                     * Decodes a ClientState message from the specified reader or buffer.
+                     * @param r Reader or buffer to decode from
+                     * @param [l] Message length if known beforehand
+                     * @returns ClientState
+                     * @throws {Error} If the payload is not a reader or valid buffer
+                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                     */
+                    public static decode(
+                        r: $protobuf.Reader | Uint8Array,
+                        l?: number,
+                    ): ibc.lightclients.solomachine.v1.ClientState;
+                }
+
+                /** Properties of a ConsensusState. */
+                interface IConsensusState {
+                    /** ConsensusState publicKey */
+                    publicKey?: google.protobuf.IAny | null;
+
+                    /** ConsensusState diversifier */
+                    diversifier?: string | null;
+
+                    /** ConsensusState timestamp */
+                    timestamp?: Long | null;
+                }
+
+                /** Represents a ConsensusState. */
+                class ConsensusState implements IConsensusState {
+                    /**
+                     * Constructs a new ConsensusState.
+                     * @param [p] Properties to set
+                     */
+                    constructor(p?: ibc.lightclients.solomachine.v1.IConsensusState);
+
+                    /** ConsensusState publicKey. */
+                    public publicKey?: google.protobuf.IAny | null;
+
+                    /** ConsensusState diversifier. */
+                    public diversifier: string;
+
+                    /** ConsensusState timestamp. */
+                    public timestamp: Long;
+
+                    /**
+                     * Creates a new ConsensusState instance using the specified properties.
+                     * @param [properties] Properties to set
+                     * @returns ConsensusState instance
+                     */
+                    public static create(
+                        properties?: ibc.lightclients.solomachine.v1.IConsensusState,
+                    ): ibc.lightclients.solomachine.v1.ConsensusState;
+
+                    /**
+                     * Encodes the specified ConsensusState message. Does not implicitly {@link ibc.lightclients.solomachine.v1.ConsensusState.verify|verify} messages.
+                     * @param m ConsensusState message or plain object to encode
+                     * @param [w] Writer to encode to
+                     * @returns Writer
+                     */
+                    public static encode(
+                        m: ibc.lightclients.solomachine.v1.IConsensusState,
+                        w?: $protobuf.Writer,
+                    ): $protobuf.Writer;
+
+                    /**
+                     * Decodes a ConsensusState message from the specified reader or buffer.
+                     * @param r Reader or buffer to decode from
+                     * @param [l] Message length if known beforehand
+                     * @returns ConsensusState
+                     * @throws {Error} If the payload is not a reader or valid buffer
+                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                     */
+                    public static decode(
+                        r: $protobuf.Reader | Uint8Array,
+                        l?: number,
+                    ): ibc.lightclients.solomachine.v1.ConsensusState;
+                }
+
+                /** Properties of a Header. */
+                interface IHeader {
+                    /** Header sequence */
+                    sequence?: Long | null;
+
+                    /** Header timestamp */
+                    timestamp?: Long | null;
+
+                    /** Header signature */
+                    signature?: Uint8Array | null;
+
+                    /** Header newPublicKey */
+                    newPublicKey?: google.protobuf.IAny | null;
+
+                    /** Header newDiversifier */
+                    newDiversifier?: string | null;
+                }
+
+                /** Represents a Header. */
+                class Header implements IHeader {
+                    /**
+                     * Constructs a new Header.
+                     * @param [p] Properties to set
+                     */
+                    constructor(p?: ibc.lightclients.solomachine.v1.IHeader);
+
+                    /** Header sequence. */
+                    public sequence: Long;
+
+                    /** Header timestamp. */
+                    public timestamp: Long;
+
+                    /** Header signature. */
+                    public signature: Uint8Array;
+
+                    /** Header newPublicKey. */
+                    public newPublicKey?: google.protobuf.IAny | null;
+
+                    /** Header newDiversifier. */
+                    public newDiversifier: string;
+
+                    /**
+                     * Creates a new Header instance using the specified properties.
+                     * @param [properties] Properties to set
+                     * @returns Header instance
+                     */
+                    public static create(
+                        properties?: ibc.lightclients.solomachine.v1.IHeader,
+                    ): ibc.lightclients.solomachine.v1.Header;
+
+                    /**
+                     * Encodes the specified Header message. Does not implicitly {@link ibc.lightclients.solomachine.v1.Header.verify|verify} messages.
+                     * @param m Header message or plain object to encode
+                     * @param [w] Writer to encode to
+                     * @returns Writer
+                     */
+                    public static encode(
+                        m: ibc.lightclients.solomachine.v1.IHeader,
+                        w?: $protobuf.Writer,
+                    ): $protobuf.Writer;
+
+                    /**
+                     * Decodes a Header message from the specified reader or buffer.
+                     * @param r Reader or buffer to decode from
+                     * @param [l] Message length if known beforehand
+                     * @returns Header
+                     * @throws {Error} If the payload is not a reader or valid buffer
+                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                     */
+                    public static decode(
+                        r: $protobuf.Reader | Uint8Array,
+                        l?: number,
+                    ): ibc.lightclients.solomachine.v1.Header;
+                }
+
+                /** Properties of a Misbehaviour. */
+                interface IMisbehaviour {
+                    /** Misbehaviour clientId */
+                    clientId?: string | null;
+
+                    /** Misbehaviour sequence */
+                    sequence?: Long | null;
+
+                    /** Misbehaviour signatureOne */
+                    signatureOne?: ibc.lightclients.solomachine.v1.ISignatureAndData | null;
+
+                    /** Misbehaviour signatureTwo */
+                    signatureTwo?: ibc.lightclients.solomachine.v1.ISignatureAndData | null;
+                }
+
+                /** Represents a Misbehaviour. */
+                class Misbehaviour implements IMisbehaviour {
+                    /**
+                     * Constructs a new Misbehaviour.
+                     * @param [p] Properties to set
+                     */
+                    constructor(p?: ibc.lightclients.solomachine.v1.IMisbehaviour);
+
+                    /** Misbehaviour clientId. */
+                    public clientId: string;
+
+                    /** Misbehaviour sequence. */
+                    public sequence: Long;
+
+                    /** Misbehaviour signatureOne. */
+                    public signatureOne?: ibc.lightclients.solomachine.v1.ISignatureAndData | null;
+
+                    /** Misbehaviour signatureTwo. */
+                    public signatureTwo?: ibc.lightclients.solomachine.v1.ISignatureAndData | null;
+
+                    /**
+                     * Creates a new Misbehaviour instance using the specified properties.
+                     * @param [properties] Properties to set
+                     * @returns Misbehaviour instance
+                     */
+                    public static create(
+                        properties?: ibc.lightclients.solomachine.v1.IMisbehaviour,
+                    ): ibc.lightclients.solomachine.v1.Misbehaviour;
+
+                    /**
+                     * Encodes the specified Misbehaviour message. Does not implicitly {@link ibc.lightclients.solomachine.v1.Misbehaviour.verify|verify} messages.
+                     * @param m Misbehaviour message or plain object to encode
+                     * @param [w] Writer to encode to
+                     * @returns Writer
+                     */
+                    public static encode(
+                        m: ibc.lightclients.solomachine.v1.IMisbehaviour,
+                        w?: $protobuf.Writer,
+                    ): $protobuf.Writer;
+
+                    /**
+                     * Decodes a Misbehaviour message from the specified reader or buffer.
+                     * @param r Reader or buffer to decode from
+                     * @param [l] Message length if known beforehand
+                     * @returns Misbehaviour
+                     * @throws {Error} If the payload is not a reader or valid buffer
+                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                     */
+                    public static decode(
+                        r: $protobuf.Reader | Uint8Array,
+                        l?: number,
+                    ): ibc.lightclients.solomachine.v1.Misbehaviour;
+                }
+
+                /** Properties of a SignatureAndData. */
+                interface ISignatureAndData {
+                    /** SignatureAndData signature */
+                    signature?: Uint8Array | null;
+
+                    /** SignatureAndData dataType */
+                    dataType?: ibc.lightclients.solomachine.v1.DataType | null;
+
+                    /** SignatureAndData data */
+                    data?: Uint8Array | null;
+
+                    /** SignatureAndData timestamp */
+                    timestamp?: Long | null;
+                }
+
+                /** Represents a SignatureAndData. */
+                class SignatureAndData implements ISignatureAndData {
+                    /**
+                     * Constructs a new SignatureAndData.
+                     * @param [p] Properties to set
+                     */
+                    constructor(p?: ibc.lightclients.solomachine.v1.ISignatureAndData);
+
+                    /** SignatureAndData signature. */
+                    public signature: Uint8Array;
+
+                    /** SignatureAndData dataType. */
+                    public dataType: ibc.lightclients.solomachine.v1.DataType;
+
+                    /** SignatureAndData data. */
+                    public data: Uint8Array;
+
+                    /** SignatureAndData timestamp. */
+                    public timestamp: Long;
+
+                    /**
+                     * Creates a new SignatureAndData instance using the specified properties.
+                     * @param [properties] Properties to set
+                     * @returns SignatureAndData instance
+                     */
+                    public static create(
+                        properties?: ibc.lightclients.solomachine.v1.ISignatureAndData,
+                    ): ibc.lightclients.solomachine.v1.SignatureAndData;
+
+                    /**
+                     * Encodes the specified SignatureAndData message. Does not implicitly {@link ibc.lightclients.solomachine.v1.SignatureAndData.verify|verify} messages.
+                     * @param m SignatureAndData message or plain object to encode
+                     * @param [w] Writer to encode to
+                     * @returns Writer
+                     */
+                    public static encode(
+                        m: ibc.lightclients.solomachine.v1.ISignatureAndData,
+                        w?: $protobuf.Writer,
+                    ): $protobuf.Writer;
+
+                    /**
+                     * Decodes a SignatureAndData message from the specified reader or buffer.
+                     * @param r Reader or buffer to decode from
+                     * @param [l] Message length if known beforehand
+                     * @returns SignatureAndData
+                     * @throws {Error} If the payload is not a reader or valid buffer
+                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                     */
+                    public static decode(
+                        r: $protobuf.Reader | Uint8Array,
+                        l?: number,
+                    ): ibc.lightclients.solomachine.v1.SignatureAndData;
+                }
+
+                /** Properties of a TimestampedSignatureData. */
+                interface ITimestampedSignatureData {
+                    /** TimestampedSignatureData signatureData */
+                    signatureData?: Uint8Array | null;
+
+                    /** TimestampedSignatureData timestamp */
+                    timestamp?: Long | null;
+                }
+
+                /** Represents a TimestampedSignatureData. */
+                class TimestampedSignatureData implements ITimestampedSignatureData {
+                    /**
+                     * Constructs a new TimestampedSignatureData.
+                     * @param [p] Properties to set
+                     */
+                    constructor(p?: ibc.lightclients.solomachine.v1.ITimestampedSignatureData);
+
+                    /** TimestampedSignatureData signatureData. */
+                    public signatureData: Uint8Array;
+
+                    /** TimestampedSignatureData timestamp. */
+                    public timestamp: Long;
+
+                    /**
+                     * Creates a new TimestampedSignatureData instance using the specified properties.
+                     * @param [properties] Properties to set
+                     * @returns TimestampedSignatureData instance
+                     */
+                    public static create(
+                        properties?: ibc.lightclients.solomachine.v1.ITimestampedSignatureData,
+                    ): ibc.lightclients.solomachine.v1.TimestampedSignatureData;
+
+                    /**
+                     * Encodes the specified TimestampedSignatureData message. Does not implicitly {@link ibc.lightclients.solomachine.v1.TimestampedSignatureData.verify|verify} messages.
+                     * @param m TimestampedSignatureData message or plain object to encode
+                     * @param [w] Writer to encode to
+                     * @returns Writer
+                     */
+                    public static encode(
+                        m: ibc.lightclients.solomachine.v1.ITimestampedSignatureData,
+                        w?: $protobuf.Writer,
+                    ): $protobuf.Writer;
+
+                    /**
+                     * Decodes a TimestampedSignatureData message from the specified reader or buffer.
+                     * @param r Reader or buffer to decode from
+                     * @param [l] Message length if known beforehand
+                     * @returns TimestampedSignatureData
+                     * @throws {Error} If the payload is not a reader or valid buffer
+                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                     */
+                    public static decode(
+                        r: $protobuf.Reader | Uint8Array,
+                        l?: number,
+                    ): ibc.lightclients.solomachine.v1.TimestampedSignatureData;
+                }
+
+                /** Properties of a SignBytes. */
+                interface ISignBytes {
+                    /** SignBytes sequence */
+                    sequence?: Long | null;
+
+                    /** SignBytes timestamp */
+                    timestamp?: Long | null;
+
+                    /** SignBytes diversifier */
+                    diversifier?: string | null;
+
+                    /** SignBytes dataType */
+                    dataType?: ibc.lightclients.solomachine.v1.DataType | null;
+
+                    /** SignBytes data */
+                    data?: Uint8Array | null;
+                }
+
+                /** Represents a SignBytes. */
+                class SignBytes implements ISignBytes {
+                    /**
+                     * Constructs a new SignBytes.
+                     * @param [p] Properties to set
+                     */
+                    constructor(p?: ibc.lightclients.solomachine.v1.ISignBytes);
+
+                    /** SignBytes sequence. */
+                    public sequence: Long;
+
+                    /** SignBytes timestamp. */
+                    public timestamp: Long;
+
+                    /** SignBytes diversifier. */
+                    public diversifier: string;
+
+                    /** SignBytes dataType. */
+                    public dataType: ibc.lightclients.solomachine.v1.DataType;
+
+                    /** SignBytes data. */
+                    public data: Uint8Array;
+
+                    /**
+                     * Creates a new SignBytes instance using the specified properties.
+                     * @param [properties] Properties to set
+                     * @returns SignBytes instance
+                     */
+                    public static create(
+                        properties?: ibc.lightclients.solomachine.v1.ISignBytes,
+                    ): ibc.lightclients.solomachine.v1.SignBytes;
+
+                    /**
+                     * Encodes the specified SignBytes message. Does not implicitly {@link ibc.lightclients.solomachine.v1.SignBytes.verify|verify} messages.
+                     * @param m SignBytes message or plain object to encode
+                     * @param [w] Writer to encode to
+                     * @returns Writer
+                     */
+                    public static encode(
+                        m: ibc.lightclients.solomachine.v1.ISignBytes,
+                        w?: $protobuf.Writer,
+                    ): $protobuf.Writer;
+
+                    /**
+                     * Decodes a SignBytes message from the specified reader or buffer.
+                     * @param r Reader or buffer to decode from
+                     * @param [l] Message length if known beforehand
+                     * @returns SignBytes
+                     * @throws {Error} If the payload is not a reader or valid buffer
+                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                     */
+                    public static decode(
+                        r: $protobuf.Reader | Uint8Array,
+                        l?: number,
+                    ): ibc.lightclients.solomachine.v1.SignBytes;
+                }
+
+                /** DataType enum. */
+                enum DataType {
+                    DATA_TYPE_UNINITIALIZED_UNSPECIFIED = 0,
+                    DATA_TYPE_CLIENT_STATE = 1,
+                    DATA_TYPE_CONSENSUS_STATE = 2,
+                    DATA_TYPE_CONNECTION_STATE = 3,
+                    DATA_TYPE_CHANNEL_STATE = 4,
+                    DATA_TYPE_PACKET_COMMITMENT = 5,
+                    DATA_TYPE_PACKET_ACKNOWLEDGEMENT = 6,
+                    DATA_TYPE_PACKET_RECEIPT_ABSENCE = 7,
+                    DATA_TYPE_NEXT_SEQUENCE_RECV = 8,
+                    DATA_TYPE_HEADER = 9,
+                }
+
+                /** Properties of a HeaderData. */
+                interface IHeaderData {
+                    /** HeaderData newPubKey */
+                    newPubKey?: google.protobuf.IAny | null;
+
+                    /** HeaderData newDiversifier */
+                    newDiversifier?: string | null;
+                }
+
+                /** Represents a HeaderData. */
+                class HeaderData implements IHeaderData {
+                    /**
+                     * Constructs a new HeaderData.
+                     * @param [p] Properties to set
+                     */
+                    constructor(p?: ibc.lightclients.solomachine.v1.IHeaderData);
+
+                    /** HeaderData newPubKey. */
+                    public newPubKey?: google.protobuf.IAny | null;
+
+                    /** HeaderData newDiversifier. */
+                    public newDiversifier: string;
+
+                    /**
+                     * Creates a new HeaderData instance using the specified properties.
+                     * @param [properties] Properties to set
+                     * @returns HeaderData instance
+                     */
+                    public static create(
+                        properties?: ibc.lightclients.solomachine.v1.IHeaderData,
+                    ): ibc.lightclients.solomachine.v1.HeaderData;
+
+                    /**
+                     * Encodes the specified HeaderData message. Does not implicitly {@link ibc.lightclients.solomachine.v1.HeaderData.verify|verify} messages.
+                     * @param m HeaderData message or plain object to encode
+                     * @param [w] Writer to encode to
+                     * @returns Writer
+                     */
+                    public static encode(
+                        m: ibc.lightclients.solomachine.v1.IHeaderData,
+                        w?: $protobuf.Writer,
+                    ): $protobuf.Writer;
+
+                    /**
+                     * Decodes a HeaderData message from the specified reader or buffer.
+                     * @param r Reader or buffer to decode from
+                     * @param [l] Message length if known beforehand
+                     * @returns HeaderData
+                     * @throws {Error} If the payload is not a reader or valid buffer
+                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                     */
+                    public static decode(
+                        r: $protobuf.Reader | Uint8Array,
+                        l?: number,
+                    ): ibc.lightclients.solomachine.v1.HeaderData;
+                }
+
+                /** Properties of a ClientStateData. */
+                interface IClientStateData {
+                    /** ClientStateData path */
+                    path?: Uint8Array | null;
+
+                    /** ClientStateData clientState */
+                    clientState?: google.protobuf.IAny | null;
+                }
+
+                /** Represents a ClientStateData. */
+                class ClientStateData implements IClientStateData {
+                    /**
+                     * Constructs a new ClientStateData.
+                     * @param [p] Properties to set
+                     */
+                    constructor(p?: ibc.lightclients.solomachine.v1.IClientStateData);
+
+                    /** ClientStateData path. */
+                    public path: Uint8Array;
+
+                    /** ClientStateData clientState. */
+                    public clientState?: google.protobuf.IAny | null;
+
+                    /**
+                     * Creates a new ClientStateData instance using the specified properties.
+                     * @param [properties] Properties to set
+                     * @returns ClientStateData instance
+                     */
+                    public static create(
+                        properties?: ibc.lightclients.solomachine.v1.IClientStateData,
+                    ): ibc.lightclients.solomachine.v1.ClientStateData;
+
+                    /**
+                     * Encodes the specified ClientStateData message. Does not implicitly {@link ibc.lightclients.solomachine.v1.ClientStateData.verify|verify} messages.
+                     * @param m ClientStateData message or plain object to encode
+                     * @param [w] Writer to encode to
+                     * @returns Writer
+                     */
+                    public static encode(
+                        m: ibc.lightclients.solomachine.v1.IClientStateData,
+                        w?: $protobuf.Writer,
+                    ): $protobuf.Writer;
+
+                    /**
+                     * Decodes a ClientStateData message from the specified reader or buffer.
+                     * @param r Reader or buffer to decode from
+                     * @param [l] Message length if known beforehand
+                     * @returns ClientStateData
+                     * @throws {Error} If the payload is not a reader or valid buffer
+                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                     */
+                    public static decode(
+                        r: $protobuf.Reader | Uint8Array,
+                        l?: number,
+                    ): ibc.lightclients.solomachine.v1.ClientStateData;
+                }
+
+                /** Properties of a ConsensusStateData. */
+                interface IConsensusStateData {
+                    /** ConsensusStateData path */
+                    path?: Uint8Array | null;
+
+                    /** ConsensusStateData consensusState */
+                    consensusState?: google.protobuf.IAny | null;
+                }
+
+                /** Represents a ConsensusStateData. */
+                class ConsensusStateData implements IConsensusStateData {
+                    /**
+                     * Constructs a new ConsensusStateData.
+                     * @param [p] Properties to set
+                     */
+                    constructor(p?: ibc.lightclients.solomachine.v1.IConsensusStateData);
+
+                    /** ConsensusStateData path. */
+                    public path: Uint8Array;
+
+                    /** ConsensusStateData consensusState. */
+                    public consensusState?: google.protobuf.IAny | null;
+
+                    /**
+                     * Creates a new ConsensusStateData instance using the specified properties.
+                     * @param [properties] Properties to set
+                     * @returns ConsensusStateData instance
+                     */
+                    public static create(
+                        properties?: ibc.lightclients.solomachine.v1.IConsensusStateData,
+                    ): ibc.lightclients.solomachine.v1.ConsensusStateData;
+
+                    /**
+                     * Encodes the specified ConsensusStateData message. Does not implicitly {@link ibc.lightclients.solomachine.v1.ConsensusStateData.verify|verify} messages.
+                     * @param m ConsensusStateData message or plain object to encode
+                     * @param [w] Writer to encode to
+                     * @returns Writer
+                     */
+                    public static encode(
+                        m: ibc.lightclients.solomachine.v1.IConsensusStateData,
+                        w?: $protobuf.Writer,
+                    ): $protobuf.Writer;
+
+                    /**
+                     * Decodes a ConsensusStateData message from the specified reader or buffer.
+                     * @param r Reader or buffer to decode from
+                     * @param [l] Message length if known beforehand
+                     * @returns ConsensusStateData
+                     * @throws {Error} If the payload is not a reader or valid buffer
+                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                     */
+                    public static decode(
+                        r: $protobuf.Reader | Uint8Array,
+                        l?: number,
+                    ): ibc.lightclients.solomachine.v1.ConsensusStateData;
+                }
+
+                /** Properties of a ConnectionStateData. */
+                interface IConnectionStateData {
+                    /** ConnectionStateData path */
+                    path?: Uint8Array | null;
+
+                    /** ConnectionStateData connection */
+                    connection?: ibc.core.connection.v1.IConnectionEnd | null;
+                }
+
+                /** Represents a ConnectionStateData. */
+                class ConnectionStateData implements IConnectionStateData {
+                    /**
+                     * Constructs a new ConnectionStateData.
+                     * @param [p] Properties to set
+                     */
+                    constructor(p?: ibc.lightclients.solomachine.v1.IConnectionStateData);
+
+                    /** ConnectionStateData path. */
+                    public path: Uint8Array;
+
+                    /** ConnectionStateData connection. */
+                    public connection?: ibc.core.connection.v1.IConnectionEnd | null;
+
+                    /**
+                     * Creates a new ConnectionStateData instance using the specified properties.
+                     * @param [properties] Properties to set
+                     * @returns ConnectionStateData instance
+                     */
+                    public static create(
+                        properties?: ibc.lightclients.solomachine.v1.IConnectionStateData,
+                    ): ibc.lightclients.solomachine.v1.ConnectionStateData;
+
+                    /**
+                     * Encodes the specified ConnectionStateData message. Does not implicitly {@link ibc.lightclients.solomachine.v1.ConnectionStateData.verify|verify} messages.
+                     * @param m ConnectionStateData message or plain object to encode
+                     * @param [w] Writer to encode to
+                     * @returns Writer
+                     */
+                    public static encode(
+                        m: ibc.lightclients.solomachine.v1.IConnectionStateData,
+                        w?: $protobuf.Writer,
+                    ): $protobuf.Writer;
+
+                    /**
+                     * Decodes a ConnectionStateData message from the specified reader or buffer.
+                     * @param r Reader or buffer to decode from
+                     * @param [l] Message length if known beforehand
+                     * @returns ConnectionStateData
+                     * @throws {Error} If the payload is not a reader or valid buffer
+                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                     */
+                    public static decode(
+                        r: $protobuf.Reader | Uint8Array,
+                        l?: number,
+                    ): ibc.lightclients.solomachine.v1.ConnectionStateData;
+                }
+
+                /** Properties of a ChannelStateData. */
+                interface IChannelStateData {
+                    /** ChannelStateData path */
+                    path?: Uint8Array | null;
+
+                    /** ChannelStateData channel */
+                    channel?: ibc.core.channel.v1.IChannel | null;
+                }
+
+                /** Represents a ChannelStateData. */
+                class ChannelStateData implements IChannelStateData {
+                    /**
+                     * Constructs a new ChannelStateData.
+                     * @param [p] Properties to set
+                     */
+                    constructor(p?: ibc.lightclients.solomachine.v1.IChannelStateData);
+
+                    /** ChannelStateData path. */
+                    public path: Uint8Array;
+
+                    /** ChannelStateData channel. */
+                    public channel?: ibc.core.channel.v1.IChannel | null;
+
+                    /**
+                     * Creates a new ChannelStateData instance using the specified properties.
+                     * @param [properties] Properties to set
+                     * @returns ChannelStateData instance
+                     */
+                    public static create(
+                        properties?: ibc.lightclients.solomachine.v1.IChannelStateData,
+                    ): ibc.lightclients.solomachine.v1.ChannelStateData;
+
+                    /**
+                     * Encodes the specified ChannelStateData message. Does not implicitly {@link ibc.lightclients.solomachine.v1.ChannelStateData.verify|verify} messages.
+                     * @param m ChannelStateData message or plain object to encode
+                     * @param [w] Writer to encode to
+                     * @returns Writer
+                     */
+                    public static encode(
+                        m: ibc.lightclients.solomachine.v1.IChannelStateData,
+                        w?: $protobuf.Writer,
+                    ): $protobuf.Writer;
+
+                    /**
+                     * Decodes a ChannelStateData message from the specified reader or buffer.
+                     * @param r Reader or buffer to decode from
+                     * @param [l] Message length if known beforehand
+                     * @returns ChannelStateData
+                     * @throws {Error} If the payload is not a reader or valid buffer
+                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                     */
+                    public static decode(
+                        r: $protobuf.Reader | Uint8Array,
+                        l?: number,
+                    ): ibc.lightclients.solomachine.v1.ChannelStateData;
+                }
+
+                /** Properties of a PacketCommitmentData. */
+                interface IPacketCommitmentData {
+                    /** PacketCommitmentData path */
+                    path?: Uint8Array | null;
+
+                    /** PacketCommitmentData commitment */
+                    commitment?: Uint8Array | null;
+                }
+
+                /** Represents a PacketCommitmentData. */
+                class PacketCommitmentData implements IPacketCommitmentData {
+                    /**
+                     * Constructs a new PacketCommitmentData.
+                     * @param [p] Properties to set
+                     */
+                    constructor(p?: ibc.lightclients.solomachine.v1.IPacketCommitmentData);
+
+                    /** PacketCommitmentData path. */
+                    public path: Uint8Array;
+
+                    /** PacketCommitmentData commitment. */
+                    public commitment: Uint8Array;
+
+                    /**
+                     * Creates a new PacketCommitmentData instance using the specified properties.
+                     * @param [properties] Properties to set
+                     * @returns PacketCommitmentData instance
+                     */
+                    public static create(
+                        properties?: ibc.lightclients.solomachine.v1.IPacketCommitmentData,
+                    ): ibc.lightclients.solomachine.v1.PacketCommitmentData;
+
+                    /**
+                     * Encodes the specified PacketCommitmentData message. Does not implicitly {@link ibc.lightclients.solomachine.v1.PacketCommitmentData.verify|verify} messages.
+                     * @param m PacketCommitmentData message or plain object to encode
+                     * @param [w] Writer to encode to
+                     * @returns Writer
+                     */
+                    public static encode(
+                        m: ibc.lightclients.solomachine.v1.IPacketCommitmentData,
+                        w?: $protobuf.Writer,
+                    ): $protobuf.Writer;
+
+                    /**
+                     * Decodes a PacketCommitmentData message from the specified reader or buffer.
+                     * @param r Reader or buffer to decode from
+                     * @param [l] Message length if known beforehand
+                     * @returns PacketCommitmentData
+                     * @throws {Error} If the payload is not a reader or valid buffer
+                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                     */
+                    public static decode(
+                        r: $protobuf.Reader | Uint8Array,
+                        l?: number,
+                    ): ibc.lightclients.solomachine.v1.PacketCommitmentData;
+                }
+
+                /** Properties of a PacketAcknowledgementData. */
+                interface IPacketAcknowledgementData {
+                    /** PacketAcknowledgementData path */
+                    path?: Uint8Array | null;
+
+                    /** PacketAcknowledgementData acknowledgement */
+                    acknowledgement?: Uint8Array | null;
+                }
+
+                /** Represents a PacketAcknowledgementData. */
+                class PacketAcknowledgementData implements IPacketAcknowledgementData {
+                    /**
+                     * Constructs a new PacketAcknowledgementData.
+                     * @param [p] Properties to set
+                     */
+                    constructor(p?: ibc.lightclients.solomachine.v1.IPacketAcknowledgementData);
+
+                    /** PacketAcknowledgementData path. */
+                    public path: Uint8Array;
+
+                    /** PacketAcknowledgementData acknowledgement. */
+                    public acknowledgement: Uint8Array;
+
+                    /**
+                     * Creates a new PacketAcknowledgementData instance using the specified properties.
+                     * @param [properties] Properties to set
+                     * @returns PacketAcknowledgementData instance
+                     */
+                    public static create(
+                        properties?: ibc.lightclients.solomachine.v1.IPacketAcknowledgementData,
+                    ): ibc.lightclients.solomachine.v1.PacketAcknowledgementData;
+
+                    /**
+                     * Encodes the specified PacketAcknowledgementData message. Does not implicitly {@link ibc.lightclients.solomachine.v1.PacketAcknowledgementData.verify|verify} messages.
+                     * @param m PacketAcknowledgementData message or plain object to encode
+                     * @param [w] Writer to encode to
+                     * @returns Writer
+                     */
+                    public static encode(
+                        m: ibc.lightclients.solomachine.v1.IPacketAcknowledgementData,
+                        w?: $protobuf.Writer,
+                    ): $protobuf.Writer;
+
+                    /**
+                     * Decodes a PacketAcknowledgementData message from the specified reader or buffer.
+                     * @param r Reader or buffer to decode from
+                     * @param [l] Message length if known beforehand
+                     * @returns PacketAcknowledgementData
+                     * @throws {Error} If the payload is not a reader or valid buffer
+                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                     */
+                    public static decode(
+                        r: $protobuf.Reader | Uint8Array,
+                        l?: number,
+                    ): ibc.lightclients.solomachine.v1.PacketAcknowledgementData;
+                }
+
+                /** Properties of a PacketReceiptAbsenceData. */
+                interface IPacketReceiptAbsenceData {
+                    /** PacketReceiptAbsenceData path */
+                    path?: Uint8Array | null;
+                }
+
+                /** Represents a PacketReceiptAbsenceData. */
+                class PacketReceiptAbsenceData implements IPacketReceiptAbsenceData {
+                    /**
+                     * Constructs a new PacketReceiptAbsenceData.
+                     * @param [p] Properties to set
+                     */
+                    constructor(p?: ibc.lightclients.solomachine.v1.IPacketReceiptAbsenceData);
+
+                    /** PacketReceiptAbsenceData path. */
+                    public path: Uint8Array;
+
+                    /**
+                     * Creates a new PacketReceiptAbsenceData instance using the specified properties.
+                     * @param [properties] Properties to set
+                     * @returns PacketReceiptAbsenceData instance
+                     */
+                    public static create(
+                        properties?: ibc.lightclients.solomachine.v1.IPacketReceiptAbsenceData,
+                    ): ibc.lightclients.solomachine.v1.PacketReceiptAbsenceData;
+
+                    /**
+                     * Encodes the specified PacketReceiptAbsenceData message. Does not implicitly {@link ibc.lightclients.solomachine.v1.PacketReceiptAbsenceData.verify|verify} messages.
+                     * @param m PacketReceiptAbsenceData message or plain object to encode
+                     * @param [w] Writer to encode to
+                     * @returns Writer
+                     */
+                    public static encode(
+                        m: ibc.lightclients.solomachine.v1.IPacketReceiptAbsenceData,
+                        w?: $protobuf.Writer,
+                    ): $protobuf.Writer;
+
+                    /**
+                     * Decodes a PacketReceiptAbsenceData message from the specified reader or buffer.
+                     * @param r Reader or buffer to decode from
+                     * @param [l] Message length if known beforehand
+                     * @returns PacketReceiptAbsenceData
+                     * @throws {Error} If the payload is not a reader or valid buffer
+                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                     */
+                    public static decode(
+                        r: $protobuf.Reader | Uint8Array,
+                        l?: number,
+                    ): ibc.lightclients.solomachine.v1.PacketReceiptAbsenceData;
+                }
+
+                /** Properties of a NextSequenceRecvData. */
+                interface INextSequenceRecvData {
+                    /** NextSequenceRecvData path */
+                    path?: Uint8Array | null;
+
+                    /** NextSequenceRecvData nextSeqRecv */
+                    nextSeqRecv?: Long | null;
+                }
+
+                /** Represents a NextSequenceRecvData. */
+                class NextSequenceRecvData implements INextSequenceRecvData {
+                    /**
+                     * Constructs a new NextSequenceRecvData.
+                     * @param [p] Properties to set
+                     */
+                    constructor(p?: ibc.lightclients.solomachine.v1.INextSequenceRecvData);
+
+                    /** NextSequenceRecvData path. */
+                    public path: Uint8Array;
+
+                    /** NextSequenceRecvData nextSeqRecv. */
+                    public nextSeqRecv: Long;
+
+                    /**
+                     * Creates a new NextSequenceRecvData instance using the specified properties.
+                     * @param [properties] Properties to set
+                     * @returns NextSequenceRecvData instance
+                     */
+                    public static create(
+                        properties?: ibc.lightclients.solomachine.v1.INextSequenceRecvData,
+                    ): ibc.lightclients.solomachine.v1.NextSequenceRecvData;
+
+                    /**
+                     * Encodes the specified NextSequenceRecvData message. Does not implicitly {@link ibc.lightclients.solomachine.v1.NextSequenceRecvData.verify|verify} messages.
+                     * @param m NextSequenceRecvData message or plain object to encode
+                     * @param [w] Writer to encode to
+                     * @returns Writer
+                     */
+                    public static encode(
+                        m: ibc.lightclients.solomachine.v1.INextSequenceRecvData,
+                        w?: $protobuf.Writer,
+                    ): $protobuf.Writer;
+
+                    /**
+                     * Decodes a NextSequenceRecvData message from the specified reader or buffer.
+                     * @param r Reader or buffer to decode from
+                     * @param [l] Message length if known beforehand
+                     * @returns NextSequenceRecvData
+                     * @throws {Error} If the payload is not a reader or valid buffer
+                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                     */
+                    public static decode(
+                        r: $protobuf.Reader | Uint8Array,
+                        l?: number,
+                    ): ibc.lightclients.solomachine.v1.NextSequenceRecvData;
+                }
+            }
+        }
+    }
 }
 
 /** Namespace tendermint. */

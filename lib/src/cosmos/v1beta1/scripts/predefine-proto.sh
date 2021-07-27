@@ -54,9 +54,10 @@ mkdir -p "$GENERATED_DIR"
   "$IBC_PROTO_DIR/core/client/v1/client.proto" \
   "$IBC_PROTO_DIR/core/connection/v1/tx.proto" \
   "$IBC_PROTO_DIR/core/connection/v1/connection.proto" \
-  "$IBC_PROTO_DIR/core/lightclients/localhost/v1/localhost.proto" \
-  "$IBC_PROTO_DIR/core/lightclients/solomachine/v1/solomachine.proto" \
-  "$IBC_PROTO_DIR/core/lightclients/localhost/v1/client.proto" \
+  "$IBC_PROTO_DIR/lightclients/tendermint/v1/tendermint.proto" \
+  "$IBC_PROTO_DIR/lightclients/localhost/v1/localhost.proto" \
+  "$IBC_PROTO_DIR/lightclients/solomachine/v1/solomachine.proto" \
+  "$IBC_PROTO_DIR/lightclients/localhost/v1/client.proto" \
   "$TENDERMINT_PROTO_DIR/types/types.proto" \
   "$TENDERMINT_PROTO_DIR/crypto/proof.proto" \
   "$TENDERMINT_PROTO_DIR/version/types.proto" \
