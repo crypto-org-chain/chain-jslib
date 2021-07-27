@@ -10,6 +10,7 @@ import { typeUrlMappings } from '../cosmos/v1beta1/types/typeurls';
 import { COSMOS_MSG_TYPEURL } from '../transaction/common/constants/typeurl';
 
 const cosmJSRegistry = new Registry(Object.entries(typeUrlMappings));
+const DISPLAY_DIVISION_STRING = '1000000000000000000';
 
 export class TxDecoder {
     private libDecodedTxBody!: TxBody;
@@ -150,7 +151,7 @@ function handleSpecialParams(decodedParams: any, typeUrl: string) {
             // if `string` has `NO` decimal place
             if (splitRateByDecimal.length === 1) {
                 const rateToBig = new Big(rateString);
-                clonedDecodedParams.commission[key] = rateToBig.div(new Big(1e18)).toFixed(18);
+                clonedDecodedParams.commission[key] = rateToBig.div(new Big(DISPLAY_DIVISION_STRING)).toFixed(18);
             }
             // If `string` has `ONE` decimal place
             else if (splitRateByDecimal.length === 2) {
@@ -171,7 +172,7 @@ function handleSpecialParams(decodedParams: any, typeUrl: string) {
             // if `string` has `NO` decimal place
             if (splitRateByDecimal.length === 1) {
                 const rateToBig = new Big(rateString);
-                clonedDecodedParams.commissionRate = rateToBig.div(new Big(1e18)).toFixed(18);
+                clonedDecodedParams.commissionRate = rateToBig.div(new Big(DISPLAY_DIVISION_STRING)).toFixed(18);
             }
             // If `string` has `ONE` decimal place
             else if (splitRateByDecimal.length === 2) {

@@ -3,7 +3,7 @@ import { owCoin, owOptionalCoin } from '../../coin/ow.types';
 import { owBig, owStrictObject, owOptionalStrictObject } from '../../ow.types';
 import { VoteOption } from './gov/MsgVote';
 import { isMsgProposalContent } from './gov/IMsgProposalContent';
-import { owLong } from './gov/ow.types';
+import { owLong, owOptionalTimestamp } from './gov/ow.types';
 
 const voteOptionValidator = (val: number) => ({
     validator: Object.values(VoteOption).includes(val as any),
@@ -233,12 +233,6 @@ export const owMsgTransferIBCOptions = owStrictObject().exactShape({
     timeoutTimestamp: owLong(),
 });
 
-export const owMsgCreateClientOptions = owStrictObject().exactShape({
-    signer: ow.string,
-    clientState: ow.optional.any(owGoogleProtoAnyOptional(), ow.null),
-    consensusState: ow.optional.any(owGoogleProtoAnyOptional(), ow.null),
-});
-
 export const owMsgUpdateClientOptions = owStrictObject().exactShape({
     signer: ow.string,
     clientId: ow.string,
@@ -257,4 +251,53 @@ export const owMsgSubmitMisbehaviourOptions = owStrictObject().exactShape({
     clientId: ow.string,
     misbehaviour: ow.optional.any(owGoogleProtoAnyOptional(), ow.optional.null),
     signer: ow.string,
+});
+
+export const owOptionalFraction = owOptionalStrictObject().exactShape({
+    numerator: owLong(),
+    denominator: owLong(),
+});
+
+export const owOptionalInnerSpec = owOptionalStrictObject().exactShape({
+    childOrder: ow.array.ofType(ow.number),
+    childSize: ow.number,
+    minPrefixLength: ow.number,
+    maxPrefixLength: ow.number,
+    emptyChild: ow.null,
+    hash: ow.string,
+});
+
+export const owOptionalLeafSpec = owOptionalStrictObject().exactShape({
+    hash: ow.string,
+    prehashKey: ow.string,
+    prehashValue: ow.string,
+    length: ow.string,
+    prefix: ow.string,
+});
+
+export const owOptionalProofSpec = owOptionalStrictObject().exactShape({
+    leafSpec: owOptionalLeafSpec,
+    innerSpec: owOptionalInnerSpec,
+    maxDepth: ow.number,
+    minDepth: ow.number,
+});
+
+export const owClientStateOptions = owStrictObject().exactShape({
+    chainId: ow.string,
+    trustLevel: owOptionalFraction,
+    trustingPeriod: owOptionalTimestamp(),
+    unbondingPeriod: owOptionalTimestamp(),
+    maxClockDrift: owOptionalTimestamp(),
+    frozenHeight: owIBCHeightOptional(),
+    latestHeight: owIBCHeightOptional(),
+    proofSpecs: ow.array.ofType(owOptionalProofSpec),
+    upgradePath: ow.array.ofType(ow.string),
+    allowUpdateAfterExpiry: ow.boolean,
+    allowUpdateAfterMisbehaviour: ow.boolean,
+});
+
+export const owMsgCreateClientOptions = owStrictObject().exactShape({
+    signer: ow.string,
+    clientState: ow.optional.any(owClientStateOptions),
+    consensusState: ow.optional.any(owGoogleProtoAnyOptional(), ow.null),
 });
