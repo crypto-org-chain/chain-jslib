@@ -4,6 +4,7 @@ import { owBig, owStrictObject, owOptionalStrictObject } from '../../ow.types';
 import { VoteOption } from './gov/MsgVote';
 import { isMsgProposalContent } from './gov/IMsgProposalContent';
 import { owLong, owOptionalTimestamp } from './gov/ow.types';
+import { ics23 } from '../../cosmos/v1beta1/codec';
 
 const voteOptionValidator = (val: number) => ({
     validator: Object.values(VoteOption).includes(val as any),
@@ -258,21 +259,30 @@ export const owOptionalFraction = owOptionalStrictObject().exactShape({
     denominator: owLong(),
 });
 
+export const owHashOp = ow.number.validate((val) => ({
+    validator: Object.values(ics23.HashOp).includes(val as any),
+    message: (label) => `Expected ${label} to be one of enum ics23.HashOp, got \`${val}\``,
+}));
+
+export const owLengthOp = ow.number.validate((val) => ({
+    validator: Object.values(ics23.LengthOp).includes(val as any),
+    message: (label) => `Expected ${label} to be one of enum ics23.LengthOp, got \`${val}\``,
+}));
+
+export const owOptionalLeafSpec = owOptionalStrictObject().exactShape({
+    hash: owHashOp,
+    prehashKey: owHashOp,
+    prehashValue: owHashOp,
+    length: owLengthOp,
+    prefix: ow.uint8Array,
+});
 export const owOptionalInnerSpec = owOptionalStrictObject().exactShape({
     childOrder: ow.array.ofType(ow.number),
     childSize: ow.number,
     minPrefixLength: ow.number,
     maxPrefixLength: ow.number,
-    emptyChild: ow.null,
-    hash: ow.string,
-});
-
-export const owOptionalLeafSpec = owOptionalStrictObject().exactShape({
-    hash: ow.string,
-    prehashKey: ow.string,
-    prehashValue: ow.string,
-    length: ow.string,
-    prefix: ow.string,
+    emptyChild: ow.uint8Array,
+    hash: owHashOp,
 });
 
 export const owOptionalProofSpec = owOptionalStrictObject().exactShape({
