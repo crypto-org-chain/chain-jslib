@@ -141,23 +141,6 @@ function handleSpecialParams(decodedParams: any, typeUrl: string) {
         clonedDecodedParams.pubkey = decodeAnyType(decodedParams.pubkey.type_url, decodedParams.pubkey.value);
         clonedDecodedParams.pubkey.key = Bytes.fromUint8Array(clonedDecodedParams.pubkey.key).toBase64String();
 
-        // Check if the `description` object values are correctly stringified.
-        if (typeof decodedParams.description.moniker === 'undefined') {
-            clonedDecodedParams.description.moniker = '';
-        }
-        if (typeof decodedParams.description.identity === 'undefined') {
-            clonedDecodedParams.description.identity = '';
-        }
-        if (typeof decodedParams.description.website === 'undefined') {
-            clonedDecodedParams.description.website = '';
-        }
-        if (typeof decodedParams.description.securityContact === 'undefined') {
-            clonedDecodedParams.description.securityContact = '';
-        }
-        if (typeof decodedParams.description.details === 'undefined') {
-            clonedDecodedParams.description.details = '';
-        }
-
         // Check if the `commission` object values are represented already in `float`
         /*eslint-disable */
         for (const key in decodedParams.commission) {
