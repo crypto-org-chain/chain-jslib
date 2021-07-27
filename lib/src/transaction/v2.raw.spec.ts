@@ -451,6 +451,24 @@ describe('Transaction', function () {
                 '(array `rawSignerAccounts`) Expected property `publicKey` to be of type `string` but received type `undefined` in object `t`',
             );
         });
+        it('should throw Error when the `accounNumber` is an incompatible type', function () {
+            expect(() =>
+                cro.v2.RawTransactionV2.parseSignerAccounts(
+                    '[{"publicKey":"A+eBCWOq3Tv/CYQyLSafRnHG61Hf5tSBv8VGs7sbWoGN","accountNumber":"as","signMode":"1"}]',
+                ),
+            ).to.throw(
+                '(array `rawSignerAccounts`) Expected property string `accountNumber` to be an integer string, got `as` in object `t`',
+            );
+        });
+        it('should throw Error when the `signMode` is an invalid value', function () {
+            expect(() =>
+                cro.v2.RawTransactionV2.parseSignerAccounts(
+                    '[{"publicKey":"A+eBCWOq3Tv/CYQyLSafRnHG61Hf5tSBv8VGs7sbWoGN","accountNumber":"1","signMode":"100"}]',
+                ),
+            ).to.throw(
+                '(array `rawSignerAccounts`) Expected property string `signMode` to be SignMode in string, got `100` in object `t`',
+            );
+        });
 
         it('should work', function () {
             expect(
