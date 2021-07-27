@@ -46,6 +46,11 @@ mkdir -p "$GENERATED_DIR"
   "$COSMOS_PROTO_DIR/params/v1beta1/params.proto" \
   "$COSMOS_PROTO_DIR/upgrade/v1beta1/upgrade.proto" \
   "$ICS23_PROTO_DIR/proofs.proto" \
+  "$TENDERMINT_PROTO_DIR/types/types.proto" \
+  "$TENDERMINT_PROTO_DIR/crypto/proof.proto" \
+  "$TENDERMINT_PROTO_DIR/version/types.proto" \
+  "$TENDERMINT_PROTO_DIR/types/validator.proto" \
+  "$TENDERMINT_PROTO_DIR/crypto/keys.proto" \
   "$IBC_PROTO_DIR/core/commitment/v1/commitment.proto" \
   "$IBC_PROTO_DIR/applications/transfer/v1/tx.proto" \
   "$IBC_PROTO_DIR/core/channel/v1/tx.proto" \
@@ -58,11 +63,6 @@ mkdir -p "$GENERATED_DIR"
   "$IBC_PROTO_DIR/lightclients/localhost/v1/localhost.proto" \
   "$IBC_PROTO_DIR/lightclients/solomachine/v1/solomachine.proto" \
   "$IBC_PROTO_DIR/lightclients/localhost/v1/client.proto" \
-  "$TENDERMINT_PROTO_DIR/types/types.proto" \
-  "$TENDERMINT_PROTO_DIR/crypto/proof.proto" \
-  "$TENDERMINT_PROTO_DIR/version/types.proto" \
-  "$TENDERMINT_PROTO_DIR/types/validator.proto" \
-  "$TENDERMINT_PROTO_DIR/crypto/keys.proto" \
   "$NFT_PROTO_DIR/tx.proto" \
 
   # "$TENDERMINT_PROTO_DIR/protobuf/timestamp.proto" 
