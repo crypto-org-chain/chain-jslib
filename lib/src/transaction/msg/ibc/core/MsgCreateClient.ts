@@ -12,10 +12,10 @@ import { IGoogleAny } from '../IGoogleAny';
 export const msgCreateClientIBC = function (config: InitConfigurations) {
     return class MsgCreateClient implements CosmosMsg {
         /** MsgCreateClient clientState. */
-        public clientState?: IGoogleAny;
+        public clientState?: IGoogleAny | null;
 
         /** MsgCreateClient consensusState. */
-        public consensusState?: IGoogleAny;
+        public consensusState?: IGoogleAny | null;
 
         /** MsgCreateClient signer. */
         public signer: string;
@@ -99,8 +99,8 @@ export const msgCreateClientIBC = function (config: InitConfigurations) {
 };
 
 export type MsgCreateClientOptions = {
-    clientState?: IGoogleAny;
-    consensusState?: IGoogleAny;
+    clientState?: IGoogleAny | null;
+    consensusState?: IGoogleAny | null;
     signer: string;
 };
 

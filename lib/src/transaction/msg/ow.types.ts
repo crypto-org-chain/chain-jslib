@@ -310,14 +310,14 @@ export const owClientStateOptions = owStrictObject().exactShape({
     allowUpdateAfterMisbehaviour: ow.boolean,
 });
 
-export const owMsgCreateClientOptions = owStrictObject().exactShape({
-    signer: ow.string,
-    clientState: ow.optional.any(owClientStateOptions),
-    consensusState: ow.optional.any(owGoogleProtoAnyOptional(), ow.null),
-});
-
 export const owConsensusStateOptions = owStrictObject().exactShape({
     timestamp: ow.any(owOptionalTimestamp(), ow.null),
     root: ow.any(owOptionalMerkleRoot, ow.null),
     nextValidatorsHash: ow.uint8Array,
+});
+
+export const owMsgCreateClientOptions = owStrictObject().exactShape({
+    signer: ow.string,
+    clientState: ow.optional.any(owClientStateOptions, ow.null),
+    consensusState: ow.optional.any(owConsensusStateOptions, ow.null),
 });

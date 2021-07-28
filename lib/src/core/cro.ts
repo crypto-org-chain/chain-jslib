@@ -41,7 +41,7 @@ import { msgUpgradeClientIBC } from '../transaction/msg/ibc/core/MsgUpgradeClien
 import { msgSubmitMisbehaviourIBC } from '../transaction/msg/ibc/core/MsgSubmitMisbehaviour';
 import { rawTransactionV2 } from '../transaction/v2.raw';
 import { coinv2 } from '../coin/v2.coin/v2.coin';
-import { msgClientState } from '../transaction/msg/ibc/lightclients/IBCClientState';
+import { msgClientState } from '../transaction/msg/ibc/lightclients/ClientState';
 import { msgConsensusState } from '../transaction/msg/ibc/lightclients/ConsensusState';
 
 export const CroSDK = function (configs: InitConfigurations) {
