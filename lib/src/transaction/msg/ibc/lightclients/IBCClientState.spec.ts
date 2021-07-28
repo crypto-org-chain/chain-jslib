@@ -374,4 +374,69 @@ describe('Testing IBCClientState', function () {
             '(array `proofSpecs`) Expected property property property number `length` to be one of enum ics23.LengthOp, got `11` in object `leafSpec` in object `t` in object `options`',
         );
     });
+
+    context('should throw on unsupported functionalities', function () {
+        it('should throw on calling .toRawAminoMsg', function () {
+            const params = {
+                chainId: 'testnet-croeseid-1',
+                trustLevel: {
+                    numerator: Long.fromString('1'),
+                    denominator: Long.fromString('1'),
+                },
+                trustingPeriod: {
+                    seconds: Long.fromString('100'),
+                    nanos: 100000,
+                },
+                unbondingPeriod: {
+                    seconds: Long.fromString('100'),
+                    nanos: 100000,
+                },
+                maxClockDrift: {
+                    seconds: Long.fromString('100'),
+                    nanos: 100000,
+                },
+                frozenHeight: {
+                    revisionNumber: Long.fromString('100'),
+                    revisionHeight: Long.fromString('100'),
+                },
+                latestHeight: {
+                    revisionNumber: Long.fromString('100'),
+                    revisionHeight: Long.fromString('100'),
+                },
+                proofSpecs: [
+                    {
+                        leafSpec: {
+                            hash: ics23.HashOp.BITCOIN,
+                            prehashKey: ics23.HashOp.BITCOIN,
+                            prehashValue: ics23.HashOp.BITCOIN,
+                            length: ics23.LengthOp.VAR_RLP,
+                            prefix: Uint8Array.from([0, 1, 2]),
+                        },
+                        innerSpec: {
+                            childOrder: [1, 2],
+                            childSize: 1,
+                            minPrefixLength: 0,
+                            maxPrefixLength: 10,
+                            emptyChild: Uint8Array.from([0, 1, 2]),
+                            hash: ics23.HashOp.BITCOIN,
+                        },
+                        maxDepth: 10000,
+                        minDepth: 10000,
+                    },
+                ],
+                upgradePath: ['ibc'],
+                allowUpdateAfterExpiry: false,
+                allowUpdateAfterMisbehaviour: false,
+            };
+
+            expect(() => new cro.ibc.lightclient.ClientState(params).toRawAminoMsg()).to.throw(
+                'IBC Module not supported under amino encoding scheme',
+            );
+        });
+        it('should throw on calling .fromCosmosMsgJSON', function () {
+            expect(() => cro.ibc.lightclient.ClientState.fromCosmosMsgJSON('json')).to.throw(
+                'IBC Module does not support JSON decoding.',
+            );
+        });
+    });
 });
