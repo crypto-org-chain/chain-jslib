@@ -234,12 +234,6 @@ export const owMsgTransferIBCOptions = owStrictObject().exactShape({
     timeoutTimestamp: owLong(),
 });
 
-export const owMsgUpdateClientOptions = owStrictObject().exactShape({
-    signer: ow.string,
-    clientId: ow.string,
-    header: ow.optional.any(owGoogleProtoAnyOptional(), ow.optional.null),
-});
-
 export const owMsgUpgradeClientOptions = owStrictObject().exactShape({
     clientId: ow.string,
     clientState: ow.optional.any(owGoogleProtoAnyOptional(), ow.optional.null),
@@ -402,4 +396,10 @@ export const owHeaderOptions = owStrictObject().exactShape({
     validatorSet: ow.any(owOptionalLightClientValidatorSet, ow.optional.null),
     trustedHeight: owIBCHeightOptional(),
     trustedValidators: ow.optional.any(owOptionalLightClientValidatorSet, ow.null),
+});
+
+export const owMsgUpdateClientOptions = owStrictObject().exactShape({
+    signer: ow.string,
+    clientId: ow.string,
+    header: ow.optional.any(owHeaderOptions, ow.optional.null),
 });

@@ -1,6 +1,5 @@
 /* eslint-disable camelcase */
 import ow from 'ow';
-import { google } from '../../../../cosmos/v1beta1/codec/generated/codecimpl';
 import { InitConfigurations } from '../../../../core/cro';
 import { CosmosMsg } from '../../cosmosMsg';
 import { Msg } from '../../../../cosmos/v1beta1/types/msg';
@@ -8,6 +7,7 @@ import { COSMOS_MSG_TYPEURL } from '../../../common/constants/typeurl';
 import { validateAddress, AddressType } from '../../../../utils/address';
 import { owMsgUpdateClientOptions } from '../../ow.types';
 import * as legacyAmino from '../../../../cosmos/amino';
+import { IGoogleAny } from '../IGoogleAny';
 
 export const msgUpdateClientIBC = function (config: InitConfigurations) {
     return class MsgUpdateClient implements CosmosMsg {
@@ -15,7 +15,7 @@ export const msgUpdateClientIBC = function (config: InitConfigurations) {
         public clientId: string;
 
         /** MsgUpdateClient header. */
-        public header?: google.protobuf.IAny | null;
+        public header?: IGoogleAny | null;
 
         /** MsgUpdateClient signer. */
         public signer: string;
@@ -43,7 +43,7 @@ export const msgUpdateClientIBC = function (config: InitConfigurations) {
                 typeUrl: COSMOS_MSG_TYPEURL.ibc.MsgUpdateClient,
                 value: {
                     clientId: this.clientId,
-                    header: this.header,
+                    header: this.header?.getEncoded(),
                     signer: this.signer,
                 },
             };
@@ -95,7 +95,7 @@ export const msgUpdateClientIBC = function (config: InitConfigurations) {
 
 export type MsgUpdateClientOptions = {
     clientId: string;
-    header?: google.protobuf.IAny | null;
+    header?: IGoogleAny | null;
     signer: string;
 };
 
