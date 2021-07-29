@@ -96,6 +96,7 @@ export const CroSDK = function (configs: InitConfigurations) {
             lightclient: {
                 ClientState: msgClientState(),
                 ConsensusState: msgConsensusState(),
+                Header: msgHeader(),
             },
         },
         v2: {

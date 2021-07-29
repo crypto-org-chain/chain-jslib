@@ -43,6 +43,7 @@ export const COSMOS_MSG_TYPEURL = {
         LightClients: {
             ClientState: '/ibc.lightclients.tendermint.v1.ClientState',
             ConsensusState: '/ibc.lightclients.tendermint.v1.ConsensusState',
+            Header: '/ibc.lightclients.tendermint.v1.Header',
         },
     },
 };
