@@ -94,8 +94,8 @@ describe('Testing IBCClientState', function () {
         });
     });
 
-    it('Test MsgCreateClient conversion', function () {
-        const MsgCreateClient = new cro.ibc.lightclient.ClientState({
+    it('Test ClientState conversion', function () {
+        const ClientState = new cro.ibc.lightclient.ClientState({
             chainId: 'testnet-croeseid-1',
             trustLevel: {
                 numerator: Long.fromString('1'),
@@ -202,10 +202,10 @@ describe('Testing IBCClientState', function () {
             },
         };
 
-        expect(MsgCreateClient.toRawMsg()).to.eqls(rawMsg);
+        expect(ClientState.toRawMsg()).to.eqls(rawMsg);
     });
 
-    it('Test MsgCreateClient `getEncoded`', function () {
+    it('Test ClientState `getEncoded`', function () {
         const params = {
             chainId: 'testnet-croeseid-1',
             trustLevel: {
@@ -257,10 +257,10 @@ describe('Testing IBCClientState', function () {
             allowUpdateAfterExpiry: false,
             allowUpdateAfterMisbehaviour: false,
         };
-        const MsgCreateClient = new cro.ibc.lightclient.ClientState(params);
+        const ClientState = new cro.ibc.lightclient.ClientState(params);
 
-        expect(MsgCreateClient.getEncoded().value).instanceOf(Uint8Array);
-        expect(MsgCreateClient.getEncoded().type_url).to.equal('/ibc.lightclients.tendermint.v1.ClientState');
+        expect(ClientState.getEncoded().value).instanceOf(Uint8Array);
+        expect(ClientState.getEncoded().type_url).to.equal('/ibc.lightclients.tendermint.v1.ClientState');
     });
 
     it('should throw on invalid values', function () {
