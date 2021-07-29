@@ -212,7 +212,7 @@ export const rawTransactionV2 = function (config: InitConfigurations) {
         /**
          * Sets a `single` only fee amount to the raw tx
          * @param {ICoin} fee to be set to the raw tx body
-         * @returns {RawTransaction}
+         * @returns {RawTransactionV2}
          * @throws {Error} when fee set is invalid
          * @memberof Transaction
          * @deprecated
