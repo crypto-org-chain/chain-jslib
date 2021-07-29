@@ -323,8 +323,8 @@ export const owMsgCreateClientOptions = owStrictObject().exactShape({
 });
 
 export const owOptionalPublicKey = owOptionalStrictObject().exactShape({
-    ed25519: ow.uint8Array,
-    secp256k1: ow.uint8Array,
+    ed25519: ow.optional.uint8Array,
+    secp256k1: ow.optional.uint8Array,
     sum: ow.optional.string,
 });
 export const owOptionalTendermintValidator = owOptionalStrictObject().exactShape({
@@ -354,7 +354,7 @@ export const owOptionalTendermintConsensus = owOptionalStrictObject().exactShape
 });
 export const validateBlockIDFlag = (val: number) => ({
     validator: Object.values(tendermintV2.types.BlockIDFlag).includes(val as any),
-    message: (label: any) => `Expected ${label} to be one of enum ics23.HashOp, got \`${val}\``,
+    message: (label: any) => `Expected ${label} to be one of enum 'tendermintV2.types.BlockIDFlag', got \`${val}\``,
 });
 export const owTendermintTypesBlockIDFlag = ow.number.validate(validateBlockIDFlag);
 
@@ -365,12 +365,12 @@ export const owTendermintTypesCommitSig = owStrictObject().exactShape({
     signature: ow.uint8Array,
 });
 
-export const owOptionalSignedHeaderParams = {
-    header: owOptionalStrictObject().exactShape({
+export const owOptionalSignedHeaderParamsHeader = () =>
+    owOptionalStrictObject().exactShape({
         version: ow.optional.any(owOptionalTendermintConsensus, ow.null),
         chainId: ow.string,
         height: owLong(),
-        time: ow.optional.any(ow.null, owOptionalTimestamp()),
+        time: ow.optional.any(owOptionalTimestamp(), ow.null),
         lastBlockId: ow.optional.any(owOptionalTendermintBlockID, ow.null),
         lastCommitHash: ow.uint8Array,
         dataHash: ow.uint8Array,
@@ -381,22 +381,25 @@ export const owOptionalSignedHeaderParams = {
         lastResultsHash: ow.uint8Array,
         evidenceHash: ow.uint8Array,
         proposerAddress: ow.uint8Array,
-    }),
-    commit: owOptionalStrictObject().exactShape({
+    });
+
+export const owOptionalSignedHeaderParamsCommit = () =>
+    owOptionalStrictObject().exactShape({
         height: owLong(),
         round: ow.number,
-        blockId: ow.optional.any(owOptionalTendermintBlockID, ow.null),
+        blockId: ow.any(owOptionalTendermintBlockID, ow.null),
         signatures: ow.array.ofType(owTendermintTypesCommitSig),
-    }),
-};
-export const owOptionalSignedHeader = owOptionalStrictObject().exactShape({
-    header: ow.optional.any(owOptionalSignedHeaderParams.header, ow.null),
-    commit: ow.optional.any(owOptionalSignedHeaderParams.commit, ow.null),
-});
+    });
+
+export const owOptionalSignedHeader = () =>
+    owOptionalStrictObject().exactShape({
+        header: owOptionalSignedHeaderParamsHeader(),
+        commit: owOptionalSignedHeaderParamsCommit(),
+    });
 
 export const owHeaderOptions = owStrictObject().exactShape({
-    signedHeader: ow.optional.any(owOptionalSignedHeader, ow.null),
-    validatorSet: ow.optional.any(ow.null, owOptionalLightClientValidatorSet),
+    signedHeader: owOptionalSignedHeader(),
+    validatorSet: ow.any(owOptionalLightClientValidatorSet, ow.optional.null),
     trustedHeight: owIBCHeightOptional(),
-    trustedValidators: ow.optional.any(ow.null, owOptionalLightClientValidatorSet),
+    trustedValidators: ow.optional.any(owOptionalLightClientValidatorSet, ow.null),
 });
