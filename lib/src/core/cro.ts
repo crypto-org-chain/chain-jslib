@@ -43,6 +43,7 @@ import { rawTransactionV2 } from '../transaction/v2.raw';
 import { coinv2 } from '../coin/v2.coin/v2.coin';
 import { msgClientState } from '../transaction/msg/ibc/lightclients/ClientState';
 import { msgConsensusState } from '../transaction/msg/ibc/lightclients/ConsensusState';
+import { msgHeader } from '../transaction/msg/ibc/lightclients/Header';
 
 export const CroSDK = function (configs: InitConfigurations) {
     ow(configs, 'configs', owCroSDKInitParams);
