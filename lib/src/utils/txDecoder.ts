@@ -4,10 +4,11 @@ import { AuthInfo, TxBody, SignerInfo, Tx } from '@cosmjs/proto-signing/build/co
 import * as snakecaseKeys from 'snakecase-keys';
 import Long from 'long';
 import Big from 'big.js';
-import { cosmos, ics23 } from '../cosmos/v1beta1/codec/generated/codecimpl';
+import { cosmos, ics23, tendermintV2 } from '../cosmos/v1beta1/codec/generated/codecimpl';
 import { Bytes } from './bytes/bytes';
 import { typeUrlMappings } from '../cosmos/v1beta1/types/typeurls';
 import { COSMOS_MSG_TYPEURL } from '../transaction/common/constants/typeurl';
+import { convertSecondsNanosToTZFormat } from './timestamp';
 
 const cosmJSRegistry = new Registry(Object.entries(typeUrlMappings));
 const DISPLAY_DIVISION_STRING = '1000000000000000000';
@@ -291,6 +292,241 @@ function handleSpecialParams(decodedParams: any, typeUrl: string) {
         }
     }
 
+    if (typeUrl === COSMOS_MSG_TYPEURL.ibc.MsgUpdateClient) {
+        if (decodedParams.header && Object.keys(decodedParams.header).length > 0) {
+            clonedDecodedParams.header = decodeAnyType(decodedParams.header.type_url, decodedParams.header.value);
+
+            if (clonedDecodedParams.header.signedHeader) {
+                const { signedHeader } = clonedDecodedParams.header;
+
+                /** handle signed_header.header params */
+                if (signedHeader.header) {
+                    // handle signed_header.header.`time`
+                    if (signedHeader.header.time) {
+                        clonedDecodedParams.header.signedHeader.header.time = convertSecondsNanosToTZFormat(
+                            Long.fromString(signedHeader.header.time.seconds),
+                            signedHeader.header.time.nanos,
+                        );
+                    }
+
+                    // handle signed_header.header.lastBlockId.hash
+                    if (signedHeader.header.lastBlockId.hash) {
+                        clonedDecodedParams.header.signedHeader.header.lastBlockId.hash = Bytes.fromUint8Array(
+                            signedHeader.header.lastBlockId.hash,
+                        ).toBase64String();
+                    }
+                    // handle signed_header.header.lastBlockId.part_set_header.hash
+                    if (signedHeader.header.lastBlockId.partSetHeader.hash) {
+                        clonedDecodedParams.header.signedHeader.header.lastBlockId.partSetHeader.hash = Bytes.fromUint8Array(
+                            signedHeader.header.lastBlockId.partSetHeader.hash,
+                        ).toBase64String();
+                    }
+                    // handle signed_header.header.last_commit_hash
+                    if (signedHeader.header.lastCommitHash) {
+                        clonedDecodedParams.header.signedHeader.header.lastCommitHash = Bytes.fromUint8Array(
+                            signedHeader.header.lastCommitHash,
+                        ).toBase64String();
+                    }
+                    // handle signed_header.header.data_hash
+                    if (signedHeader.header.dataHash) {
+                        clonedDecodedParams.header.signedHeader.header.dataHash = Bytes.fromUint8Array(
+                            signedHeader.header.dataHash,
+                        ).toBase64String();
+                    }
+                    // handle signed_header.header.validators_hash
+                    if (signedHeader.header.validatorsHash) {
+                        clonedDecodedParams.header.signedHeader.header.validatorsHash = Bytes.fromUint8Array(
+                            signedHeader.header.validatorsHash,
+                        ).toBase64String();
+                    }
+                    // handle signed_header.header.next_validators_hash
+                    if (signedHeader.header.nextValidatorsHash) {
+                        clonedDecodedParams.header.signedHeader.header.nextValidatorsHash = Bytes.fromUint8Array(
+                            signedHeader.header.nextValidatorsHash,
+                        ).toBase64String();
+                    }
+                    // handle signed_header.header.consensus_hash
+                    if (signedHeader.header.consensusHash) {
+                        clonedDecodedParams.header.signedHeader.header.consensusHash = Bytes.fromUint8Array(
+                            signedHeader.header.consensusHash,
+                        ).toBase64String();
+                    }
+                    // handle signed_header.header.app_hash
+                    if (signedHeader.header.appHash) {
+                        clonedDecodedParams.header.signedHeader.header.appHash = Bytes.fromUint8Array(
+                            signedHeader.header.appHash,
+                        ).toBase64String();
+                    }
+                    // handle signed_header.header.last_results_hash
+                    if (signedHeader.header.lastResultsHash) {
+                        clonedDecodedParams.header.signedHeader.header.lastResultsHash = Bytes.fromUint8Array(
+                            signedHeader.header.lastResultsHash,
+                        ).toBase64String();
+                    }
+                    // handle signed_header.header.evidence_hash
+                    if (signedHeader.header.evidenceHash) {
+                        clonedDecodedParams.header.signedHeader.header.evidenceHash = Bytes.fromUint8Array(
+                            signedHeader.header.evidenceHash,
+                        ).toBase64String();
+                    }
+                    // handle signed_header.header.proposer_address
+                    if (signedHeader.header.proposerAddress) {
+                        clonedDecodedParams.header.signedHeader.header.proposerAddress = Bytes.fromUint8Array(
+                            signedHeader.header.proposerAddress,
+                        ).toBase64String();
+                    }
+                }
+
+                /* eslint-disable */
+                /** handle signed_header.`commit` params */
+                if (signedHeader.commit) {
+                    if (signedHeader.commit.signatures && signedHeader.commit.signatures.length > 0) {
+                        signedHeader.commit.signatures = signedHeader.commit.signatures.map((signatureObj: any) => {
+                            // handle signed_header.commit.signatures[].block_id_flag
+                            if (signatureObj.blockIdFlag) {
+                                signatureObj.blockIdFlag = getBlockIdFlagStringFromValue(signatureObj.blockIdFlag);
+                            }
+                            // handle signed_header.commit.signatures[].validator_address
+                            if (signatureObj.validatorAddress) {
+                                signatureObj.validatorAddress = Bytes.fromUint8Array(
+                                    signatureObj.validatorAddress,
+                                ).toBase64String();
+                            }
+                            // handle signed_header.commit.signatures[].timestamp
+                            if (signatureObj.timestamp) {
+                                signatureObj.timestamp = convertSecondsNanosToTZFormat(
+                                    Long.fromString(signatureObj.timestamp.seconds),
+                                    signatureObj.timestamp.nanos,
+                                );
+                            }
+                            // handle signed_header.commit.signatures[].signature
+                            if (signatureObj.signature) {
+                                signatureObj.signature = Bytes.fromUint8Array(signatureObj.signature).toBase64String();
+                            }
+                            return signatureObj;
+                        });
+                    }
+
+                    // handle signedHeader.commit.blockId
+                    if (signedHeader.commit.blockId) {
+                        // handle signed_header.commit.block_id.hash
+                        if (signedHeader.commit.blockId.hash) {
+                            clonedDecodedParams.header.signedHeader.commit.blockId.hash = Bytes.fromUint8Array(
+                                clonedDecodedParams.header.signedHeader.commit.blockId.hash,
+                            ).toBase64String();
+                        }
+
+                        // handle signed_header.commit.block_id.part_set_header.hash
+                        if (
+                            signedHeader.commit.blockId.partSetHeader &&
+                            signedHeader.commit.blockId.partSetHeader.hash
+                        ) {
+                            clonedDecodedParams.header.signedHeader.commit.blockId.partSetHeader.hash = Bytes.fromUint8Array(
+                                clonedDecodedParams.header.signedHeader.commit.blockId.partSetHeader.hash,
+                            ).toBase64String();
+                        }
+                    }
+                }
+            }
+
+            if (clonedDecodedParams.header.validatorSet && clonedDecodedParams.header.validatorSet) {
+                const { validatorSet } = clonedDecodedParams.header;
+
+                // handle validatorSet.validators[]
+                if (validatorSet.validators && validatorSet.validators.length > 0) {
+                    validatorSet.validators = validatorSet.validators.map((validator: any) => {
+                        // validator_set.validators[].address
+                        if (validator.address) {
+                            validator.address = Bytes.fromUint8Array(validator.address).toBase64String();
+                        }
+
+                        // validator_set.validators[].pub_key.ed25519
+                        if (validator.pubKey) {
+                            // ed25519
+                            if (validator.pubKey.ed25519) {
+                                validator.pubKey.ed25519 = Bytes.fromUint8Array(
+                                    validator.pubKey.ed25519,
+                                ).toBase64String();
+                            }
+
+                            // secpk256
+                            if (validator.pubKey.secpk256) {
+                                validator.pubKey.secpk256 = Bytes.fromUint8Array(
+                                    validator.pubKey.secpk256,
+                                ).toBase64String();
+                            }
+                        }
+                        return validator;
+                    });
+                }
+
+                if (validatorSet.proposer) {
+                    // validator_set.proposer.address
+                    if (validatorSet.proposer.address) {
+                        clonedDecodedParams.header.validatorSet.proposer.address = Bytes.fromUint8Array(
+                            clonedDecodedParams.header.validatorSet.proposer.address,
+                        ).toBase64String();
+                    }
+
+                    // validator_set.proposer.pub_key.ed25519
+                    if (validatorSet.proposer.pubKey) {
+                        // ed25519
+                        if (validatorSet.proposer.pubKey.ed25519) {
+                            clonedDecodedParams.header.validatorSet.proposer.pubKey.ed25519 = Bytes.fromUint8Array(
+                                validatorSet.proposer.pubKey.ed25519,
+                            ).toBase64String();
+                        }
+                    }
+                }
+            }
+
+            if (clonedDecodedParams.header.trustedValidators) {
+                const { trustedValidators } = clonedDecodedParams.header;
+                if (trustedValidators.validators && trustedValidators.validators.length > 0) {
+                    trustedValidators.validators = trustedValidators.validators.map((validator: any) => {
+                        // trusted_validators.validators[].address
+                        if (validator.address) {
+                            validator.address = Bytes.fromUint8Array(validator.address).toBase64String();
+                        }
+
+                        // trusted_validators.validators[].pub_key.ed25519
+                        if (validator.pubKey) {
+                            // ed25519
+                            if (validator.pubKey.ed25519) {
+                                validator.pubKey.ed25519 = Bytes.fromUint8Array(
+                                    validator.pubKey.ed25519,
+                                ).toBase64String();
+                            }
+
+                            // secpk256
+                            if (validator.pubKey.secpk256) {
+                                validator.pubKey.secpk256 = Bytes.fromUint8Array(
+                                    validator.pubKey.secpk256,
+                                ).toBase64String();
+                            }
+                        }
+                        return validator;
+                    });
+                }
+                // trusted_validators.proposer.address
+                if (trustedValidators.proposer.address) {
+                    clonedDecodedParams.header.trustedValidators.proposer.address = Bytes.fromUint8Array(
+                        trustedValidators.proposer.address,
+                    ).toBase64String();
+                }
+
+                if (trustedValidators.proposer.pubKey) {
+                    // trusted_validators.proposer.pub_key.ed25519
+                    if (trustedValidators.proposer.pubKey.ed25519) {
+                        clonedDecodedParams.header.trustedValidators.proposer.pubKey.ed25519 = Bytes.fromUint8Array(
+                            trustedValidators.proposer.pubKey.ed25519,
+                        ).toBase64String();
+                    }
+                }
+            }
+            /* eslint-enable */
+        }
+    }
     return clonedDecodedParams;
 }
 
@@ -306,6 +542,16 @@ const getLengthOpStringFromValue = (targetValue: number): string | null => {
     const mayBeLengthOp = Object.values(ics23.LengthOp).find((v) => v === targetValue) as ics23.LengthOp | undefined;
     if (mayBeLengthOp) {
         return ics23.LengthOp[mayBeLengthOp] || null;
+    }
+    return null;
+};
+
+const getBlockIdFlagStringFromValue = (targetValue: string): string | null => {
+    const mayBeBlockIdFlag = Object.values(tendermintV2.types.BlockIDFlag).find((v) => v === targetValue) as
+        | tendermintV2.types.BlockIDFlag
+        | undefined;
+    if (mayBeBlockIdFlag) {
+        return tendermintV2.types.BlockIDFlag[mayBeBlockIdFlag] || null;
     }
     return null;
 };
