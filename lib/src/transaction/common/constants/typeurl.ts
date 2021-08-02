@@ -47,6 +47,7 @@ export const COSMOS_MSG_TYPEURL = {
         },
         connection: {
             MsgConnectionOpenConfirm: '/ibc.core.connection.v1.MsgConnectionOpenConfirm',
+            MsgConnectionOpenTry: '/ibc.core.connection.v1.MsgConnectionOpenTry',
         },
     },
 };
