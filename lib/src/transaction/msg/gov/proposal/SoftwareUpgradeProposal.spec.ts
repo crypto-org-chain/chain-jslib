@@ -127,7 +127,7 @@ describe('Testing SoftwareUpgradeProposal and its content types', function () {
 
             expect(SoftwareUpgradeProposal.description).to.eql('Lorem Ipsum ... Checking text proposal');
         });
-        it('should set `upgradedClientState` as undefined when non-empty', function () {
+        it('should throw when `upgradedClientState` is non-empty', function () {
             const json = `{"@type":"/cosmos.upgrade.v1beta1.SoftwareUpgradeProposal","title": "Text Proposal Title", "description": "Lorem Ipsum ... Checking text proposal",
              "plan": {
                     "height": "1000",
