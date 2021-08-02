@@ -124,12 +124,14 @@ export const MsgConnectionOpenTryIBC = function (config: InitConfigurations) {
                 throw new Error('Invalid Base64 string received in JSON.');
             }
 
-            //TODO: Not support `client_state`, Will need another issue
+            // TODO: Not support `client_state`, Will need another issue
             if (parsedMsg.client_state && Object.keys(parsedMsg.client_state).length > 0) {
                 throw new Error('MsgConnectionOpenTry doesnot support `client_state` JSON decoding.');
             }
 
-            let proofHeight = undefined, consensusHeight = undefined, counterparty = undefined;
+            let proofHeight;
+            let consensusHeight;
+            let counterparty;
             if (typeof parsedMsg.proof_height === 'object' && Object.keys(parsedMsg.proof_height).length > 0) {
                 proofHeight = {
                     revisionHeight: Long.fromString(parsedMsg.proof_height?.revision_height!),
@@ -147,33 +149,33 @@ export const MsgConnectionOpenTryIBC = function (config: InitConfigurations) {
                     clientId: parsedMsg.counterparty.client_id,
                     connectionId: parsedMsg.counterparty.connection_id,
                     prefix: {
-                        keyPrefix: parsedMsg.counterparty.prefix.key_prefix
-                    }
+                        keyPrefix: parsedMsg.counterparty.prefix.key_prefix,
+                    },
                 };
             }
 
             let counterPartyVersionList: CounterpartyVersion[] = [];
-            if (typeof parsedMsg.counterparty_versions === "object" && parsedMsg.counterparty_versions.length > 0) {
-                counterPartyVersionList = parsedMsg.counterparty_versions.map(counterparty => {
+            if (typeof parsedMsg.counterparty_versions === 'object' && parsedMsg.counterparty_versions.length > 0) {
+                counterPartyVersionList = parsedMsg.counterparty_versions.map((counterpartyVersion) => {
                     return {
-                        identifier: counterparty.identifier,
-                        features: counterparty.features
+                        identifier: counterpartyVersion.identifier,
+                        features: counterpartyVersion.features,
                     };
-                })
+                });
             }
 
             return new MsgConnectionOpenTry({
                 clientId: parsedMsg.client_id,
                 previousConnectionId: parsedMsg.previous_connection_id,
                 clientState: undefined, // TODO, keeping default `undefined`
-                counterparty: counterparty,
+                counterparty,
                 delayPeriod: Long.fromString(parsedMsg.delay_period),
                 counterpartyVersions: counterPartyVersionList,
-                proofHeight: proofHeight,
+                proofHeight,
                 proofInit: Bytes.fromBase64String(parsedMsg.proof_init).toUint8Array(),
                 proofClient: Bytes.fromBase64String(parsedMsg.proof_client).toUint8Array(),
                 proofConsensus: Bytes.fromBase64String(parsedMsg.proof_consensus).toUint8Array(),
-                consensusHeight: consensusHeight,
+                consensusHeight,
                 signer: parsedMsg.signer,
             });
         }
@@ -223,11 +225,6 @@ export interface IHeight {
     revisionHeight: Long;
 }
 
-export interface CounterpartyVersion {
-    identifier: string;
-    features: string[];
-}
-
 /** JSON TYPES * */
 
 export interface MsgConnectionOpenTryJSON {
@@ -259,11 +256,6 @@ export interface ClientStateJSON {
     upgrade_path: string[];
     allow_update_after_expiry: boolean;
     allow_update_after_misbehaviour: boolean;
-}
-export interface CounterpartyJSON {
-    client_id: string;
-    connection_id: string;
-    prefix: PrefixJSON;
 }
 export interface Height {
     revision_number: string;
@@ -307,9 +299,4 @@ export interface CounterpartyJSON {
 
 export interface PrefixJSON {
     key_prefix: string;
-}
-
-export interface CounterpartyVersion {
-    identifier: string;
-    features: string[];
 }

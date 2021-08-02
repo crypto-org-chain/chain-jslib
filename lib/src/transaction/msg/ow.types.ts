@@ -413,15 +413,15 @@ export const owMsgConnectionOpenConfirmOptions = owStrictObject().exactShape({
 
 export const owCounterPartyVersion = owStrictObject().exactShape({
     identifier: ow.string,
-    features: ow.array.ofType(ow.string)
+    features: ow.array.ofType(ow.string),
 });
 
 export const owCounterPartyOptional = owOptionalStrictObject().exactShape({
     clientId: ow.string,
     connectionId: ow.string,
     prefix: owStrictObject().exactShape({
-        keyPrefix: ow.string
-    })
+        keyPrefix: ow.string,
+    }),
 });
 
 export const owMsgConnectionOpenTryOptions = owStrictObject().exactShape({

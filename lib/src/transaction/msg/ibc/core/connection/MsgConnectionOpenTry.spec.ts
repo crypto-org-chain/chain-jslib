@@ -33,9 +33,9 @@ const cro = CroSDK({
 describe('Testing MsgConnectionOpenTry', function () {
     fuzzyDescribe('should throw Error when options is invalid', function (fuzzy) {
         const anyValidOptions = {
-            "clientId": "07-tendermint-0",
-            "previousConnectionId": "",
-            "clientState": {
+            clientId: '07-tendermint-0',
+            previousConnectionId: '',
+            clientState: {
                 chainId: 'testnet-croeseid-1',
                 trustLevel: {
                     numerator: Long.fromString('1'),
@@ -86,35 +86,38 @@ describe('Testing MsgConnectionOpenTry', function () {
                 allowUpdateAfterExpiry: false,
                 allowUpdateAfterMisbehaviour: false,
             },
-            "counterparty": {
-                "clientId": "07-tendermint-39",
-                "connectionId": "connection-109",
-                "prefix": {
-                    "keyPrefix": "aWJj"
-                }
+            counterparty: {
+                clientId: '07-tendermint-39',
+                connectionId: 'connection-109',
+                prefix: {
+                    keyPrefix: 'aWJj',
+                },
             },
-            "delayPeriod": Long.fromString("0"),
-            "counterpartyVersions": [
+            delayPeriod: Long.fromString('0'),
+            counterpartyVersions: [
                 {
-                    "identifier": "1",
-                    "features": [
-                        "ORDERORDERED",
-                        "ORDERUNORDERED"
-                    ]
-                }
+                    identifier: '1',
+                    features: ['ORDERORDERED', 'ORDERUNORDERED'],
+                },
             ],
-            "proofHeight": {
-                "revisionNumber": Long.fromString("4"),
-                "revisionHeight": Long.fromString("5622892")
+            proofHeight: {
+                revisionNumber: Long.fromString('4'),
+                revisionHeight: Long.fromString('5622892'),
             },
-            "proofInit": Bytes.fromBase64String("CtwECtkEChpjb25uZWN0aW9ucy9jb25uZWN0aW9uLTEwORJTChAwNy10ZW5kZXJtaW50LTM5EiMKATESDU9SREVSX09SREVSRUQSD09SREVSX1VOT1JERVJFRBgBIhgKDzA3LXRlbmRlcm1pbnQtMBoFCgNpYmMaDggBGAEgASoGAALUsa4FIiwIARIoAgTUsa4FIJbX8P26NAg7WJjTR+37+78floxHE5H2nP5Aj2uw3nQxICIsCAESKAQG1LGuBSAfMb6iopk9+La81LhyJVtxv9gz+zfGB8Dksf5s0NBK6SAiLAgBEigGCtSxrgUgVmGMJqwvrqMz0a96IUZMh98SDsCGmlvtbKvAMYhTUGEgIiwIARIoCBrUsa4FIMvMbIV6sCIYgRr3G+DzauSyKpztDlB2oo5IUEake46qICIuCAESBwom1LGuBSAaISCLUIxRTmd8f44u73SE7KP0B0x2Hi4ubnO0FEEksJtG1CIuCAESBwxY1LGuBSAaISChW0Pngn6gx2vaBJ64r5nScEuu7YNQvWccJmhGqr19viItCAESKQ6cAdSxrgUgvWaX+cPWMwoCiFQ5Q9eso+DV4d5fH7CSpq8k2Kk58qogIi8IARIIEKYC1LGuBSAaISARBs1X8n8PDk1bJMmtaTE+XvPw1uWMecj4CBjmNBOFvSIvCAESCBLeA9SxrgUgGiEgt7IE1gd3OJ+pYKpTWEoxbzB0pemGd6/nm5zQwhJgn2IiLQgBEikWhgzUsa4FICf/ZS0sWDG35apesAYH2GQJ/PN50aWak8GX8He55urZIArVAQrSAQoDaWJjEiC5/pdvs86SIMETztvXqOM2VKoUsKxtUr00LIb8346+fRoJCAEYASABKgEAIicIARIBARog+VbefwQZr0EJzBl04fE3Iwq9K4y59Sd3XuzKGogXDyIiJQgBEiEBBaWlpOGeCPh66SAQygI6GpJinGcQrhy7KO/G5Tmqzz4iJQgBEiEBbI3v3i9RTfwPQUwfIW7pPNjLw2x/tDYvnNZkMe2X6CIiJwgBEgEBGiAElZdHfml4DScpDFpEbkXY6tOOqxQ9z6VZc3sIGdXPJA==").toUint8Array(),
-            "proofClient": Bytes.fromBase64String("CocGCoQGCiRjbGllbnRzLzA3LXRlbmRlcm1pbnQtMzkvY2xpZW50U3RhdGUSwgEKKy9pYmMubGlnaHRjbGllbnRzLnRlbmRlcm1pbnQudjEuQ2xpZW50U3RhdGUSkgEKGmNyeXB0by1vcmctY2hhaW4tbWFpbm5ldC0xEgQIARADGgQIgOpJIgUIgNSTASoDCNgEMgA6BQgBENdBQhkKCQgBGAEgASoBABIMCgIAARAhGAQgDDABQhkKCQgBGAEgASoBABIMCgIAARAgGAEgATABSgd1cGdyYWRlShB1cGdyYWRlZElCQ1N0YXRlUAFYARoOCAEYASABKgYAAtSxrgUiLggBEgcCBNSxrgUgGiEgIa+jH5IK2AzJfbwtUJMOjR+vBA49DUyC2cYaHBjL+YwiLAgBEigECNSxrgUgmn+39h9eWNRiYtMn/l9ZfKyrRRVnbhOFjPdh6pEyHYAgIi4IARIHBhDUsa4FIBohIOFAqtMgyrSszuz0qowZqe521AGJXL8NtB+k+50TisSPIiwIARIoCCDUsa4FIPHUyM8P1UjfxJCP0jD9G0OOuXJ7FyJ5vvHiFl2+KSgFICIuCAESBwoq1LGuBSAaISAZsGVao2dgPTNgtB9Lwje1AQ4EnS4Gr1RtiH0XAExzdCIuCAESBwxm1LGuBSAaISAKklCi/YkcA5JTAyXQLbVevrQrJNiS6VPETXaQ08yotiItCAESKQ6uAdSxrgUgYcIRoQ8zQ82jj/47UIk3iAzRKlLqdIxKYTTGF8adDtMgIi0IARIpEOoB1LGuBSDm8ME8KcxPvA+UHxq3N6tJYqtmVpScy5FXWnhmGQhkNCAiLQgBEikS6gLUsa4FIPGK1xquAJ0gGs+Ti+kyxjuY1l7tImbbDBHpH2jxjFQ/ICItCAESKRSoCNSxrgUgVaVJLWZfI+HBkXk4z/FmyiF+sQoJsMdyn/v4cuBpVmsgIi8IARIIFoYM1LGuBSAaISBrlsldqPIfCSwzp4ORwj0WkhZ6hB5fhFDyV4xDyc6A+ArVAQrSAQoDaWJjEiC5/pdvs86SIMETztvXqOM2VKoUsKxtUr00LIb8346+fRoJCAEYASABKgEAIicIARIBARog+VbefwQZr0EJzBl04fE3Iwq9K4y59Sd3XuzKGogXDyIiJQgBEiEBBaWlpOGeCPh66SAQygI6GpJinGcQrhy7KO/G5Tmqzz4iJQgBEiEBbI3v3i9RTfwPQUwfIW7pPNjLw2x/tDYvnNZkMe2X6CIiJwgBEgEBGiAElZdHfml4DScpDFpEbkXY6tOOqxQ9z6VZc3sIGdXPJA==").toUint8Array(),
-            "proofConsensus": Bytes.fromBase64String("CtQFCtEFCi9jbGllbnRzLzA3LXRlbmRlcm1pbnQtMzkvY29uc2Vuc3VzU3RhdGVzLzEtODQwNxKGAQouL2liYy5saWdodGNsaWVudHMudGVuZGVybWludC52MS5Db25zZW5zdXNTdGF0ZRJUCgwIk9jyggYQ/o7axgMSIgogL5GwQD3KwWp+PFZeQ8Rz0pujxJvcHn9BFd3cwOFg294aIBXUob00ahwyiYpV7p5AleA18ZsPq72Yx/N5iUj1ZJKeGg4IARgBIAEqBgAC1LGuBSIuCAESBwIE1LGuBSAaISA5DhB9qRX1RUltuHxiEXT+t63Qr0GxjiKJo8CMBfqtXCIsCAESKAQI1LGuBSDPEpc9sTTJ96zwcCGZ3Ba1icFmAbkcY52/YauNvq0C+CAiLAgBEigGENSxrgUgZvk+QvucnZIyrvtHsGX8YcQt4in4hwFnnQ4hvj/xk9IgIiwIARIoCCDUsa4FIPHUyM8P1UjfxJCP0jD9G0OOuXJ7FyJ5vvHiFl2+KSgFICIuCAESBwoq1LGuBSAaISAZsGVao2dgPTNgtB9Lwje1AQ4EnS4Gr1RtiH0XAExzdCIuCAESBwxm1LGuBSAaISAKklCi/YkcA5JTAyXQLbVevrQrJNiS6VPETXaQ08yotiItCAESKQ6uAdSxrgUgYcIRoQ8zQ82jj/47UIk3iAzRKlLqdIxKYTTGF8adDtMgIi0IARIpEOoB1LGuBSDm8ME8KcxPvA+UHxq3N6tJYqtmVpScy5FXWnhmGQhkNCAiLQgBEikS6gLUsa4FIPGK1xquAJ0gGs+Ti+kyxjuY1l7tImbbDBHpH2jxjFQ/ICItCAESKRSoCNSxrgUgVaVJLWZfI+HBkXk4z/FmyiF+sQoJsMdyn/v4cuBpVmsgIi8IARIIFoYM1LGuBSAaISBrlsldqPIfCSwzp4ORwj0WkhZ6hB5fhFDyV4xDyc6A+ArVAQrSAQoDaWJjEiC5/pdvs86SIMETztvXqOM2VKoUsKxtUr00LIb8346+fRoJCAEYASABKgEAIicIARIBARog+VbefwQZr0EJzBl04fE3Iwq9K4y59Sd3XuzKGogXDyIiJQgBEiEBBaWlpOGeCPh66SAQygI6GpJinGcQrhy7KO/G5Tmqzz4iJQgBEiEBbI3v3i9RTfwPQUwfIW7pPNjLw2x/tDYvnNZkMe2X6CIiJwgBEgEBGiAElZdHfml4DScpDFpEbkXY6tOOqxQ9z6VZc3sIGdXPJA==").toUint8Array(),
-            "consensusHeight": {
-                "revisionNumber": Long.fromString("1"),
-                "revisionHeight": Long.fromString("8407")
+            proofInit: Bytes.fromBase64String(
+                'CtwECtkEChpjb25uZWN0aW9ucy9jb25uZWN0aW9uLTEwORJTChAwNy10ZW5kZXJtaW50LTM5EiMKATESDU9SREVSX09SREVSRUQSD09SREVSX1VOT1JERVJFRBgBIhgKDzA3LXRlbmRlcm1pbnQtMBoFCgNpYmMaDggBGAEgASoGAALUsa4FIiwIARIoAgTUsa4FIJbX8P26NAg7WJjTR+37+78floxHE5H2nP5Aj2uw3nQxICIsCAESKAQG1LGuBSAfMb6iopk9+La81LhyJVtxv9gz+zfGB8Dksf5s0NBK6SAiLAgBEigGCtSxrgUgVmGMJqwvrqMz0a96IUZMh98SDsCGmlvtbKvAMYhTUGEgIiwIARIoCBrUsa4FIMvMbIV6sCIYgRr3G+DzauSyKpztDlB2oo5IUEake46qICIuCAESBwom1LGuBSAaISCLUIxRTmd8f44u73SE7KP0B0x2Hi4ubnO0FEEksJtG1CIuCAESBwxY1LGuBSAaISChW0Pngn6gx2vaBJ64r5nScEuu7YNQvWccJmhGqr19viItCAESKQ6cAdSxrgUgvWaX+cPWMwoCiFQ5Q9eso+DV4d5fH7CSpq8k2Kk58qogIi8IARIIEKYC1LGuBSAaISARBs1X8n8PDk1bJMmtaTE+XvPw1uWMecj4CBjmNBOFvSIvCAESCBLeA9SxrgUgGiEgt7IE1gd3OJ+pYKpTWEoxbzB0pemGd6/nm5zQwhJgn2IiLQgBEikWhgzUsa4FICf/ZS0sWDG35apesAYH2GQJ/PN50aWak8GX8He55urZIArVAQrSAQoDaWJjEiC5/pdvs86SIMETztvXqOM2VKoUsKxtUr00LIb8346+fRoJCAEYASABKgEAIicIARIBARog+VbefwQZr0EJzBl04fE3Iwq9K4y59Sd3XuzKGogXDyIiJQgBEiEBBaWlpOGeCPh66SAQygI6GpJinGcQrhy7KO/G5Tmqzz4iJQgBEiEBbI3v3i9RTfwPQUwfIW7pPNjLw2x/tDYvnNZkMe2X6CIiJwgBEgEBGiAElZdHfml4DScpDFpEbkXY6tOOqxQ9z6VZc3sIGdXPJA==',
+            ).toUint8Array(),
+            proofClient: Bytes.fromBase64String(
+                'CocGCoQGCiRjbGllbnRzLzA3LXRlbmRlcm1pbnQtMzkvY2xpZW50U3RhdGUSwgEKKy9pYmMubGlnaHRjbGllbnRzLnRlbmRlcm1pbnQudjEuQ2xpZW50U3RhdGUSkgEKGmNyeXB0by1vcmctY2hhaW4tbWFpbm5ldC0xEgQIARADGgQIgOpJIgUIgNSTASoDCNgEMgA6BQgBENdBQhkKCQgBGAEgASoBABIMCgIAARAhGAQgDDABQhkKCQgBGAEgASoBABIMCgIAARAgGAEgATABSgd1cGdyYWRlShB1cGdyYWRlZElCQ1N0YXRlUAFYARoOCAEYASABKgYAAtSxrgUiLggBEgcCBNSxrgUgGiEgIa+jH5IK2AzJfbwtUJMOjR+vBA49DUyC2cYaHBjL+YwiLAgBEigECNSxrgUgmn+39h9eWNRiYtMn/l9ZfKyrRRVnbhOFjPdh6pEyHYAgIi4IARIHBhDUsa4FIBohIOFAqtMgyrSszuz0qowZqe521AGJXL8NtB+k+50TisSPIiwIARIoCCDUsa4FIPHUyM8P1UjfxJCP0jD9G0OOuXJ7FyJ5vvHiFl2+KSgFICIuCAESBwoq1LGuBSAaISAZsGVao2dgPTNgtB9Lwje1AQ4EnS4Gr1RtiH0XAExzdCIuCAESBwxm1LGuBSAaISAKklCi/YkcA5JTAyXQLbVevrQrJNiS6VPETXaQ08yotiItCAESKQ6uAdSxrgUgYcIRoQ8zQ82jj/47UIk3iAzRKlLqdIxKYTTGF8adDtMgIi0IARIpEOoB1LGuBSDm8ME8KcxPvA+UHxq3N6tJYqtmVpScy5FXWnhmGQhkNCAiLQgBEikS6gLUsa4FIPGK1xquAJ0gGs+Ti+kyxjuY1l7tImbbDBHpH2jxjFQ/ICItCAESKRSoCNSxrgUgVaVJLWZfI+HBkXk4z/FmyiF+sQoJsMdyn/v4cuBpVmsgIi8IARIIFoYM1LGuBSAaISBrlsldqPIfCSwzp4ORwj0WkhZ6hB5fhFDyV4xDyc6A+ArVAQrSAQoDaWJjEiC5/pdvs86SIMETztvXqOM2VKoUsKxtUr00LIb8346+fRoJCAEYASABKgEAIicIARIBARog+VbefwQZr0EJzBl04fE3Iwq9K4y59Sd3XuzKGogXDyIiJQgBEiEBBaWlpOGeCPh66SAQygI6GpJinGcQrhy7KO/G5Tmqzz4iJQgBEiEBbI3v3i9RTfwPQUwfIW7pPNjLw2x/tDYvnNZkMe2X6CIiJwgBEgEBGiAElZdHfml4DScpDFpEbkXY6tOOqxQ9z6VZc3sIGdXPJA==',
+            ).toUint8Array(),
+            proofConsensus: Bytes.fromBase64String(
+                'CtQFCtEFCi9jbGllbnRzLzA3LXRlbmRlcm1pbnQtMzkvY29uc2Vuc3VzU3RhdGVzLzEtODQwNxKGAQouL2liYy5saWdodGNsaWVudHMudGVuZGVybWludC52MS5Db25zZW5zdXNTdGF0ZRJUCgwIk9jyggYQ/o7axgMSIgogL5GwQD3KwWp+PFZeQ8Rz0pujxJvcHn9BFd3cwOFg294aIBXUob00ahwyiYpV7p5AleA18ZsPq72Yx/N5iUj1ZJKeGg4IARgBIAEqBgAC1LGuBSIuCAESBwIE1LGuBSAaISA5DhB9qRX1RUltuHxiEXT+t63Qr0GxjiKJo8CMBfqtXCIsCAESKAQI1LGuBSDPEpc9sTTJ96zwcCGZ3Ba1icFmAbkcY52/YauNvq0C+CAiLAgBEigGENSxrgUgZvk+QvucnZIyrvtHsGX8YcQt4in4hwFnnQ4hvj/xk9IgIiwIARIoCCDUsa4FIPHUyM8P1UjfxJCP0jD9G0OOuXJ7FyJ5vvHiFl2+KSgFICIuCAESBwoq1LGuBSAaISAZsGVao2dgPTNgtB9Lwje1AQ4EnS4Gr1RtiH0XAExzdCIuCAESBwxm1LGuBSAaISAKklCi/YkcA5JTAyXQLbVevrQrJNiS6VPETXaQ08yotiItCAESKQ6uAdSxrgUgYcIRoQ8zQ82jj/47UIk3iAzRKlLqdIxKYTTGF8adDtMgIi0IARIpEOoB1LGuBSDm8ME8KcxPvA+UHxq3N6tJYqtmVpScy5FXWnhmGQhkNCAiLQgBEikS6gLUsa4FIPGK1xquAJ0gGs+Ti+kyxjuY1l7tImbbDBHpH2jxjFQ/ICItCAESKRSoCNSxrgUgVaVJLWZfI+HBkXk4z/FmyiF+sQoJsMdyn/v4cuBpVmsgIi8IARIIFoYM1LGuBSAaISBrlsldqPIfCSwzp4ORwj0WkhZ6hB5fhFDyV4xDyc6A+ArVAQrSAQoDaWJjEiC5/pdvs86SIMETztvXqOM2VKoUsKxtUr00LIb8346+fRoJCAEYASABKgEAIicIARIBARog+VbefwQZr0EJzBl04fE3Iwq9K4y59Sd3XuzKGogXDyIiJQgBEiEBBaWlpOGeCPh66SAQygI6GpJinGcQrhy7KO/G5Tmqzz4iJQgBEiEBbI3v3i9RTfwPQUwfIW7pPNjLw2x/tDYvnNZkMe2X6CIiJwgBEgEBGiAElZdHfml4DScpDFpEbkXY6tOOqxQ9z6VZc3sIGdXPJA==',
+            ).toUint8Array(),
+            consensusHeight: {
+                revisionNumber: Long.fromString('1'),
+                revisionHeight: Long.fromString('8407'),
             },
-            "signer": "cro1l60esq8vche5nlk7ylvp0ssq7rmk453zh8rx6u"
+            signer: 'cro1l60esq8vche5nlk7ylvp0ssq7rmk453zh8rx6u',
         };
 
         const testRunner = fuzzy(fuzzy.ObjArg(anyValidOptions));
@@ -131,9 +134,9 @@ describe('Testing MsgConnectionOpenTry', function () {
 
     it('Test MsgConnectionOpenTry conversion', function () {
         const MsgConnectionOpenTry = new cro.ibc.connection.MsgConnectionOpenTry({
-            "clientId": "07-tendermint-0",
-            "previousConnectionId": "",
-            "clientState": {
+            clientId: '07-tendermint-0',
+            previousConnectionId: '',
+            clientState: {
                 chainId: 'testnet-croeseid-1',
                 trustLevel: {
                     numerator: Long.fromString('1'),
@@ -184,43 +187,46 @@ describe('Testing MsgConnectionOpenTry', function () {
                 allowUpdateAfterExpiry: false,
                 allowUpdateAfterMisbehaviour: false,
             },
-            "counterparty": {
-                "clientId": "07-tendermint-39",
-                "connectionId": "connection-109",
-                "prefix": {
-                    "keyPrefix": "aWJj"
-                }
+            counterparty: {
+                clientId: '07-tendermint-39',
+                connectionId: 'connection-109',
+                prefix: {
+                    keyPrefix: 'aWJj',
+                },
             },
-            "delayPeriod": Long.fromString("0"),
-            "counterpartyVersions": [
+            delayPeriod: Long.fromString('0'),
+            counterpartyVersions: [
                 {
-                    "identifier": "1",
-                    "features": [
-                        "ORDERORDERED",
-                        "ORDERUNORDERED"
-                    ]
-                }
+                    identifier: '1',
+                    features: ['ORDERORDERED', 'ORDERUNORDERED'],
+                },
             ],
-            "proofHeight": {
-                "revisionNumber": Long.fromString("4"),
-                "revisionHeight": Long.fromString("5622892")
+            proofHeight: {
+                revisionNumber: Long.fromString('4'),
+                revisionHeight: Long.fromString('5622892'),
             },
-            "proofInit": Bytes.fromBase64String("CtwECtkEChpjb25uZWN0aW9ucy9jb25uZWN0aW9uLTEwORJTChAwNy10ZW5kZXJtaW50LTM5EiMKATESDU9SREVSX09SREVSRUQSD09SREVSX1VOT1JERVJFRBgBIhgKDzA3LXRlbmRlcm1pbnQtMBoFCgNpYmMaDggBGAEgASoGAALUsa4FIiwIARIoAgTUsa4FIJbX8P26NAg7WJjTR+37+78floxHE5H2nP5Aj2uw3nQxICIsCAESKAQG1LGuBSAfMb6iopk9+La81LhyJVtxv9gz+zfGB8Dksf5s0NBK6SAiLAgBEigGCtSxrgUgVmGMJqwvrqMz0a96IUZMh98SDsCGmlvtbKvAMYhTUGEgIiwIARIoCBrUsa4FIMvMbIV6sCIYgRr3G+DzauSyKpztDlB2oo5IUEake46qICIuCAESBwom1LGuBSAaISCLUIxRTmd8f44u73SE7KP0B0x2Hi4ubnO0FEEksJtG1CIuCAESBwxY1LGuBSAaISChW0Pngn6gx2vaBJ64r5nScEuu7YNQvWccJmhGqr19viItCAESKQ6cAdSxrgUgvWaX+cPWMwoCiFQ5Q9eso+DV4d5fH7CSpq8k2Kk58qogIi8IARIIEKYC1LGuBSAaISARBs1X8n8PDk1bJMmtaTE+XvPw1uWMecj4CBjmNBOFvSIvCAESCBLeA9SxrgUgGiEgt7IE1gd3OJ+pYKpTWEoxbzB0pemGd6/nm5zQwhJgn2IiLQgBEikWhgzUsa4FICf/ZS0sWDG35apesAYH2GQJ/PN50aWak8GX8He55urZIArVAQrSAQoDaWJjEiC5/pdvs86SIMETztvXqOM2VKoUsKxtUr00LIb8346+fRoJCAEYASABKgEAIicIARIBARog+VbefwQZr0EJzBl04fE3Iwq9K4y59Sd3XuzKGogXDyIiJQgBEiEBBaWlpOGeCPh66SAQygI6GpJinGcQrhy7KO/G5Tmqzz4iJQgBEiEBbI3v3i9RTfwPQUwfIW7pPNjLw2x/tDYvnNZkMe2X6CIiJwgBEgEBGiAElZdHfml4DScpDFpEbkXY6tOOqxQ9z6VZc3sIGdXPJA==").toUint8Array(),
-            "proofClient": Bytes.fromBase64String("CocGCoQGCiRjbGllbnRzLzA3LXRlbmRlcm1pbnQtMzkvY2xpZW50U3RhdGUSwgEKKy9pYmMubGlnaHRjbGllbnRzLnRlbmRlcm1pbnQudjEuQ2xpZW50U3RhdGUSkgEKGmNyeXB0by1vcmctY2hhaW4tbWFpbm5ldC0xEgQIARADGgQIgOpJIgUIgNSTASoDCNgEMgA6BQgBENdBQhkKCQgBGAEgASoBABIMCgIAARAhGAQgDDABQhkKCQgBGAEgASoBABIMCgIAARAgGAEgATABSgd1cGdyYWRlShB1cGdyYWRlZElCQ1N0YXRlUAFYARoOCAEYASABKgYAAtSxrgUiLggBEgcCBNSxrgUgGiEgIa+jH5IK2AzJfbwtUJMOjR+vBA49DUyC2cYaHBjL+YwiLAgBEigECNSxrgUgmn+39h9eWNRiYtMn/l9ZfKyrRRVnbhOFjPdh6pEyHYAgIi4IARIHBhDUsa4FIBohIOFAqtMgyrSszuz0qowZqe521AGJXL8NtB+k+50TisSPIiwIARIoCCDUsa4FIPHUyM8P1UjfxJCP0jD9G0OOuXJ7FyJ5vvHiFl2+KSgFICIuCAESBwoq1LGuBSAaISAZsGVao2dgPTNgtB9Lwje1AQ4EnS4Gr1RtiH0XAExzdCIuCAESBwxm1LGuBSAaISAKklCi/YkcA5JTAyXQLbVevrQrJNiS6VPETXaQ08yotiItCAESKQ6uAdSxrgUgYcIRoQ8zQ82jj/47UIk3iAzRKlLqdIxKYTTGF8adDtMgIi0IARIpEOoB1LGuBSDm8ME8KcxPvA+UHxq3N6tJYqtmVpScy5FXWnhmGQhkNCAiLQgBEikS6gLUsa4FIPGK1xquAJ0gGs+Ti+kyxjuY1l7tImbbDBHpH2jxjFQ/ICItCAESKRSoCNSxrgUgVaVJLWZfI+HBkXk4z/FmyiF+sQoJsMdyn/v4cuBpVmsgIi8IARIIFoYM1LGuBSAaISBrlsldqPIfCSwzp4ORwj0WkhZ6hB5fhFDyV4xDyc6A+ArVAQrSAQoDaWJjEiC5/pdvs86SIMETztvXqOM2VKoUsKxtUr00LIb8346+fRoJCAEYASABKgEAIicIARIBARog+VbefwQZr0EJzBl04fE3Iwq9K4y59Sd3XuzKGogXDyIiJQgBEiEBBaWlpOGeCPh66SAQygI6GpJinGcQrhy7KO/G5Tmqzz4iJQgBEiEBbI3v3i9RTfwPQUwfIW7pPNjLw2x/tDYvnNZkMe2X6CIiJwgBEgEBGiAElZdHfml4DScpDFpEbkXY6tOOqxQ9z6VZc3sIGdXPJA==").toUint8Array(),
-            "proofConsensus": Bytes.fromBase64String("CtQFCtEFCi9jbGllbnRzLzA3LXRlbmRlcm1pbnQtMzkvY29uc2Vuc3VzU3RhdGVzLzEtODQwNxKGAQouL2liYy5saWdodGNsaWVudHMudGVuZGVybWludC52MS5Db25zZW5zdXNTdGF0ZRJUCgwIk9jyggYQ/o7axgMSIgogL5GwQD3KwWp+PFZeQ8Rz0pujxJvcHn9BFd3cwOFg294aIBXUob00ahwyiYpV7p5AleA18ZsPq72Yx/N5iUj1ZJKeGg4IARgBIAEqBgAC1LGuBSIuCAESBwIE1LGuBSAaISA5DhB9qRX1RUltuHxiEXT+t63Qr0GxjiKJo8CMBfqtXCIsCAESKAQI1LGuBSDPEpc9sTTJ96zwcCGZ3Ba1icFmAbkcY52/YauNvq0C+CAiLAgBEigGENSxrgUgZvk+QvucnZIyrvtHsGX8YcQt4in4hwFnnQ4hvj/xk9IgIiwIARIoCCDUsa4FIPHUyM8P1UjfxJCP0jD9G0OOuXJ7FyJ5vvHiFl2+KSgFICIuCAESBwoq1LGuBSAaISAZsGVao2dgPTNgtB9Lwje1AQ4EnS4Gr1RtiH0XAExzdCIuCAESBwxm1LGuBSAaISAKklCi/YkcA5JTAyXQLbVevrQrJNiS6VPETXaQ08yotiItCAESKQ6uAdSxrgUgYcIRoQ8zQ82jj/47UIk3iAzRKlLqdIxKYTTGF8adDtMgIi0IARIpEOoB1LGuBSDm8ME8KcxPvA+UHxq3N6tJYqtmVpScy5FXWnhmGQhkNCAiLQgBEikS6gLUsa4FIPGK1xquAJ0gGs+Ti+kyxjuY1l7tImbbDBHpH2jxjFQ/ICItCAESKRSoCNSxrgUgVaVJLWZfI+HBkXk4z/FmyiF+sQoJsMdyn/v4cuBpVmsgIi8IARIIFoYM1LGuBSAaISBrlsldqPIfCSwzp4ORwj0WkhZ6hB5fhFDyV4xDyc6A+ArVAQrSAQoDaWJjEiC5/pdvs86SIMETztvXqOM2VKoUsKxtUr00LIb8346+fRoJCAEYASABKgEAIicIARIBARog+VbefwQZr0EJzBl04fE3Iwq9K4y59Sd3XuzKGogXDyIiJQgBEiEBBaWlpOGeCPh66SAQygI6GpJinGcQrhy7KO/G5Tmqzz4iJQgBEiEBbI3v3i9RTfwPQUwfIW7pPNjLw2x/tDYvnNZkMe2X6CIiJwgBEgEBGiAElZdHfml4DScpDFpEbkXY6tOOqxQ9z6VZc3sIGdXPJA==").toUint8Array(),
-            "consensusHeight": {
-                "revisionNumber": Long.fromString("1"),
-                "revisionHeight": Long.fromString("8407")
+            proofInit: Bytes.fromBase64String(
+                'CtwECtkEChpjb25uZWN0aW9ucy9jb25uZWN0aW9uLTEwORJTChAwNy10ZW5kZXJtaW50LTM5EiMKATESDU9SREVSX09SREVSRUQSD09SREVSX1VOT1JERVJFRBgBIhgKDzA3LXRlbmRlcm1pbnQtMBoFCgNpYmMaDggBGAEgASoGAALUsa4FIiwIARIoAgTUsa4FIJbX8P26NAg7WJjTR+37+78floxHE5H2nP5Aj2uw3nQxICIsCAESKAQG1LGuBSAfMb6iopk9+La81LhyJVtxv9gz+zfGB8Dksf5s0NBK6SAiLAgBEigGCtSxrgUgVmGMJqwvrqMz0a96IUZMh98SDsCGmlvtbKvAMYhTUGEgIiwIARIoCBrUsa4FIMvMbIV6sCIYgRr3G+DzauSyKpztDlB2oo5IUEake46qICIuCAESBwom1LGuBSAaISCLUIxRTmd8f44u73SE7KP0B0x2Hi4ubnO0FEEksJtG1CIuCAESBwxY1LGuBSAaISChW0Pngn6gx2vaBJ64r5nScEuu7YNQvWccJmhGqr19viItCAESKQ6cAdSxrgUgvWaX+cPWMwoCiFQ5Q9eso+DV4d5fH7CSpq8k2Kk58qogIi8IARIIEKYC1LGuBSAaISARBs1X8n8PDk1bJMmtaTE+XvPw1uWMecj4CBjmNBOFvSIvCAESCBLeA9SxrgUgGiEgt7IE1gd3OJ+pYKpTWEoxbzB0pemGd6/nm5zQwhJgn2IiLQgBEikWhgzUsa4FICf/ZS0sWDG35apesAYH2GQJ/PN50aWak8GX8He55urZIArVAQrSAQoDaWJjEiC5/pdvs86SIMETztvXqOM2VKoUsKxtUr00LIb8346+fRoJCAEYASABKgEAIicIARIBARog+VbefwQZr0EJzBl04fE3Iwq9K4y59Sd3XuzKGogXDyIiJQgBEiEBBaWlpOGeCPh66SAQygI6GpJinGcQrhy7KO/G5Tmqzz4iJQgBEiEBbI3v3i9RTfwPQUwfIW7pPNjLw2x/tDYvnNZkMe2X6CIiJwgBEgEBGiAElZdHfml4DScpDFpEbkXY6tOOqxQ9z6VZc3sIGdXPJA==',
+            ).toUint8Array(),
+            proofClient: Bytes.fromBase64String(
+                'CocGCoQGCiRjbGllbnRzLzA3LXRlbmRlcm1pbnQtMzkvY2xpZW50U3RhdGUSwgEKKy9pYmMubGlnaHRjbGllbnRzLnRlbmRlcm1pbnQudjEuQ2xpZW50U3RhdGUSkgEKGmNyeXB0by1vcmctY2hhaW4tbWFpbm5ldC0xEgQIARADGgQIgOpJIgUIgNSTASoDCNgEMgA6BQgBENdBQhkKCQgBGAEgASoBABIMCgIAARAhGAQgDDABQhkKCQgBGAEgASoBABIMCgIAARAgGAEgATABSgd1cGdyYWRlShB1cGdyYWRlZElCQ1N0YXRlUAFYARoOCAEYASABKgYAAtSxrgUiLggBEgcCBNSxrgUgGiEgIa+jH5IK2AzJfbwtUJMOjR+vBA49DUyC2cYaHBjL+YwiLAgBEigECNSxrgUgmn+39h9eWNRiYtMn/l9ZfKyrRRVnbhOFjPdh6pEyHYAgIi4IARIHBhDUsa4FIBohIOFAqtMgyrSszuz0qowZqe521AGJXL8NtB+k+50TisSPIiwIARIoCCDUsa4FIPHUyM8P1UjfxJCP0jD9G0OOuXJ7FyJ5vvHiFl2+KSgFICIuCAESBwoq1LGuBSAaISAZsGVao2dgPTNgtB9Lwje1AQ4EnS4Gr1RtiH0XAExzdCIuCAESBwxm1LGuBSAaISAKklCi/YkcA5JTAyXQLbVevrQrJNiS6VPETXaQ08yotiItCAESKQ6uAdSxrgUgYcIRoQ8zQ82jj/47UIk3iAzRKlLqdIxKYTTGF8adDtMgIi0IARIpEOoB1LGuBSDm8ME8KcxPvA+UHxq3N6tJYqtmVpScy5FXWnhmGQhkNCAiLQgBEikS6gLUsa4FIPGK1xquAJ0gGs+Ti+kyxjuY1l7tImbbDBHpH2jxjFQ/ICItCAESKRSoCNSxrgUgVaVJLWZfI+HBkXk4z/FmyiF+sQoJsMdyn/v4cuBpVmsgIi8IARIIFoYM1LGuBSAaISBrlsldqPIfCSwzp4ORwj0WkhZ6hB5fhFDyV4xDyc6A+ArVAQrSAQoDaWJjEiC5/pdvs86SIMETztvXqOM2VKoUsKxtUr00LIb8346+fRoJCAEYASABKgEAIicIARIBARog+VbefwQZr0EJzBl04fE3Iwq9K4y59Sd3XuzKGogXDyIiJQgBEiEBBaWlpOGeCPh66SAQygI6GpJinGcQrhy7KO/G5Tmqzz4iJQgBEiEBbI3v3i9RTfwPQUwfIW7pPNjLw2x/tDYvnNZkMe2X6CIiJwgBEgEBGiAElZdHfml4DScpDFpEbkXY6tOOqxQ9z6VZc3sIGdXPJA==',
+            ).toUint8Array(),
+            proofConsensus: Bytes.fromBase64String(
+                'CtQFCtEFCi9jbGllbnRzLzA3LXRlbmRlcm1pbnQtMzkvY29uc2Vuc3VzU3RhdGVzLzEtODQwNxKGAQouL2liYy5saWdodGNsaWVudHMudGVuZGVybWludC52MS5Db25zZW5zdXNTdGF0ZRJUCgwIk9jyggYQ/o7axgMSIgogL5GwQD3KwWp+PFZeQ8Rz0pujxJvcHn9BFd3cwOFg294aIBXUob00ahwyiYpV7p5AleA18ZsPq72Yx/N5iUj1ZJKeGg4IARgBIAEqBgAC1LGuBSIuCAESBwIE1LGuBSAaISA5DhB9qRX1RUltuHxiEXT+t63Qr0GxjiKJo8CMBfqtXCIsCAESKAQI1LGuBSDPEpc9sTTJ96zwcCGZ3Ba1icFmAbkcY52/YauNvq0C+CAiLAgBEigGENSxrgUgZvk+QvucnZIyrvtHsGX8YcQt4in4hwFnnQ4hvj/xk9IgIiwIARIoCCDUsa4FIPHUyM8P1UjfxJCP0jD9G0OOuXJ7FyJ5vvHiFl2+KSgFICIuCAESBwoq1LGuBSAaISAZsGVao2dgPTNgtB9Lwje1AQ4EnS4Gr1RtiH0XAExzdCIuCAESBwxm1LGuBSAaISAKklCi/YkcA5JTAyXQLbVevrQrJNiS6VPETXaQ08yotiItCAESKQ6uAdSxrgUgYcIRoQ8zQ82jj/47UIk3iAzRKlLqdIxKYTTGF8adDtMgIi0IARIpEOoB1LGuBSDm8ME8KcxPvA+UHxq3N6tJYqtmVpScy5FXWnhmGQhkNCAiLQgBEikS6gLUsa4FIPGK1xquAJ0gGs+Ti+kyxjuY1l7tImbbDBHpH2jxjFQ/ICItCAESKRSoCNSxrgUgVaVJLWZfI+HBkXk4z/FmyiF+sQoJsMdyn/v4cuBpVmsgIi8IARIIFoYM1LGuBSAaISBrlsldqPIfCSwzp4ORwj0WkhZ6hB5fhFDyV4xDyc6A+ArVAQrSAQoDaWJjEiC5/pdvs86SIMETztvXqOM2VKoUsKxtUr00LIb8346+fRoJCAEYASABKgEAIicIARIBARog+VbefwQZr0EJzBl04fE3Iwq9K4y59Sd3XuzKGogXDyIiJQgBEiEBBaWlpOGeCPh66SAQygI6GpJinGcQrhy7KO/G5Tmqzz4iJQgBEiEBbI3v3i9RTfwPQUwfIW7pPNjLw2x/tDYvnNZkMe2X6CIiJwgBEgEBGiAElZdHfml4DScpDFpEbkXY6tOOqxQ9z6VZc3sIGdXPJA==',
+            ).toUint8Array(),
+            consensusHeight: {
+                revisionNumber: Long.fromString('1'),
+                revisionHeight: Long.fromString('8407'),
             },
-            "signer": "tcro15sfupd26sp6qf37ll5q6xuf330k7df9tnvrqht"
+            signer: 'tcro15sfupd26sp6qf37ll5q6xuf330k7df9tnvrqht',
         });
 
         const rawMsg: Msg = {
             typeUrl: COSMOS_MSG_TYPEURL.ibc.connection.MsgConnectionOpenTry,
             value: {
-                "clientId": "07-tendermint-0",
-                "previousConnectionId": "",
-                "clientState": {
+                clientId: '07-tendermint-0',
+                previousConnectionId: '',
+                clientState: {
                     chainId: 'testnet-croeseid-1',
                     trustLevel: {
                         numerator: Long.fromString('1'),
@@ -271,35 +277,38 @@ describe('Testing MsgConnectionOpenTry', function () {
                     allowUpdateAfterExpiry: false,
                     allowUpdateAfterMisbehaviour: false,
                 },
-                "counterparty": {
-                    "clientId": "07-tendermint-39",
-                    "connectionId": "connection-109",
-                    "prefix": {
-                        "keyPrefix": "aWJj"
-                    }
+                counterparty: {
+                    clientId: '07-tendermint-39',
+                    connectionId: 'connection-109',
+                    prefix: {
+                        keyPrefix: 'aWJj',
+                    },
                 },
-                "delayPeriod": Long.fromString("0"),
-                "counterpartyVersions": [
+                delayPeriod: Long.fromString('0'),
+                counterpartyVersions: [
                     {
-                        "identifier": "1",
-                        "features": [
-                            "ORDERORDERED",
-                            "ORDERUNORDERED"
-                        ]
-                    }
+                        identifier: '1',
+                        features: ['ORDERORDERED', 'ORDERUNORDERED'],
+                    },
                 ],
-                "proofHeight": {
-                    "revisionNumber": Long.fromString("4"),
-                    "revisionHeight": Long.fromString("5622892")
+                proofHeight: {
+                    revisionNumber: Long.fromString('4'),
+                    revisionHeight: Long.fromString('5622892'),
                 },
-                "proofInit": Bytes.fromBase64String("CtwECtkEChpjb25uZWN0aW9ucy9jb25uZWN0aW9uLTEwORJTChAwNy10ZW5kZXJtaW50LTM5EiMKATESDU9SREVSX09SREVSRUQSD09SREVSX1VOT1JERVJFRBgBIhgKDzA3LXRlbmRlcm1pbnQtMBoFCgNpYmMaDggBGAEgASoGAALUsa4FIiwIARIoAgTUsa4FIJbX8P26NAg7WJjTR+37+78floxHE5H2nP5Aj2uw3nQxICIsCAESKAQG1LGuBSAfMb6iopk9+La81LhyJVtxv9gz+zfGB8Dksf5s0NBK6SAiLAgBEigGCtSxrgUgVmGMJqwvrqMz0a96IUZMh98SDsCGmlvtbKvAMYhTUGEgIiwIARIoCBrUsa4FIMvMbIV6sCIYgRr3G+DzauSyKpztDlB2oo5IUEake46qICIuCAESBwom1LGuBSAaISCLUIxRTmd8f44u73SE7KP0B0x2Hi4ubnO0FEEksJtG1CIuCAESBwxY1LGuBSAaISChW0Pngn6gx2vaBJ64r5nScEuu7YNQvWccJmhGqr19viItCAESKQ6cAdSxrgUgvWaX+cPWMwoCiFQ5Q9eso+DV4d5fH7CSpq8k2Kk58qogIi8IARIIEKYC1LGuBSAaISARBs1X8n8PDk1bJMmtaTE+XvPw1uWMecj4CBjmNBOFvSIvCAESCBLeA9SxrgUgGiEgt7IE1gd3OJ+pYKpTWEoxbzB0pemGd6/nm5zQwhJgn2IiLQgBEikWhgzUsa4FICf/ZS0sWDG35apesAYH2GQJ/PN50aWak8GX8He55urZIArVAQrSAQoDaWJjEiC5/pdvs86SIMETztvXqOM2VKoUsKxtUr00LIb8346+fRoJCAEYASABKgEAIicIARIBARog+VbefwQZr0EJzBl04fE3Iwq9K4y59Sd3XuzKGogXDyIiJQgBEiEBBaWlpOGeCPh66SAQygI6GpJinGcQrhy7KO/G5Tmqzz4iJQgBEiEBbI3v3i9RTfwPQUwfIW7pPNjLw2x/tDYvnNZkMe2X6CIiJwgBEgEBGiAElZdHfml4DScpDFpEbkXY6tOOqxQ9z6VZc3sIGdXPJA==").toUint8Array(),
-                "proofClient": Bytes.fromBase64String("CocGCoQGCiRjbGllbnRzLzA3LXRlbmRlcm1pbnQtMzkvY2xpZW50U3RhdGUSwgEKKy9pYmMubGlnaHRjbGllbnRzLnRlbmRlcm1pbnQudjEuQ2xpZW50U3RhdGUSkgEKGmNyeXB0by1vcmctY2hhaW4tbWFpbm5ldC0xEgQIARADGgQIgOpJIgUIgNSTASoDCNgEMgA6BQgBENdBQhkKCQgBGAEgASoBABIMCgIAARAhGAQgDDABQhkKCQgBGAEgASoBABIMCgIAARAgGAEgATABSgd1cGdyYWRlShB1cGdyYWRlZElCQ1N0YXRlUAFYARoOCAEYASABKgYAAtSxrgUiLggBEgcCBNSxrgUgGiEgIa+jH5IK2AzJfbwtUJMOjR+vBA49DUyC2cYaHBjL+YwiLAgBEigECNSxrgUgmn+39h9eWNRiYtMn/l9ZfKyrRRVnbhOFjPdh6pEyHYAgIi4IARIHBhDUsa4FIBohIOFAqtMgyrSszuz0qowZqe521AGJXL8NtB+k+50TisSPIiwIARIoCCDUsa4FIPHUyM8P1UjfxJCP0jD9G0OOuXJ7FyJ5vvHiFl2+KSgFICIuCAESBwoq1LGuBSAaISAZsGVao2dgPTNgtB9Lwje1AQ4EnS4Gr1RtiH0XAExzdCIuCAESBwxm1LGuBSAaISAKklCi/YkcA5JTAyXQLbVevrQrJNiS6VPETXaQ08yotiItCAESKQ6uAdSxrgUgYcIRoQ8zQ82jj/47UIk3iAzRKlLqdIxKYTTGF8adDtMgIi0IARIpEOoB1LGuBSDm8ME8KcxPvA+UHxq3N6tJYqtmVpScy5FXWnhmGQhkNCAiLQgBEikS6gLUsa4FIPGK1xquAJ0gGs+Ti+kyxjuY1l7tImbbDBHpH2jxjFQ/ICItCAESKRSoCNSxrgUgVaVJLWZfI+HBkXk4z/FmyiF+sQoJsMdyn/v4cuBpVmsgIi8IARIIFoYM1LGuBSAaISBrlsldqPIfCSwzp4ORwj0WkhZ6hB5fhFDyV4xDyc6A+ArVAQrSAQoDaWJjEiC5/pdvs86SIMETztvXqOM2VKoUsKxtUr00LIb8346+fRoJCAEYASABKgEAIicIARIBARog+VbefwQZr0EJzBl04fE3Iwq9K4y59Sd3XuzKGogXDyIiJQgBEiEBBaWlpOGeCPh66SAQygI6GpJinGcQrhy7KO/G5Tmqzz4iJQgBEiEBbI3v3i9RTfwPQUwfIW7pPNjLw2x/tDYvnNZkMe2X6CIiJwgBEgEBGiAElZdHfml4DScpDFpEbkXY6tOOqxQ9z6VZc3sIGdXPJA==").toUint8Array(),
-                "proofConsensus": Bytes.fromBase64String("CtQFCtEFCi9jbGllbnRzLzA3LXRlbmRlcm1pbnQtMzkvY29uc2Vuc3VzU3RhdGVzLzEtODQwNxKGAQouL2liYy5saWdodGNsaWVudHMudGVuZGVybWludC52MS5Db25zZW5zdXNTdGF0ZRJUCgwIk9jyggYQ/o7axgMSIgogL5GwQD3KwWp+PFZeQ8Rz0pujxJvcHn9BFd3cwOFg294aIBXUob00ahwyiYpV7p5AleA18ZsPq72Yx/N5iUj1ZJKeGg4IARgBIAEqBgAC1LGuBSIuCAESBwIE1LGuBSAaISA5DhB9qRX1RUltuHxiEXT+t63Qr0GxjiKJo8CMBfqtXCIsCAESKAQI1LGuBSDPEpc9sTTJ96zwcCGZ3Ba1icFmAbkcY52/YauNvq0C+CAiLAgBEigGENSxrgUgZvk+QvucnZIyrvtHsGX8YcQt4in4hwFnnQ4hvj/xk9IgIiwIARIoCCDUsa4FIPHUyM8P1UjfxJCP0jD9G0OOuXJ7FyJ5vvHiFl2+KSgFICIuCAESBwoq1LGuBSAaISAZsGVao2dgPTNgtB9Lwje1AQ4EnS4Gr1RtiH0XAExzdCIuCAESBwxm1LGuBSAaISAKklCi/YkcA5JTAyXQLbVevrQrJNiS6VPETXaQ08yotiItCAESKQ6uAdSxrgUgYcIRoQ8zQ82jj/47UIk3iAzRKlLqdIxKYTTGF8adDtMgIi0IARIpEOoB1LGuBSDm8ME8KcxPvA+UHxq3N6tJYqtmVpScy5FXWnhmGQhkNCAiLQgBEikS6gLUsa4FIPGK1xquAJ0gGs+Ti+kyxjuY1l7tImbbDBHpH2jxjFQ/ICItCAESKRSoCNSxrgUgVaVJLWZfI+HBkXk4z/FmyiF+sQoJsMdyn/v4cuBpVmsgIi8IARIIFoYM1LGuBSAaISBrlsldqPIfCSwzp4ORwj0WkhZ6hB5fhFDyV4xDyc6A+ArVAQrSAQoDaWJjEiC5/pdvs86SIMETztvXqOM2VKoUsKxtUr00LIb8346+fRoJCAEYASABKgEAIicIARIBARog+VbefwQZr0EJzBl04fE3Iwq9K4y59Sd3XuzKGogXDyIiJQgBEiEBBaWlpOGeCPh66SAQygI6GpJinGcQrhy7KO/G5Tmqzz4iJQgBEiEBbI3v3i9RTfwPQUwfIW7pPNjLw2x/tDYvnNZkMe2X6CIiJwgBEgEBGiAElZdHfml4DScpDFpEbkXY6tOOqxQ9z6VZc3sIGdXPJA==").toUint8Array(),
-                "consensusHeight": {
-                    "revisionNumber": Long.fromString("1"),
-                    "revisionHeight": Long.fromString("8407")
+                proofInit: Bytes.fromBase64String(
+                    'CtwECtkEChpjb25uZWN0aW9ucy9jb25uZWN0aW9uLTEwORJTChAwNy10ZW5kZXJtaW50LTM5EiMKATESDU9SREVSX09SREVSRUQSD09SREVSX1VOT1JERVJFRBgBIhgKDzA3LXRlbmRlcm1pbnQtMBoFCgNpYmMaDggBGAEgASoGAALUsa4FIiwIARIoAgTUsa4FIJbX8P26NAg7WJjTR+37+78floxHE5H2nP5Aj2uw3nQxICIsCAESKAQG1LGuBSAfMb6iopk9+La81LhyJVtxv9gz+zfGB8Dksf5s0NBK6SAiLAgBEigGCtSxrgUgVmGMJqwvrqMz0a96IUZMh98SDsCGmlvtbKvAMYhTUGEgIiwIARIoCBrUsa4FIMvMbIV6sCIYgRr3G+DzauSyKpztDlB2oo5IUEake46qICIuCAESBwom1LGuBSAaISCLUIxRTmd8f44u73SE7KP0B0x2Hi4ubnO0FEEksJtG1CIuCAESBwxY1LGuBSAaISChW0Pngn6gx2vaBJ64r5nScEuu7YNQvWccJmhGqr19viItCAESKQ6cAdSxrgUgvWaX+cPWMwoCiFQ5Q9eso+DV4d5fH7CSpq8k2Kk58qogIi8IARIIEKYC1LGuBSAaISARBs1X8n8PDk1bJMmtaTE+XvPw1uWMecj4CBjmNBOFvSIvCAESCBLeA9SxrgUgGiEgt7IE1gd3OJ+pYKpTWEoxbzB0pemGd6/nm5zQwhJgn2IiLQgBEikWhgzUsa4FICf/ZS0sWDG35apesAYH2GQJ/PN50aWak8GX8He55urZIArVAQrSAQoDaWJjEiC5/pdvs86SIMETztvXqOM2VKoUsKxtUr00LIb8346+fRoJCAEYASABKgEAIicIARIBARog+VbefwQZr0EJzBl04fE3Iwq9K4y59Sd3XuzKGogXDyIiJQgBEiEBBaWlpOGeCPh66SAQygI6GpJinGcQrhy7KO/G5Tmqzz4iJQgBEiEBbI3v3i9RTfwPQUwfIW7pPNjLw2x/tDYvnNZkMe2X6CIiJwgBEgEBGiAElZdHfml4DScpDFpEbkXY6tOOqxQ9z6VZc3sIGdXPJA==',
+                ).toUint8Array(),
+                proofClient: Bytes.fromBase64String(
+                    'CocGCoQGCiRjbGllbnRzLzA3LXRlbmRlcm1pbnQtMzkvY2xpZW50U3RhdGUSwgEKKy9pYmMubGlnaHRjbGllbnRzLnRlbmRlcm1pbnQudjEuQ2xpZW50U3RhdGUSkgEKGmNyeXB0by1vcmctY2hhaW4tbWFpbm5ldC0xEgQIARADGgQIgOpJIgUIgNSTASoDCNgEMgA6BQgBENdBQhkKCQgBGAEgASoBABIMCgIAARAhGAQgDDABQhkKCQgBGAEgASoBABIMCgIAARAgGAEgATABSgd1cGdyYWRlShB1cGdyYWRlZElCQ1N0YXRlUAFYARoOCAEYASABKgYAAtSxrgUiLggBEgcCBNSxrgUgGiEgIa+jH5IK2AzJfbwtUJMOjR+vBA49DUyC2cYaHBjL+YwiLAgBEigECNSxrgUgmn+39h9eWNRiYtMn/l9ZfKyrRRVnbhOFjPdh6pEyHYAgIi4IARIHBhDUsa4FIBohIOFAqtMgyrSszuz0qowZqe521AGJXL8NtB+k+50TisSPIiwIARIoCCDUsa4FIPHUyM8P1UjfxJCP0jD9G0OOuXJ7FyJ5vvHiFl2+KSgFICIuCAESBwoq1LGuBSAaISAZsGVao2dgPTNgtB9Lwje1AQ4EnS4Gr1RtiH0XAExzdCIuCAESBwxm1LGuBSAaISAKklCi/YkcA5JTAyXQLbVevrQrJNiS6VPETXaQ08yotiItCAESKQ6uAdSxrgUgYcIRoQ8zQ82jj/47UIk3iAzRKlLqdIxKYTTGF8adDtMgIi0IARIpEOoB1LGuBSDm8ME8KcxPvA+UHxq3N6tJYqtmVpScy5FXWnhmGQhkNCAiLQgBEikS6gLUsa4FIPGK1xquAJ0gGs+Ti+kyxjuY1l7tImbbDBHpH2jxjFQ/ICItCAESKRSoCNSxrgUgVaVJLWZfI+HBkXk4z/FmyiF+sQoJsMdyn/v4cuBpVmsgIi8IARIIFoYM1LGuBSAaISBrlsldqPIfCSwzp4ORwj0WkhZ6hB5fhFDyV4xDyc6A+ArVAQrSAQoDaWJjEiC5/pdvs86SIMETztvXqOM2VKoUsKxtUr00LIb8346+fRoJCAEYASABKgEAIicIARIBARog+VbefwQZr0EJzBl04fE3Iwq9K4y59Sd3XuzKGogXDyIiJQgBEiEBBaWlpOGeCPh66SAQygI6GpJinGcQrhy7KO/G5Tmqzz4iJQgBEiEBbI3v3i9RTfwPQUwfIW7pPNjLw2x/tDYvnNZkMe2X6CIiJwgBEgEBGiAElZdHfml4DScpDFpEbkXY6tOOqxQ9z6VZc3sIGdXPJA==',
+                ).toUint8Array(),
+                proofConsensus: Bytes.fromBase64String(
+                    'CtQFCtEFCi9jbGllbnRzLzA3LXRlbmRlcm1pbnQtMzkvY29uc2Vuc3VzU3RhdGVzLzEtODQwNxKGAQouL2liYy5saWdodGNsaWVudHMudGVuZGVybWludC52MS5Db25zZW5zdXNTdGF0ZRJUCgwIk9jyggYQ/o7axgMSIgogL5GwQD3KwWp+PFZeQ8Rz0pujxJvcHn9BFd3cwOFg294aIBXUob00ahwyiYpV7p5AleA18ZsPq72Yx/N5iUj1ZJKeGg4IARgBIAEqBgAC1LGuBSIuCAESBwIE1LGuBSAaISA5DhB9qRX1RUltuHxiEXT+t63Qr0GxjiKJo8CMBfqtXCIsCAESKAQI1LGuBSDPEpc9sTTJ96zwcCGZ3Ba1icFmAbkcY52/YauNvq0C+CAiLAgBEigGENSxrgUgZvk+QvucnZIyrvtHsGX8YcQt4in4hwFnnQ4hvj/xk9IgIiwIARIoCCDUsa4FIPHUyM8P1UjfxJCP0jD9G0OOuXJ7FyJ5vvHiFl2+KSgFICIuCAESBwoq1LGuBSAaISAZsGVao2dgPTNgtB9Lwje1AQ4EnS4Gr1RtiH0XAExzdCIuCAESBwxm1LGuBSAaISAKklCi/YkcA5JTAyXQLbVevrQrJNiS6VPETXaQ08yotiItCAESKQ6uAdSxrgUgYcIRoQ8zQ82jj/47UIk3iAzRKlLqdIxKYTTGF8adDtMgIi0IARIpEOoB1LGuBSDm8ME8KcxPvA+UHxq3N6tJYqtmVpScy5FXWnhmGQhkNCAiLQgBEikS6gLUsa4FIPGK1xquAJ0gGs+Ti+kyxjuY1l7tImbbDBHpH2jxjFQ/ICItCAESKRSoCNSxrgUgVaVJLWZfI+HBkXk4z/FmyiF+sQoJsMdyn/v4cuBpVmsgIi8IARIIFoYM1LGuBSAaISBrlsldqPIfCSwzp4ORwj0WkhZ6hB5fhFDyV4xDyc6A+ArVAQrSAQoDaWJjEiC5/pdvs86SIMETztvXqOM2VKoUsKxtUr00LIb8346+fRoJCAEYASABKgEAIicIARIBARog+VbefwQZr0EJzBl04fE3Iwq9K4y59Sd3XuzKGogXDyIiJQgBEiEBBaWlpOGeCPh66SAQygI6GpJinGcQrhy7KO/G5Tmqzz4iJQgBEiEBbI3v3i9RTfwPQUwfIW7pPNjLw2x/tDYvnNZkMe2X6CIiJwgBEgEBGiAElZdHfml4DScpDFpEbkXY6tOOqxQ9z6VZc3sIGdXPJA==',
+                ).toUint8Array(),
+                consensusHeight: {
+                    revisionNumber: Long.fromString('1'),
+                    revisionHeight: Long.fromString('8407'),
                 },
-                "signer": "tcro15sfupd26sp6qf37ll5q6xuf330k7df9tnvrqht"
+                signer: 'tcro15sfupd26sp6qf37ll5q6xuf330k7df9tnvrqht',
             },
         };
 
@@ -312,9 +321,9 @@ describe('Testing MsgConnectionOpenTry', function () {
         );
 
         const MsgConnectionOpenTry = new cro.ibc.connection.MsgConnectionOpenTry({
-            "clientId": "07-tendermint-0",
-            "previousConnectionId": "",
-            "clientState": {
+            clientId: '07-tendermint-0',
+            previousConnectionId: '',
+            clientState: {
                 chainId: 'testnet-croeseid-1',
                 trustLevel: {
                     numerator: Long.fromString('1'),
@@ -365,35 +374,38 @@ describe('Testing MsgConnectionOpenTry', function () {
                 allowUpdateAfterExpiry: false,
                 allowUpdateAfterMisbehaviour: false,
             },
-            "counterparty": {
-                "clientId": "07-tendermint-39",
-                "connectionId": "connection-109",
-                "prefix": {
-                    "keyPrefix": "aWJj"
-                }
+            counterparty: {
+                clientId: '07-tendermint-39',
+                connectionId: 'connection-109',
+                prefix: {
+                    keyPrefix: 'aWJj',
+                },
             },
-            "delayPeriod": Long.fromString("0"),
-            "counterpartyVersions": [
+            delayPeriod: Long.fromString('0'),
+            counterpartyVersions: [
                 {
-                    "identifier": "1",
-                    "features": [
-                        "ORDERORDERED",
-                        "ORDERUNORDERED"
-                    ]
-                }
+                    identifier: '1',
+                    features: ['ORDERORDERED', 'ORDERUNORDERED'],
+                },
             ],
-            "proofHeight": {
-                "revisionNumber": Long.fromString("4"),
-                "revisionHeight": Long.fromString("5622892")
+            proofHeight: {
+                revisionNumber: Long.fromString('4'),
+                revisionHeight: Long.fromString('5622892'),
             },
-            "proofInit": Bytes.fromBase64String("CtwECtkEChpjb25uZWN0aW9ucy9jb25uZWN0aW9uLTEwORJTChAwNy10ZW5kZXJtaW50LTM5EiMKATESDU9SREVSX09SREVSRUQSD09SREVSX1VOT1JERVJFRBgBIhgKDzA3LXRlbmRlcm1pbnQtMBoFCgNpYmMaDggBGAEgASoGAALUsa4FIiwIARIoAgTUsa4FIJbX8P26NAg7WJjTR+37+78floxHE5H2nP5Aj2uw3nQxICIsCAESKAQG1LGuBSAfMb6iopk9+La81LhyJVtxv9gz+zfGB8Dksf5s0NBK6SAiLAgBEigGCtSxrgUgVmGMJqwvrqMz0a96IUZMh98SDsCGmlvtbKvAMYhTUGEgIiwIARIoCBrUsa4FIMvMbIV6sCIYgRr3G+DzauSyKpztDlB2oo5IUEake46qICIuCAESBwom1LGuBSAaISCLUIxRTmd8f44u73SE7KP0B0x2Hi4ubnO0FEEksJtG1CIuCAESBwxY1LGuBSAaISChW0Pngn6gx2vaBJ64r5nScEuu7YNQvWccJmhGqr19viItCAESKQ6cAdSxrgUgvWaX+cPWMwoCiFQ5Q9eso+DV4d5fH7CSpq8k2Kk58qogIi8IARIIEKYC1LGuBSAaISARBs1X8n8PDk1bJMmtaTE+XvPw1uWMecj4CBjmNBOFvSIvCAESCBLeA9SxrgUgGiEgt7IE1gd3OJ+pYKpTWEoxbzB0pemGd6/nm5zQwhJgn2IiLQgBEikWhgzUsa4FICf/ZS0sWDG35apesAYH2GQJ/PN50aWak8GX8He55urZIArVAQrSAQoDaWJjEiC5/pdvs86SIMETztvXqOM2VKoUsKxtUr00LIb8346+fRoJCAEYASABKgEAIicIARIBARog+VbefwQZr0EJzBl04fE3Iwq9K4y59Sd3XuzKGogXDyIiJQgBEiEBBaWlpOGeCPh66SAQygI6GpJinGcQrhy7KO/G5Tmqzz4iJQgBEiEBbI3v3i9RTfwPQUwfIW7pPNjLw2x/tDYvnNZkMe2X6CIiJwgBEgEBGiAElZdHfml4DScpDFpEbkXY6tOOqxQ9z6VZc3sIGdXPJA==").toUint8Array(),
-            "proofClient": Bytes.fromBase64String("CocGCoQGCiRjbGllbnRzLzA3LXRlbmRlcm1pbnQtMzkvY2xpZW50U3RhdGUSwgEKKy9pYmMubGlnaHRjbGllbnRzLnRlbmRlcm1pbnQudjEuQ2xpZW50U3RhdGUSkgEKGmNyeXB0by1vcmctY2hhaW4tbWFpbm5ldC0xEgQIARADGgQIgOpJIgUIgNSTASoDCNgEMgA6BQgBENdBQhkKCQgBGAEgASoBABIMCgIAARAhGAQgDDABQhkKCQgBGAEgASoBABIMCgIAARAgGAEgATABSgd1cGdyYWRlShB1cGdyYWRlZElCQ1N0YXRlUAFYARoOCAEYASABKgYAAtSxrgUiLggBEgcCBNSxrgUgGiEgIa+jH5IK2AzJfbwtUJMOjR+vBA49DUyC2cYaHBjL+YwiLAgBEigECNSxrgUgmn+39h9eWNRiYtMn/l9ZfKyrRRVnbhOFjPdh6pEyHYAgIi4IARIHBhDUsa4FIBohIOFAqtMgyrSszuz0qowZqe521AGJXL8NtB+k+50TisSPIiwIARIoCCDUsa4FIPHUyM8P1UjfxJCP0jD9G0OOuXJ7FyJ5vvHiFl2+KSgFICIuCAESBwoq1LGuBSAaISAZsGVao2dgPTNgtB9Lwje1AQ4EnS4Gr1RtiH0XAExzdCIuCAESBwxm1LGuBSAaISAKklCi/YkcA5JTAyXQLbVevrQrJNiS6VPETXaQ08yotiItCAESKQ6uAdSxrgUgYcIRoQ8zQ82jj/47UIk3iAzRKlLqdIxKYTTGF8adDtMgIi0IARIpEOoB1LGuBSDm8ME8KcxPvA+UHxq3N6tJYqtmVpScy5FXWnhmGQhkNCAiLQgBEikS6gLUsa4FIPGK1xquAJ0gGs+Ti+kyxjuY1l7tImbbDBHpH2jxjFQ/ICItCAESKRSoCNSxrgUgVaVJLWZfI+HBkXk4z/FmyiF+sQoJsMdyn/v4cuBpVmsgIi8IARIIFoYM1LGuBSAaISBrlsldqPIfCSwzp4ORwj0WkhZ6hB5fhFDyV4xDyc6A+ArVAQrSAQoDaWJjEiC5/pdvs86SIMETztvXqOM2VKoUsKxtUr00LIb8346+fRoJCAEYASABKgEAIicIARIBARog+VbefwQZr0EJzBl04fE3Iwq9K4y59Sd3XuzKGogXDyIiJQgBEiEBBaWlpOGeCPh66SAQygI6GpJinGcQrhy7KO/G5Tmqzz4iJQgBEiEBbI3v3i9RTfwPQUwfIW7pPNjLw2x/tDYvnNZkMe2X6CIiJwgBEgEBGiAElZdHfml4DScpDFpEbkXY6tOOqxQ9z6VZc3sIGdXPJA==").toUint8Array(),
-            "proofConsensus": Bytes.fromBase64String("CtQFCtEFCi9jbGllbnRzLzA3LXRlbmRlcm1pbnQtMzkvY29uc2Vuc3VzU3RhdGVzLzEtODQwNxKGAQouL2liYy5saWdodGNsaWVudHMudGVuZGVybWludC52MS5Db25zZW5zdXNTdGF0ZRJUCgwIk9jyggYQ/o7axgMSIgogL5GwQD3KwWp+PFZeQ8Rz0pujxJvcHn9BFd3cwOFg294aIBXUob00ahwyiYpV7p5AleA18ZsPq72Yx/N5iUj1ZJKeGg4IARgBIAEqBgAC1LGuBSIuCAESBwIE1LGuBSAaISA5DhB9qRX1RUltuHxiEXT+t63Qr0GxjiKJo8CMBfqtXCIsCAESKAQI1LGuBSDPEpc9sTTJ96zwcCGZ3Ba1icFmAbkcY52/YauNvq0C+CAiLAgBEigGENSxrgUgZvk+QvucnZIyrvtHsGX8YcQt4in4hwFnnQ4hvj/xk9IgIiwIARIoCCDUsa4FIPHUyM8P1UjfxJCP0jD9G0OOuXJ7FyJ5vvHiFl2+KSgFICIuCAESBwoq1LGuBSAaISAZsGVao2dgPTNgtB9Lwje1AQ4EnS4Gr1RtiH0XAExzdCIuCAESBwxm1LGuBSAaISAKklCi/YkcA5JTAyXQLbVevrQrJNiS6VPETXaQ08yotiItCAESKQ6uAdSxrgUgYcIRoQ8zQ82jj/47UIk3iAzRKlLqdIxKYTTGF8adDtMgIi0IARIpEOoB1LGuBSDm8ME8KcxPvA+UHxq3N6tJYqtmVpScy5FXWnhmGQhkNCAiLQgBEikS6gLUsa4FIPGK1xquAJ0gGs+Ti+kyxjuY1l7tImbbDBHpH2jxjFQ/ICItCAESKRSoCNSxrgUgVaVJLWZfI+HBkXk4z/FmyiF+sQoJsMdyn/v4cuBpVmsgIi8IARIIFoYM1LGuBSAaISBrlsldqPIfCSwzp4ORwj0WkhZ6hB5fhFDyV4xDyc6A+ArVAQrSAQoDaWJjEiC5/pdvs86SIMETztvXqOM2VKoUsKxtUr00LIb8346+fRoJCAEYASABKgEAIicIARIBARog+VbefwQZr0EJzBl04fE3Iwq9K4y59Sd3XuzKGogXDyIiJQgBEiEBBaWlpOGeCPh66SAQygI6GpJinGcQrhy7KO/G5Tmqzz4iJQgBEiEBbI3v3i9RTfwPQUwfIW7pPNjLw2x/tDYvnNZkMe2X6CIiJwgBEgEBGiAElZdHfml4DScpDFpEbkXY6tOOqxQ9z6VZc3sIGdXPJA==").toUint8Array(),
-            "consensusHeight": {
-                "revisionNumber": Long.fromString("1"),
-                "revisionHeight": Long.fromString("8407")
+            proofInit: Bytes.fromBase64String(
+                'CtwECtkEChpjb25uZWN0aW9ucy9jb25uZWN0aW9uLTEwORJTChAwNy10ZW5kZXJtaW50LTM5EiMKATESDU9SREVSX09SREVSRUQSD09SREVSX1VOT1JERVJFRBgBIhgKDzA3LXRlbmRlcm1pbnQtMBoFCgNpYmMaDggBGAEgASoGAALUsa4FIiwIARIoAgTUsa4FIJbX8P26NAg7WJjTR+37+78floxHE5H2nP5Aj2uw3nQxICIsCAESKAQG1LGuBSAfMb6iopk9+La81LhyJVtxv9gz+zfGB8Dksf5s0NBK6SAiLAgBEigGCtSxrgUgVmGMJqwvrqMz0a96IUZMh98SDsCGmlvtbKvAMYhTUGEgIiwIARIoCBrUsa4FIMvMbIV6sCIYgRr3G+DzauSyKpztDlB2oo5IUEake46qICIuCAESBwom1LGuBSAaISCLUIxRTmd8f44u73SE7KP0B0x2Hi4ubnO0FEEksJtG1CIuCAESBwxY1LGuBSAaISChW0Pngn6gx2vaBJ64r5nScEuu7YNQvWccJmhGqr19viItCAESKQ6cAdSxrgUgvWaX+cPWMwoCiFQ5Q9eso+DV4d5fH7CSpq8k2Kk58qogIi8IARIIEKYC1LGuBSAaISARBs1X8n8PDk1bJMmtaTE+XvPw1uWMecj4CBjmNBOFvSIvCAESCBLeA9SxrgUgGiEgt7IE1gd3OJ+pYKpTWEoxbzB0pemGd6/nm5zQwhJgn2IiLQgBEikWhgzUsa4FICf/ZS0sWDG35apesAYH2GQJ/PN50aWak8GX8He55urZIArVAQrSAQoDaWJjEiC5/pdvs86SIMETztvXqOM2VKoUsKxtUr00LIb8346+fRoJCAEYASABKgEAIicIARIBARog+VbefwQZr0EJzBl04fE3Iwq9K4y59Sd3XuzKGogXDyIiJQgBEiEBBaWlpOGeCPh66SAQygI6GpJinGcQrhy7KO/G5Tmqzz4iJQgBEiEBbI3v3i9RTfwPQUwfIW7pPNjLw2x/tDYvnNZkMe2X6CIiJwgBEgEBGiAElZdHfml4DScpDFpEbkXY6tOOqxQ9z6VZc3sIGdXPJA==',
+            ).toUint8Array(),
+            proofClient: Bytes.fromBase64String(
+                'CocGCoQGCiRjbGllbnRzLzA3LXRlbmRlcm1pbnQtMzkvY2xpZW50U3RhdGUSwgEKKy9pYmMubGlnaHRjbGllbnRzLnRlbmRlcm1pbnQudjEuQ2xpZW50U3RhdGUSkgEKGmNyeXB0by1vcmctY2hhaW4tbWFpbm5ldC0xEgQIARADGgQIgOpJIgUIgNSTASoDCNgEMgA6BQgBENdBQhkKCQgBGAEgASoBABIMCgIAARAhGAQgDDABQhkKCQgBGAEgASoBABIMCgIAARAgGAEgATABSgd1cGdyYWRlShB1cGdyYWRlZElCQ1N0YXRlUAFYARoOCAEYASABKgYAAtSxrgUiLggBEgcCBNSxrgUgGiEgIa+jH5IK2AzJfbwtUJMOjR+vBA49DUyC2cYaHBjL+YwiLAgBEigECNSxrgUgmn+39h9eWNRiYtMn/l9ZfKyrRRVnbhOFjPdh6pEyHYAgIi4IARIHBhDUsa4FIBohIOFAqtMgyrSszuz0qowZqe521AGJXL8NtB+k+50TisSPIiwIARIoCCDUsa4FIPHUyM8P1UjfxJCP0jD9G0OOuXJ7FyJ5vvHiFl2+KSgFICIuCAESBwoq1LGuBSAaISAZsGVao2dgPTNgtB9Lwje1AQ4EnS4Gr1RtiH0XAExzdCIuCAESBwxm1LGuBSAaISAKklCi/YkcA5JTAyXQLbVevrQrJNiS6VPETXaQ08yotiItCAESKQ6uAdSxrgUgYcIRoQ8zQ82jj/47UIk3iAzRKlLqdIxKYTTGF8adDtMgIi0IARIpEOoB1LGuBSDm8ME8KcxPvA+UHxq3N6tJYqtmVpScy5FXWnhmGQhkNCAiLQgBEikS6gLUsa4FIPGK1xquAJ0gGs+Ti+kyxjuY1l7tImbbDBHpH2jxjFQ/ICItCAESKRSoCNSxrgUgVaVJLWZfI+HBkXk4z/FmyiF+sQoJsMdyn/v4cuBpVmsgIi8IARIIFoYM1LGuBSAaISBrlsldqPIfCSwzp4ORwj0WkhZ6hB5fhFDyV4xDyc6A+ArVAQrSAQoDaWJjEiC5/pdvs86SIMETztvXqOM2VKoUsKxtUr00LIb8346+fRoJCAEYASABKgEAIicIARIBARog+VbefwQZr0EJzBl04fE3Iwq9K4y59Sd3XuzKGogXDyIiJQgBEiEBBaWlpOGeCPh66SAQygI6GpJinGcQrhy7KO/G5Tmqzz4iJQgBEiEBbI3v3i9RTfwPQUwfIW7pPNjLw2x/tDYvnNZkMe2X6CIiJwgBEgEBGiAElZdHfml4DScpDFpEbkXY6tOOqxQ9z6VZc3sIGdXPJA==',
+            ).toUint8Array(),
+            proofConsensus: Bytes.fromBase64String(
+                'CtQFCtEFCi9jbGllbnRzLzA3LXRlbmRlcm1pbnQtMzkvY29uc2Vuc3VzU3RhdGVzLzEtODQwNxKGAQouL2liYy5saWdodGNsaWVudHMudGVuZGVybWludC52MS5Db25zZW5zdXNTdGF0ZRJUCgwIk9jyggYQ/o7axgMSIgogL5GwQD3KwWp+PFZeQ8Rz0pujxJvcHn9BFd3cwOFg294aIBXUob00ahwyiYpV7p5AleA18ZsPq72Yx/N5iUj1ZJKeGg4IARgBIAEqBgAC1LGuBSIuCAESBwIE1LGuBSAaISA5DhB9qRX1RUltuHxiEXT+t63Qr0GxjiKJo8CMBfqtXCIsCAESKAQI1LGuBSDPEpc9sTTJ96zwcCGZ3Ba1icFmAbkcY52/YauNvq0C+CAiLAgBEigGENSxrgUgZvk+QvucnZIyrvtHsGX8YcQt4in4hwFnnQ4hvj/xk9IgIiwIARIoCCDUsa4FIPHUyM8P1UjfxJCP0jD9G0OOuXJ7FyJ5vvHiFl2+KSgFICIuCAESBwoq1LGuBSAaISAZsGVao2dgPTNgtB9Lwje1AQ4EnS4Gr1RtiH0XAExzdCIuCAESBwxm1LGuBSAaISAKklCi/YkcA5JTAyXQLbVevrQrJNiS6VPETXaQ08yotiItCAESKQ6uAdSxrgUgYcIRoQ8zQ82jj/47UIk3iAzRKlLqdIxKYTTGF8adDtMgIi0IARIpEOoB1LGuBSDm8ME8KcxPvA+UHxq3N6tJYqtmVpScy5FXWnhmGQhkNCAiLQgBEikS6gLUsa4FIPGK1xquAJ0gGs+Ti+kyxjuY1l7tImbbDBHpH2jxjFQ/ICItCAESKRSoCNSxrgUgVaVJLWZfI+HBkXk4z/FmyiF+sQoJsMdyn/v4cuBpVmsgIi8IARIIFoYM1LGuBSAaISBrlsldqPIfCSwzp4ORwj0WkhZ6hB5fhFDyV4xDyc6A+ArVAQrSAQoDaWJjEiC5/pdvs86SIMETztvXqOM2VKoUsKxtUr00LIb8346+fRoJCAEYASABKgEAIicIARIBARog+VbefwQZr0EJzBl04fE3Iwq9K4y59Sd3XuzKGogXDyIiJQgBEiEBBaWlpOGeCPh66SAQygI6GpJinGcQrhy7KO/G5Tmqzz4iJQgBEiEBbI3v3i9RTfwPQUwfIW7pPNjLw2x/tDYvnNZkMe2X6CIiJwgBEgEBGiAElZdHfml4DScpDFpEbkXY6tOOqxQ9z6VZc3sIGdXPJA==',
+            ).toUint8Array(),
+            consensusHeight: {
+                revisionNumber: Long.fromString('1'),
+                revisionHeight: Long.fromString('8407'),
             },
-            "signer": "tcro15sfupd26sp6qf37ll5q6xuf330k7df9tnvrqht"
+            signer: 'tcro15sfupd26sp6qf37ll5q6xuf330k7df9tnvrqht',
         });
 
         const anySigner = {
@@ -416,9 +428,9 @@ describe('Testing MsgConnectionOpenTry', function () {
 
     it('Should validate MsgConnectionOpenTry provided addresses with network config', function () {
         const params1 = {
-            "clientId": "07-tendermint-0",
-            "previousConnectionId": "",
-            "clientState": {
+            clientId: '07-tendermint-0',
+            previousConnectionId: '',
+            clientState: {
                 chainId: 'testnet-croeseid-1',
                 trustLevel: {
                     numerator: Long.fromString('1'),
@@ -469,35 +481,38 @@ describe('Testing MsgConnectionOpenTry', function () {
                 allowUpdateAfterExpiry: false,
                 allowUpdateAfterMisbehaviour: false,
             },
-            "counterparty": {
-                "clientId": "07-tendermint-39",
-                "connectionId": "connection-109",
-                "prefix": {
-                    "keyPrefix": "aWJj"
-                }
+            counterparty: {
+                clientId: '07-tendermint-39',
+                connectionId: 'connection-109',
+                prefix: {
+                    keyPrefix: 'aWJj',
+                },
             },
-            "delayPeriod": Long.fromString("0"),
-            "counterpartyVersions": [
+            delayPeriod: Long.fromString('0'),
+            counterpartyVersions: [
                 {
-                    "identifier": "1",
-                    "features": [
-                        "ORDERORDERED",
-                        "ORDERUNORDERED"
-                    ]
-                }
+                    identifier: '1',
+                    features: ['ORDERORDERED', 'ORDERUNORDERED'],
+                },
             ],
-            "proofHeight": {
-                "revisionNumber": Long.fromString("4"),
-                "revisionHeight": Long.fromString("5622892")
+            proofHeight: {
+                revisionNumber: Long.fromString('4'),
+                revisionHeight: Long.fromString('5622892'),
             },
-            "proofInit": Bytes.fromBase64String("CtwECtkEChpjb25uZWN0aW9ucy9jb25uZWN0aW9uLTEwORJTChAwNy10ZW5kZXJtaW50LTM5EiMKATESDU9SREVSX09SREVSRUQSD09SREVSX1VOT1JERVJFRBgBIhgKDzA3LXRlbmRlcm1pbnQtMBoFCgNpYmMaDggBGAEgASoGAALUsa4FIiwIARIoAgTUsa4FIJbX8P26NAg7WJjTR+37+78floxHE5H2nP5Aj2uw3nQxICIsCAESKAQG1LGuBSAfMb6iopk9+La81LhyJVtxv9gz+zfGB8Dksf5s0NBK6SAiLAgBEigGCtSxrgUgVmGMJqwvrqMz0a96IUZMh98SDsCGmlvtbKvAMYhTUGEgIiwIARIoCBrUsa4FIMvMbIV6sCIYgRr3G+DzauSyKpztDlB2oo5IUEake46qICIuCAESBwom1LGuBSAaISCLUIxRTmd8f44u73SE7KP0B0x2Hi4ubnO0FEEksJtG1CIuCAESBwxY1LGuBSAaISChW0Pngn6gx2vaBJ64r5nScEuu7YNQvWccJmhGqr19viItCAESKQ6cAdSxrgUgvWaX+cPWMwoCiFQ5Q9eso+DV4d5fH7CSpq8k2Kk58qogIi8IARIIEKYC1LGuBSAaISARBs1X8n8PDk1bJMmtaTE+XvPw1uWMecj4CBjmNBOFvSIvCAESCBLeA9SxrgUgGiEgt7IE1gd3OJ+pYKpTWEoxbzB0pemGd6/nm5zQwhJgn2IiLQgBEikWhgzUsa4FICf/ZS0sWDG35apesAYH2GQJ/PN50aWak8GX8He55urZIArVAQrSAQoDaWJjEiC5/pdvs86SIMETztvXqOM2VKoUsKxtUr00LIb8346+fRoJCAEYASABKgEAIicIARIBARog+VbefwQZr0EJzBl04fE3Iwq9K4y59Sd3XuzKGogXDyIiJQgBEiEBBaWlpOGeCPh66SAQygI6GpJinGcQrhy7KO/G5Tmqzz4iJQgBEiEBbI3v3i9RTfwPQUwfIW7pPNjLw2x/tDYvnNZkMe2X6CIiJwgBEgEBGiAElZdHfml4DScpDFpEbkXY6tOOqxQ9z6VZc3sIGdXPJA==").toUint8Array(),
-            "proofClient": Bytes.fromBase64String("CocGCoQGCiRjbGllbnRzLzA3LXRlbmRlcm1pbnQtMzkvY2xpZW50U3RhdGUSwgEKKy9pYmMubGlnaHRjbGllbnRzLnRlbmRlcm1pbnQudjEuQ2xpZW50U3RhdGUSkgEKGmNyeXB0by1vcmctY2hhaW4tbWFpbm5ldC0xEgQIARADGgQIgOpJIgUIgNSTASoDCNgEMgA6BQgBENdBQhkKCQgBGAEgASoBABIMCgIAARAhGAQgDDABQhkKCQgBGAEgASoBABIMCgIAARAgGAEgATABSgd1cGdyYWRlShB1cGdyYWRlZElCQ1N0YXRlUAFYARoOCAEYASABKgYAAtSxrgUiLggBEgcCBNSxrgUgGiEgIa+jH5IK2AzJfbwtUJMOjR+vBA49DUyC2cYaHBjL+YwiLAgBEigECNSxrgUgmn+39h9eWNRiYtMn/l9ZfKyrRRVnbhOFjPdh6pEyHYAgIi4IARIHBhDUsa4FIBohIOFAqtMgyrSszuz0qowZqe521AGJXL8NtB+k+50TisSPIiwIARIoCCDUsa4FIPHUyM8P1UjfxJCP0jD9G0OOuXJ7FyJ5vvHiFl2+KSgFICIuCAESBwoq1LGuBSAaISAZsGVao2dgPTNgtB9Lwje1AQ4EnS4Gr1RtiH0XAExzdCIuCAESBwxm1LGuBSAaISAKklCi/YkcA5JTAyXQLbVevrQrJNiS6VPETXaQ08yotiItCAESKQ6uAdSxrgUgYcIRoQ8zQ82jj/47UIk3iAzRKlLqdIxKYTTGF8adDtMgIi0IARIpEOoB1LGuBSDm8ME8KcxPvA+UHxq3N6tJYqtmVpScy5FXWnhmGQhkNCAiLQgBEikS6gLUsa4FIPGK1xquAJ0gGs+Ti+kyxjuY1l7tImbbDBHpH2jxjFQ/ICItCAESKRSoCNSxrgUgVaVJLWZfI+HBkXk4z/FmyiF+sQoJsMdyn/v4cuBpVmsgIi8IARIIFoYM1LGuBSAaISBrlsldqPIfCSwzp4ORwj0WkhZ6hB5fhFDyV4xDyc6A+ArVAQrSAQoDaWJjEiC5/pdvs86SIMETztvXqOM2VKoUsKxtUr00LIb8346+fRoJCAEYASABKgEAIicIARIBARog+VbefwQZr0EJzBl04fE3Iwq9K4y59Sd3XuzKGogXDyIiJQgBEiEBBaWlpOGeCPh66SAQygI6GpJinGcQrhy7KO/G5Tmqzz4iJQgBEiEBbI3v3i9RTfwPQUwfIW7pPNjLw2x/tDYvnNZkMe2X6CIiJwgBEgEBGiAElZdHfml4DScpDFpEbkXY6tOOqxQ9z6VZc3sIGdXPJA==").toUint8Array(),
-            "proofConsensus": Bytes.fromBase64String("CtQFCtEFCi9jbGllbnRzLzA3LXRlbmRlcm1pbnQtMzkvY29uc2Vuc3VzU3RhdGVzLzEtODQwNxKGAQouL2liYy5saWdodGNsaWVudHMudGVuZGVybWludC52MS5Db25zZW5zdXNTdGF0ZRJUCgwIk9jyggYQ/o7axgMSIgogL5GwQD3KwWp+PFZeQ8Rz0pujxJvcHn9BFd3cwOFg294aIBXUob00ahwyiYpV7p5AleA18ZsPq72Yx/N5iUj1ZJKeGg4IARgBIAEqBgAC1LGuBSIuCAESBwIE1LGuBSAaISA5DhB9qRX1RUltuHxiEXT+t63Qr0GxjiKJo8CMBfqtXCIsCAESKAQI1LGuBSDPEpc9sTTJ96zwcCGZ3Ba1icFmAbkcY52/YauNvq0C+CAiLAgBEigGENSxrgUgZvk+QvucnZIyrvtHsGX8YcQt4in4hwFnnQ4hvj/xk9IgIiwIARIoCCDUsa4FIPHUyM8P1UjfxJCP0jD9G0OOuXJ7FyJ5vvHiFl2+KSgFICIuCAESBwoq1LGuBSAaISAZsGVao2dgPTNgtB9Lwje1AQ4EnS4Gr1RtiH0XAExzdCIuCAESBwxm1LGuBSAaISAKklCi/YkcA5JTAyXQLbVevrQrJNiS6VPETXaQ08yotiItCAESKQ6uAdSxrgUgYcIRoQ8zQ82jj/47UIk3iAzRKlLqdIxKYTTGF8adDtMgIi0IARIpEOoB1LGuBSDm8ME8KcxPvA+UHxq3N6tJYqtmVpScy5FXWnhmGQhkNCAiLQgBEikS6gLUsa4FIPGK1xquAJ0gGs+Ti+kyxjuY1l7tImbbDBHpH2jxjFQ/ICItCAESKRSoCNSxrgUgVaVJLWZfI+HBkXk4z/FmyiF+sQoJsMdyn/v4cuBpVmsgIi8IARIIFoYM1LGuBSAaISBrlsldqPIfCSwzp4ORwj0WkhZ6hB5fhFDyV4xDyc6A+ArVAQrSAQoDaWJjEiC5/pdvs86SIMETztvXqOM2VKoUsKxtUr00LIb8346+fRoJCAEYASABKgEAIicIARIBARog+VbefwQZr0EJzBl04fE3Iwq9K4y59Sd3XuzKGogXDyIiJQgBEiEBBaWlpOGeCPh66SAQygI6GpJinGcQrhy7KO/G5Tmqzz4iJQgBEiEBbI3v3i9RTfwPQUwfIW7pPNjLw2x/tDYvnNZkMe2X6CIiJwgBEgEBGiAElZdHfml4DScpDFpEbkXY6tOOqxQ9z6VZc3sIGdXPJA==").toUint8Array(),
-            "consensusHeight": {
-                "revisionNumber": Long.fromString("1"),
-                "revisionHeight": Long.fromString("8407")
+            proofInit: Bytes.fromBase64String(
+                'CtwECtkEChpjb25uZWN0aW9ucy9jb25uZWN0aW9uLTEwORJTChAwNy10ZW5kZXJtaW50LTM5EiMKATESDU9SREVSX09SREVSRUQSD09SREVSX1VOT1JERVJFRBgBIhgKDzA3LXRlbmRlcm1pbnQtMBoFCgNpYmMaDggBGAEgASoGAALUsa4FIiwIARIoAgTUsa4FIJbX8P26NAg7WJjTR+37+78floxHE5H2nP5Aj2uw3nQxICIsCAESKAQG1LGuBSAfMb6iopk9+La81LhyJVtxv9gz+zfGB8Dksf5s0NBK6SAiLAgBEigGCtSxrgUgVmGMJqwvrqMz0a96IUZMh98SDsCGmlvtbKvAMYhTUGEgIiwIARIoCBrUsa4FIMvMbIV6sCIYgRr3G+DzauSyKpztDlB2oo5IUEake46qICIuCAESBwom1LGuBSAaISCLUIxRTmd8f44u73SE7KP0B0x2Hi4ubnO0FEEksJtG1CIuCAESBwxY1LGuBSAaISChW0Pngn6gx2vaBJ64r5nScEuu7YNQvWccJmhGqr19viItCAESKQ6cAdSxrgUgvWaX+cPWMwoCiFQ5Q9eso+DV4d5fH7CSpq8k2Kk58qogIi8IARIIEKYC1LGuBSAaISARBs1X8n8PDk1bJMmtaTE+XvPw1uWMecj4CBjmNBOFvSIvCAESCBLeA9SxrgUgGiEgt7IE1gd3OJ+pYKpTWEoxbzB0pemGd6/nm5zQwhJgn2IiLQgBEikWhgzUsa4FICf/ZS0sWDG35apesAYH2GQJ/PN50aWak8GX8He55urZIArVAQrSAQoDaWJjEiC5/pdvs86SIMETztvXqOM2VKoUsKxtUr00LIb8346+fRoJCAEYASABKgEAIicIARIBARog+VbefwQZr0EJzBl04fE3Iwq9K4y59Sd3XuzKGogXDyIiJQgBEiEBBaWlpOGeCPh66SAQygI6GpJinGcQrhy7KO/G5Tmqzz4iJQgBEiEBbI3v3i9RTfwPQUwfIW7pPNjLw2x/tDYvnNZkMe2X6CIiJwgBEgEBGiAElZdHfml4DScpDFpEbkXY6tOOqxQ9z6VZc3sIGdXPJA==',
+            ).toUint8Array(),
+            proofClient: Bytes.fromBase64String(
+                'CocGCoQGCiRjbGllbnRzLzA3LXRlbmRlcm1pbnQtMzkvY2xpZW50U3RhdGUSwgEKKy9pYmMubGlnaHRjbGllbnRzLnRlbmRlcm1pbnQudjEuQ2xpZW50U3RhdGUSkgEKGmNyeXB0by1vcmctY2hhaW4tbWFpbm5ldC0xEgQIARADGgQIgOpJIgUIgNSTASoDCNgEMgA6BQgBENdBQhkKCQgBGAEgASoBABIMCgIAARAhGAQgDDABQhkKCQgBGAEgASoBABIMCgIAARAgGAEgATABSgd1cGdyYWRlShB1cGdyYWRlZElCQ1N0YXRlUAFYARoOCAEYASABKgYAAtSxrgUiLggBEgcCBNSxrgUgGiEgIa+jH5IK2AzJfbwtUJMOjR+vBA49DUyC2cYaHBjL+YwiLAgBEigECNSxrgUgmn+39h9eWNRiYtMn/l9ZfKyrRRVnbhOFjPdh6pEyHYAgIi4IARIHBhDUsa4FIBohIOFAqtMgyrSszuz0qowZqe521AGJXL8NtB+k+50TisSPIiwIARIoCCDUsa4FIPHUyM8P1UjfxJCP0jD9G0OOuXJ7FyJ5vvHiFl2+KSgFICIuCAESBwoq1LGuBSAaISAZsGVao2dgPTNgtB9Lwje1AQ4EnS4Gr1RtiH0XAExzdCIuCAESBwxm1LGuBSAaISAKklCi/YkcA5JTAyXQLbVevrQrJNiS6VPETXaQ08yotiItCAESKQ6uAdSxrgUgYcIRoQ8zQ82jj/47UIk3iAzRKlLqdIxKYTTGF8adDtMgIi0IARIpEOoB1LGuBSDm8ME8KcxPvA+UHxq3N6tJYqtmVpScy5FXWnhmGQhkNCAiLQgBEikS6gLUsa4FIPGK1xquAJ0gGs+Ti+kyxjuY1l7tImbbDBHpH2jxjFQ/ICItCAESKRSoCNSxrgUgVaVJLWZfI+HBkXk4z/FmyiF+sQoJsMdyn/v4cuBpVmsgIi8IARIIFoYM1LGuBSAaISBrlsldqPIfCSwzp4ORwj0WkhZ6hB5fhFDyV4xDyc6A+ArVAQrSAQoDaWJjEiC5/pdvs86SIMETztvXqOM2VKoUsKxtUr00LIb8346+fRoJCAEYASABKgEAIicIARIBARog+VbefwQZr0EJzBl04fE3Iwq9K4y59Sd3XuzKGogXDyIiJQgBEiEBBaWlpOGeCPh66SAQygI6GpJinGcQrhy7KO/G5Tmqzz4iJQgBEiEBbI3v3i9RTfwPQUwfIW7pPNjLw2x/tDYvnNZkMe2X6CIiJwgBEgEBGiAElZdHfml4DScpDFpEbkXY6tOOqxQ9z6VZc3sIGdXPJA==',
+            ).toUint8Array(),
+            proofConsensus: Bytes.fromBase64String(
+                'CtQFCtEFCi9jbGllbnRzLzA3LXRlbmRlcm1pbnQtMzkvY29uc2Vuc3VzU3RhdGVzLzEtODQwNxKGAQouL2liYy5saWdodGNsaWVudHMudGVuZGVybWludC52MS5Db25zZW5zdXNTdGF0ZRJUCgwIk9jyggYQ/o7axgMSIgogL5GwQD3KwWp+PFZeQ8Rz0pujxJvcHn9BFd3cwOFg294aIBXUob00ahwyiYpV7p5AleA18ZsPq72Yx/N5iUj1ZJKeGg4IARgBIAEqBgAC1LGuBSIuCAESBwIE1LGuBSAaISA5DhB9qRX1RUltuHxiEXT+t63Qr0GxjiKJo8CMBfqtXCIsCAESKAQI1LGuBSDPEpc9sTTJ96zwcCGZ3Ba1icFmAbkcY52/YauNvq0C+CAiLAgBEigGENSxrgUgZvk+QvucnZIyrvtHsGX8YcQt4in4hwFnnQ4hvj/xk9IgIiwIARIoCCDUsa4FIPHUyM8P1UjfxJCP0jD9G0OOuXJ7FyJ5vvHiFl2+KSgFICIuCAESBwoq1LGuBSAaISAZsGVao2dgPTNgtB9Lwje1AQ4EnS4Gr1RtiH0XAExzdCIuCAESBwxm1LGuBSAaISAKklCi/YkcA5JTAyXQLbVevrQrJNiS6VPETXaQ08yotiItCAESKQ6uAdSxrgUgYcIRoQ8zQ82jj/47UIk3iAzRKlLqdIxKYTTGF8adDtMgIi0IARIpEOoB1LGuBSDm8ME8KcxPvA+UHxq3N6tJYqtmVpScy5FXWnhmGQhkNCAiLQgBEikS6gLUsa4FIPGK1xquAJ0gGs+Ti+kyxjuY1l7tImbbDBHpH2jxjFQ/ICItCAESKRSoCNSxrgUgVaVJLWZfI+HBkXk4z/FmyiF+sQoJsMdyn/v4cuBpVmsgIi8IARIIFoYM1LGuBSAaISBrlsldqPIfCSwzp4ORwj0WkhZ6hB5fhFDyV4xDyc6A+ArVAQrSAQoDaWJjEiC5/pdvs86SIMETztvXqOM2VKoUsKxtUr00LIb8346+fRoJCAEYASABKgEAIicIARIBARog+VbefwQZr0EJzBl04fE3Iwq9K4y59Sd3XuzKGogXDyIiJQgBEiEBBaWlpOGeCPh66SAQygI6GpJinGcQrhy7KO/G5Tmqzz4iJQgBEiEBbI3v3i9RTfwPQUwfIW7pPNjLw2x/tDYvnNZkMe2X6CIiJwgBEgEBGiAElZdHfml4DScpDFpEbkXY6tOOqxQ9z6VZc3sIGdXPJA==',
+            ).toUint8Array(),
+            consensusHeight: {
+                revisionNumber: Long.fromString('1'),
+                revisionHeight: Long.fromString('8407'),
             },
-            "signer": "cro1l60esq8vche5nlk7ylvp0ssq7rmk453zh8rx6u"
+            signer: 'cro1l60esq8vche5nlk7ylvp0ssq7rmk453zh8rx6u',
         };
 
         expect(() => new cro.ibc.connection.MsgConnectionOpenTry(params1)).to.throw(
@@ -507,9 +522,9 @@ describe('Testing MsgConnectionOpenTry', function () {
 
     it('Should throw on getting toRawAminoMsg()', function () {
         const MsgConnectionOpenTry = new cro.ibc.connection.MsgConnectionOpenTry({
-            "clientId": "07-tendermint-0",
-            "previousConnectionId": "",
-            "clientState": {
+            clientId: '07-tendermint-0',
+            previousConnectionId: '',
+            clientState: {
                 chainId: 'testnet-croeseid-1',
                 trustLevel: {
                     numerator: Long.fromString('1'),
@@ -560,35 +575,38 @@ describe('Testing MsgConnectionOpenTry', function () {
                 allowUpdateAfterExpiry: false,
                 allowUpdateAfterMisbehaviour: false,
             },
-            "counterparty": {
-                "clientId": "07-tendermint-39",
-                "connectionId": "connection-109",
-                "prefix": {
-                    "keyPrefix": "aWJj"
-                }
+            counterparty: {
+                clientId: '07-tendermint-39',
+                connectionId: 'connection-109',
+                prefix: {
+                    keyPrefix: 'aWJj',
+                },
             },
-            "delayPeriod": Long.fromString("0"),
-            "counterpartyVersions": [
+            delayPeriod: Long.fromString('0'),
+            counterpartyVersions: [
                 {
-                    "identifier": "1",
-                    "features": [
-                        "ORDERORDERED",
-                        "ORDERUNORDERED"
-                    ]
-                }
+                    identifier: '1',
+                    features: ['ORDERORDERED', 'ORDERUNORDERED'],
+                },
             ],
-            "proofHeight": {
-                "revisionNumber": Long.fromString("4"),
-                "revisionHeight": Long.fromString("5622892")
+            proofHeight: {
+                revisionNumber: Long.fromString('4'),
+                revisionHeight: Long.fromString('5622892'),
             },
-            "proofInit": Bytes.fromBase64String("CtwECtkEChpjb25uZWN0aW9ucy9jb25uZWN0aW9uLTEwORJTChAwNy10ZW5kZXJtaW50LTM5EiMKATESDU9SREVSX09SREVSRUQSD09SREVSX1VOT1JERVJFRBgBIhgKDzA3LXRlbmRlcm1pbnQtMBoFCgNpYmMaDggBGAEgASoGAALUsa4FIiwIARIoAgTUsa4FIJbX8P26NAg7WJjTR+37+78floxHE5H2nP5Aj2uw3nQxICIsCAESKAQG1LGuBSAfMb6iopk9+La81LhyJVtxv9gz+zfGB8Dksf5s0NBK6SAiLAgBEigGCtSxrgUgVmGMJqwvrqMz0a96IUZMh98SDsCGmlvtbKvAMYhTUGEgIiwIARIoCBrUsa4FIMvMbIV6sCIYgRr3G+DzauSyKpztDlB2oo5IUEake46qICIuCAESBwom1LGuBSAaISCLUIxRTmd8f44u73SE7KP0B0x2Hi4ubnO0FEEksJtG1CIuCAESBwxY1LGuBSAaISChW0Pngn6gx2vaBJ64r5nScEuu7YNQvWccJmhGqr19viItCAESKQ6cAdSxrgUgvWaX+cPWMwoCiFQ5Q9eso+DV4d5fH7CSpq8k2Kk58qogIi8IARIIEKYC1LGuBSAaISARBs1X8n8PDk1bJMmtaTE+XvPw1uWMecj4CBjmNBOFvSIvCAESCBLeA9SxrgUgGiEgt7IE1gd3OJ+pYKpTWEoxbzB0pemGd6/nm5zQwhJgn2IiLQgBEikWhgzUsa4FICf/ZS0sWDG35apesAYH2GQJ/PN50aWak8GX8He55urZIArVAQrSAQoDaWJjEiC5/pdvs86SIMETztvXqOM2VKoUsKxtUr00LIb8346+fRoJCAEYASABKgEAIicIARIBARog+VbefwQZr0EJzBl04fE3Iwq9K4y59Sd3XuzKGogXDyIiJQgBEiEBBaWlpOGeCPh66SAQygI6GpJinGcQrhy7KO/G5Tmqzz4iJQgBEiEBbI3v3i9RTfwPQUwfIW7pPNjLw2x/tDYvnNZkMe2X6CIiJwgBEgEBGiAElZdHfml4DScpDFpEbkXY6tOOqxQ9z6VZc3sIGdXPJA==").toUint8Array(),
-            "proofClient": Bytes.fromBase64String("CocGCoQGCiRjbGllbnRzLzA3LXRlbmRlcm1pbnQtMzkvY2xpZW50U3RhdGUSwgEKKy9pYmMubGlnaHRjbGllbnRzLnRlbmRlcm1pbnQudjEuQ2xpZW50U3RhdGUSkgEKGmNyeXB0by1vcmctY2hhaW4tbWFpbm5ldC0xEgQIARADGgQIgOpJIgUIgNSTASoDCNgEMgA6BQgBENdBQhkKCQgBGAEgASoBABIMCgIAARAhGAQgDDABQhkKCQgBGAEgASoBABIMCgIAARAgGAEgATABSgd1cGdyYWRlShB1cGdyYWRlZElCQ1N0YXRlUAFYARoOCAEYASABKgYAAtSxrgUiLggBEgcCBNSxrgUgGiEgIa+jH5IK2AzJfbwtUJMOjR+vBA49DUyC2cYaHBjL+YwiLAgBEigECNSxrgUgmn+39h9eWNRiYtMn/l9ZfKyrRRVnbhOFjPdh6pEyHYAgIi4IARIHBhDUsa4FIBohIOFAqtMgyrSszuz0qowZqe521AGJXL8NtB+k+50TisSPIiwIARIoCCDUsa4FIPHUyM8P1UjfxJCP0jD9G0OOuXJ7FyJ5vvHiFl2+KSgFICIuCAESBwoq1LGuBSAaISAZsGVao2dgPTNgtB9Lwje1AQ4EnS4Gr1RtiH0XAExzdCIuCAESBwxm1LGuBSAaISAKklCi/YkcA5JTAyXQLbVevrQrJNiS6VPETXaQ08yotiItCAESKQ6uAdSxrgUgYcIRoQ8zQ82jj/47UIk3iAzRKlLqdIxKYTTGF8adDtMgIi0IARIpEOoB1LGuBSDm8ME8KcxPvA+UHxq3N6tJYqtmVpScy5FXWnhmGQhkNCAiLQgBEikS6gLUsa4FIPGK1xquAJ0gGs+Ti+kyxjuY1l7tImbbDBHpH2jxjFQ/ICItCAESKRSoCNSxrgUgVaVJLWZfI+HBkXk4z/FmyiF+sQoJsMdyn/v4cuBpVmsgIi8IARIIFoYM1LGuBSAaISBrlsldqPIfCSwzp4ORwj0WkhZ6hB5fhFDyV4xDyc6A+ArVAQrSAQoDaWJjEiC5/pdvs86SIMETztvXqOM2VKoUsKxtUr00LIb8346+fRoJCAEYASABKgEAIicIARIBARog+VbefwQZr0EJzBl04fE3Iwq9K4y59Sd3XuzKGogXDyIiJQgBEiEBBaWlpOGeCPh66SAQygI6GpJinGcQrhy7KO/G5Tmqzz4iJQgBEiEBbI3v3i9RTfwPQUwfIW7pPNjLw2x/tDYvnNZkMe2X6CIiJwgBEgEBGiAElZdHfml4DScpDFpEbkXY6tOOqxQ9z6VZc3sIGdXPJA==").toUint8Array(),
-            "proofConsensus": Bytes.fromBase64String("CtQFCtEFCi9jbGllbnRzLzA3LXRlbmRlcm1pbnQtMzkvY29uc2Vuc3VzU3RhdGVzLzEtODQwNxKGAQouL2liYy5saWdodGNsaWVudHMudGVuZGVybWludC52MS5Db25zZW5zdXNTdGF0ZRJUCgwIk9jyggYQ/o7axgMSIgogL5GwQD3KwWp+PFZeQ8Rz0pujxJvcHn9BFd3cwOFg294aIBXUob00ahwyiYpV7p5AleA18ZsPq72Yx/N5iUj1ZJKeGg4IARgBIAEqBgAC1LGuBSIuCAESBwIE1LGuBSAaISA5DhB9qRX1RUltuHxiEXT+t63Qr0GxjiKJo8CMBfqtXCIsCAESKAQI1LGuBSDPEpc9sTTJ96zwcCGZ3Ba1icFmAbkcY52/YauNvq0C+CAiLAgBEigGENSxrgUgZvk+QvucnZIyrvtHsGX8YcQt4in4hwFnnQ4hvj/xk9IgIiwIARIoCCDUsa4FIPHUyM8P1UjfxJCP0jD9G0OOuXJ7FyJ5vvHiFl2+KSgFICIuCAESBwoq1LGuBSAaISAZsGVao2dgPTNgtB9Lwje1AQ4EnS4Gr1RtiH0XAExzdCIuCAESBwxm1LGuBSAaISAKklCi/YkcA5JTAyXQLbVevrQrJNiS6VPETXaQ08yotiItCAESKQ6uAdSxrgUgYcIRoQ8zQ82jj/47UIk3iAzRKlLqdIxKYTTGF8adDtMgIi0IARIpEOoB1LGuBSDm8ME8KcxPvA+UHxq3N6tJYqtmVpScy5FXWnhmGQhkNCAiLQgBEikS6gLUsa4FIPGK1xquAJ0gGs+Ti+kyxjuY1l7tImbbDBHpH2jxjFQ/ICItCAESKRSoCNSxrgUgVaVJLWZfI+HBkXk4z/FmyiF+sQoJsMdyn/v4cuBpVmsgIi8IARIIFoYM1LGuBSAaISBrlsldqPIfCSwzp4ORwj0WkhZ6hB5fhFDyV4xDyc6A+ArVAQrSAQoDaWJjEiC5/pdvs86SIMETztvXqOM2VKoUsKxtUr00LIb8346+fRoJCAEYASABKgEAIicIARIBARog+VbefwQZr0EJzBl04fE3Iwq9K4y59Sd3XuzKGogXDyIiJQgBEiEBBaWlpOGeCPh66SAQygI6GpJinGcQrhy7KO/G5Tmqzz4iJQgBEiEBbI3v3i9RTfwPQUwfIW7pPNjLw2x/tDYvnNZkMe2X6CIiJwgBEgEBGiAElZdHfml4DScpDFpEbkXY6tOOqxQ9z6VZc3sIGdXPJA==").toUint8Array(),
-            "consensusHeight": {
-                "revisionNumber": Long.fromString("1"),
-                "revisionHeight": Long.fromString("8407")
+            proofInit: Bytes.fromBase64String(
+                'CtwECtkEChpjb25uZWN0aW9ucy9jb25uZWN0aW9uLTEwORJTChAwNy10ZW5kZXJtaW50LTM5EiMKATESDU9SREVSX09SREVSRUQSD09SREVSX1VOT1JERVJFRBgBIhgKDzA3LXRlbmRlcm1pbnQtMBoFCgNpYmMaDggBGAEgASoGAALUsa4FIiwIARIoAgTUsa4FIJbX8P26NAg7WJjTR+37+78floxHE5H2nP5Aj2uw3nQxICIsCAESKAQG1LGuBSAfMb6iopk9+La81LhyJVtxv9gz+zfGB8Dksf5s0NBK6SAiLAgBEigGCtSxrgUgVmGMJqwvrqMz0a96IUZMh98SDsCGmlvtbKvAMYhTUGEgIiwIARIoCBrUsa4FIMvMbIV6sCIYgRr3G+DzauSyKpztDlB2oo5IUEake46qICIuCAESBwom1LGuBSAaISCLUIxRTmd8f44u73SE7KP0B0x2Hi4ubnO0FEEksJtG1CIuCAESBwxY1LGuBSAaISChW0Pngn6gx2vaBJ64r5nScEuu7YNQvWccJmhGqr19viItCAESKQ6cAdSxrgUgvWaX+cPWMwoCiFQ5Q9eso+DV4d5fH7CSpq8k2Kk58qogIi8IARIIEKYC1LGuBSAaISARBs1X8n8PDk1bJMmtaTE+XvPw1uWMecj4CBjmNBOFvSIvCAESCBLeA9SxrgUgGiEgt7IE1gd3OJ+pYKpTWEoxbzB0pemGd6/nm5zQwhJgn2IiLQgBEikWhgzUsa4FICf/ZS0sWDG35apesAYH2GQJ/PN50aWak8GX8He55urZIArVAQrSAQoDaWJjEiC5/pdvs86SIMETztvXqOM2VKoUsKxtUr00LIb8346+fRoJCAEYASABKgEAIicIARIBARog+VbefwQZr0EJzBl04fE3Iwq9K4y59Sd3XuzKGogXDyIiJQgBEiEBBaWlpOGeCPh66SAQygI6GpJinGcQrhy7KO/G5Tmqzz4iJQgBEiEBbI3v3i9RTfwPQUwfIW7pPNjLw2x/tDYvnNZkMe2X6CIiJwgBEgEBGiAElZdHfml4DScpDFpEbkXY6tOOqxQ9z6VZc3sIGdXPJA==',
+            ).toUint8Array(),
+            proofClient: Bytes.fromBase64String(
+                'CocGCoQGCiRjbGllbnRzLzA3LXRlbmRlcm1pbnQtMzkvY2xpZW50U3RhdGUSwgEKKy9pYmMubGlnaHRjbGllbnRzLnRlbmRlcm1pbnQudjEuQ2xpZW50U3RhdGUSkgEKGmNyeXB0by1vcmctY2hhaW4tbWFpbm5ldC0xEgQIARADGgQIgOpJIgUIgNSTASoDCNgEMgA6BQgBENdBQhkKCQgBGAEgASoBABIMCgIAARAhGAQgDDABQhkKCQgBGAEgASoBABIMCgIAARAgGAEgATABSgd1cGdyYWRlShB1cGdyYWRlZElCQ1N0YXRlUAFYARoOCAEYASABKgYAAtSxrgUiLggBEgcCBNSxrgUgGiEgIa+jH5IK2AzJfbwtUJMOjR+vBA49DUyC2cYaHBjL+YwiLAgBEigECNSxrgUgmn+39h9eWNRiYtMn/l9ZfKyrRRVnbhOFjPdh6pEyHYAgIi4IARIHBhDUsa4FIBohIOFAqtMgyrSszuz0qowZqe521AGJXL8NtB+k+50TisSPIiwIARIoCCDUsa4FIPHUyM8P1UjfxJCP0jD9G0OOuXJ7FyJ5vvHiFl2+KSgFICIuCAESBwoq1LGuBSAaISAZsGVao2dgPTNgtB9Lwje1AQ4EnS4Gr1RtiH0XAExzdCIuCAESBwxm1LGuBSAaISAKklCi/YkcA5JTAyXQLbVevrQrJNiS6VPETXaQ08yotiItCAESKQ6uAdSxrgUgYcIRoQ8zQ82jj/47UIk3iAzRKlLqdIxKYTTGF8adDtMgIi0IARIpEOoB1LGuBSDm8ME8KcxPvA+UHxq3N6tJYqtmVpScy5FXWnhmGQhkNCAiLQgBEikS6gLUsa4FIPGK1xquAJ0gGs+Ti+kyxjuY1l7tImbbDBHpH2jxjFQ/ICItCAESKRSoCNSxrgUgVaVJLWZfI+HBkXk4z/FmyiF+sQoJsMdyn/v4cuBpVmsgIi8IARIIFoYM1LGuBSAaISBrlsldqPIfCSwzp4ORwj0WkhZ6hB5fhFDyV4xDyc6A+ArVAQrSAQoDaWJjEiC5/pdvs86SIMETztvXqOM2VKoUsKxtUr00LIb8346+fRoJCAEYASABKgEAIicIARIBARog+VbefwQZr0EJzBl04fE3Iwq9K4y59Sd3XuzKGogXDyIiJQgBEiEBBaWlpOGeCPh66SAQygI6GpJinGcQrhy7KO/G5Tmqzz4iJQgBEiEBbI3v3i9RTfwPQUwfIW7pPNjLw2x/tDYvnNZkMe2X6CIiJwgBEgEBGiAElZdHfml4DScpDFpEbkXY6tOOqxQ9z6VZc3sIGdXPJA==',
+            ).toUint8Array(),
+            proofConsensus: Bytes.fromBase64String(
+                'CtQFCtEFCi9jbGllbnRzLzA3LXRlbmRlcm1pbnQtMzkvY29uc2Vuc3VzU3RhdGVzLzEtODQwNxKGAQouL2liYy5saWdodGNsaWVudHMudGVuZGVybWludC52MS5Db25zZW5zdXNTdGF0ZRJUCgwIk9jyggYQ/o7axgMSIgogL5GwQD3KwWp+PFZeQ8Rz0pujxJvcHn9BFd3cwOFg294aIBXUob00ahwyiYpV7p5AleA18ZsPq72Yx/N5iUj1ZJKeGg4IARgBIAEqBgAC1LGuBSIuCAESBwIE1LGuBSAaISA5DhB9qRX1RUltuHxiEXT+t63Qr0GxjiKJo8CMBfqtXCIsCAESKAQI1LGuBSDPEpc9sTTJ96zwcCGZ3Ba1icFmAbkcY52/YauNvq0C+CAiLAgBEigGENSxrgUgZvk+QvucnZIyrvtHsGX8YcQt4in4hwFnnQ4hvj/xk9IgIiwIARIoCCDUsa4FIPHUyM8P1UjfxJCP0jD9G0OOuXJ7FyJ5vvHiFl2+KSgFICIuCAESBwoq1LGuBSAaISAZsGVao2dgPTNgtB9Lwje1AQ4EnS4Gr1RtiH0XAExzdCIuCAESBwxm1LGuBSAaISAKklCi/YkcA5JTAyXQLbVevrQrJNiS6VPETXaQ08yotiItCAESKQ6uAdSxrgUgYcIRoQ8zQ82jj/47UIk3iAzRKlLqdIxKYTTGF8adDtMgIi0IARIpEOoB1LGuBSDm8ME8KcxPvA+UHxq3N6tJYqtmVpScy5FXWnhmGQhkNCAiLQgBEikS6gLUsa4FIPGK1xquAJ0gGs+Ti+kyxjuY1l7tImbbDBHpH2jxjFQ/ICItCAESKRSoCNSxrgUgVaVJLWZfI+HBkXk4z/FmyiF+sQoJsMdyn/v4cuBpVmsgIi8IARIIFoYM1LGuBSAaISBrlsldqPIfCSwzp4ORwj0WkhZ6hB5fhFDyV4xDyc6A+ArVAQrSAQoDaWJjEiC5/pdvs86SIMETztvXqOM2VKoUsKxtUr00LIb8346+fRoJCAEYASABKgEAIicIARIBARog+VbefwQZr0EJzBl04fE3Iwq9K4y59Sd3XuzKGogXDyIiJQgBEiEBBaWlpOGeCPh66SAQygI6GpJinGcQrhy7KO/G5Tmqzz4iJQgBEiEBbI3v3i9RTfwPQUwfIW7pPNjLw2x/tDYvnNZkMe2X6CIiJwgBEgEBGiAElZdHfml4DScpDFpEbkXY6tOOqxQ9z6VZc3sIGdXPJA==',
+            ).toUint8Array(),
+            consensusHeight: {
+                revisionNumber: Long.fromString('1'),
+                revisionHeight: Long.fromString('8407'),
             },
-            "signer": "tcro15sfupd26sp6qf37ll5q6xuf330k7df9tnvrqht"
+            signer: 'tcro15sfupd26sp6qf37ll5q6xuf330k7df9tnvrqht',
         });
 
         expect(() => MsgConnectionOpenTry.toRawAminoMsg()).to.throw(
@@ -754,7 +772,9 @@ describe('Testing MsgConnectionOpenTry', function () {
               }
                 `;
 
-            expect(() => cro.ibc.connection.MsgConnectionOpenTry.fromCosmosMsgJSON(json)).to.throw('MsgConnectionOpenTry doesnot support `client_state` JSON decoding.');
+            expect(() => cro.ibc.connection.MsgConnectionOpenTry.fromCosmosMsgJSON(json)).to.throw(
+                'MsgConnectionOpenTry doesnot support `client_state` JSON decoding.',
+            );
         });
         it('should return the IBC MsgConnectionOpenTry corresponding to the JSON', function () {
             const json = `{
