@@ -194,6 +194,8 @@ describe('SignableTransaction', function () {
             COSMOS_MSG_TYPEURL.ibc.MsgUpdateClient,
             COSMOS_MSG_TYPEURL.ibc.MsgUpgradeClient,
             COSMOS_MSG_TYPEURL.ibc.MsgSubmitMisbehaviour,
+            COSMOS_MSG_TYPEURL.ibc.connection.MsgConnectionOpenConfirm,
+            COSMOS_MSG_TYPEURL.ibc.connection.MsgConnectionOpenTry,
             COSMOS_MSG_TYPEURL.nft.MsgIssueDenom,
             COSMOS_MSG_TYPEURL.nft.MsgMintNFT,
             COSMOS_MSG_TYPEURL.nft.MsgEditNFT,

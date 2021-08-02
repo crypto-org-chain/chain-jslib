@@ -144,7 +144,7 @@ export const MsgConnectionOpenTryIBC = function (config: InitConfigurations) {
                     revisionHeight: Long.fromString(parsedMsg.consensus_height.revision_height),
                 };
             }
-            if (typeof counterparty === 'object' && Object.keys(parsedMsg.counterparty).length > 0) {
+            if (typeof parsedMsg.counterparty === 'object' && Object.keys(parsedMsg.counterparty).length > 0) {
                 counterparty = {
                     clientId: parsedMsg.counterparty.client_id,
                     connectionId: parsedMsg.counterparty.connection_id,
