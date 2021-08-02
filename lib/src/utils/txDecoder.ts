@@ -527,6 +527,12 @@ function handleSpecialParams(decodedParams: any, typeUrl: string) {
             /* eslint-enable */
         }
     }
+
+    if (typeUrl === COSMOS_MSG_TYPEURL.ibc.connection.MsgConnectionOpenConfirm) {
+        if (decodedParams.proofAck) {
+            clonedDecodedParams.proofAck = Bytes.fromUint8Array(decodedParams.proofAck).toBase64String();
+        }
+    }
     return clonedDecodedParams;
 }
 
