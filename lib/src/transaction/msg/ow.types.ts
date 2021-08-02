@@ -292,6 +292,10 @@ export const owOptionalProofSpec = owOptionalStrictObject().exactShape({
     minDepth: ow.number,
 });
 
+export const owOptionalMerkleRoot = owOptionalStrictObject().exactShape({
+    hash: ow.any(ow.uint8Array, ow.null),
+});
+
 export const owClientStateOptions = owStrictObject().exactShape({
     chainId: ow.string,
     trustLevel: owOptionalFraction,
@@ -306,8 +310,14 @@ export const owClientStateOptions = owStrictObject().exactShape({
     allowUpdateAfterMisbehaviour: ow.boolean,
 });
 
+export const owConsensusStateOptions = owStrictObject().exactShape({
+    timestamp: ow.any(owOptionalTimestamp(), ow.null),
+    root: ow.any(owOptionalMerkleRoot, ow.null),
+    nextValidatorsHash: ow.uint8Array,
+});
+
 export const owMsgCreateClientOptions = owStrictObject().exactShape({
     signer: ow.string,
-    clientState: ow.optional.any(owClientStateOptions),
-    consensusState: ow.optional.any(owGoogleProtoAnyOptional(), ow.null),
+    clientState: ow.optional.any(owClientStateOptions, ow.null),
+    consensusState: ow.optional.any(owConsensusStateOptions, ow.null),
 });

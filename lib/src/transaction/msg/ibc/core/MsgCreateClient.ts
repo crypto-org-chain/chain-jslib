@@ -12,10 +12,10 @@ import { IGoogleAny } from '../IGoogleAny';
 export const msgCreateClientIBC = function (config: InitConfigurations) {
     return class MsgCreateClient implements CosmosMsg {
         /** MsgCreateClient clientState. */
-        public clientState?: IGoogleAny;
+        public clientState?: IGoogleAny | null;
 
         /** MsgCreateClient consensusState. */
-        public consensusState?: IGoogleAny;
+        public consensusState?: IGoogleAny | null;
 
         /** MsgCreateClient signer. */
         public signer: string;
@@ -43,7 +43,7 @@ export const msgCreateClientIBC = function (config: InitConfigurations) {
                 typeUrl: COSMOS_MSG_TYPEURL.ibc.MsgCreateClient,
                 value: {
                     clientState: this.clientState?.getEncoded(),
-                    consensusState: this.consensusState,
+                    consensusState: this.consensusState?.getEncoded(),
                     signer: this.signer,
                 },
             };
@@ -66,7 +66,7 @@ export const msgCreateClientIBC = function (config: InitConfigurations) {
                 throw new Error(`Expected ${COSMOS_MSG_TYPEURL.ibc.MsgCreateClient} but got ${parsedMsg['@type']}`);
             }
 
-            // TODO: The `client_state` value needs to be handled, currently keeping it as `null`
+            // TODO: The `client_state` value needs to be handled, currently keeping it as `undefined`
             if (typeof parsedMsg.client_state === 'object' && Object.keys(parsedMsg.client_state).length > 0) {
                 throw new Error('IBC MsgUpdateClient does not support `client_state` decoding.');
             }
@@ -99,8 +99,8 @@ export const msgCreateClientIBC = function (config: InitConfigurations) {
 };
 
 export type MsgCreateClientOptions = {
-    clientState?: IGoogleAny;
-    consensusState?: IGoogleAny;
+    clientState?: IGoogleAny | null;
+    consensusState?: IGoogleAny | null;
     signer: string;
 };
 

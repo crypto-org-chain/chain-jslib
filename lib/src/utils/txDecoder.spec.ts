@@ -186,6 +186,17 @@ describe('TxDecoder', function () {
                 .toCosmosJSON(),
         ).equal(JSON.stringify(nonZeroTimeoutHeight));
     });
+
+    it('should decode the transaction correctly FOR `MsgCreateClient`', function () {
+        const txDecoder = new TxDecoder();
+        expect(
+            txDecoder
+                .fromHex(
+                    '0ab4020ab1020a232f6962632e636f72652e636c69656e742e76312e4d7367437265617465436c69656e741289020aa0010a2b2f6962632e6c69676874636c69656e74732e74656e6465726d696e742e76312e436c69656e74537461746512710a12746573746e65742d63726f65736569642d311204080110011a06086410a08d062206086410a08d062a06086410a08d063204086410643a040864106442280a0d08051005180520022a0300010212110a02010210011800200a2a03000102300518904e20904e4a036962635000580012370a2e2f6962632e6c69676874636c69656e74732e74656e6465726d696e742e76312e436f6e73656e737573537461746512051a030102031a2b7463726f313573667570643236737036716633376c6c3571367875663333306b37646639746e767271687412580a500a460a1f2f636f736d6f732e63727970746f2e736563703235366b312e5075624b657912230a2103fd0d560b6c4aa1ca16721d039a192867c3457e19dad553edb98e7ba88b159c2712040a0208011802120410c09a0c1a40d4414a8cc77c85b9afcc53b76b4aaec7b793973c19f7a2a5b2c35c3d9fd80a0c51e11e77d42a190479e0a99ba02c7b957d5aec76afc9129835c178e19d42d237',
+                )
+                .toCosmosJSON(),
+        ).equal(JSON.stringify({ "body": { "messages": [{ "@type": "/ibc.core.client.v1.MsgCreateClient", "client_state": { "@type": "/ibc.lightclients.tendermint.v1.ClientState", "proof_specs": [{ "leaf_spec": { "hash": "BITCOIN", "prehash_key": "BITCOIN", "prehash_value": "BITCOIN", "length": "VAR_RLP", "prefix": "AAEC" }, "inner_spec": { "child_order": [1, 2], "child_size": 1, "min_prefix_length": 0, "max_prefix_length": 10, "empty_child": null, "hash": "BITCOIN" }, "max_depth": 10000, "min_depth": 10000 }], "upgrade_path": ["ibc"], "chain_id": "testnet-croeseid-1", "trust_level": { "numerator": "1", "denominator": "1" }, "trusting_period": "100s", "unbonding_period": "100s", "max_clock_drift": "100s", "frozen_height": { "revision_number": "100", "revision_height": "100" }, "latest_height": { "revision_number": "100", "revision_height": "100" }, "allow_update_after_expiry": false, "allow_update_after_misbehaviour": false }, "consensus_state": { "@type": "/ibc.lightclients.tendermint.v1.ConsensusState", "next_validators_hash": "010203" }, "signer": "tcro15sfupd26sp6qf37ll5q6xuf330k7df9tnvrqht" }], "memo": "", "timeout_height": "0", "extension_options": [], "non_critical_extension_options": [] }, "auth_info": { "signer_infos": [{ "public_key": { "@type": "/cosmos.crypto.secp256k1.PubKey", "key": "A/0NVgtsSqHKFnIdA5oZKGfDRX4Z2tVT7bmOe6iLFZwn" }, "mode_info": { "single": { "mode": "SIGN_MODE_DIRECT" } }, "sequence": "2" }], "fee": { "amount": [], "gas_limit": "200000", "payer": "", "granter": "" } }, "signatures": ["1EFKjMd8hbmvzFO3a0qux7eTlzwZ96KlssNcPZ/YCgxR4R531CoZBHngqZugLHuVfVrsdq/JEpg1wXjhnULSNw=="] }));
+    });
 });
 
 let cosmosTxObject = {
