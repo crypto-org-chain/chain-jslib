@@ -61,9 +61,8 @@ export const softwareUpgradeProposal = function () {
 
             // Plan `upgradedClientState` checks
             // TODO: check for any live example (if any), keeping empty `value` now
-            let upgradedClientState;
             if (plan.upgraded_client_state && Object.keys(plan.upgraded_client_state).length > 0) {
-                upgradedClientState = undefined;
+                throw new Error('Non-empty upgraded client state is not supported.');
             }
 
             return new SoftwareUpgradeProposal({
@@ -77,7 +76,7 @@ export const softwareUpgradeProposal = function () {
                         nanos: timeNanos,
                         seconds: timeSecondsLong,
                     },
-                    upgradedClientState,
+                    upgradedClientState: undefined,
                 },
             });
         }
