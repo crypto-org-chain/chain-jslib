@@ -410,3 +410,31 @@ export const owMsgConnectionOpenConfirmOptions = owStrictObject().exactShape({
     proofAck: ow.uint8Array,
     proofHeight: ow.any(owIBCHeightOptional(), ow.null),
 });
+
+export const owCounterPartyVersion = owStrictObject().exactShape({
+    identifier: ow.string,
+    features: ow.array.ofType(ow.string)
+});
+
+export const owCounterPartyOptional = owOptionalStrictObject().exactShape({
+    clientId: ow.string,
+    connectionId: ow.string,
+    prefix: owStrictObject().exactShape({
+        keyPrefix: ow.string
+    })
+});
+
+export const owMsgConnectionOpenTryOptions = owStrictObject().exactShape({
+    clientId: ow.string,
+    previousConnectionId: ow.string,
+    clientState: ow.optional.any(owClientStateOptions),
+    counterparty: ow.any(owCounterPartyOptional, ow.null),
+    delayPeriod: owLong(),
+    counterpartyVersions: ow.array.ofType(owCounterPartyVersion),
+    proofHeight: ow.any(owIBCHeightOptional(), ow.null),
+    proofInit: ow.uint8Array,
+    proofClient: ow.uint8Array,
+    proofConsensus: ow.uint8Array,
+    consensusHeight: ow.any(owIBCHeightOptional(), ow.null),
+    signer: ow.string,
+});
