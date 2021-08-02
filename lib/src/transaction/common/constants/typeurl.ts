@@ -45,6 +45,9 @@ export const COSMOS_MSG_TYPEURL = {
             ConsensusState: '/ibc.lightclients.tendermint.v1.ConsensusState',
             Header: '/ibc.lightclients.tendermint.v1.Header',
         },
+        connection: {
+            MsgConnectionOpenConfirm: '/ibc.core.connection.v1.MsgConnectionOpenConfirm',
+        },
     },
 };
 

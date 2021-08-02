@@ -403,3 +403,10 @@ export const owMsgUpdateClientOptions = owStrictObject().exactShape({
     clientId: ow.string,
     header: ow.optional.any(owHeaderOptions, ow.optional.null),
 });
+
+export const owMsgConnectionOpenConfirmOptions = owStrictObject().exactShape({
+    signer: ow.string,
+    connectionId: ow.string,
+    proofAck: ow.uint8Array,
+    proofHeight: ow.any(owIBCHeightOptional(), ow.null),
+});
