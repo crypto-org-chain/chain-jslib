@@ -100,18 +100,10 @@ export const msgCreateValidator = function (config: InitConfigurations) {
                 throw new Error('Invalid description in the Msg.');
             }
 
-            const parsedPubKey: { value?: { [key: string]: number } } = parsedMsg.pubkey as any;
-
             if (!parsedMsg.pubkey || Object.keys(parsedMsg.pubkey).length !== 2) {
                 throw new Error('Invalid pubkey in the Msg.');
             }
-            let pubkey: string = parsedMsg.pubkey.key;
-
-            if (parsedPubKey && parsedPubKey.value && Object.keys(parsedPubKey.value).length > 0) {
-                pubkey = Bytes.fromUint8Array(
-                    new Uint8Array(Object.values(parsedPubKey.value).slice(2)),
-                ).toBase64String();
-            }
+            const pubkey: string = parsedMsg.pubkey.key;
 
             const cro = CroSDK({ network: config.network });
 

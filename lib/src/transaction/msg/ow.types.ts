@@ -3,7 +3,8 @@ import { owCoin, owOptionalCoin } from '../../coin/ow.types';
 import { owBig, owStrictObject, owOptionalStrictObject } from '../../ow.types';
 import { VoteOption } from './gov/MsgVote';
 import { isMsgProposalContent } from './gov/IMsgProposalContent';
-import { owLong } from './gov/ow.types';
+import { owLong, owOptionalTimestamp } from './gov/ow.types';
+import { ics23 } from '../../cosmos/v1beta1/codec';
 
 const voteOptionValidator = (val: number) => ({
     validator: Object.values(VoteOption).includes(val as any),
@@ -233,12 +234,6 @@ export const owMsgTransferIBCOptions = owStrictObject().exactShape({
     timeoutTimestamp: owLong(),
 });
 
-export const owMsgCreateClientOptions = owStrictObject().exactShape({
-    signer: ow.string,
-    clientState: ow.optional.any(owGoogleProtoAnyOptional(), ow.null),
-    consensusState: ow.optional.any(owGoogleProtoAnyOptional(), ow.null),
-});
-
 export const owMsgUpdateClientOptions = owStrictObject().exactShape({
     signer: ow.string,
     clientId: ow.string,
@@ -257,4 +252,62 @@ export const owMsgSubmitMisbehaviourOptions = owStrictObject().exactShape({
     clientId: ow.string,
     misbehaviour: ow.optional.any(owGoogleProtoAnyOptional(), ow.optional.null),
     signer: ow.string,
+});
+
+export const owOptionalFraction = owOptionalStrictObject().exactShape({
+    numerator: owLong(),
+    denominator: owLong(),
+});
+
+export const owHashOp = ow.number.validate((val) => ({
+    validator: Object.values(ics23.HashOp).includes(val as any),
+    message: (label) => `Expected ${label} to be one of enum ics23.HashOp, got \`${val}\``,
+}));
+
+export const owLengthOp = ow.number.validate((val) => ({
+    validator: Object.values(ics23.LengthOp).includes(val as any),
+    message: (label) => `Expected ${label} to be one of enum ics23.LengthOp, got \`${val}\``,
+}));
+
+export const owOptionalLeafSpec = owOptionalStrictObject().exactShape({
+    hash: owHashOp,
+    prehashKey: owHashOp,
+    prehashValue: owHashOp,
+    length: owLengthOp,
+    prefix: ow.uint8Array,
+});
+export const owOptionalInnerSpec = owOptionalStrictObject().exactShape({
+    childOrder: ow.array.ofType(ow.number),
+    childSize: ow.number,
+    minPrefixLength: ow.number,
+    maxPrefixLength: ow.number,
+    emptyChild: ow.uint8Array,
+    hash: owHashOp,
+});
+
+export const owOptionalProofSpec = owOptionalStrictObject().exactShape({
+    leafSpec: owOptionalLeafSpec,
+    innerSpec: owOptionalInnerSpec,
+    maxDepth: ow.number,
+    minDepth: ow.number,
+});
+
+export const owClientStateOptions = owStrictObject().exactShape({
+    chainId: ow.string,
+    trustLevel: owOptionalFraction,
+    trustingPeriod: owOptionalTimestamp(),
+    unbondingPeriod: owOptionalTimestamp(),
+    maxClockDrift: owOptionalTimestamp(),
+    frozenHeight: owIBCHeightOptional(),
+    latestHeight: owIBCHeightOptional(),
+    proofSpecs: ow.array.ofType(owOptionalProofSpec),
+    upgradePath: ow.array.ofType(ow.string),
+    allowUpdateAfterExpiry: ow.boolean,
+    allowUpdateAfterMisbehaviour: ow.boolean,
+});
+
+export const owMsgCreateClientOptions = owStrictObject().exactShape({
+    signer: ow.string,
+    clientState: ow.optional.any(owClientStateOptions),
+    consensusState: ow.optional.any(owGoogleProtoAnyOptional(), ow.null),
 });

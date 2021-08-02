@@ -108,7 +108,7 @@ describe('Amino JSON sign mode', function () {
                 accountSequence: new Big('1'),
                 signMode: SIGN_MODE.LEGACY_AMINO_JSON,
             })
-            .setFee(cro.Coin.fromBaseUnit('10000'))
+            .setFees([cro.v2.CoinV2.fromBaseUnit('10000')])
             .setGasLimit('100000')
             .setMemo('amino test')
             .setTimeOutHeight('800000')

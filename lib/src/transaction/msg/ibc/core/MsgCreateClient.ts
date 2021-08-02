@@ -1,6 +1,5 @@
 /* eslint-disable camelcase */
 import ow from 'ow';
-import { google } from '../../../../cosmos/v1beta1/codec/generated/codecimpl';
 import { InitConfigurations } from '../../../../core/cro';
 import { CosmosMsg } from '../../cosmosMsg';
 import { Msg } from '../../../../cosmos/v1beta1/types/msg';
@@ -8,14 +7,15 @@ import { COSMOS_MSG_TYPEURL } from '../../../common/constants/typeurl';
 import { validateAddress, AddressType } from '../../../../utils/address';
 import { owMsgCreateClientOptions } from '../../ow.types';
 import * as legacyAmino from '../../../../cosmos/amino';
+import { IGoogleAny } from '../IGoogleAny';
 
 export const msgCreateClientIBC = function (config: InitConfigurations) {
     return class MsgCreateClient implements CosmosMsg {
         /** MsgCreateClient clientState. */
-        public clientState?: google.protobuf.IAny | null;
+        public clientState?: IGoogleAny;
 
         /** MsgCreateClient consensusState. */
-        public consensusState?: google.protobuf.IAny | null;
+        public consensusState?: IGoogleAny;
 
         /** MsgCreateClient signer. */
         public signer: string;
@@ -42,7 +42,7 @@ export const msgCreateClientIBC = function (config: InitConfigurations) {
             return {
                 typeUrl: COSMOS_MSG_TYPEURL.ibc.MsgCreateClient,
                 value: {
-                    clientState: this.clientState,
+                    clientState: this.clientState?.getEncoded(),
                     consensusState: this.consensusState,
                     signer: this.signer,
                 },
@@ -71,14 +71,14 @@ export const msgCreateClientIBC = function (config: InitConfigurations) {
                 throw new Error('IBC MsgUpdateClient does not support `client_state` decoding.');
             }
 
-            // TODO: The `consensus_state` value needs to be handled, currently keeping it as `null`
+            // TODO: The `consensus_state` value needs to be handled, currently keeping it as `undefined`
             if (typeof parsedMsg.consensus_state === 'object' && Object.keys(parsedMsg.consensus_state).length > 0) {
                 throw new Error('IBC MsgUpdateClient does not support `consensus_state` decoding.');
             }
 
             return new MsgCreateClient({
-                clientState: null,
-                consensusState: null,
+                clientState: undefined,
+                consensusState: undefined,
                 signer: parsedMsg.signer,
             });
         }
@@ -99,8 +99,8 @@ export const msgCreateClientIBC = function (config: InitConfigurations) {
 };
 
 export type MsgCreateClientOptions = {
-    clientState?: google.protobuf.IAny | null;
-    consensusState?: google.protobuf.IAny | null;
+    clientState?: IGoogleAny;
+    consensusState?: IGoogleAny;
     signer: string;
 };
 

@@ -16,3 +16,8 @@ export enum SIGN_MODE {
 }
 
 export const EMPTY_SIGNATURE = Bytes.fromHexString('');
+
+export const getSignModeFromValue = (targetValue: number): SIGN_MODE | undefined => {
+    const maybeSignMode = Object.values(SIGN_MODE).find((v) => v === targetValue) as SIGN_MODE | undefined;
+    return maybeSignMode || undefined;
+};

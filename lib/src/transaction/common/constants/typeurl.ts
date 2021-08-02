@@ -40,6 +40,10 @@ export const COSMOS_MSG_TYPEURL = {
         MsgUpdateClient: '/ibc.core.client.v1.MsgUpdateClient',
         MsgUpgradeClient: '/ibc.core.client.v1.MsgUpgradeClient',
         MsgSubmitMisbehaviour: '/ibc.core.client.v1.MsgSubmitMisbehaviour',
+        LightClients: {
+            ClientState: '/ibc.lightclients.tendermint.v1.ClientState',
+            ConsensusState: '/ibc.lightclients.tendermint.v1.ConsensusState',
+        },
     },
 };
 

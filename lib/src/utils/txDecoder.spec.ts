@@ -47,7 +47,7 @@ describe('TxDecoder', function () {
         const txDecoder = new TxDecoder();
         const txBytes = Bytes.fromBase64String('CpQBCpEBChwvY29zbW9zLmJhbmsudjFiZXRhMS5Nc2dTZW5kEnEKK3Rjcm8xMnlnd2R2ZnZndDRjNzJlMG11N2g2Z21mdjl5d2gzNHI5a2FjanISK3Rjcm8xMnlnd2R2ZnZndDRjNzJlMG11N2g2Z21mdjl5d2gzNHI5a2FjanIaFQoIYmFzZXRjcm8SCTEwMDAwMDAwMBKxAgqoAgqIAgopL2Nvc21vcy5jcnlwdG8ubXVsdGlzaWcuTGVnYWN5QW1pbm9QdWJLZXkS2gEIAxJGCh8vY29zbW9zLmNyeXB0by5zZWNwMjU2azEuUHViS2V5EiMKIQMmHiFA8uJvK1ug4G0W1/pPLiZ+Ora8MsrgRPO9ZUbAxBJGCh8vY29zbW9zLmNyeXB0by5zZWNwMjU2azEuUHViS2V5EiMKIQIXveFFPdAc68u/wp8cyiSeVxSSaieLvHDr/a6ut9gf2RJGCh8vY29zbW9zLmNyeXB0by5zZWNwMjU2azEuUHViS2V5EiMKIQILzYXwxGx61Az+IAaYhDpsTKIPgRwhIOEgePSj1Ae5vhIbEhkKBQgDEgHgEgQKAgh/EgQKAgh/EgQKAgh/EgQQwJoMGsYBCkAqnZ+kKTI2KNThqP4bi67jdF4vUItthnQjzzUbbpVrNS1L1JzRKAk8p3JAD/ZcJv5NrYH6nj/XA3BIY5aDGORRCkC+o5tK8zr8OZLuFIwias8t7v2U6u8XXrfNFL6uF3TyBSpvmW8BwCRZDFkwKosz6ryg6rObF6NCpheN0t+e7j+UCkCntQCqbypaLXA8RD0o7B/Gb5iQqD5jpOR0hd7rVQZ1xm+g6bKXS6Vd+vpNlzXmCUD1h8AxgEkKWxN5cQzL/0ZW');
 
-        expect(() => txDecoder.fromHex(txBytes.toHexString()).toCosmosJSON()).to.throw('Unregistered type url: /cosmos.crypto.multisig.LegacyAminoPubKey');
+        expect(() => txDecoder.fromHex(txBytes.toHexString()).toCosmosJSON()).to.throw("Cannot read property 'length' of undefined");
     });
 
     it('should throw on invalid tx body messages array', function () {
@@ -116,6 +116,66 @@ describe('TxDecoder', function () {
                 .toCosmosJSON(),
         ).equal(JSON.stringify(cosmosTxObject));
     });
+
+    context('`MsgCreateValidator`', function () {
+
+        it('should decode `MsgCreateValidator` correctly', function () {
+            const txDecoder = new TxDecoder();
+            expect(
+                txDecoder
+                    .fromHex(
+                        '0ab4020ab1020a2a2f636f736d6f732e7374616b696e672e763162657461312e4d736743726561746556616c696461746f721282020a2a0a0a6869746573685465737412001a0022166869746573682e676f656c4063727970746f2e636f6d2a0012100a03302e311203302e321a04302e30311a0131222b7463726f313635747a63726832796c3833673871657178756567326735677a6775353779336665336b63332a2f7463726f636e636c316a3770656a386b706c656d347774353070346866766e64687577356a707278787874656e767232430a1d2f636f736d6f732e63727970746f2e656432353531392e5075624b657912220a20ca4c63b3e731a331e236ea6d5c81c448854a41c8f50f0828eecc0e5ecdc769333a1c0a08626173657463726f12103132303030353030303030303030303012580a500a460a1f2f636f736d6f732e63727970746f2e736563703235366b312e5075624b657912230a2103fd0d560b6c4aa1ca16721d039a192867c3457e19dad553edb98e7ba88b159c2712040a0208011802120410c09a0c1a40f659741d05e997666313a98b545398937b6aa40d884f1f2bf5aed8a281b5118d1123d11e98db388a6cf303a2c41341b6602b685d967aebf4b74af67d767dbd45',
+                    )
+                    .toCosmosJSON(),
+            ).to.deep.equal(JSON.stringify({ "body": { "messages": [{ "@type": "/cosmos.staking.v1beta1.MsgCreateValidator", "description": { "moniker": "hiteshTest", "identity": "", "website": "", "security_contact": "hitesh.goel@crypto.com", "details": "" }, "commission": { "rate": "0.100000000000000000", "max_rate": "0.200000000000000000", "max_change_rate": "0.010000000000000000" }, "min_self_delegation": "1", "delegator_address": "tcro165tzcrh2yl83g8qeqxueg2g5gzgu57y3fe3kc3", "validator_address": "tcrocncl1j7pej8kplem4wt50p4hfvndhuw5jprxxxtenvr", "pubkey": { "@type": "/cosmos.crypto.ed25519.PubKey", "key": "ykxjs+cxozHiNuptXIHESIVKQcj1Dwgo7swOXs3HaTM=" }, "value": { "denom": "basetcro", "amount": "1200050000000000" } }], "memo": "", "timeout_height": "0", "extension_options": [], "non_critical_extension_options": [] }, "auth_info": { "signer_infos": [{ "public_key": { "@type": "/cosmos.crypto.secp256k1.PubKey", "key": "A/0NVgtsSqHKFnIdA5oZKGfDRX4Z2tVT7bmOe6iLFZwn" }, "mode_info": { "single": { "mode": "SIGN_MODE_DIRECT" } }, "sequence": "2" }], "fee": { "amount": [], "gas_limit": "200000", "payer": "", "granter": "" } }, "signatures": ["9ll0HQXpl2ZjE6mLVFOYk3tqpA2ITx8r9a7YooG1EY0RI9EemNs4imzzA6LEE0G2YCtoXZZ66/S3SvZ9dn29RQ=="] }));
+        });
+
+        it('should decode `MsgCreateValidator` with no-decimal commission rates', function () {
+            const txDecoder = new TxDecoder();
+            expect(
+                txDecoder
+                    .fromHex(
+                        '0ac1020abe020a2a2f636f736d6f732e7374616b696e672e763162657461312e4d736743726561746556616c696461746f72128f020a0c0a0a68697465736854657374123b0a1231303030303030303030303030303030303012123230303030303030303030303030303030301a1131303030303030303030303030303030301a0131222b7463726f313635747a63726832796c3833673871657178756567326735677a6775353779336665336b63332a2f7463726f636e636c316a3770656a386b706c656d347774353070346866766e64687577356a707278787874656e767232430a1d2f636f736d6f732e63727970746f2e656432353531392e5075624b657912220a20ca4c63b3e731a331e236ea6d5c81c448854a41c8f50f0828eecc0e5ecdc769333a1c0a08626173657463726f12103132303030353030303030303030303012580a500a460a1f2f636f736d6f732e63727970746f2e736563703235366b312e5075624b657912230a2103fd0d560b6c4aa1ca16721d039a192867c3457e19dad553edb98e7ba88b159c2712040a0208011802120410c09a0c1a40a9eed865dffb95abbc633512f17e7993d9e54678f205b8e9043112285d1965c62e75dd0ac3f50305aa35d26d3fa2ea8a4b0302e04a9cbe8fde994df114da46d5'
+                        ,
+                    )
+                    .toCosmosJSON(),
+            ).to.deep.equal(JSON.stringify({ "body": { "messages": [{ "@type": "/cosmos.staking.v1beta1.MsgCreateValidator", "description": { "moniker": "hiteshTest" }, "commission": { "rate": "0.100000000000000000", "max_rate": "0.200000000000000000", "max_change_rate": "0.010000000000000000" }, "min_self_delegation": "1", "delegator_address": "tcro165tzcrh2yl83g8qeqxueg2g5gzgu57y3fe3kc3", "validator_address": "tcrocncl1j7pej8kplem4wt50p4hfvndhuw5jprxxxtenvr", "pubkey": { "@type": "/cosmos.crypto.ed25519.PubKey", "key": "ykxjs+cxozHiNuptXIHESIVKQcj1Dwgo7swOXs3HaTM=" }, "value": { "denom": "basetcro", "amount": "1200050000000000" } }], "memo": "", "timeout_height": "0", "extension_options": [], "non_critical_extension_options": [] }, "auth_info": { "signer_infos": [{ "public_key": { "@type": "/cosmos.crypto.secp256k1.PubKey", "key": "A/0NVgtsSqHKFnIdA5oZKGfDRX4Z2tVT7bmOe6iLFZwn" }, "mode_info": { "single": { "mode": "SIGN_MODE_DIRECT" } }, "sequence": "2" }], "fee": { "amount": [], "gas_limit": "200000", "payer": "", "granter": "" } }, "signatures": ["qe7YZd/7lau8YzUS8X55k9nlRnjyBbjpBDESKF0ZZcYudd0Kw/UDBao10m0/ouqKSwMC4Eqcvo/emU3xFNpG1Q=="] }));
+        });
+    })
+
+    context('`MsgEditValidator`', function () {
+        it('should decode `MsgEditValidator` correctly', function () {
+            const txDecoder = new TxDecoder();
+            expect(
+                txDecoder
+                    .fromHex(
+                        '0aa7010aa4010a282f636f736d6f732e7374616b696e672e763162657461312e4d73674564697456616c696461746f7212780a2a0a0a6869746573685465737412001a0022166869746573682e676f656c4063727970746f2e636f6d2a00122f7463726f636e636c316a3770656a386b706c656d347774353070346866766e64687577356a707278787874656e76721a14302e3130303030303030303030303030303030302203312e3012580a500a460a1f2f636f736d6f732e63727970746f2e736563703235366b312e5075624b657912230a2103fd0d560b6c4aa1ca16721d039a192867c3457e19dad553edb98e7ba88b159c2712040a0208011802120410c09a0c1a4087e81b3b9706a35520778ed9099560c86b3ce8aaec3b384cc9720c89d3e044ab2601240a0d83f6a2e683e370c828b27dca8117de53eea269065c034e45e820f3',
+                    )
+                    .toCosmosJSON(),
+            ).to.deep.equal(JSON.stringify({ "body": { "messages": [{ "@type": "/cosmos.staking.v1beta1.MsgEditValidator", "description": { "moniker": "hiteshTest", "identity": "", "website": "", "security_contact": "hitesh.goel@crypto.com", "details": "" }, "validator_address": "tcrocncl1j7pej8kplem4wt50p4hfvndhuw5jprxxxtenvr", "commission_rate": "0.100000000000000000", "min_self_delegation": "1.0" }], "memo": "", "timeout_height": "0", "extension_options": [], "non_critical_extension_options": [] }, "auth_info": { "signer_infos": [{ "public_key": { "@type": "/cosmos.crypto.secp256k1.PubKey", "key": "A/0NVgtsSqHKFnIdA5oZKGfDRX4Z2tVT7bmOe6iLFZwn" }, "mode_info": { "single": { "mode": "SIGN_MODE_DIRECT" } }, "sequence": "2" }], "fee": { "amount": [], "gas_limit": "200000", "payer": "", "granter": "" } }, "signatures": ["h+gbO5cGo1Ugd47ZCZVgyGs86KrsOzhMyXIMidPgRKsmASQKDYP2ouaD43DIKLJ9yoEX3lPuomkGXANORegg8w=="] }));
+        });
+        it('should decode `MsgEditValidator` with no-decimal points', function () {
+            const txDecoder = new TxDecoder();
+            expect(
+                txDecoder
+                    .fromHex(
+                        '0aa5010aa2010a282f636f736d6f732e7374616b696e672e763162657461312e4d73674564697456616c696461746f7212760a2a0a0a6869746573685465737412001a0022166869746573682e676f656c4063727970746f2e636f6d2a00122f7463726f636e636c316a3770656a386b706c656d347774353070346866766e64687577356a707278787874656e76721a123130303030303030303030303030303030302203312e3012580a500a460a1f2f636f736d6f732e63727970746f2e736563703235366b312e5075624b657912230a2103fd0d560b6c4aa1ca16721d039a192867c3457e19dad553edb98e7ba88b159c2712040a0208011802120410c09a0c1a40fe79a59e66813e4848d3c807ccf4a8f8b4cb91e0a4db97aa2e61dba4db2b4c9b100e4ebbc20dc7a08015a0bd6b1ef040be4a3e9584edb5f66b843d8c6b389432',
+                    )
+                    .toCosmosJSON(),
+            ).to.deep.equal(JSON.stringify({ "body": { "messages": [{ "@type": "/cosmos.staking.v1beta1.MsgEditValidator", "description": { "moniker": "hiteshTest", "identity": "", "website": "", "security_contact": "hitesh.goel@crypto.com", "details": "" }, "validator_address": "tcrocncl1j7pej8kplem4wt50p4hfvndhuw5jprxxxtenvr", "commission_rate": "0.100000000000000000", "min_self_delegation": "1.0" }], "memo": "", "timeout_height": "0", "extension_options": [], "non_critical_extension_options": [] }, "auth_info": { "signer_infos": [{ "public_key": { "@type": "/cosmos.crypto.secp256k1.PubKey", "key": "A/0NVgtsSqHKFnIdA5oZKGfDRX4Z2tVT7bmOe6iLFZwn" }, "mode_info": { "single": { "mode": "SIGN_MODE_DIRECT" } }, "sequence": "2" }], "fee": { "amount": [], "gas_limit": "200000", "payer": "", "granter": "" } }, "signatures": ["/nmlnmaBPkhI08gHzPSo+LTLkeCk25eqLmHbpNsrTJsQDk67wg3HoIAVoL1rHvBAvko+lYTttfZrhD2MaziUMg=="] }));
+        });
+        it('should decode `MsgEditValidator` with `null` commissionRate', function () {
+            const txDecoder = new TxDecoder();
+            expect(
+                txDecoder
+                    .fromHex(
+                        '0a8c010a89010a282f636f736d6f732e7374616b696e672e763162657461312e4d73674564697456616c696461746f72125d0a2a0a0a6869746573685465737412001a0022166869746573682e676f656c4063727970746f2e636f6d2a00122f7463726f636e636c316a3770656a386b706c656d347774353070346866766e64687577356a707278787874656e767212580a500a460a1f2f636f736d6f732e63727970746f2e736563703235366b312e5075624b657912230a2103fd0d560b6c4aa1ca16721d039a192867c3457e19dad553edb98e7ba88b159c2712040a0208011802120410c09a0c1a4022b05d1e95eda3a4a492d2bec1a48daa22cf618ab8e20d8a0db371c8989fcbe219376830131f16a5551bfd893f2f7c70bdffa8416e9781fe7707cc437e6cef45',
+                    )
+                    .toCosmosJSON(),
+            ).to.deep.equal(JSON.stringify({ "body": { "messages": [{ "@type": "/cosmos.staking.v1beta1.MsgEditValidator", "description": { "moniker": "hiteshTest", "identity": "", "website": "", "security_contact": "hitesh.goel@crypto.com", "details": "" }, "validator_address": "tcrocncl1j7pej8kplem4wt50p4hfvndhuw5jprxxxtenvr", "commission_rate": null, "min_self_delegation": null }], "memo": "", "timeout_height": "0", "extension_options": [], "non_critical_extension_options": [] }, "auth_info": { "signer_infos": [{ "public_key": { "@type": "/cosmos.crypto.secp256k1.PubKey", "key": "A/0NVgtsSqHKFnIdA5oZKGfDRX4Z2tVT7bmOe6iLFZwn" }, "mode_info": { "single": { "mode": "SIGN_MODE_DIRECT" } }, "sequence": "2" }], "fee": { "amount": [], "gas_limit": "200000", "payer": "", "granter": "" } }, "signatures": ["IrBdHpXto6SkktK+waSNqiLPYYq44g2KDbNxyJify+IZN2gwEx8WpVUb/Yk/L3xwvf+oQW6Xgf53B8xDfmzvRQ=="] }));
+        });
+    })
+
     it('should decode the transaction correctly FOR CUSTOM MESSAGE PARAMS', function () {
         const txDecoder = new TxDecoder();
         expect(

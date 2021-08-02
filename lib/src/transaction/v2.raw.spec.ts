@@ -7,6 +7,8 @@ import { CosmosMsgSuiteFactoryV2, TransactionSignerFactory, CosmosMsgSuiteFactor
 import { CroNetwork, CroSDK } from '../core/cro';
 import { Bytes } from '../utils/bytes/bytes';
 import { SignableTransactionV2 } from './v2.signable';
+import utils from '../utils';
+import { SIGN_MODE } from './types';
 
 const cro = CroSDK({ network: CroNetwork.Testnet });
 
@@ -374,7 +376,9 @@ describe('Transaction', function () {
                 anyTx.txBody = undefined;
                 expect(() => {
                     anyTx.toCosmosJSON();
-                }).to.throw('Error converting RawTransaction to Cosmos compatible JSON.');
+                }).to.throw(
+                    "error converting RawTransaction to Cosmos compatible JSON: TypeError: Cannot read property 'value' of undefined",
+                );
             });
 
             it('should output correct `signer` array', function () {
@@ -424,6 +428,69 @@ describe('Transaction', function () {
                 expect(parsedCosmosJson.auth_info.fee).to.haveOwnProperty('gas_limit');
                 expect(parseInt(parsedCosmosJson.auth_info.fee.gas_limit, 10)).to.greaterThan(0);
             });
+        });
+    });
+
+    describe('parseSignerAccounts', function () {
+        it('should throw Error when the raw data is not valid JSON', function () {
+            expect(() => cro.v2.RawTransactionV2.parseSignerAccounts('invalid JSON')).to.throw(
+                'Invalid raw signer accounts',
+            );
+        });
+
+        it('should throw Error when the raw data is not an array', function () {
+            expect(() =>
+                cro.v2.RawTransactionV2.parseSignerAccounts(
+                    '{"publicKey":"A+eBCWOq3Tv/CYQyLSafRnHG61Hf5tSBv8VGs7sbWoGN","accountNumber":"1","signMode":"1"}',
+                ),
+            ).to.throw('Expected `rawSignerAccounts` to be of type `array` but received type `Object`');
+        });
+
+        it('should throw Error when the raw data is an array of incompatible type', function () {
+            expect(() => cro.v2.RawTransactionV2.parseSignerAccounts('[{"foo": "bar"}]')).to.throw(
+                '(array `rawSignerAccounts`) Expected property `publicKey` to be of type `string` but received type `undefined` in object `t`',
+            );
+        });
+        it('should throw Error when the `accounNumber` is an incompatible type', function () {
+            expect(() =>
+                cro.v2.RawTransactionV2.parseSignerAccounts(
+                    '[{"publicKey":"A+eBCWOq3Tv/CYQyLSafRnHG61Hf5tSBv8VGs7sbWoGN","accountNumber":"as","signMode":"1"}]',
+                ),
+            ).to.throw(
+                '(array `rawSignerAccounts`) Expected property string `accountNumber` to be an integer string, got `as` in object `t`',
+            );
+        });
+        it('should throw Error when the `signMode` is an invalid value', function () {
+            expect(() =>
+                cro.v2.RawTransactionV2.parseSignerAccounts(
+                    '[{"publicKey":"A+eBCWOq3Tv/CYQyLSafRnHG61Hf5tSBv8VGs7sbWoGN","accountNumber":"1","signMode":"100"}]',
+                ),
+            ).to.throw(
+                '(array `rawSignerAccounts`) Expected property string `signMode` to be SignMode in string, got `100` in object `t`',
+            );
+        });
+        it('should throw Error when the `pubKey` is an invalid value', function () {
+            expect(() =>
+                cro.v2.RawTransactionV2.parseSignerAccounts(
+                    '[{"publicKey":"A+eBCWOq3Tv","accountNumber":"1","signMode":"1"}]',
+                ),
+            ).to.throw(
+                '(array `rawSignerAccounts`) (string `publicKey`) Expected property valid base64 string of length be multiple of 4, got `"A+eBCWOq3Tv"` in object `t`',
+            );
+        });
+
+        it('should work', function () {
+            expect(
+                cro.v2.RawTransactionV2.parseSignerAccounts(
+                    '[{"publicKey":"A+eBCWOq3Tv/CYQyLSafRnHG61Hf5tSBv8VGs7sbWoGN","accountNumber":"1","signMode":"1"}]',
+                ),
+            ).to.deep.eq([
+                {
+                    publicKey: Bytes.fromBase64String('A+eBCWOq3Tv/CYQyLSafRnHG61Hf5tSBv8VGs7sbWoGN'),
+                    accountNumber: utils.Big(1),
+                    signMode: SIGN_MODE.DIRECT,
+                },
+            ]);
         });
     });
 });

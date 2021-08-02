@@ -127,5 +127,30 @@ describe('Testing SoftwareUpgradeProposal and its content types', function () {
 
             expect(SoftwareUpgradeProposal.description).to.eql('Lorem Ipsum ... Checking text proposal');
         });
+        it('should throw when `upgradedClientState` is non-empty', function () {
+            const json = `{"@type":"/cosmos.upgrade.v1beta1.SoftwareUpgradeProposal","title": "Text Proposal Title", "description": "Lorem Ipsum ... Checking text proposal",
+             "plan": {
+                    "height": "1000",
+                    "name": "name",
+                    "info": "info",
+                    "time": { "nanos": "10000000", "seconds": "12312312" },
+                    "upgraded_client_state": { "typeUrl": "someTypeUrl", "value": "someValue"}
+                }
+            }`;
+            expect(() => cro.gov.proposal.SoftwareUpgradeProposal.fromCosmosMsgJSON(json)).to.throw(
+                'Non-empty upgraded client state is not supported.',
+            );
+        });
+        it('should throw on invalid plan.height', function () {
+            const json = `{"@type":"/cosmos.upgrade.v1beta1.SoftwareUpgradeProposal","title": "Text Proposal Title", "description": "Lorem Ipsum ... Checking text proposal",
+             "plan": {
+                    "name": "name",
+                    "info": "info",
+                    "time": { "nanos": "10000000", "seconds": "12312312" }
+                }}`;
+            expect(() => {
+                cro.gov.proposal.SoftwareUpgradeProposal.fromCosmosMsgJSON(json);
+            }).to.throw('Invalid `height` attribute in Plan.');
+        });
     });
 });
