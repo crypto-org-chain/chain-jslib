@@ -44,6 +44,8 @@ import { coinv2 } from '../coin/v2.coin/v2.coin';
 import { msgClientState } from '../transaction/msg/ibc/lightclients/ClientState';
 import { msgConsensusState } from '../transaction/msg/ibc/lightclients/ConsensusState';
 import { msgHeader } from '../transaction/msg/ibc/lightclients/Header';
+import { MsgConnectionOpenConfirmIBC } from '../transaction/msg/ibc/core/connection/MsgConnectionOpenConfirm';
+import { MsgConnectionOpenTryIBC } from '../transaction/msg/ibc/core/connection/MsgConnectionOpenTry';
 
 export const CroSDK = function (configs: InitConfigurations) {
     ow(configs, 'configs', owCroSDKInitParams);
@@ -98,6 +100,10 @@ export const CroSDK = function (configs: InitConfigurations) {
                 ClientState: msgClientState(),
                 ConsensusState: msgConsensusState(),
                 Header: msgHeader(),
+            },
+            connection: {
+                MsgConnectionOpenConfirm: MsgConnectionOpenConfirmIBC(configs),
+                MsgConnectionOpenTry: MsgConnectionOpenTryIBC(configs),
             },
         },
         v2: {

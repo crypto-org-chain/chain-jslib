@@ -527,6 +527,36 @@ function handleSpecialParams(decodedParams: any, typeUrl: string) {
             /* eslint-enable */
         }
     }
+
+    if (typeUrl === COSMOS_MSG_TYPEURL.ibc.connection.MsgConnectionOpenConfirm) {
+        if (decodedParams.proofAck) {
+            clonedDecodedParams.proofAck = Bytes.fromUint8Array(decodedParams.proofAck).toBase64String();
+        }
+    }
+
+    if (typeUrl === COSMOS_MSG_TYPEURL.ibc.connection.MsgConnectionOpenTry) {
+        // todo: handle `clientState`
+
+        // counterparty.prefix.keyPrefix
+        if (decodedParams.counterparty.prefix && decodedParams.counterparty.prefix.keyPrefix) {
+            clonedDecodedParams.counterparty.prefix.keyPrefix = Bytes.fromUint8Array(
+                decodedParams.counterparty.prefix.keyPrefix,
+            ).toBase64String();
+        }
+
+        // proof_init
+        if (decodedParams.proofInit) {
+            clonedDecodedParams.proofInit = Bytes.fromUint8Array(decodedParams.proofInit).toBase64String();
+        }
+        // proof_client
+        if (decodedParams.proofClient) {
+            clonedDecodedParams.proofClient = Bytes.fromUint8Array(decodedParams.proofClient).toBase64String();
+        }
+        // proof_consensus
+        if (decodedParams.proofConsensus) {
+            clonedDecodedParams.proofConsensus = Bytes.fromUint8Array(decodedParams.proofConsensus).toBase64String();
+        }
+    }
     return clonedDecodedParams;
 }
 
