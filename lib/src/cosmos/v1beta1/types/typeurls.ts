@@ -59,6 +59,7 @@ export const typeUrlMappings: {
     '/ibc.core.client.v1.MsgSubmitMisbehaviour': ibc.core.client.v1.MsgSubmitMisbehaviour,
     '/ibc.lightclients.tendermint.v1.ClientState': ibc.lightclients.tendermint.v1.ClientState,
     '/ibc.lightclients.tendermint.v1.ConsensusState': ibc.lightclients.tendermint.v1.ConsensusState,
+    '/ibc.lightclients.tendermint.v1.Header': ibc.lightclients.tendermint.v1.Header,
 };
 
 export interface GeneratedType {
