@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 import ow from 'ow';
 import Long from 'long';
 import { cosmos, google } from '../../../../cosmos/v1beta1/codec';
@@ -22,6 +23,62 @@ export const softwareUpgradeProposal = function () {
             this.title = options.title;
             this.description = options.description;
             this.plan = options.plan;
+        }
+
+        /**
+         * Returns an instance of SoftwareUpgradeProposal
+         * @param {string} msgJsonStr
+         * @param {Network} network
+         * @returns {SoftwareUpgradeProposal}
+         */
+        public static fromCosmosMsgJSON(msgJsonStr: string): SoftwareUpgradeProposal {
+            const parsedMsg = JSON.parse(msgJsonStr) as SoftwareUpgradeProposalRaw;
+            if (parsedMsg['@type'] !== COSMOS_MSG_TYPEURL.upgrade.SoftwareUpgradeProposal) {
+                throw new Error(
+                    `Expected ${COSMOS_MSG_TYPEURL.upgrade.SoftwareUpgradeProposal} but got ${parsedMsg['@type']}`,
+                );
+            }
+
+            const { plan } = parsedMsg;
+
+            let timeSecondsLong;
+            let timeNanos;
+
+            // Plan time checks
+            if (plan.time) {
+                if (plan.time.seconds) {
+                    timeSecondsLong = Long.fromString(plan.time.seconds, true, 10);
+                }
+                if (plan.time.nanos) {
+                    timeNanos = Number(plan.time.nanos);
+                }
+            }
+
+            // Plan height checks
+            if (!plan.height) {
+                throw new Error('Invalid `height` attribute in Plan.');
+            }
+
+            // Plan `upgradedClientState` checks
+            // TODO: check for any live example (if any), keeping empty `value` now
+            if (plan.upgraded_client_state && Object.keys(plan.upgraded_client_state).length > 0) {
+                throw new Error('Non-empty upgraded client state is not supported.');
+            }
+
+            return new SoftwareUpgradeProposal({
+                description: parsedMsg.description,
+                title: parsedMsg.title,
+                plan: {
+                    height: Long.fromString(plan.height, true, 10),
+                    info: plan.info,
+                    name: plan.name,
+                    time: {
+                        nanos: timeNanos,
+                        seconds: timeSecondsLong,
+                    },
+                    upgradedClientState: undefined,
+                },
+            });
         }
 
         /**
@@ -77,3 +134,20 @@ export type SoftwareUpgradeProposalOptions = {
     description: string;
     plan?: IPlan;
 };
+
+interface SoftwareUpgradeProposalRaw {
+    '@type': string;
+    title: string;
+    description: string;
+    plan: PlanRaw;
+}
+interface PlanRaw {
+    name: string;
+    time?: {
+        seconds?: string;
+        nanos?: number;
+    };
+    height: string;
+    info: string;
+    upgraded_client_state?: any;
+}

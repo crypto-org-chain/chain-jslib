@@ -51,7 +51,7 @@ describe('Testing MsgBeginRedelegate', function () {
     it('Test MsgBeginRedelegate conversion', function () {
         const coin = new cro.Coin('12000500', Units.BASE);
 
-        const msgSend = new cro.staking.MsgBeginRedelegate({
+        const msgBeginRedelegate = new cro.staking.MsgBeginRedelegate({
             delegatorAddress: 'tcro1j7pej8kplem4wt50p4hfvndhuw5jprxxn5625q',
             validatorDstAddress: 'tcrocncl1j7pej8kplem4wt50p4hfvndhuw5jprxxxtenvr',
             validatorSrcAddress: 'tcrocncl16mmzexp3zqfpgqtnn927m5ph560qgxrs52a3wx',
@@ -68,13 +68,13 @@ describe('Testing MsgBeginRedelegate', function () {
             },
         };
 
-        expect(msgSend.toRawMsg()).to.eqls(rawMsg);
+        expect(msgBeginRedelegate.toRawMsg()).to.eqls(rawMsg);
     });
 
     it('Test MsgBeginRedelegate conversion Json', function () {
         const coin = new cro.Coin('12000500', Units.BASE);
 
-        const msgSend = new cro.staking.MsgBeginRedelegate({
+        const msgBeginRedelegate = new cro.staking.MsgBeginRedelegate({
             delegatorAddress: 'tcro1j7pej8kplem4wt50p4hfvndhuw5jprxxn5625q',
             validatorDstAddress: 'tcrocncl1j7pej8kplem4wt50p4hfvndhuw5jprxxxtenvr',
             validatorSrcAddress: 'tcrocncl16mmzexp3zqfpgqtnn927m5ph560qgxrs52a3wx',
@@ -94,7 +94,7 @@ describe('Testing MsgBeginRedelegate', function () {
             },
         };
 
-        expect(msgSend.toRawAminoMsg()).to.eqls(rawMsg);
+        expect(msgBeginRedelegate.toRawAminoMsg()).to.eqls(rawMsg);
     });
 
     it('Test appendTxBody MsgBeginRedelegate Tx signing', function () {
@@ -142,11 +142,87 @@ describe('Testing MsgBeginRedelegate', function () {
             amount: coin,
         };
 
+        const params4 = {
+            delegatorAddress: 'cro1pndm4ywdf4qtmupa0fqe75krmqed2znjyj6x8f',
+            validatorDstAddress: 'tcrocncl1j7pej8kplem4wt50p4hfvndhuw5jprxxxtenvr',
+            validatorSrcAddress: 'tcrocncl16mmzexp3zqfpgqtnn927m5ph560qgxrs52a3wx',
+            amount: coin,
+        };
+
+        const params5 = {
+            delegatorAddress: 'tcro1j7pej8kplem4wt50p4hfvndhuw5jprxxn5625q',
+            validatorDstAddress: 'crocncl1pndm4ywdf4qtmupa0fqe75krmqed2znj8le094',
+            validatorSrcAddress: 'tcrocncl16mmzexp3zqfpgqtnn927m5ph560qgxrs52a3wx',
+            amount: coin,
+        };
+
+        const params6 = {
+            delegatorAddress: 'tcro1j7pej8kplem4wt50p4hfvndhuw5jprxxn5625q',
+            validatorDstAddress: 'tcrocncl16mmzexp3zqfpgqtnn927m5ph560qgxrs52a3wx',
+            validatorSrcAddress: 'crocncl1pndm4ywdf4qtmupa0fqe75krmqed2znj8le094',
+            amount: coin,
+        };
+
         expect(() => new cro.staking.MsgBeginRedelegate(params2)).to.throw(
             'Source and destination validator addresses cannot be the same.',
         );
         expect(() => new cro.staking.MsgBeginRedelegate(params3)).to.throw(
             'Invalid checksum for tcro1j7pej8kplem4wt50p4hfvndhuw5jprxxn5625',
         );
+        expect(() => new cro.staking.MsgBeginRedelegate(params4)).to.throw(
+            'Provided `delegatorAddress` does not match with selected network',
+        );
+        expect(() => new cro.staking.MsgBeginRedelegate(params5)).to.throw(
+            'Provided `validatorDstAddress` does not match with selected network',
+        );
+        expect(() => new cro.staking.MsgBeginRedelegate(params6)).to.throw(
+            'Provided `validatorSrcAddress` does not match with selected network',
+        );
+    });
+    describe('fromCosmosJSON', function () {
+        it('should throw Error if the JSON is not a MsgBeginRedelegate', function () {
+            const json =
+                '{ "@type": "/cosmos.bank.v1beta1.MsgCreateValidator", "amount": [{ "denom": "basetcro", "amount": "3478499933290496" }], "from_address": "tcro1x07kkkepfj2hl8etlcuqhej7jj6myqrp48y4hg", "to_address": "tcro184lta2lsyu47vwyp2e8zmtca3k5yq85p6c4vp3" }';
+            expect(() => cro.staking.MsgBeginRedelegate.fromCosmosMsgJSON(json)).to.throw(
+                'Expected /cosmos.staking.v1beta1.MsgBeginRedelegate but got /cosmos.bank.v1beta1.MsgCreateValidator',
+            );
+        });
+        it('should throw Error when the `validator_src_address` field is missing', function () {
+            const json =
+                '{"@type":"/cosmos.staking.v1beta1.MsgBeginRedelegate","delegator_address":"tcro1j7pej8kplem4wt50p4hfvndhuw5jprxxn5625q","validator_dst_address":"tcrocncl1j7pej8kplem4wt50p4hfvndhuw5jprxxxtenvr","amount":{"denom":"basetcro","amount":"1200050000000000"}}';
+            expect(() => cro.staking.MsgBeginRedelegate.fromCosmosMsgJSON(json)).to.throw(
+                'Expected property `validatorSrcAddress` to be of type `string` but received type `undefined` in object `options`',
+            );
+        });
+        it('should throw Error when the `validator_dst_address` field is missing', function () {
+            const json =
+                '{"@type":"/cosmos.staking.v1beta1.MsgBeginRedelegate","delegator_address":"tcro1j7pej8kplem4wt50p4hfvndhuw5jprxxn5625q","validator_src_address":"tcrocncl16mmzexp3zqfpgqtnn927m5ph560qgxrs52a3wx","amount":{"denom":"basetcro","amount":"1200050000000000"}}';
+            expect(() => cro.staking.MsgBeginRedelegate.fromCosmosMsgJSON(json)).to.throw(
+                'Expected property `validatorDstAddress` to be of type `string` but received type `undefined` in object `options`',
+            );
+        });
+
+        it('should throw Error when the `delegator_address` field is missing', function () {
+            const json =
+                '{"@type":"/cosmos.staking.v1beta1.MsgBeginRedelegate","validator_src_address":"tcrocncl16mmzexp3zqfpgqtnn927m5ph560qgxrs52a3wx","validator_dst_address":"tcrocncl1j7pej8kplem4wt50p4hfvndhuw5jprxxxtenvr","amount":{"denom":"basetcro","amount":"1200050000000000"}}';
+            expect(() => cro.staking.MsgBeginRedelegate.fromCosmosMsgJSON(json)).to.throw(
+                'Expected property `delegatorAddress` to be of type `string` but received type `undefined` in object `options`',
+            );
+        });
+        it('should throw Error when the amount field is missing', function () {
+            const json =
+                '{"@type":"/cosmos.staking.v1beta1.MsgBeginRedelegate","delegator_address":"tcro1j7pej8kplem4wt50p4hfvndhuw5jprxxn5625q","validator_src_address":"tcrocncl16mmzexp3zqfpgqtnn927m5ph560qgxrs52a3wx","validator_dst_address":"tcrocncl1j7pej8kplem4wt50p4hfvndhuw5jprxxxtenvr"}';
+            expect(() => cro.staking.MsgBeginRedelegate.fromCosmosMsgJSON(json)).to.throw('Invalid amount in the Msg.');
+        });
+        it('should return the MsgBeginRedelegate corresponding to the JSON', function () {
+            const json =
+                '{"@type":"/cosmos.staking.v1beta1.MsgBeginRedelegate","delegator_address":"tcro1j7pej8kplem4wt50p4hfvndhuw5jprxxn5625q","validator_src_address":"tcrocncl16mmzexp3zqfpgqtnn927m5ph560qgxrs52a3wx","validator_dst_address":"tcrocncl1j7pej8kplem4wt50p4hfvndhuw5jprxxxtenvr","amount":{"denom":"basetcro","amount":"1200050000000000"}}';
+            const MsgBeginRedelegate = cro.staking.MsgBeginRedelegate.fromCosmosMsgJSON(json);
+            expect(MsgBeginRedelegate.validatorDstAddress).to.eql('tcrocncl1j7pej8kplem4wt50p4hfvndhuw5jprxxxtenvr');
+            expect(MsgBeginRedelegate.validatorSrcAddress).to.eql('tcrocncl16mmzexp3zqfpgqtnn927m5ph560qgxrs52a3wx');
+            expect(MsgBeginRedelegate.delegatorAddress).to.eql('tcro1j7pej8kplem4wt50p4hfvndhuw5jprxxn5625q');
+            expect(MsgBeginRedelegate.amount.toCosmosCoin().amount).to.eql('1200050000000000');
+            expect(MsgBeginRedelegate.amount.toCosmosCoin().denom).to.eql('basetcro');
+        });
     });
 });

@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 import ow from 'ow';
 import { Msg } from '../../../cosmos/v1beta1/types/msg';
 import { CosmosMsg } from '../cosmosMsg';
@@ -54,6 +55,32 @@ export const msgEditValidator = function (config: InitConfigurations) {
             };
         }
 
+        /**
+         * Returns an instance of MsgEditValidator
+         * @param {string} msgJsonStr
+         * @param {Network} network
+         * @returns {MsgEditValidator}
+         */
+        public static fromCosmosMsgJSON(msgJsonStr: string): MsgEditValidator {
+            const parsedMsg = JSON.parse(msgJsonStr) as MsgEditValidatorRaw;
+            if (parsedMsg['@type'] !== COSMOS_MSG_TYPEURL.MsgEditValidator) {
+                throw new Error(`Expected ${COSMOS_MSG_TYPEURL.MsgEditValidator} but got ${parsedMsg['@type']}`);
+            }
+
+            return new MsgEditValidator({
+                description: {
+                    moniker: parsedMsg.description.moniker,
+                    identity: parsedMsg.description.identity,
+                    website: parsedMsg.description.website,
+                    securityContact: parsedMsg.description.security_contact,
+                    details: parsedMsg.description.details,
+                },
+                validatorAddress: parsedMsg.validator_address,
+                commissionRate: parsedMsg.commission_rate || null,
+                minSelfDelegation: parsedMsg.min_self_delegation || null,
+            });
+        }
+
         validateAddresses(): void {
             const { network } = config;
 
@@ -63,6 +90,22 @@ export const msgEditValidator = function (config: InitConfigurations) {
         }
     };
 };
+
+export interface MsgEditValidatorRaw {
+    '@type': string;
+    description: DescriptionRaw;
+    validator_address: string;
+    commission_rate: string;
+    min_self_delegation: string;
+}
+
+export interface DescriptionRaw {
+    moniker?: string | null;
+    identity?: string | null;
+    website?: string | null;
+    security_contact?: string | null;
+    details?: string | null;
+}
 
 export type MsgCreateEditOptions = {
     description: IDescription;

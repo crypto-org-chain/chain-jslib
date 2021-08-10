@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 import ow from 'ow';
 import { Msg } from '../../../cosmos/v1beta1/types/msg';
 import { owMsgTransferNFTOptions } from '../ow.types';
@@ -67,6 +68,26 @@ export const msgTransferNFT = function (config: InitConfigurations) {
             } as legacyAmino.MsgTransferNFT;
         }
 
+        /**
+         * Returns an instance of MsgTransferNFT
+         * @param {string} msgJsonStr
+         * @param {Network} network
+         * @returns {MsgTransferNFT}
+         */
+        public static fromCosmosMsgJSON(msgJsonStr: string): MsgTransferNFT {
+            const parsedMsg = JSON.parse(msgJsonStr) as MsgTransferNFTRaw;
+            if (parsedMsg['@type'] !== COSMOS_MSG_TYPEURL.nft.MsgTransferNFT) {
+                throw new Error(`Expected ${COSMOS_MSG_TYPEURL.nft.MsgTransferNFT} but got ${parsedMsg['@type']}`);
+            }
+
+            return new MsgTransferNFT({
+                id: parsedMsg.id,
+                sender: parsedMsg.sender,
+                denomId: parsedMsg.denom_id,
+                recipient: parsedMsg.recipient,
+            });
+        }
+
         validateAddresses() {
             if (
                 !validateAddress({
@@ -94,6 +115,13 @@ export const msgTransferNFT = function (config: InitConfigurations) {
 export type MsgTransferNFTOptions = {
     id: string;
     denomId: string;
+    sender: string;
+    recipient: string;
+};
+export type MsgTransferNFTRaw = {
+    '@type': string;
+    id: string;
+    denom_id: string;
     sender: string;
     recipient: string;
 };

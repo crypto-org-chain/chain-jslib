@@ -1,13 +1,15 @@
+/* eslint-disable camelcase */
 import ow from 'ow';
-import { InitConfigurations } from '../../../core/cro';
+import { InitConfigurations, CroSDK } from '../../../core/cro';
 import { Msg } from '../../../cosmos/v1beta1/types/msg';
 import { ICoin } from '../../../coin/coin';
-import { COSMOS_MSG_TYPEURL } from '../../common/constants/typeurl';
+import { COSMOS_MSG_TYPEURL, typeUrlToMsgClassMapping } from '../../common/constants/typeurl';
 import { AddressType, validateAddress } from '../../../utils/address';
 import { owMsgSubmitProposalOptions } from '../ow.types';
 import { IMsgProposalContent } from './IMsgProposalContent';
 import { CosmosMsg } from '../cosmosMsg';
 import * as legacyAmino from '../../../cosmos/amino';
+import { Amount } from '../bank/msgsend';
 
 export const msgSubmitProposal = function (config: InitConfigurations) {
     return class MsgSubmitProposal implements CosmosMsg {
@@ -18,7 +20,7 @@ export const msgSubmitProposal = function (config: InitConfigurations) {
         public readonly content: IMsgProposalContent;
 
         /**
-         * Constructor to create a new MsgDeposit
+         * Constructor to create a new MsgSubmitProposal
          * @param {ProposalOptions} options
          * @returns {MsgSubmitProposal}
          * @throws {Error} when options is invalid
@@ -58,6 +60,40 @@ export const msgSubmitProposal = function (config: InitConfigurations) {
             };
         }
 
+        /**
+         * Returns an instance of MsgSubmitProposal
+         * @param {string} msgJsonStr
+         * @param {Network} network
+         * @returns {MsgSubmitProposal}
+         */
+        public static fromCosmosMsgJSON(msgJsonStr: string): MsgSubmitProposal {
+            const parsedMsg = JSON.parse(msgJsonStr) as MsgSubmitProposalRaw;
+            if (parsedMsg['@type'] !== COSMOS_MSG_TYPEURL.MsgSubmitProposal) {
+                throw new Error(`Expected ${COSMOS_MSG_TYPEURL.MsgSubmitProposal} but got ${parsedMsg['@type']}`);
+            }
+
+            if (!parsedMsg.initial_deposit || parsedMsg.initial_deposit.length !== 1) {
+                throw new Error('Invalid initial_deposit in the Msg.');
+            }
+
+            const cro = CroSDK({ network: config.network });
+
+            const jsonContentRaw = parsedMsg.content;
+            const contentClassInstance = typeUrlToMsgClassMapping(cro, jsonContentRaw['@type']);
+            const nativeContentMsg: IMsgProposalContent = contentClassInstance.fromCosmosMsgJSON(
+                JSON.stringify(jsonContentRaw),
+            );
+
+            return new MsgSubmitProposal({
+                proposer: parsedMsg.proposer,
+                initialDeposit: cro.v2.CoinV2.fromCustomAmountDenom(
+                    parsedMsg.initial_deposit[0].amount,
+                    parsedMsg.initial_deposit[0].denom,
+                ),
+                content: nativeContentMsg,
+            });
+        }
+
         validate() {
             if (
                 !validateAddress({
@@ -77,3 +113,15 @@ export type ProposalOptions = {
     initialDeposit: ICoin;
     content: IMsgProposalContent;
 };
+
+export interface MsgSubmitProposalRaw {
+    '@type': string;
+    initial_deposit: Amount[];
+    content: Content;
+    proposer: string;
+}
+
+export interface Content {
+    '@type': string;
+    [key: string]: any;
+}

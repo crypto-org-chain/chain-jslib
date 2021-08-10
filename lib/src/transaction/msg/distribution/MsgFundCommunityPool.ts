@@ -1,7 +1,7 @@
 import ow from 'ow';
 import { CosmosMsg } from '../cosmosMsg';
 import { Msg } from '../../../cosmos/v1beta1/types/msg';
-import { InitConfigurations } from '../../../core/cro';
+import { InitConfigurations, CroSDK } from '../../../core/cro';
 import { AddressType, validateAddress } from '../../../utils/address';
 import { owMsgFundCommunityPoolOptions } from '../ow.types';
 import { COSMOS_MSG_TYPEURL } from '../../common/constants/typeurl';
@@ -50,9 +50,33 @@ export const msgFundCommunityPool = function (config: InitConfigurations) {
                 typeUrl: COSMOS_MSG_TYPEURL.distribution.MsgFundCommunityPool,
                 value: {
                     depositor: this.depositor,
-                    amount: this.amount,
+                    amount: this.amount.toCosmosCoins(),
                 },
             };
+        }
+
+        /**
+         * Returns an instance of MsgFundCommunityPool
+         * @param {string} msgJsonStr
+         * @param {Network} network
+         * @returns {MsgFundCommunityPool}
+         */
+        public static fromCosmosMsgJSON(msgJsonStr: string): MsgFundCommunityPool {
+            const parsedMsg = JSON.parse(msgJsonStr) as MsgFundCommunityPoolRaw;
+            const cro = CroSDK({ network: config.network });
+            if (parsedMsg['@type'] !== COSMOS_MSG_TYPEURL.distribution.MsgFundCommunityPool) {
+                throw new Error(
+                    `Expected ${COSMOS_MSG_TYPEURL.distribution.MsgFundCommunityPool} but got ${parsedMsg['@type']}`,
+                );
+            }
+            if (!parsedMsg.amount || parsedMsg.amount.length !== 1) {
+                throw new Error('Invalid amount in the Msg.');
+            }
+
+            return new MsgFundCommunityPool({
+                depositor: parsedMsg.depositor,
+                amount: cro.v2.CoinV2.fromCustomAmountDenom(parsedMsg.amount[0].amount, parsedMsg.amount[0].denom),
+            });
         }
 
         validateAddresses() {
@@ -73,3 +97,13 @@ export type MsgFundCommunityPoolOptions = {
     depositor: string;
     amount: ICoin;
 };
+interface MsgFundCommunityPoolRaw {
+    '@type': string;
+    amount: Amount[];
+    depositor: string;
+}
+
+interface Amount {
+    denom: string;
+    amount: string;
+}

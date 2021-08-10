@@ -67,6 +67,26 @@ export const msgIssueDenomNFT = function (config: InitConfigurations) {
             } as legacyAmino.MsgIssueDenom;
         }
 
+        /**
+         * Returns an instance of MsgIssueDenom
+         * @param {string} msgJsonStr
+         * @param {Network} network
+         * @returns {MsgIssueDenom}
+         */
+        public static fromCosmosMsgJSON(msgJsonStr: string): MsgIssueDenom {
+            const parsedMsg = JSON.parse(msgJsonStr) as MsgIssueDenomRaw;
+            if (parsedMsg['@type'] !== COSMOS_MSG_TYPEURL.nft.MsgIssueDenom) {
+                throw new Error(`Expected ${COSMOS_MSG_TYPEURL.nft.MsgIssueDenom} but got ${parsedMsg['@type']}`);
+            }
+
+            return new MsgIssueDenom({
+                id: parsedMsg.id,
+                name: parsedMsg.name,
+                schema: parsedMsg.schema,
+                sender: parsedMsg.sender,
+            });
+        }
+
         validateAddress() {
             if (
                 !validateAddress({
@@ -87,3 +107,10 @@ export type MsgIssueDenomOptions = {
     schema: string;
     sender: string;
 };
+interface MsgIssueDenomRaw {
+    '@type': string;
+    id: string;
+    name: string;
+    schema: string;
+    sender: string;
+}

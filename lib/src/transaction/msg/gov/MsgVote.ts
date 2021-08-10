@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 import Big from 'big.js';
 import Long from 'long';
 import ow from 'ow';
@@ -80,6 +81,29 @@ export const msgVote = function (config: InitConfigurations) {
             };
         }
 
+        /**
+         * Returns an instance of MsgVote
+         * @param {string} msgJsonStr
+         * @param {Network} network
+         * @returns {MsgVote}
+         */
+        public static fromCosmosMsgJSON(msgJsonStr: string): MsgVote {
+            const parsedMsg = JSON.parse(msgJsonStr) as MsgVoteRaw;
+            if (parsedMsg['@type'] !== COSMOS_MSG_TYPEURL.MsgVote) {
+                throw new Error(`Expected ${COSMOS_MSG_TYPEURL.MsgVote} but got ${parsedMsg['@type']}`);
+            }
+
+            if (!parsedMsg.proposal_id) {
+                throw new Error('Invalid `proposal_id` in JSON.');
+            }
+
+            return new MsgVote({
+                proposalId: new Big(parsedMsg.proposal_id),
+                voter: parsedMsg.voter,
+                option: parsedMsg.option,
+            });
+        }
+
         validate() {
             if (
                 !validateAddress({
@@ -99,3 +123,10 @@ export type MsgVoteOptions = {
     voter: string;
     option: VoteOption;
 };
+
+interface MsgVoteRaw {
+    '@type': string;
+    proposal_id: string;
+    voter: string;
+    option: number;
+}

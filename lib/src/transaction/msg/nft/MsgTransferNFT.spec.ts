@@ -263,4 +263,50 @@ describe('Testing MsgTransferNFT', function () {
             'Provided `recipient` does not match network selected',
         );
     });
+    describe('fromCosmosJSON', function () {
+        it('should throw Error if the JSON is not a MsgTransferNFT', function () {
+            const json =
+                '{ "@type": "/cosmos.bank.v1beta1.MsgCreateValidator", "amount": [{ "denom": "basetcro", "amount": "3478499933290496" }], "from_address": "tcro1x07kkkepfj2hl8etlcuqhej7jj6myqrp48y4hg", "to_address": "tcro184lta2lsyu47vwyp2e8zmtca3k5yq85p6c4vp3" }';
+            expect(() => cro.nft.MsgTransferNFT.fromCosmosMsgJSON(json)).to.throw(
+                'Expected /chainmain.nft.v1.MsgTransferNFT but got /cosmos.bank.v1beta1.MsgCreateValidator',
+            );
+        });
+        it('should throw Error when the `id` field is missing', function () {
+            const json =
+                '{"@type":"/chainmain.nft.v1.MsgTransferNFT","denom_id":"nft123","recipient":"tcro165tzcrh2yl83g8qeqxueg2g5gzgu57y3fe3kc3","sender":"tcro165tzcrh2yl83g8qeqxueg2g5gzgu57y3fe3kc3"}';
+            expect(() => cro.nft.MsgTransferNFT.fromCosmosMsgJSON(json)).to.throw(
+                'Expected property `id` to be of type `string` but received type `undefined` in object `options`',
+            );
+        });
+        it('should throw Error when the `denom_id` field is missing', function () {
+            const json =
+                '{"@type":"/chainmain.nft.v1.MsgTransferNFT","id":"alphanumericid123","recipient":"tcro165tzcrh2yl83g8qeqxueg2g5gzgu57y3fe3kc3","sender":"tcro165tzcrh2yl83g8qeqxueg2g5gzgu57y3fe3kc3"}';
+            expect(() => cro.nft.MsgTransferNFT.fromCosmosMsgJSON(json)).to.throw(
+                'Expected property `denomId` to be of type `string` but received type `undefined` in object `options`',
+            );
+        });
+        it('should throw Error when the `recipient` field is missing', function () {
+            const json =
+                '{"@type":"/chainmain.nft.v1.MsgTransferNFT","id":"alphanumericid123","denom_id":"nft123","sender":"tcro165tzcrh2yl83g8qeqxueg2g5gzgu57y3fe3kc3"}';
+            expect(() => cro.nft.MsgTransferNFT.fromCosmosMsgJSON(json)).to.throw(
+                'Expected property `recipient` to be of type `string` but received type `undefined` in object `options`',
+            );
+        });
+        it('should throw Error when the `sender` field is missing', function () {
+            const json =
+                '{"@type":"/chainmain.nft.v1.MsgTransferNFT","id":"alphanumericid123","denom_id":"nft123","recipient":"tcro165tzcrh2yl83g8qeqxueg2g5gzgu57y3fe3kc3"}';
+            expect(() => cro.nft.MsgTransferNFT.fromCosmosMsgJSON(json)).to.throw(
+                'Expected property `sender` to be of type `string` but received type `undefined` in object `options`',
+            );
+        });
+        it('should return the MsgTransferNFT corresponding to the JSON', function () {
+            const json =
+                '{"@type":"/chainmain.nft.v1.MsgTransferNFT","id":"alphanumericid123","denom_id":"nft123","recipient":"tcro165tzcrh2yl83g8qeqxueg2g5gzgu57y3fe3kc3","sender":"tcro165tzcrh2yl83g8qeqxueg2g5gzgu57y3fe3kc3"}';
+            const MsgTransferNFT = cro.nft.MsgTransferNFT.fromCosmosMsgJSON(json);
+            expect(MsgTransferNFT.id).to.eql('alphanumericid123');
+            expect(MsgTransferNFT.denomId.toString()).to.eql('nft123');
+            expect(MsgTransferNFT.recipient.toString()).to.eql('tcro165tzcrh2yl83g8qeqxueg2g5gzgu57y3fe3kc3');
+            expect(MsgTransferNFT.sender.toString()).to.eql('tcro165tzcrh2yl83g8qeqxueg2g5gzgu57y3fe3kc3');
+        });
+    });
 });
