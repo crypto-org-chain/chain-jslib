@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file.
 
+## v0.0.23
+- Support for Offline transaction signing
+- Added `TxDecoder` for decoding transaction from their raw `hex` representation
+- Export or import Cosmos compatible JSON to the SDK
+- Introduced `V2` message types for flexible `denom` handling
+- Added Cosmos `IBC` Message types support
+- Bug fixes 
+
 ## v0.0.22
 - Add AminoJs encoding support for NFT message types
 - Enhanced validation for NFT message types
