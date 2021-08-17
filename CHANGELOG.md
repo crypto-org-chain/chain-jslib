@@ -2,7 +2,7 @@
 
 All notable changes to this project will be documented in this file.
 
-## v0.0.23
+## v1.0.0
 - Support for Offline transaction signing
 - Added `TxDecoder` for decoding transaction from their raw `hex` representation
 - Export or import Cosmos compatible JSON to the SDK
