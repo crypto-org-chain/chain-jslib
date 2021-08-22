@@ -164,16 +164,6 @@ describe('TxDecoder', function () {
                     .toCosmosJSON(),
             ).to.deep.equal(JSON.stringify({ "body": { "messages": [{ "@type": "/cosmos.staking.v1beta1.MsgEditValidator", "description": { "moniker": "hiteshTest", "identity": "", "website": "", "security_contact": "hitesh.goel@crypto.com", "details": "" }, "validator_address": "tcrocncl1j7pej8kplem4wt50p4hfvndhuw5jprxxxtenvr", "commission_rate": "0.100000000000000000", "min_self_delegation": "1.0" }], "memo": "", "timeout_height": "0", "extension_options": [], "non_critical_extension_options": [] }, "auth_info": { "signer_infos": [{ "public_key": { "@type": "/cosmos.crypto.secp256k1.PubKey", "key": "A/0NVgtsSqHKFnIdA5oZKGfDRX4Z2tVT7bmOe6iLFZwn" }, "mode_info": { "single": { "mode": "SIGN_MODE_DIRECT" } }, "sequence": "2" }], "fee": { "amount": [], "gas_limit": "200000", "payer": "", "granter": "" } }, "signatures": ["/nmlnmaBPkhI08gHzPSo+LTLkeCk25eqLmHbpNsrTJsQDk67wg3HoIAVoL1rHvBAvko+lYTttfZrhD2MaziUMg=="] }));
         });
-        it('should decode `IBC.MsgTransfer` with no timeout_timestamp', function () {
-            const txDecoder = new TxDecoder();
-            expect(
-                txDecoder
-                    .fromHex(
-                        '0abf010abc010a292f6962632e6170706c69636174696f6e732e7472616e736665722e76312e4d73675472616e73666572128e010a087472616e73666572120a6368616e6e656c2d33331a100a08626173657463726f120431323334222b7463726f313573667570643236737036716633376c6c3571367875663333306b37646639746e76727168742a2d636f736d6f7331767734756361656167746475763565703473613935653361717a7170736b356d6564613038633206080010e3a368380012580a500a460a1f2f636f736d6f732e63727970746f2e736563703235366b312e5075624b657912230a2103fd0d560b6c4aa1ca16721d039a192867c3457e19dad553edb98e7ba88b159c2712040a0208011802120410c09a0c1a40c693591d997e10f53604b55d931b77e9ca78bc9202bc825faad37f18fb3b9a984993dc9f1ea5f7d5a69fc964013949b72486a636f5529a7ec51772aadbdd2fb5',
-                    )
-                    .toCosmosJSON(),
-            ).to.deep.equal(JSON.stringify({ "body": { "messages": [{ "@type": "/ibc.applications.transfer.v1.MsgTransfer", "source_port": "transfer", "source_channel": "channel-33", "token": { "denom": "basetcro", "amount": "1234" }, "sender": "tcro15sfupd26sp6qf37ll5q6xuf330k7df9tnvrqht", "receiver": "cosmos1vw4ucaeagtduv5ep4sa95e3aqzqpsk5meda08c", "timeout_height": { "revision_number": "0", "revision_height": "1708515" }, "timeout_timestamp": "0" }], "memo": "", "timeout_height": "0", "extension_options": [], "non_critical_extension_options": [] }, "auth_info": { "signer_infos": [{ "public_key": { "@type": "/cosmos.crypto.secp256k1.PubKey", "key": "A/0NVgtsSqHKFnIdA5oZKGfDRX4Z2tVT7bmOe6iLFZwn" }, "mode_info": { "single": { "mode": "SIGN_MODE_DIRECT" } }, "sequence": "2" }], "fee": { "amount": [], "gas_limit": "200000", "payer": "", "granter": "" } }, "signatures": ["xpNZHZl+EPU2BLVdkxt36cp4vJICvIJfqtN/GPs7mphJk9yfHqX31aafyWQBOUm3JIamNvVSmn7FF3Kq290vtQ=="] }));
-        });
         it('should decode `MsgEditValidator` with `null` commissionRate', function () {
             const txDecoder = new TxDecoder();
             expect(

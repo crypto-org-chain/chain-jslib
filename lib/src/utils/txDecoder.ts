@@ -190,12 +190,6 @@ function handleSpecialParams(decodedParams: any, typeUrl: string) {
     }
     /* eslint-enable */
 
-    if (typeUrl === COSMOS_MSG_TYPEURL.ibc.MsgTransfer) {
-        // if timeoutTimestamp = `undefined` or `null`
-        if (typeof decodedParams.timeoutTimestamp === 'undefined' || !decodedParams.timeoutTimestamp) {
-            clonedDecodedParams.timeoutTimestamp = '0';
-        }
-    }
     if (typeUrl === COSMOS_MSG_TYPEURL.ibc.MsgCreateClient) {
         // if clientState = `undefined` or `null`
         if (decodedParams.clientState && Object.keys(decodedParams.clientState).length > 0) {
