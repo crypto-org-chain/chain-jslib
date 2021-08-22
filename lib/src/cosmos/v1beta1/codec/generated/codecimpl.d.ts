@@ -312,6 +312,12 @@ export namespace cosmos {
 
                 /** Metadata display */
                 display?: string | null;
+
+                /** Metadata name */
+                name?: string | null;
+
+                /** Metadata symbol */
+                symbol?: string | null;
             }
 
             /** Represents a Metadata. */
@@ -333,6 +339,12 @@ export namespace cosmos {
 
                 /** Metadata display. */
                 public display: string;
+
+                /** Metadata name. */
+                public name: string;
+
+                /** Metadata symbol. */
+                public symbol: string;
 
                 /**
                  * Creates a new Metadata instance using the specified properties.
@@ -5451,6 +5463,25 @@ export namespace cosmos {
                 public vote(request: cosmos.gov.v1beta1.IMsgVote): Promise<cosmos.gov.v1beta1.MsgVoteResponse>;
 
                 /**
+                 * Calls VoteWeighted.
+                 * @param request MsgVoteWeighted message or plain object
+                 * @param callback Node-style callback called with the error, if any, and MsgVoteWeightedResponse
+                 */
+                public voteWeighted(
+                    request: cosmos.gov.v1beta1.IMsgVoteWeighted,
+                    callback: cosmos.gov.v1beta1.Msg.VoteWeightedCallback,
+                ): void;
+
+                /**
+                 * Calls VoteWeighted.
+                 * @param request MsgVoteWeighted message or plain object
+                 * @returns Promise
+                 */
+                public voteWeighted(
+                    request: cosmos.gov.v1beta1.IMsgVoteWeighted,
+                ): Promise<cosmos.gov.v1beta1.MsgVoteWeightedResponse>;
+
+                /**
                  * Calls Deposit.
                  * @param request MsgDeposit message or plain object
                  * @param callback Node-style callback called with the error, if any, and MsgDepositResponse
@@ -5485,6 +5516,16 @@ export namespace cosmos {
                  * @param [response] MsgVoteResponse
                  */
                 type VoteCallback = (error: Error | null, response?: cosmos.gov.v1beta1.MsgVoteResponse) => void;
+
+                /**
+                 * Callback as used by {@link cosmos.gov.v1beta1.Msg#voteWeighted}.
+                 * @param error Error, if any
+                 * @param [response] MsgVoteWeightedResponse
+                 */
+                type VoteWeightedCallback = (
+                    error: Error | null,
+                    response?: cosmos.gov.v1beta1.MsgVoteWeightedResponse,
+                ) => void;
 
                 /**
                  * Callback as used by {@link cosmos.gov.v1beta1.Msg#deposit}.
@@ -5699,6 +5740,108 @@ export namespace cosmos {
                 public static decode(r: $protobuf.Reader | Uint8Array, l?: number): cosmos.gov.v1beta1.MsgVoteResponse;
             }
 
+            /** Properties of a MsgVoteWeighted. */
+            interface IMsgVoteWeighted {
+                /** MsgVoteWeighted proposalId */
+                proposalId?: Long | null;
+
+                /** MsgVoteWeighted voter */
+                voter?: string | null;
+
+                /** MsgVoteWeighted options */
+                options?: cosmos.gov.v1beta1.IWeightedVoteOption[] | null;
+            }
+
+            /** Represents a MsgVoteWeighted. */
+            class MsgVoteWeighted implements IMsgVoteWeighted {
+                /**
+                 * Constructs a new MsgVoteWeighted.
+                 * @param [p] Properties to set
+                 */
+                constructor(p?: cosmos.gov.v1beta1.IMsgVoteWeighted);
+
+                /** MsgVoteWeighted proposalId. */
+                public proposalId: Long;
+
+                /** MsgVoteWeighted voter. */
+                public voter: string;
+
+                /** MsgVoteWeighted options. */
+                public options: cosmos.gov.v1beta1.IWeightedVoteOption[];
+
+                /**
+                 * Creates a new MsgVoteWeighted instance using the specified properties.
+                 * @param [properties] Properties to set
+                 * @returns MsgVoteWeighted instance
+                 */
+                public static create(
+                    properties?: cosmos.gov.v1beta1.IMsgVoteWeighted,
+                ): cosmos.gov.v1beta1.MsgVoteWeighted;
+
+                /**
+                 * Encodes the specified MsgVoteWeighted message. Does not implicitly {@link cosmos.gov.v1beta1.MsgVoteWeighted.verify|verify} messages.
+                 * @param m MsgVoteWeighted message or plain object to encode
+                 * @param [w] Writer to encode to
+                 * @returns Writer
+                 */
+                public static encode(m: cosmos.gov.v1beta1.IMsgVoteWeighted, w?: $protobuf.Writer): $protobuf.Writer;
+
+                /**
+                 * Decodes a MsgVoteWeighted message from the specified reader or buffer.
+                 * @param r Reader or buffer to decode from
+                 * @param [l] Message length if known beforehand
+                 * @returns MsgVoteWeighted
+                 * @throws {Error} If the payload is not a reader or valid buffer
+                 * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                 */
+                public static decode(r: $protobuf.Reader | Uint8Array, l?: number): cosmos.gov.v1beta1.MsgVoteWeighted;
+            }
+
+            /** Properties of a MsgVoteWeightedResponse. */
+            interface IMsgVoteWeightedResponse {}
+
+            /** Represents a MsgVoteWeightedResponse. */
+            class MsgVoteWeightedResponse implements IMsgVoteWeightedResponse {
+                /**
+                 * Constructs a new MsgVoteWeightedResponse.
+                 * @param [p] Properties to set
+                 */
+                constructor(p?: cosmos.gov.v1beta1.IMsgVoteWeightedResponse);
+
+                /**
+                 * Creates a new MsgVoteWeightedResponse instance using the specified properties.
+                 * @param [properties] Properties to set
+                 * @returns MsgVoteWeightedResponse instance
+                 */
+                public static create(
+                    properties?: cosmos.gov.v1beta1.IMsgVoteWeightedResponse,
+                ): cosmos.gov.v1beta1.MsgVoteWeightedResponse;
+
+                /**
+                 * Encodes the specified MsgVoteWeightedResponse message. Does not implicitly {@link cosmos.gov.v1beta1.MsgVoteWeightedResponse.verify|verify} messages.
+                 * @param m MsgVoteWeightedResponse message or plain object to encode
+                 * @param [w] Writer to encode to
+                 * @returns Writer
+                 */
+                public static encode(
+                    m: cosmos.gov.v1beta1.IMsgVoteWeightedResponse,
+                    w?: $protobuf.Writer,
+                ): $protobuf.Writer;
+
+                /**
+                 * Decodes a MsgVoteWeightedResponse message from the specified reader or buffer.
+                 * @param r Reader or buffer to decode from
+                 * @param [l] Message length if known beforehand
+                 * @returns MsgVoteWeightedResponse
+                 * @throws {Error} If the payload is not a reader or valid buffer
+                 * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                 */
+                public static decode(
+                    r: $protobuf.Reader | Uint8Array,
+                    l?: number,
+                ): cosmos.gov.v1beta1.MsgVoteWeightedResponse;
+            }
+
             /** Properties of a MsgDeposit. */
             interface IMsgDeposit {
                 /** MsgDeposit proposalId */
@@ -5803,6 +5946,60 @@ export namespace cosmos {
                 VOTE_OPTION_ABSTAIN = 2,
                 VOTE_OPTION_NO = 3,
                 VOTE_OPTION_NO_WITH_VETO = 4,
+            }
+
+            /** Properties of a WeightedVoteOption. */
+            interface IWeightedVoteOption {
+                /** WeightedVoteOption option */
+                option?: cosmos.gov.v1beta1.VoteOption | null;
+
+                /** WeightedVoteOption weight */
+                weight?: string | null;
+            }
+
+            /** Represents a WeightedVoteOption. */
+            class WeightedVoteOption implements IWeightedVoteOption {
+                /**
+                 * Constructs a new WeightedVoteOption.
+                 * @param [p] Properties to set
+                 */
+                constructor(p?: cosmos.gov.v1beta1.IWeightedVoteOption);
+
+                /** WeightedVoteOption option. */
+                public option: cosmos.gov.v1beta1.VoteOption;
+
+                /** WeightedVoteOption weight. */
+                public weight: string;
+
+                /**
+                 * Creates a new WeightedVoteOption instance using the specified properties.
+                 * @param [properties] Properties to set
+                 * @returns WeightedVoteOption instance
+                 */
+                public static create(
+                    properties?: cosmos.gov.v1beta1.IWeightedVoteOption,
+                ): cosmos.gov.v1beta1.WeightedVoteOption;
+
+                /**
+                 * Encodes the specified WeightedVoteOption message. Does not implicitly {@link cosmos.gov.v1beta1.WeightedVoteOption.verify|verify} messages.
+                 * @param m WeightedVoteOption message or plain object to encode
+                 * @param [w] Writer to encode to
+                 * @returns Writer
+                 */
+                public static encode(m: cosmos.gov.v1beta1.IWeightedVoteOption, w?: $protobuf.Writer): $protobuf.Writer;
+
+                /**
+                 * Decodes a WeightedVoteOption message from the specified reader or buffer.
+                 * @param r Reader or buffer to decode from
+                 * @param [l] Message length if known beforehand
+                 * @returns WeightedVoteOption
+                 * @throws {Error} If the payload is not a reader or valid buffer
+                 * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                 */
+                public static decode(
+                    r: $protobuf.Reader | Uint8Array,
+                    l?: number,
+                ): cosmos.gov.v1beta1.WeightedVoteOption;
             }
 
             /** Properties of a TextProposal. */
@@ -6081,6 +6278,9 @@ export namespace cosmos {
 
                 /** Vote option */
                 option?: cosmos.gov.v1beta1.VoteOption | null;
+
+                /** Vote options */
+                options?: cosmos.gov.v1beta1.IWeightedVoteOption[] | null;
             }
 
             /** Represents a Vote. */
@@ -6099,6 +6299,9 @@ export namespace cosmos {
 
                 /** Vote option. */
                 public option: cosmos.gov.v1beta1.VoteOption;
+
+                /** Vote options. */
+                public options: cosmos.gov.v1beta1.IWeightedVoteOption[];
 
                 /**
                  * Creates a new Vote instance using the specified properties.
@@ -6590,6 +6793,60 @@ export namespace cosmos {
                     r: $protobuf.Reader | Uint8Array,
                     l?: number,
                 ): cosmos.upgrade.v1beta1.CancelSoftwareUpgradeProposal;
+            }
+
+            /** Properties of a ModuleVersion. */
+            interface IModuleVersion {
+                /** ModuleVersion name */
+                name?: string | null;
+
+                /** ModuleVersion version */
+                version?: Long | null;
+            }
+
+            /** Represents a ModuleVersion. */
+            class ModuleVersion implements IModuleVersion {
+                /**
+                 * Constructs a new ModuleVersion.
+                 * @param [p] Properties to set
+                 */
+                constructor(p?: cosmos.upgrade.v1beta1.IModuleVersion);
+
+                /** ModuleVersion name. */
+                public name: string;
+
+                /** ModuleVersion version. */
+                public version: Long;
+
+                /**
+                 * Creates a new ModuleVersion instance using the specified properties.
+                 * @param [properties] Properties to set
+                 * @returns ModuleVersion instance
+                 */
+                public static create(
+                    properties?: cosmos.upgrade.v1beta1.IModuleVersion,
+                ): cosmos.upgrade.v1beta1.ModuleVersion;
+
+                /**
+                 * Encodes the specified ModuleVersion message. Does not implicitly {@link cosmos.upgrade.v1beta1.ModuleVersion.verify|verify} messages.
+                 * @param m ModuleVersion message or plain object to encode
+                 * @param [w] Writer to encode to
+                 * @returns Writer
+                 */
+                public static encode(m: cosmos.upgrade.v1beta1.IModuleVersion, w?: $protobuf.Writer): $protobuf.Writer;
+
+                /**
+                 * Decodes a ModuleVersion message from the specified reader or buffer.
+                 * @param r Reader or buffer to decode from
+                 * @param [l] Message length if known beforehand
+                 * @returns ModuleVersion
+                 * @throws {Error} If the payload is not a reader or valid buffer
+                 * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                 */
+                public static decode(
+                    r: $protobuf.Reader | Uint8Array,
+                    l?: number,
+                ): cosmos.upgrade.v1beta1.ModuleVersion;
             }
         }
     }
@@ -7586,1429 +7843,6 @@ export namespace ics23 {
          * @throws {$protobuf.util.ProtocolError} If required fields are missing
          */
         public static decode(r: $protobuf.Reader | Uint8Array, l?: number): ics23.CompressedNonExistenceProof;
-    }
-}
-
-/** Namespace tendermint. */
-export namespace tendermintV2 {
-    /** Namespace types. */
-    namespace types {
-        /** BlockIDFlag enum. */
-        enum BlockIDFlag {
-            BLOCK_ID_FLAG_UNKNOWN = 0,
-            BLOCK_ID_FLAG_ABSENT = 1,
-            BLOCK_ID_FLAG_COMMIT = 2,
-            BLOCK_ID_FLAG_NIL = 3,
-        }
-
-        /** SignedMsgType enum. */
-        enum SignedMsgType {
-            SIGNED_MSG_TYPE_UNKNOWN = 0,
-            SIGNED_MSG_TYPE_PREVOTE = 1,
-            SIGNED_MSG_TYPE_PRECOMMIT = 2,
-            SIGNED_MSG_TYPE_PROPOSAL = 32,
-        }
-
-        /** Properties of a PartSetHeader. */
-        interface IPartSetHeader {
-            /** PartSetHeader total */
-            total?: number | null;
-
-            /** PartSetHeader hash */
-            hash?: Uint8Array | null;
-        }
-
-        /** Represents a PartSetHeader. */
-        class PartSetHeader implements IPartSetHeader {
-            /**
-             * Constructs a new PartSetHeader.
-             * @param [p] Properties to set
-             */
-            constructor(p?: tendermintV2.types.IPartSetHeader);
-
-            /** PartSetHeader total. */
-            public total: number;
-
-            /** PartSetHeader hash. */
-            public hash: Uint8Array;
-
-            /**
-             * Creates a new PartSetHeader instance using the specified properties.
-             * @param [properties] Properties to set
-             * @returns PartSetHeader instance
-             */
-            public static create(properties?: tendermintV2.types.IPartSetHeader): tendermintV2.types.PartSetHeader;
-
-            /**
-             * Encodes the specified PartSetHeader message. Does not implicitly {@link tendermint.types.PartSetHeader.verify|verify} messages.
-             * @param m PartSetHeader message or plain object to encode
-             * @param [w] Writer to encode to
-             * @returns Writer
-             */
-            public static encode(m: tendermintV2.types.IPartSetHeader, w?: $protobuf.Writer): $protobuf.Writer;
-
-            /**
-             * Decodes a PartSetHeader message from the specified reader or buffer.
-             * @param r Reader or buffer to decode from
-             * @param [l] Message length if known beforehand
-             * @returns PartSetHeader
-             * @throws {Error} If the payload is not a reader or valid buffer
-             * @throws {$protobuf.util.ProtocolError} If required fields are missing
-             */
-            public static decode(r: $protobuf.Reader | Uint8Array, l?: number): tendermintV2.types.PartSetHeader;
-        }
-
-        /** Properties of a Part. */
-        interface IPart {
-            /** Part index */
-            index?: number | null;
-
-            /** Part bytes */
-            bytes?: Uint8Array | null;
-
-            /** Part proof */
-            proof?: tendermintV2.crypto.IProof | null;
-        }
-
-        /** Represents a Part. */
-        class Part implements IPart {
-            /**
-             * Constructs a new Part.
-             * @param [p] Properties to set
-             */
-            constructor(p?: tendermintV2.types.IPart);
-
-            /** Part index. */
-            public index: number;
-
-            /** Part bytes. */
-            public bytes: Uint8Array;
-
-            /** Part proof. */
-            public proof?: tendermintV2.crypto.IProof | null;
-
-            /**
-             * Creates a new Part instance using the specified properties.
-             * @param [properties] Properties to set
-             * @returns Part instance
-             */
-            public static create(properties?: tendermintV2.types.IPart): tendermintV2.types.Part;
-
-            /**
-             * Encodes the specified Part message. Does not implicitly {@link tendermint.types.Part.verify|verify} messages.
-             * @param m Part message or plain object to encode
-             * @param [w] Writer to encode to
-             * @returns Writer
-             */
-            public static encode(m: tendermintV2.types.IPart, w?: $protobuf.Writer): $protobuf.Writer;
-
-            /**
-             * Decodes a Part message from the specified reader or buffer.
-             * @param r Reader or buffer to decode from
-             * @param [l] Message length if known beforehand
-             * @returns Part
-             * @throws {Error} If the payload is not a reader or valid buffer
-             * @throws {$protobuf.util.ProtocolError} If required fields are missing
-             */
-            public static decode(r: $protobuf.Reader | Uint8Array, l?: number): tendermintV2.types.Part;
-        }
-
-        /** Properties of a BlockID. */
-        interface IBlockID {
-            /** BlockID hash */
-            hash?: Uint8Array | null;
-
-            /** BlockID partSetHeader */
-            partSetHeader?: tendermintV2.types.IPartSetHeader | null;
-        }
-
-        /** Represents a BlockID. */
-        class BlockID implements IBlockID {
-            /**
-             * Constructs a new BlockID.
-             * @param [p] Properties to set
-             */
-            constructor(p?: tendermintV2.types.IBlockID);
-
-            /** BlockID hash. */
-            public hash: Uint8Array;
-
-            /** BlockID partSetHeader. */
-            public partSetHeader?: tendermintV2.types.IPartSetHeader | null;
-
-            /**
-             * Creates a new BlockID instance using the specified properties.
-             * @param [properties] Properties to set
-             * @returns BlockID instance
-             */
-            public static create(properties?: tendermintV2.types.IBlockID): tendermintV2.types.BlockID;
-
-            /**
-             * Encodes the specified BlockID message. Does not implicitly {@link tendermint.types.BlockID.verify|verify} messages.
-             * @param m BlockID message or plain object to encode
-             * @param [w] Writer to encode to
-             * @returns Writer
-             */
-            public static encode(m: tendermintV2.types.IBlockID, w?: $protobuf.Writer): $protobuf.Writer;
-
-            /**
-             * Decodes a BlockID message from the specified reader or buffer.
-             * @param r Reader or buffer to decode from
-             * @param [l] Message length if known beforehand
-             * @returns BlockID
-             * @throws {Error} If the payload is not a reader or valid buffer
-             * @throws {$protobuf.util.ProtocolError} If required fields are missing
-             */
-            public static decode(r: $protobuf.Reader | Uint8Array, l?: number): tendermintV2.types.BlockID;
-        }
-
-        /** Properties of a Header. */
-        interface IHeader {
-            /** Header version */
-            version?: tendermintV2.version.IConsensus | null;
-
-            /** Header chainId */
-            chainId?: string | null;
-
-            /** Header height */
-            height?: Long | null;
-
-            /** Header time */
-            time?: google.protobuf.ITimestamp | null;
-
-            /** Header lastBlockId */
-            lastBlockId?: tendermintV2.types.IBlockID | null;
-
-            /** Header lastCommitHash */
-            lastCommitHash?: Uint8Array | null;
-
-            /** Header dataHash */
-            dataHash?: Uint8Array | null;
-
-            /** Header validatorsHash */
-            validatorsHash?: Uint8Array | null;
-
-            /** Header nextValidatorsHash */
-            nextValidatorsHash?: Uint8Array | null;
-
-            /** Header consensusHash */
-            consensusHash?: Uint8Array | null;
-
-            /** Header appHash */
-            appHash?: Uint8Array | null;
-
-            /** Header lastResultsHash */
-            lastResultsHash?: Uint8Array | null;
-
-            /** Header evidenceHash */
-            evidenceHash?: Uint8Array | null;
-
-            /** Header proposerAddress */
-            proposerAddress?: Uint8Array | null;
-        }
-
-        /** Represents a Header. */
-        class Header implements IHeader {
-            /**
-             * Constructs a new Header.
-             * @param [p] Properties to set
-             */
-            constructor(p?: tendermintV2.types.IHeader);
-
-            /** Header version. */
-            public version?: tendermintV2.version.IConsensus | null;
-
-            /** Header chainId. */
-            public chainId: string;
-
-            /** Header height. */
-            public height: Long;
-
-            /** Header time. */
-            public time?: google.protobuf.ITimestamp | null;
-
-            /** Header lastBlockId. */
-            public lastBlockId?: tendermintV2.types.IBlockID | null;
-
-            /** Header lastCommitHash. */
-            public lastCommitHash: Uint8Array;
-
-            /** Header dataHash. */
-            public dataHash: Uint8Array;
-
-            /** Header validatorsHash. */
-            public validatorsHash: Uint8Array;
-
-            /** Header nextValidatorsHash. */
-            public nextValidatorsHash: Uint8Array;
-
-            /** Header consensusHash. */
-            public consensusHash: Uint8Array;
-
-            /** Header appHash. */
-            public appHash: Uint8Array;
-
-            /** Header lastResultsHash. */
-            public lastResultsHash: Uint8Array;
-
-            /** Header evidenceHash. */
-            public evidenceHash: Uint8Array;
-
-            /** Header proposerAddress. */
-            public proposerAddress: Uint8Array;
-
-            /**
-             * Creates a new Header instance using the specified properties.
-             * @param [properties] Properties to set
-             * @returns Header instance
-             */
-            public static create(properties?: tendermintV2.types.IHeader): tendermintV2.types.Header;
-
-            /**
-             * Encodes the specified Header message. Does not implicitly {@link tendermint.types.Header.verify|verify} messages.
-             * @param m Header message or plain object to encode
-             * @param [w] Writer to encode to
-             * @returns Writer
-             */
-            public static encode(m: tendermintV2.types.IHeader, w?: $protobuf.Writer): $protobuf.Writer;
-
-            /**
-             * Decodes a Header message from the specified reader or buffer.
-             * @param r Reader or buffer to decode from
-             * @param [l] Message length if known beforehand
-             * @returns Header
-             * @throws {Error} If the payload is not a reader or valid buffer
-             * @throws {$protobuf.util.ProtocolError} If required fields are missing
-             */
-            public static decode(r: $protobuf.Reader | Uint8Array, l?: number): tendermintV2.types.Header;
-        }
-
-        /** Properties of a Data. */
-        interface IData {
-            /** Data txs */
-            txs?: Uint8Array[] | null;
-        }
-
-        /** Represents a Data. */
-        class Data implements IData {
-            /**
-             * Constructs a new Data.
-             * @param [p] Properties to set
-             */
-            constructor(p?: tendermintV2.types.IData);
-
-            /** Data txs. */
-            public txs: Uint8Array[];
-
-            /**
-             * Creates a new Data instance using the specified properties.
-             * @param [properties] Properties to set
-             * @returns Data instance
-             */
-            public static create(properties?: tendermintV2.types.IData): tendermintV2.types.Data;
-
-            /**
-             * Encodes the specified Data message. Does not implicitly {@link tendermint.types.Data.verify|verify} messages.
-             * @param m Data message or plain object to encode
-             * @param [w] Writer to encode to
-             * @returns Writer
-             */
-            public static encode(m: tendermintV2.types.IData, w?: $protobuf.Writer): $protobuf.Writer;
-
-            /**
-             * Decodes a Data message from the specified reader or buffer.
-             * @param r Reader or buffer to decode from
-             * @param [l] Message length if known beforehand
-             * @returns Data
-             * @throws {Error} If the payload is not a reader or valid buffer
-             * @throws {$protobuf.util.ProtocolError} If required fields are missing
-             */
-            public static decode(r: $protobuf.Reader | Uint8Array, l?: number): tendermintV2.types.Data;
-        }
-
-        /** Properties of a Vote. */
-        interface IVote {
-            /** Vote type */
-            type?: tendermintV2.types.SignedMsgType | null;
-
-            /** Vote height */
-            height?: Long | null;
-
-            /** Vote round */
-            round?: number | null;
-
-            /** Vote blockId */
-            blockId?: tendermintV2.types.IBlockID | null;
-
-            /** Vote timestamp */
-            timestamp?: google.protobuf.ITimestamp | null;
-
-            /** Vote validatorAddress */
-            validatorAddress?: Uint8Array | null;
-
-            /** Vote validatorIndex */
-            validatorIndex?: number | null;
-
-            /** Vote signature */
-            signature?: Uint8Array | null;
-        }
-
-        /** Represents a Vote. */
-        class Vote implements IVote {
-            /**
-             * Constructs a new Vote.
-             * @param [p] Properties to set
-             */
-            constructor(p?: tendermintV2.types.IVote);
-
-            /** Vote type. */
-            public type: tendermintV2.types.SignedMsgType;
-
-            /** Vote height. */
-            public height: Long;
-
-            /** Vote round. */
-            public round: number;
-
-            /** Vote blockId. */
-            public blockId?: tendermintV2.types.IBlockID | null;
-
-            /** Vote timestamp. */
-            public timestamp?: google.protobuf.ITimestamp | null;
-
-            /** Vote validatorAddress. */
-            public validatorAddress: Uint8Array;
-
-            /** Vote validatorIndex. */
-            public validatorIndex: number;
-
-            /** Vote signature. */
-            public signature: Uint8Array;
-
-            /**
-             * Creates a new Vote instance using the specified properties.
-             * @param [properties] Properties to set
-             * @returns Vote instance
-             */
-            public static create(properties?: tendermintV2.types.IVote): tendermintV2.types.Vote;
-
-            /**
-             * Encodes the specified Vote message. Does not implicitly {@link tendermint.types.Vote.verify|verify} messages.
-             * @param m Vote message or plain object to encode
-             * @param [w] Writer to encode to
-             * @returns Writer
-             */
-            public static encode(m: tendermintV2.types.IVote, w?: $protobuf.Writer): $protobuf.Writer;
-
-            /**
-             * Decodes a Vote message from the specified reader or buffer.
-             * @param r Reader or buffer to decode from
-             * @param [l] Message length if known beforehand
-             * @returns Vote
-             * @throws {Error} If the payload is not a reader or valid buffer
-             * @throws {$protobuf.util.ProtocolError} If required fields are missing
-             */
-            public static decode(r: $protobuf.Reader | Uint8Array, l?: number): tendermintV2.types.Vote;
-        }
-
-        /** Properties of a Commit. */
-        interface ICommit {
-            /** Commit height */
-            height?: Long | null;
-
-            /** Commit round */
-            round?: number | null;
-
-            /** Commit blockId */
-            blockId?: tendermintV2.types.IBlockID | null;
-
-            /** Commit signatures */
-            signatures?: tendermintV2.types.ICommitSig[] | null;
-        }
-
-        /** Represents a Commit. */
-        class Commit implements ICommit {
-            /**
-             * Constructs a new Commit.
-             * @param [p] Properties to set
-             */
-            constructor(p?: tendermintV2.types.ICommit);
-
-            /** Commit height. */
-            public height: Long;
-
-            /** Commit round. */
-            public round: number;
-
-            /** Commit blockId. */
-            public blockId?: tendermintV2.types.IBlockID | null;
-
-            /** Commit signatures. */
-            public signatures: tendermintV2.types.ICommitSig[];
-
-            /**
-             * Creates a new Commit instance using the specified properties.
-             * @param [properties] Properties to set
-             * @returns Commit instance
-             */
-            public static create(properties?: tendermintV2.types.ICommit): tendermintV2.types.Commit;
-
-            /**
-             * Encodes the specified Commit message. Does not implicitly {@link tendermint.types.Commit.verify|verify} messages.
-             * @param m Commit message or plain object to encode
-             * @param [w] Writer to encode to
-             * @returns Writer
-             */
-            public static encode(m: tendermintV2.types.ICommit, w?: $protobuf.Writer): $protobuf.Writer;
-
-            /**
-             * Decodes a Commit message from the specified reader or buffer.
-             * @param r Reader or buffer to decode from
-             * @param [l] Message length if known beforehand
-             * @returns Commit
-             * @throws {Error} If the payload is not a reader or valid buffer
-             * @throws {$protobuf.util.ProtocolError} If required fields are missing
-             */
-            public static decode(r: $protobuf.Reader | Uint8Array, l?: number): tendermintV2.types.Commit;
-        }
-
-        /** Properties of a CommitSig. */
-        interface ICommitSig {
-            /** CommitSig blockIdFlag */
-            blockIdFlag?: tendermintV2.types.BlockIDFlag | null;
-
-            /** CommitSig validatorAddress */
-            validatorAddress?: Uint8Array | null;
-
-            /** CommitSig timestamp */
-            timestamp?: google.protobuf.ITimestamp | null;
-
-            /** CommitSig signature */
-            signature?: Uint8Array | null;
-        }
-
-        /** Represents a CommitSig. */
-        class CommitSig implements ICommitSig {
-            /**
-             * Constructs a new CommitSig.
-             * @param [p] Properties to set
-             */
-            constructor(p?: tendermintV2.types.ICommitSig);
-
-            /** CommitSig blockIdFlag. */
-            public blockIdFlag: tendermintV2.types.BlockIDFlag;
-
-            /** CommitSig validatorAddress. */
-            public validatorAddress: Uint8Array;
-
-            /** CommitSig timestamp. */
-            public timestamp?: google.protobuf.ITimestamp | null;
-
-            /** CommitSig signature. */
-            public signature: Uint8Array;
-
-            /**
-             * Creates a new CommitSig instance using the specified properties.
-             * @param [properties] Properties to set
-             * @returns CommitSig instance
-             */
-            public static create(properties?: tendermintV2.types.ICommitSig): tendermintV2.types.CommitSig;
-
-            /**
-             * Encodes the specified CommitSig message. Does not implicitly {@link tendermint.types.CommitSig.verify|verify} messages.
-             * @param m CommitSig message or plain object to encode
-             * @param [w] Writer to encode to
-             * @returns Writer
-             */
-            public static encode(m: tendermintV2.types.ICommitSig, w?: $protobuf.Writer): $protobuf.Writer;
-
-            /**
-             * Decodes a CommitSig message from the specified reader or buffer.
-             * @param r Reader or buffer to decode from
-             * @param [l] Message length if known beforehand
-             * @returns CommitSig
-             * @throws {Error} If the payload is not a reader or valid buffer
-             * @throws {$protobuf.util.ProtocolError} If required fields are missing
-             */
-            public static decode(r: $protobuf.Reader | Uint8Array, l?: number): tendermintV2.types.CommitSig;
-        }
-
-        /** Properties of a Proposal. */
-        interface IProposal {
-            /** Proposal type */
-            type?: tendermintV2.types.SignedMsgType | null;
-
-            /** Proposal height */
-            height?: Long | null;
-
-            /** Proposal round */
-            round?: number | null;
-
-            /** Proposal polRound */
-            polRound?: number | null;
-
-            /** Proposal blockId */
-            blockId?: tendermintV2.types.IBlockID | null;
-
-            /** Proposal timestamp */
-            timestamp?: google.protobuf.ITimestamp | null;
-
-            /** Proposal signature */
-            signature?: Uint8Array | null;
-        }
-
-        /** Represents a Proposal. */
-        class Proposal implements IProposal {
-            /**
-             * Constructs a new Proposal.
-             * @param [p] Properties to set
-             */
-            constructor(p?: tendermintV2.types.IProposal);
-
-            /** Proposal type. */
-            public type: tendermintV2.types.SignedMsgType;
-
-            /** Proposal height. */
-            public height: Long;
-
-            /** Proposal round. */
-            public round: number;
-
-            /** Proposal polRound. */
-            public polRound: number;
-
-            /** Proposal blockId. */
-            public blockId?: tendermintV2.types.IBlockID | null;
-
-            /** Proposal timestamp. */
-            public timestamp?: google.protobuf.ITimestamp | null;
-
-            /** Proposal signature. */
-            public signature: Uint8Array;
-
-            /**
-             * Creates a new Proposal instance using the specified properties.
-             * @param [properties] Properties to set
-             * @returns Proposal instance
-             */
-            public static create(properties?: tendermintV2.types.IProposal): tendermintV2.types.Proposal;
-
-            /**
-             * Encodes the specified Proposal message. Does not implicitly {@link tendermint.types.Proposal.verify|verify} messages.
-             * @param m Proposal message or plain object to encode
-             * @param [w] Writer to encode to
-             * @returns Writer
-             */
-            public static encode(m: tendermintV2.types.IProposal, w?: $protobuf.Writer): $protobuf.Writer;
-
-            /**
-             * Decodes a Proposal message from the specified reader or buffer.
-             * @param r Reader or buffer to decode from
-             * @param [l] Message length if known beforehand
-             * @returns Proposal
-             * @throws {Error} If the payload is not a reader or valid buffer
-             * @throws {$protobuf.util.ProtocolError} If required fields are missing
-             */
-            public static decode(r: $protobuf.Reader | Uint8Array, l?: number): tendermintV2.types.Proposal;
-        }
-
-        /** Properties of a SignedHeader. */
-        interface ISignedHeader {
-            /** SignedHeader header */
-            header?: tendermintV2.types.IHeader | null;
-
-            /** SignedHeader commit */
-            commit?: tendermintV2.types.ICommit | null;
-        }
-
-        /** Represents a SignedHeader. */
-        class SignedHeader implements ISignedHeader {
-            /**
-             * Constructs a new SignedHeader.
-             * @param [p] Properties to set
-             */
-            constructor(p?: tendermintV2.types.ISignedHeader);
-
-            /** SignedHeader header. */
-            public header?: tendermintV2.types.IHeader | null;
-
-            /** SignedHeader commit. */
-            public commit?: tendermintV2.types.ICommit | null;
-
-            /**
-             * Creates a new SignedHeader instance using the specified properties.
-             * @param [properties] Properties to set
-             * @returns SignedHeader instance
-             */
-            public static create(properties?: tendermintV2.types.ISignedHeader): tendermintV2.types.SignedHeader;
-
-            /**
-             * Encodes the specified SignedHeader message. Does not implicitly {@link tendermint.types.SignedHeader.verify|verify} messages.
-             * @param m SignedHeader message or plain object to encode
-             * @param [w] Writer to encode to
-             * @returns Writer
-             */
-            public static encode(m: tendermintV2.types.ISignedHeader, w?: $protobuf.Writer): $protobuf.Writer;
-
-            /**
-             * Decodes a SignedHeader message from the specified reader or buffer.
-             * @param r Reader or buffer to decode from
-             * @param [l] Message length if known beforehand
-             * @returns SignedHeader
-             * @throws {Error} If the payload is not a reader or valid buffer
-             * @throws {$protobuf.util.ProtocolError} If required fields are missing
-             */
-            public static decode(r: $protobuf.Reader | Uint8Array, l?: number): tendermintV2.types.SignedHeader;
-        }
-
-        /** Properties of a LightBlock. */
-        interface ILightBlock {
-            /** LightBlock signedHeader */
-            signedHeader?: tendermintV2.types.ISignedHeader | null;
-
-            /** LightBlock validatorSet */
-            validatorSet?: tendermintV2.types.IValidatorSet | null;
-        }
-
-        /** Represents a LightBlock. */
-        class LightBlock implements ILightBlock {
-            /**
-             * Constructs a new LightBlock.
-             * @param [p] Properties to set
-             */
-            constructor(p?: tendermintV2.types.ILightBlock);
-
-            /** LightBlock signedHeader. */
-            public signedHeader?: tendermintV2.types.ISignedHeader | null;
-
-            /** LightBlock validatorSet. */
-            public validatorSet?: tendermintV2.types.IValidatorSet | null;
-
-            /**
-             * Creates a new LightBlock instance using the specified properties.
-             * @param [properties] Properties to set
-             * @returns LightBlock instance
-             */
-            public static create(properties?: tendermintV2.types.ILightBlock): tendermintV2.types.LightBlock;
-
-            /**
-             * Encodes the specified LightBlock message. Does not implicitly {@link tendermint.types.LightBlock.verify|verify} messages.
-             * @param m LightBlock message or plain object to encode
-             * @param [w] Writer to encode to
-             * @returns Writer
-             */
-            public static encode(m: tendermintV2.types.ILightBlock, w?: $protobuf.Writer): $protobuf.Writer;
-
-            /**
-             * Decodes a LightBlock message from the specified reader or buffer.
-             * @param r Reader or buffer to decode from
-             * @param [l] Message length if known beforehand
-             * @returns LightBlock
-             * @throws {Error} If the payload is not a reader or valid buffer
-             * @throws {$protobuf.util.ProtocolError} If required fields are missing
-             */
-            public static decode(r: $protobuf.Reader | Uint8Array, l?: number): tendermintV2.types.LightBlock;
-        }
-
-        /** Properties of a BlockMeta. */
-        interface IBlockMeta {
-            /** BlockMeta blockId */
-            blockId?: tendermintV2.types.IBlockID | null;
-
-            /** BlockMeta blockSize */
-            blockSize?: Long | null;
-
-            /** BlockMeta header */
-            header?: tendermintV2.types.IHeader | null;
-
-            /** BlockMeta numTxs */
-            numTxs?: Long | null;
-        }
-
-        /** Represents a BlockMeta. */
-        class BlockMeta implements IBlockMeta {
-            /**
-             * Constructs a new BlockMeta.
-             * @param [p] Properties to set
-             */
-            constructor(p?: tendermintV2.types.IBlockMeta);
-
-            /** BlockMeta blockId. */
-            public blockId?: tendermintV2.types.IBlockID | null;
-
-            /** BlockMeta blockSize. */
-            public blockSize: Long;
-
-            /** BlockMeta header. */
-            public header?: tendermintV2.types.IHeader | null;
-
-            /** BlockMeta numTxs. */
-            public numTxs: Long;
-
-            /**
-             * Creates a new BlockMeta instance using the specified properties.
-             * @param [properties] Properties to set
-             * @returns BlockMeta instance
-             */
-            public static create(properties?: tendermintV2.types.IBlockMeta): tendermintV2.types.BlockMeta;
-
-            /**
-             * Encodes the specified BlockMeta message. Does not implicitly {@link tendermint.types.BlockMeta.verify|verify} messages.
-             * @param m BlockMeta message or plain object to encode
-             * @param [w] Writer to encode to
-             * @returns Writer
-             */
-            public static encode(m: tendermintV2.types.IBlockMeta, w?: $protobuf.Writer): $protobuf.Writer;
-
-            /**
-             * Decodes a BlockMeta message from the specified reader or buffer.
-             * @param r Reader or buffer to decode from
-             * @param [l] Message length if known beforehand
-             * @returns BlockMeta
-             * @throws {Error} If the payload is not a reader or valid buffer
-             * @throws {$protobuf.util.ProtocolError} If required fields are missing
-             */
-            public static decode(r: $protobuf.Reader | Uint8Array, l?: number): tendermintV2.types.BlockMeta;
-        }
-
-        /** Properties of a TxProof. */
-        interface ITxProof {
-            /** TxProof rootHash */
-            rootHash?: Uint8Array | null;
-
-            /** TxProof data */
-            data?: Uint8Array | null;
-
-            /** TxProof proof */
-            proof?: tendermintV2.crypto.IProof | null;
-        }
-
-        /** Represents a TxProof. */
-        class TxProof implements ITxProof {
-            /**
-             * Constructs a new TxProof.
-             * @param [p] Properties to set
-             */
-            constructor(p?: tendermintV2.types.ITxProof);
-
-            /** TxProof rootHash. */
-            public rootHash: Uint8Array;
-
-            /** TxProof data. */
-            public data: Uint8Array;
-
-            /** TxProof proof. */
-            public proof?: tendermintV2.crypto.IProof | null;
-
-            /**
-             * Creates a new TxProof instance using the specified properties.
-             * @param [properties] Properties to set
-             * @returns TxProof instance
-             */
-            public static create(properties?: tendermintV2.types.ITxProof): tendermintV2.types.TxProof;
-
-            /**
-             * Encodes the specified TxProof message. Does not implicitly {@link tendermint.types.TxProof.verify|verify} messages.
-             * @param m TxProof message or plain object to encode
-             * @param [w] Writer to encode to
-             * @returns Writer
-             */
-            public static encode(m: tendermintV2.types.ITxProof, w?: $protobuf.Writer): $protobuf.Writer;
-
-            /**
-             * Decodes a TxProof message from the specified reader or buffer.
-             * @param r Reader or buffer to decode from
-             * @param [l] Message length if known beforehand
-             * @returns TxProof
-             * @throws {Error} If the payload is not a reader or valid buffer
-             * @throws {$protobuf.util.ProtocolError} If required fields are missing
-             */
-            public static decode(r: $protobuf.Reader | Uint8Array, l?: number): tendermintV2.types.TxProof;
-        }
-
-        /** Properties of a ValidatorSet. */
-        interface IValidatorSet {
-            /** ValidatorSet validators */
-            validators?: tendermintV2.types.IValidator[] | null;
-
-            /** ValidatorSet proposer */
-            proposer?: tendermintV2.types.IValidator | null;
-
-            /** ValidatorSet totalVotingPower */
-            totalVotingPower?: Long | null;
-        }
-
-        /** Represents a ValidatorSet. */
-        class ValidatorSet implements IValidatorSet {
-            /**
-             * Constructs a new ValidatorSet.
-             * @param [p] Properties to set
-             */
-            constructor(p?: tendermintV2.types.IValidatorSet);
-
-            /** ValidatorSet validators. */
-            public validators: tendermintV2.types.IValidator[];
-
-            /** ValidatorSet proposer. */
-            public proposer?: tendermintV2.types.IValidator | null;
-
-            /** ValidatorSet totalVotingPower. */
-            public totalVotingPower: Long;
-
-            /**
-             * Creates a new ValidatorSet instance using the specified properties.
-             * @param [properties] Properties to set
-             * @returns ValidatorSet instance
-             */
-            public static create(properties?: tendermintV2.types.IValidatorSet): tendermintV2.types.ValidatorSet;
-
-            /**
-             * Encodes the specified ValidatorSet message. Does not implicitly {@link tendermint.types.ValidatorSet.verify|verify} messages.
-             * @param m ValidatorSet message or plain object to encode
-             * @param [w] Writer to encode to
-             * @returns Writer
-             */
-            public static encode(m: tendermintV2.types.IValidatorSet, w?: $protobuf.Writer): $protobuf.Writer;
-
-            /**
-             * Decodes a ValidatorSet message from the specified reader or buffer.
-             * @param r Reader or buffer to decode from
-             * @param [l] Message length if known beforehand
-             * @returns ValidatorSet
-             * @throws {Error} If the payload is not a reader or valid buffer
-             * @throws {$protobuf.util.ProtocolError} If required fields are missing
-             */
-            public static decode(r: $protobuf.Reader | Uint8Array, l?: number): tendermintV2.types.ValidatorSet;
-        }
-
-        /** Properties of a Validator. */
-        interface IValidator {
-            /** Validator address */
-            address?: Uint8Array | null;
-
-            /** Validator pubKey */
-            pubKey?: tendermintV2.crypto.IPublicKey | null;
-
-            /** Validator votingPower */
-            votingPower?: Long | null;
-
-            /** Validator proposerPriority */
-            proposerPriority?: Long | null;
-        }
-
-        /** Represents a Validator. */
-        class Validator implements IValidator {
-            /**
-             * Constructs a new Validator.
-             * @param [p] Properties to set
-             */
-            constructor(p?: tendermintV2.types.IValidator);
-
-            /** Validator address. */
-            public address: Uint8Array;
-
-            /** Validator pubKey. */
-            public pubKey?: tendermintV2.crypto.IPublicKey | null;
-
-            /** Validator votingPower. */
-            public votingPower: Long;
-
-            /** Validator proposerPriority. */
-            public proposerPriority: Long;
-
-            /**
-             * Creates a new Validator instance using the specified properties.
-             * @param [properties] Properties to set
-             * @returns Validator instance
-             */
-            public static create(properties?: tendermintV2.types.IValidator): tendermintV2.types.Validator;
-
-            /**
-             * Encodes the specified Validator message. Does not implicitly {@link tendermint.types.Validator.verify|verify} messages.
-             * @param m Validator message or plain object to encode
-             * @param [w] Writer to encode to
-             * @returns Writer
-             */
-            public static encode(m: tendermintV2.types.IValidator, w?: $protobuf.Writer): $protobuf.Writer;
-
-            /**
-             * Decodes a Validator message from the specified reader or buffer.
-             * @param r Reader or buffer to decode from
-             * @param [l] Message length if known beforehand
-             * @returns Validator
-             * @throws {Error} If the payload is not a reader or valid buffer
-             * @throws {$protobuf.util.ProtocolError} If required fields are missing
-             */
-            public static decode(r: $protobuf.Reader | Uint8Array, l?: number): tendermintV2.types.Validator;
-        }
-
-        /** Properties of a SimpleValidator. */
-        interface ISimpleValidator {
-            /** SimpleValidator pubKey */
-            pubKey?: tendermintV2.crypto.IPublicKey | null;
-
-            /** SimpleValidator votingPower */
-            votingPower?: Long | null;
-        }
-
-        /** Represents a SimpleValidator. */
-        class SimpleValidator implements ISimpleValidator {
-            /**
-             * Constructs a new SimpleValidator.
-             * @param [p] Properties to set
-             */
-            constructor(p?: tendermintV2.types.ISimpleValidator);
-
-            /** SimpleValidator pubKey. */
-            public pubKey?: tendermintV2.crypto.IPublicKey | null;
-
-            /** SimpleValidator votingPower. */
-            public votingPower: Long;
-
-            /**
-             * Creates a new SimpleValidator instance using the specified properties.
-             * @param [properties] Properties to set
-             * @returns SimpleValidator instance
-             */
-            public static create(properties?: tendermintV2.types.ISimpleValidator): tendermintV2.types.SimpleValidator;
-
-            /**
-             * Encodes the specified SimpleValidator message. Does not implicitly {@link tendermint.types.SimpleValidator.verify|verify} messages.
-             * @param m SimpleValidator message or plain object to encode
-             * @param [w] Writer to encode to
-             * @returns Writer
-             */
-            public static encode(m: tendermintV2.types.ISimpleValidator, w?: $protobuf.Writer): $protobuf.Writer;
-
-            /**
-             * Decodes a SimpleValidator message from the specified reader or buffer.
-             * @param r Reader or buffer to decode from
-             * @param [l] Message length if known beforehand
-             * @returns SimpleValidator
-             * @throws {Error} If the payload is not a reader or valid buffer
-             * @throws {$protobuf.util.ProtocolError} If required fields are missing
-             */
-            public static decode(r: $protobuf.Reader | Uint8Array, l?: number): tendermintV2.types.SimpleValidator;
-        }
-    }
-
-    /** Namespace crypto. */
-    namespace crypto {
-        /** Properties of a Proof. */
-        interface IProof {
-            /** Proof total */
-            total?: Long | null;
-
-            /** Proof index */
-            index?: Long | null;
-
-            /** Proof leafHash */
-            leafHash?: Uint8Array | null;
-
-            /** Proof aunts */
-            aunts?: Uint8Array[] | null;
-        }
-
-        /** Represents a Proof. */
-        class Proof implements IProof {
-            /**
-             * Constructs a new Proof.
-             * @param [p] Properties to set
-             */
-            constructor(p?: tendermintV2.crypto.IProof);
-
-            /** Proof total. */
-            public total: Long;
-
-            /** Proof index. */
-            public index: Long;
-
-            /** Proof leafHash. */
-            public leafHash: Uint8Array;
-
-            /** Proof aunts. */
-            public aunts: Uint8Array[];
-
-            /**
-             * Creates a new Proof instance using the specified properties.
-             * @param [properties] Properties to set
-             * @returns Proof instance
-             */
-            public static create(properties?: tendermintV2.crypto.IProof): tendermintV2.crypto.Proof;
-
-            /**
-             * Encodes the specified Proof message. Does not implicitly {@link tendermint.crypto.Proof.verify|verify} messages.
-             * @param m Proof message or plain object to encode
-             * @param [w] Writer to encode to
-             * @returns Writer
-             */
-            public static encode(m: tendermintV2.crypto.IProof, w?: $protobuf.Writer): $protobuf.Writer;
-
-            /**
-             * Decodes a Proof message from the specified reader or buffer.
-             * @param r Reader or buffer to decode from
-             * @param [l] Message length if known beforehand
-             * @returns Proof
-             * @throws {Error} If the payload is not a reader or valid buffer
-             * @throws {$protobuf.util.ProtocolError} If required fields are missing
-             */
-            public static decode(r: $protobuf.Reader | Uint8Array, l?: number): tendermintV2.crypto.Proof;
-        }
-
-        /** Properties of a ValueOp. */
-        interface IValueOp {
-            /** ValueOp key */
-            key?: Uint8Array | null;
-
-            /** ValueOp proof */
-            proof?: tendermintV2.crypto.IProof | null;
-        }
-
-        /** Represents a ValueOp. */
-        class ValueOp implements IValueOp {
-            /**
-             * Constructs a new ValueOp.
-             * @param [p] Properties to set
-             */
-            constructor(p?: tendermintV2.crypto.IValueOp);
-
-            /** ValueOp key. */
-            public key: Uint8Array;
-
-            /** ValueOp proof. */
-            public proof?: tendermintV2.crypto.IProof | null;
-
-            /**
-             * Creates a new ValueOp instance using the specified properties.
-             * @param [properties] Properties to set
-             * @returns ValueOp instance
-             */
-            public static create(properties?: tendermintV2.crypto.IValueOp): tendermintV2.crypto.ValueOp;
-
-            /**
-             * Encodes the specified ValueOp message. Does not implicitly {@link tendermint.crypto.ValueOp.verify|verify} messages.
-             * @param m ValueOp message or plain object to encode
-             * @param [w] Writer to encode to
-             * @returns Writer
-             */
-            public static encode(m: tendermintV2.crypto.IValueOp, w?: $protobuf.Writer): $protobuf.Writer;
-
-            /**
-             * Decodes a ValueOp message from the specified reader or buffer.
-             * @param r Reader or buffer to decode from
-             * @param [l] Message length if known beforehand
-             * @returns ValueOp
-             * @throws {Error} If the payload is not a reader or valid buffer
-             * @throws {$protobuf.util.ProtocolError} If required fields are missing
-             */
-            public static decode(r: $protobuf.Reader | Uint8Array, l?: number): tendermintV2.crypto.ValueOp;
-        }
-
-        /** Properties of a DominoOp. */
-        interface IDominoOp {
-            /** DominoOp key */
-            key?: string | null;
-
-            /** DominoOp input */
-            input?: string | null;
-
-            /** DominoOp output */
-            output?: string | null;
-        }
-
-        /** Represents a DominoOp. */
-        class DominoOp implements IDominoOp {
-            /**
-             * Constructs a new DominoOp.
-             * @param [p] Properties to set
-             */
-            constructor(p?: tendermintV2.crypto.IDominoOp);
-
-            /** DominoOp key. */
-            public key: string;
-
-            /** DominoOp input. */
-            public input: string;
-
-            /** DominoOp output. */
-            public output: string;
-
-            /**
-             * Creates a new DominoOp instance using the specified properties.
-             * @param [properties] Properties to set
-             * @returns DominoOp instance
-             */
-            public static create(properties?: tendermintV2.crypto.IDominoOp): tendermintV2.crypto.DominoOp;
-
-            /**
-             * Encodes the specified DominoOp message. Does not implicitly {@link tendermint.crypto.DominoOp.verify|verify} messages.
-             * @param m DominoOp message or plain object to encode
-             * @param [w] Writer to encode to
-             * @returns Writer
-             */
-            public static encode(m: tendermintV2.crypto.IDominoOp, w?: $protobuf.Writer): $protobuf.Writer;
-
-            /**
-             * Decodes a DominoOp message from the specified reader or buffer.
-             * @param r Reader or buffer to decode from
-             * @param [l] Message length if known beforehand
-             * @returns DominoOp
-             * @throws {Error} If the payload is not a reader or valid buffer
-             * @throws {$protobuf.util.ProtocolError} If required fields are missing
-             */
-            public static decode(r: $protobuf.Reader | Uint8Array, l?: number): tendermintV2.crypto.DominoOp;
-        }
-
-        /** Properties of a ProofOp. */
-        interface IProofOp {
-            /** ProofOp type */
-            type?: string | null;
-
-            /** ProofOp key */
-            key?: Uint8Array | null;
-
-            /** ProofOp data */
-            data?: Uint8Array | null;
-        }
-
-        /** Represents a ProofOp. */
-        class ProofOp implements IProofOp {
-            /**
-             * Constructs a new ProofOp.
-             * @param [p] Properties to set
-             */
-            constructor(p?: tendermintV2.crypto.IProofOp);
-
-            /** ProofOp type. */
-            public type: string;
-
-            /** ProofOp key. */
-            public key: Uint8Array;
-
-            /** ProofOp data. */
-            public data: Uint8Array;
-
-            /**
-             * Creates a new ProofOp instance using the specified properties.
-             * @param [properties] Properties to set
-             * @returns ProofOp instance
-             */
-            public static create(properties?: tendermintV2.crypto.IProofOp): tendermintV2.crypto.ProofOp;
-
-            /**
-             * Encodes the specified ProofOp message. Does not implicitly {@link tendermint.crypto.ProofOp.verify|verify} messages.
-             * @param m ProofOp message or plain object to encode
-             * @param [w] Writer to encode to
-             * @returns Writer
-             */
-            public static encode(m: tendermintV2.crypto.IProofOp, w?: $protobuf.Writer): $protobuf.Writer;
-
-            /**
-             * Decodes a ProofOp message from the specified reader or buffer.
-             * @param r Reader or buffer to decode from
-             * @param [l] Message length if known beforehand
-             * @returns ProofOp
-             * @throws {Error} If the payload is not a reader or valid buffer
-             * @throws {$protobuf.util.ProtocolError} If required fields are missing
-             */
-            public static decode(r: $protobuf.Reader | Uint8Array, l?: number): tendermintV2.crypto.ProofOp;
-        }
-
-        /** Properties of a ProofOps. */
-        interface IProofOps {
-            /** ProofOps ops */
-            ops?: tendermintV2.crypto.IProofOp[] | null;
-        }
-
-        /** Represents a ProofOps. */
-        class ProofOps implements IProofOps {
-            /**
-             * Constructs a new ProofOps.
-             * @param [p] Properties to set
-             */
-            constructor(p?: tendermintV2.crypto.IProofOps);
-
-            /** ProofOps ops. */
-            public ops: tendermintV2.crypto.IProofOp[];
-
-            /**
-             * Creates a new ProofOps instance using the specified properties.
-             * @param [properties] Properties to set
-             * @returns ProofOps instance
-             */
-            public static create(properties?: tendermintV2.crypto.IProofOps): tendermintV2.crypto.ProofOps;
-
-            /**
-             * Encodes the specified ProofOps message. Does not implicitly {@link tendermint.crypto.ProofOps.verify|verify} messages.
-             * @param m ProofOps message or plain object to encode
-             * @param [w] Writer to encode to
-             * @returns Writer
-             */
-            public static encode(m: tendermintV2.crypto.IProofOps, w?: $protobuf.Writer): $protobuf.Writer;
-
-            /**
-             * Decodes a ProofOps message from the specified reader or buffer.
-             * @param r Reader or buffer to decode from
-             * @param [l] Message length if known beforehand
-             * @returns ProofOps
-             * @throws {Error} If the payload is not a reader or valid buffer
-             * @throws {$protobuf.util.ProtocolError} If required fields are missing
-             */
-            public static decode(r: $protobuf.Reader | Uint8Array, l?: number): tendermintV2.crypto.ProofOps;
-        }
-
-        /** Properties of a PublicKey. */
-        interface IPublicKey {
-            /** PublicKey ed25519 */
-            ed25519?: Uint8Array | null;
-
-            /** PublicKey secp256k1 */
-            secp256k1?: Uint8Array | null;
-        }
-
-        /** Represents a PublicKey. */
-        class PublicKey implements IPublicKey {
-            /**
-             * Constructs a new PublicKey.
-             * @param [p] Properties to set
-             */
-            constructor(p?: tendermintV2.crypto.IPublicKey);
-
-            /** PublicKey ed25519. */
-            public ed25519: Uint8Array;
-
-            /** PublicKey secp256k1. */
-            public secp256k1: Uint8Array;
-
-            /** PublicKey sum. */
-            public sum?: 'ed25519' | 'secp256k1';
-
-            /**
-             * Creates a new PublicKey instance using the specified properties.
-             * @param [properties] Properties to set
-             * @returns PublicKey instance
-             */
-            public static create(properties?: tendermintV2.crypto.IPublicKey): tendermintV2.crypto.PublicKey;
-
-            /**
-             * Encodes the specified PublicKey message. Does not implicitly {@link tendermint.crypto.PublicKey.verify|verify} messages.
-             * @param m PublicKey message or plain object to encode
-             * @param [w] Writer to encode to
-             * @returns Writer
-             */
-            public static encode(m: tendermintV2.crypto.IPublicKey, w?: $protobuf.Writer): $protobuf.Writer;
-
-            /**
-             * Decodes a PublicKey message from the specified reader or buffer.
-             * @param r Reader or buffer to decode from
-             * @param [l] Message length if known beforehand
-             * @returns PublicKey
-             * @throws {Error} If the payload is not a reader or valid buffer
-             * @throws {$protobuf.util.ProtocolError} If required fields are missing
-             */
-            public static decode(r: $protobuf.Reader | Uint8Array, l?: number): tendermintV2.crypto.PublicKey;
-        }
-    }
-
-    /** Namespace version. */
-    namespace version {
-        /** Properties of an App. */
-        interface IApp {
-            /** App protocol */
-            protocol?: Long | null;
-
-            /** App software */
-            software?: string | null;
-        }
-
-        /** Represents an App. */
-        class App implements IApp {
-            /**
-             * Constructs a new App.
-             * @param [p] Properties to set
-             */
-            constructor(p?: tendermintV2.version.IApp);
-
-            /** App protocol. */
-            public protocol: Long;
-
-            /** App software. */
-            public software: string;
-
-            /**
-             * Creates a new App instance using the specified properties.
-             * @param [properties] Properties to set
-             * @returns App instance
-             */
-            public static create(properties?: tendermintV2.version.IApp): tendermintV2.version.App;
-
-            /**
-             * Encodes the specified App message. Does not implicitly {@link tendermint.version.App.verify|verify} messages.
-             * @param m App message or plain object to encode
-             * @param [w] Writer to encode to
-             * @returns Writer
-             */
-            public static encode(m: tendermintV2.version.IApp, w?: $protobuf.Writer): $protobuf.Writer;
-
-            /**
-             * Decodes an App message from the specified reader or buffer.
-             * @param r Reader or buffer to decode from
-             * @param [l] Message length if known beforehand
-             * @returns App
-             * @throws {Error} If the payload is not a reader or valid buffer
-             * @throws {$protobuf.util.ProtocolError} If required fields are missing
-             */
-            public static decode(r: $protobuf.Reader | Uint8Array, l?: number): tendermintV2.version.App;
-        }
-
-        /** Properties of a Consensus. */
-        interface IConsensus {
-            /** Consensus block */
-            block?: Long | null;
-
-            /** Consensus app */
-            app?: Long | null;
-        }
-
-        /** Represents a Consensus. */
-        class Consensus implements IConsensus {
-            /**
-             * Constructs a new Consensus.
-             * @param [p] Properties to set
-             */
-            constructor(p?: tendermintV2.version.IConsensus);
-
-            /** Consensus block. */
-            public block: Long;
-
-            /** Consensus app. */
-            public app: Long;
-
-            /**
-             * Creates a new Consensus instance using the specified properties.
-             * @param [properties] Properties to set
-             * @returns Consensus instance
-             */
-            public static create(properties?: tendermintV2.version.IConsensus): tendermintV2.version.Consensus;
-
-            /**
-             * Encodes the specified Consensus message. Does not implicitly {@link tendermint.version.Consensus.verify|verify} messages.
-             * @param m Consensus message or plain object to encode
-             * @param [w] Writer to encode to
-             * @returns Writer
-             */
-            public static encode(m: tendermintV2.version.IConsensus, w?: $protobuf.Writer): $protobuf.Writer;
-
-            /**
-             * Decodes a Consensus message from the specified reader or buffer.
-             * @param r Reader or buffer to decode from
-             * @param [l] Message length if known beforehand
-             * @returns Consensus
-             * @throws {Error} If the payload is not a reader or valid buffer
-             * @throws {$protobuf.util.ProtocolError} If required fields are missing
-             */
-            public static decode(r: $protobuf.Reader | Uint8Array, l?: number): tendermintV2.version.Consensus;
-        }
     }
 }
 
@@ -11938,11 +10772,11 @@ export namespace ibc {
                     /** ClientUpdateProposal description */
                     description?: string | null;
 
-                    /** ClientUpdateProposal clientId */
-                    clientId?: string | null;
+                    /** ClientUpdateProposal subjectClientId */
+                    subjectClientId?: string | null;
 
-                    /** ClientUpdateProposal header */
-                    header?: google.protobuf.IAny | null;
+                    /** ClientUpdateProposal substituteClientId */
+                    substituteClientId?: string | null;
                 }
 
                 /** Represents a ClientUpdateProposal. */
@@ -11959,11 +10793,11 @@ export namespace ibc {
                     /** ClientUpdateProposal description. */
                     public description: string;
 
-                    /** ClientUpdateProposal clientId. */
-                    public clientId: string;
+                    /** ClientUpdateProposal subjectClientId. */
+                    public subjectClientId: string;
 
-                    /** ClientUpdateProposal header. */
-                    public header?: google.protobuf.IAny | null;
+                    /** ClientUpdateProposal substituteClientId. */
+                    public substituteClientId: string;
 
                     /**
                      * Creates a new ClientUpdateProposal instance using the specified properties.
@@ -11997,6 +10831,75 @@ export namespace ibc {
                         r: $protobuf.Reader | Uint8Array,
                         l?: number,
                     ): ibc.core.client.v1.ClientUpdateProposal;
+                }
+
+                /** Properties of an UpgradeProposal. */
+                interface IUpgradeProposal {
+                    /** UpgradeProposal title */
+                    title?: string | null;
+
+                    /** UpgradeProposal description */
+                    description?: string | null;
+
+                    /** UpgradeProposal plan */
+                    plan?: cosmos.upgrade.v1beta1.IPlan | null;
+
+                    /** UpgradeProposal upgradedClientState */
+                    upgradedClientState?: google.protobuf.IAny | null;
+                }
+
+                /** Represents an UpgradeProposal. */
+                class UpgradeProposal implements IUpgradeProposal {
+                    /**
+                     * Constructs a new UpgradeProposal.
+                     * @param [p] Properties to set
+                     */
+                    constructor(p?: ibc.core.client.v1.IUpgradeProposal);
+
+                    /** UpgradeProposal title. */
+                    public title: string;
+
+                    /** UpgradeProposal description. */
+                    public description: string;
+
+                    /** UpgradeProposal plan. */
+                    public plan?: cosmos.upgrade.v1beta1.IPlan | null;
+
+                    /** UpgradeProposal upgradedClientState. */
+                    public upgradedClientState?: google.protobuf.IAny | null;
+
+                    /**
+                     * Creates a new UpgradeProposal instance using the specified properties.
+                     * @param [properties] Properties to set
+                     * @returns UpgradeProposal instance
+                     */
+                    public static create(
+                        properties?: ibc.core.client.v1.IUpgradeProposal,
+                    ): ibc.core.client.v1.UpgradeProposal;
+
+                    /**
+                     * Encodes the specified UpgradeProposal message. Does not implicitly {@link ibc.core.client.v1.UpgradeProposal.verify|verify} messages.
+                     * @param m UpgradeProposal message or plain object to encode
+                     * @param [w] Writer to encode to
+                     * @returns Writer
+                     */
+                    public static encode(
+                        m: ibc.core.client.v1.IUpgradeProposal,
+                        w?: $protobuf.Writer,
+                    ): $protobuf.Writer;
+
+                    /**
+                     * Decodes an UpgradeProposal message from the specified reader or buffer.
+                     * @param r Reader or buffer to decode from
+                     * @param [l] Message length if known beforehand
+                     * @returns UpgradeProposal
+                     * @throws {Error} If the payload is not a reader or valid buffer
+                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                     */
+                    public static decode(
+                        r: $protobuf.Reader | Uint8Array,
+                        l?: number,
+                    ): ibc.core.client.v1.UpgradeProposal;
                 }
 
                 /** Properties of an Height. */
@@ -13167,6 +12070,49 @@ export namespace ibc {
                      * @throws {$protobuf.util.ProtocolError} If required fields are missing
                      */
                     public static decode(r: $protobuf.Reader | Uint8Array, l?: number): ibc.core.connection.v1.Version;
+                }
+
+                /** Properties of a Params. */
+                interface IParams {
+                    /** Params maxExpectedTimePerBlock */
+                    maxExpectedTimePerBlock?: Long | null;
+                }
+
+                /** Represents a Params. */
+                class Params implements IParams {
+                    /**
+                     * Constructs a new Params.
+                     * @param [p] Properties to set
+                     */
+                    constructor(p?: ibc.core.connection.v1.IParams);
+
+                    /** Params maxExpectedTimePerBlock. */
+                    public maxExpectedTimePerBlock: Long;
+
+                    /**
+                     * Creates a new Params instance using the specified properties.
+                     * @param [properties] Properties to set
+                     * @returns Params instance
+                     */
+                    public static create(properties?: ibc.core.connection.v1.IParams): ibc.core.connection.v1.Params;
+
+                    /**
+                     * Encodes the specified Params message. Does not implicitly {@link ibc.core.connection.v1.Params.verify|verify} messages.
+                     * @param m Params message or plain object to encode
+                     * @param [w] Writer to encode to
+                     * @returns Writer
+                     */
+                    public static encode(m: ibc.core.connection.v1.IParams, w?: $protobuf.Writer): $protobuf.Writer;
+
+                    /**
+                     * Decodes a Params message from the specified reader or buffer.
+                     * @param r Reader or buffer to decode from
+                     * @param [l] Message length if known beforehand
+                     * @returns Params
+                     * @throws {Error} If the payload is not a reader or valid buffer
+                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                     */
+                    public static decode(r: $protobuf.Reader | Uint8Array, l?: number): ibc.core.connection.v1.Params;
                 }
             }
         }
@@ -15505,6 +14451,1429 @@ export namespace chainmain {
                  */
                 public static decode(r: $protobuf.Reader | Uint8Array, l?: number): chainmain.nft.v1.MsgBurnNFTResponse;
             }
+        }
+    }
+}
+
+/** Namespace tendermint. */
+export namespace tendermintV2 {
+    /** Namespace types. */
+    namespace types {
+        /** BlockIDFlag enum. */
+        enum BlockIDFlag {
+            BLOCK_ID_FLAG_UNKNOWN = 0,
+            BLOCK_ID_FLAG_ABSENT = 1,
+            BLOCK_ID_FLAG_COMMIT = 2,
+            BLOCK_ID_FLAG_NIL = 3,
+        }
+
+        /** SignedMsgType enum. */
+        enum SignedMsgType {
+            SIGNED_MSG_TYPE_UNKNOWN = 0,
+            SIGNED_MSG_TYPE_PREVOTE = 1,
+            SIGNED_MSG_TYPE_PRECOMMIT = 2,
+            SIGNED_MSG_TYPE_PROPOSAL = 32,
+        }
+
+        /** Properties of a PartSetHeader. */
+        interface IPartSetHeader {
+            /** PartSetHeader total */
+            total?: number | null;
+
+            /** PartSetHeader hash */
+            hash?: Uint8Array | null;
+        }
+
+        /** Represents a PartSetHeader. */
+        class PartSetHeader implements IPartSetHeader {
+            /**
+             * Constructs a new PartSetHeader.
+             * @param [p] Properties to set
+             */
+            constructor(p?: tendermintV2.types.IPartSetHeader);
+
+            /** PartSetHeader total. */
+            public total: number;
+
+            /** PartSetHeader hash. */
+            public hash: Uint8Array;
+
+            /**
+             * Creates a new PartSetHeader instance using the specified properties.
+             * @param [properties] Properties to set
+             * @returns PartSetHeader instance
+             */
+            public static create(properties?: tendermintV2.types.IPartSetHeader): tendermintV2.types.PartSetHeader;
+
+            /**
+             * Encodes the specified PartSetHeader message. Does not implicitly {@link tendermintV2.types.PartSetHeader.verify|verify} messages.
+             * @param m PartSetHeader message or plain object to encode
+             * @param [w] Writer to encode to
+             * @returns Writer
+             */
+            public static encode(m: tendermintV2.types.IPartSetHeader, w?: $protobuf.Writer): $protobuf.Writer;
+
+            /**
+             * Decodes a PartSetHeader message from the specified reader or buffer.
+             * @param r Reader or buffer to decode from
+             * @param [l] Message length if known beforehand
+             * @returns PartSetHeader
+             * @throws {Error} If the payload is not a reader or valid buffer
+             * @throws {$protobuf.util.ProtocolError} If required fields are missing
+             */
+            public static decode(r: $protobuf.Reader | Uint8Array, l?: number): tendermintV2.types.PartSetHeader;
+        }
+
+        /** Properties of a Part. */
+        interface IPart {
+            /** Part index */
+            index?: number | null;
+
+            /** Part bytes */
+            bytes?: Uint8Array | null;
+
+            /** Part proof */
+            proof?: tendermintV2.crypto.IProof | null;
+        }
+
+        /** Represents a Part. */
+        class Part implements IPart {
+            /**
+             * Constructs a new Part.
+             * @param [p] Properties to set
+             */
+            constructor(p?: tendermintV2.types.IPart);
+
+            /** Part index. */
+            public index: number;
+
+            /** Part bytes. */
+            public bytes: Uint8Array;
+
+            /** Part proof. */
+            public proof?: tendermintV2.crypto.IProof | null;
+
+            /**
+             * Creates a new Part instance using the specified properties.
+             * @param [properties] Properties to set
+             * @returns Part instance
+             */
+            public static create(properties?: tendermintV2.types.IPart): tendermintV2.types.Part;
+
+            /**
+             * Encodes the specified Part message. Does not implicitly {@link tendermintV2.types.Part.verify|verify} messages.
+             * @param m Part message or plain object to encode
+             * @param [w] Writer to encode to
+             * @returns Writer
+             */
+            public static encode(m: tendermintV2.types.IPart, w?: $protobuf.Writer): $protobuf.Writer;
+
+            /**
+             * Decodes a Part message from the specified reader or buffer.
+             * @param r Reader or buffer to decode from
+             * @param [l] Message length if known beforehand
+             * @returns Part
+             * @throws {Error} If the payload is not a reader or valid buffer
+             * @throws {$protobuf.util.ProtocolError} If required fields are missing
+             */
+            public static decode(r: $protobuf.Reader | Uint8Array, l?: number): tendermintV2.types.Part;
+        }
+
+        /** Properties of a BlockID. */
+        interface IBlockID {
+            /** BlockID hash */
+            hash?: Uint8Array | null;
+
+            /** BlockID partSetHeader */
+            partSetHeader?: tendermintV2.types.IPartSetHeader | null;
+        }
+
+        /** Represents a BlockID. */
+        class BlockID implements IBlockID {
+            /**
+             * Constructs a new BlockID.
+             * @param [p] Properties to set
+             */
+            constructor(p?: tendermintV2.types.IBlockID);
+
+            /** BlockID hash. */
+            public hash: Uint8Array;
+
+            /** BlockID partSetHeader. */
+            public partSetHeader?: tendermintV2.types.IPartSetHeader | null;
+
+            /**
+             * Creates a new BlockID instance using the specified properties.
+             * @param [properties] Properties to set
+             * @returns BlockID instance
+             */
+            public static create(properties?: tendermintV2.types.IBlockID): tendermintV2.types.BlockID;
+
+            /**
+             * Encodes the specified BlockID message. Does not implicitly {@link tendermintV2.types.BlockID.verify|verify} messages.
+             * @param m BlockID message or plain object to encode
+             * @param [w] Writer to encode to
+             * @returns Writer
+             */
+            public static encode(m: tendermintV2.types.IBlockID, w?: $protobuf.Writer): $protobuf.Writer;
+
+            /**
+             * Decodes a BlockID message from the specified reader or buffer.
+             * @param r Reader or buffer to decode from
+             * @param [l] Message length if known beforehand
+             * @returns BlockID
+             * @throws {Error} If the payload is not a reader or valid buffer
+             * @throws {$protobuf.util.ProtocolError} If required fields are missing
+             */
+            public static decode(r: $protobuf.Reader | Uint8Array, l?: number): tendermintV2.types.BlockID;
+        }
+
+        /** Properties of a Header. */
+        interface IHeader {
+            /** Header version */
+            version?: tendermintV2.version.IConsensus | null;
+
+            /** Header chainId */
+            chainId?: string | null;
+
+            /** Header height */
+            height?: Long | null;
+
+            /** Header time */
+            time?: google.protobuf.ITimestamp | null;
+
+            /** Header lastBlockId */
+            lastBlockId?: tendermintV2.types.IBlockID | null;
+
+            /** Header lastCommitHash */
+            lastCommitHash?: Uint8Array | null;
+
+            /** Header dataHash */
+            dataHash?: Uint8Array | null;
+
+            /** Header validatorsHash */
+            validatorsHash?: Uint8Array | null;
+
+            /** Header nextValidatorsHash */
+            nextValidatorsHash?: Uint8Array | null;
+
+            /** Header consensusHash */
+            consensusHash?: Uint8Array | null;
+
+            /** Header appHash */
+            appHash?: Uint8Array | null;
+
+            /** Header lastResultsHash */
+            lastResultsHash?: Uint8Array | null;
+
+            /** Header evidenceHash */
+            evidenceHash?: Uint8Array | null;
+
+            /** Header proposerAddress */
+            proposerAddress?: Uint8Array | null;
+        }
+
+        /** Represents a Header. */
+        class Header implements IHeader {
+            /**
+             * Constructs a new Header.
+             * @param [p] Properties to set
+             */
+            constructor(p?: tendermintV2.types.IHeader);
+
+            /** Header version. */
+            public version?: tendermintV2.version.IConsensus | null;
+
+            /** Header chainId. */
+            public chainId: string;
+
+            /** Header height. */
+            public height: Long;
+
+            /** Header time. */
+            public time?: google.protobuf.ITimestamp | null;
+
+            /** Header lastBlockId. */
+            public lastBlockId?: tendermintV2.types.IBlockID | null;
+
+            /** Header lastCommitHash. */
+            public lastCommitHash: Uint8Array;
+
+            /** Header dataHash. */
+            public dataHash: Uint8Array;
+
+            /** Header validatorsHash. */
+            public validatorsHash: Uint8Array;
+
+            /** Header nextValidatorsHash. */
+            public nextValidatorsHash: Uint8Array;
+
+            /** Header consensusHash. */
+            public consensusHash: Uint8Array;
+
+            /** Header appHash. */
+            public appHash: Uint8Array;
+
+            /** Header lastResultsHash. */
+            public lastResultsHash: Uint8Array;
+
+            /** Header evidenceHash. */
+            public evidenceHash: Uint8Array;
+
+            /** Header proposerAddress. */
+            public proposerAddress: Uint8Array;
+
+            /**
+             * Creates a new Header instance using the specified properties.
+             * @param [properties] Properties to set
+             * @returns Header instance
+             */
+            public static create(properties?: tendermintV2.types.IHeader): tendermintV2.types.Header;
+
+            /**
+             * Encodes the specified Header message. Does not implicitly {@link tendermintV2.types.Header.verify|verify} messages.
+             * @param m Header message or plain object to encode
+             * @param [w] Writer to encode to
+             * @returns Writer
+             */
+            public static encode(m: tendermintV2.types.IHeader, w?: $protobuf.Writer): $protobuf.Writer;
+
+            /**
+             * Decodes a Header message from the specified reader or buffer.
+             * @param r Reader or buffer to decode from
+             * @param [l] Message length if known beforehand
+             * @returns Header
+             * @throws {Error} If the payload is not a reader or valid buffer
+             * @throws {$protobuf.util.ProtocolError} If required fields are missing
+             */
+            public static decode(r: $protobuf.Reader | Uint8Array, l?: number): tendermintV2.types.Header;
+        }
+
+        /** Properties of a Data. */
+        interface IData {
+            /** Data txs */
+            txs?: Uint8Array[] | null;
+        }
+
+        /** Represents a Data. */
+        class Data implements IData {
+            /**
+             * Constructs a new Data.
+             * @param [p] Properties to set
+             */
+            constructor(p?: tendermintV2.types.IData);
+
+            /** Data txs. */
+            public txs: Uint8Array[];
+
+            /**
+             * Creates a new Data instance using the specified properties.
+             * @param [properties] Properties to set
+             * @returns Data instance
+             */
+            public static create(properties?: tendermintV2.types.IData): tendermintV2.types.Data;
+
+            /**
+             * Encodes the specified Data message. Does not implicitly {@link tendermintV2.types.Data.verify|verify} messages.
+             * @param m Data message or plain object to encode
+             * @param [w] Writer to encode to
+             * @returns Writer
+             */
+            public static encode(m: tendermintV2.types.IData, w?: $protobuf.Writer): $protobuf.Writer;
+
+            /**
+             * Decodes a Data message from the specified reader or buffer.
+             * @param r Reader or buffer to decode from
+             * @param [l] Message length if known beforehand
+             * @returns Data
+             * @throws {Error} If the payload is not a reader or valid buffer
+             * @throws {$protobuf.util.ProtocolError} If required fields are missing
+             */
+            public static decode(r: $protobuf.Reader | Uint8Array, l?: number): tendermintV2.types.Data;
+        }
+
+        /** Properties of a Vote. */
+        interface IVote {
+            /** Vote type */
+            type?: tendermintV2.types.SignedMsgType | null;
+
+            /** Vote height */
+            height?: Long | null;
+
+            /** Vote round */
+            round?: number | null;
+
+            /** Vote blockId */
+            blockId?: tendermintV2.types.IBlockID | null;
+
+            /** Vote timestamp */
+            timestamp?: google.protobuf.ITimestamp | null;
+
+            /** Vote validatorAddress */
+            validatorAddress?: Uint8Array | null;
+
+            /** Vote validatorIndex */
+            validatorIndex?: number | null;
+
+            /** Vote signature */
+            signature?: Uint8Array | null;
+        }
+
+        /** Represents a Vote. */
+        class Vote implements IVote {
+            /**
+             * Constructs a new Vote.
+             * @param [p] Properties to set
+             */
+            constructor(p?: tendermintV2.types.IVote);
+
+            /** Vote type. */
+            public type: tendermintV2.types.SignedMsgType;
+
+            /** Vote height. */
+            public height: Long;
+
+            /** Vote round. */
+            public round: number;
+
+            /** Vote blockId. */
+            public blockId?: tendermintV2.types.IBlockID | null;
+
+            /** Vote timestamp. */
+            public timestamp?: google.protobuf.ITimestamp | null;
+
+            /** Vote validatorAddress. */
+            public validatorAddress: Uint8Array;
+
+            /** Vote validatorIndex. */
+            public validatorIndex: number;
+
+            /** Vote signature. */
+            public signature: Uint8Array;
+
+            /**
+             * Creates a new Vote instance using the specified properties.
+             * @param [properties] Properties to set
+             * @returns Vote instance
+             */
+            public static create(properties?: tendermintV2.types.IVote): tendermintV2.types.Vote;
+
+            /**
+             * Encodes the specified Vote message. Does not implicitly {@link tendermintV2.types.Vote.verify|verify} messages.
+             * @param m Vote message or plain object to encode
+             * @param [w] Writer to encode to
+             * @returns Writer
+             */
+            public static encode(m: tendermintV2.types.IVote, w?: $protobuf.Writer): $protobuf.Writer;
+
+            /**
+             * Decodes a Vote message from the specified reader or buffer.
+             * @param r Reader or buffer to decode from
+             * @param [l] Message length if known beforehand
+             * @returns Vote
+             * @throws {Error} If the payload is not a reader or valid buffer
+             * @throws {$protobuf.util.ProtocolError} If required fields are missing
+             */
+            public static decode(r: $protobuf.Reader | Uint8Array, l?: number): tendermintV2.types.Vote;
+        }
+
+        /** Properties of a Commit. */
+        interface ICommit {
+            /** Commit height */
+            height?: Long | null;
+
+            /** Commit round */
+            round?: number | null;
+
+            /** Commit blockId */
+            blockId?: tendermintV2.types.IBlockID | null;
+
+            /** Commit signatures */
+            signatures?: tendermintV2.types.ICommitSig[] | null;
+        }
+
+        /** Represents a Commit. */
+        class Commit implements ICommit {
+            /**
+             * Constructs a new Commit.
+             * @param [p] Properties to set
+             */
+            constructor(p?: tendermintV2.types.ICommit);
+
+            /** Commit height. */
+            public height: Long;
+
+            /** Commit round. */
+            public round: number;
+
+            /** Commit blockId. */
+            public blockId?: tendermintV2.types.IBlockID | null;
+
+            /** Commit signatures. */
+            public signatures: tendermintV2.types.ICommitSig[];
+
+            /**
+             * Creates a new Commit instance using the specified properties.
+             * @param [properties] Properties to set
+             * @returns Commit instance
+             */
+            public static create(properties?: tendermintV2.types.ICommit): tendermintV2.types.Commit;
+
+            /**
+             * Encodes the specified Commit message. Does not implicitly {@link tendermintV2.types.Commit.verify|verify} messages.
+             * @param m Commit message or plain object to encode
+             * @param [w] Writer to encode to
+             * @returns Writer
+             */
+            public static encode(m: tendermintV2.types.ICommit, w?: $protobuf.Writer): $protobuf.Writer;
+
+            /**
+             * Decodes a Commit message from the specified reader or buffer.
+             * @param r Reader or buffer to decode from
+             * @param [l] Message length if known beforehand
+             * @returns Commit
+             * @throws {Error} If the payload is not a reader or valid buffer
+             * @throws {$protobuf.util.ProtocolError} If required fields are missing
+             */
+            public static decode(r: $protobuf.Reader | Uint8Array, l?: number): tendermintV2.types.Commit;
+        }
+
+        /** Properties of a CommitSig. */
+        interface ICommitSig {
+            /** CommitSig blockIdFlag */
+            blockIdFlag?: tendermintV2.types.BlockIDFlag | null;
+
+            /** CommitSig validatorAddress */
+            validatorAddress?: Uint8Array | null;
+
+            /** CommitSig timestamp */
+            timestamp?: google.protobuf.ITimestamp | null;
+
+            /** CommitSig signature */
+            signature?: Uint8Array | null;
+        }
+
+        /** Represents a CommitSig. */
+        class CommitSig implements ICommitSig {
+            /**
+             * Constructs a new CommitSig.
+             * @param [p] Properties to set
+             */
+            constructor(p?: tendermintV2.types.ICommitSig);
+
+            /** CommitSig blockIdFlag. */
+            public blockIdFlag: tendermintV2.types.BlockIDFlag;
+
+            /** CommitSig validatorAddress. */
+            public validatorAddress: Uint8Array;
+
+            /** CommitSig timestamp. */
+            public timestamp?: google.protobuf.ITimestamp | null;
+
+            /** CommitSig signature. */
+            public signature: Uint8Array;
+
+            /**
+             * Creates a new CommitSig instance using the specified properties.
+             * @param [properties] Properties to set
+             * @returns CommitSig instance
+             */
+            public static create(properties?: tendermintV2.types.ICommitSig): tendermintV2.types.CommitSig;
+
+            /**
+             * Encodes the specified CommitSig message. Does not implicitly {@link tendermintV2.types.CommitSig.verify|verify} messages.
+             * @param m CommitSig message or plain object to encode
+             * @param [w] Writer to encode to
+             * @returns Writer
+             */
+            public static encode(m: tendermintV2.types.ICommitSig, w?: $protobuf.Writer): $protobuf.Writer;
+
+            /**
+             * Decodes a CommitSig message from the specified reader or buffer.
+             * @param r Reader or buffer to decode from
+             * @param [l] Message length if known beforehand
+             * @returns CommitSig
+             * @throws {Error} If the payload is not a reader or valid buffer
+             * @throws {$protobuf.util.ProtocolError} If required fields are missing
+             */
+            public static decode(r: $protobuf.Reader | Uint8Array, l?: number): tendermintV2.types.CommitSig;
+        }
+
+        /** Properties of a Proposal. */
+        interface IProposal {
+            /** Proposal type */
+            type?: tendermintV2.types.SignedMsgType | null;
+
+            /** Proposal height */
+            height?: Long | null;
+
+            /** Proposal round */
+            round?: number | null;
+
+            /** Proposal polRound */
+            polRound?: number | null;
+
+            /** Proposal blockId */
+            blockId?: tendermintV2.types.IBlockID | null;
+
+            /** Proposal timestamp */
+            timestamp?: google.protobuf.ITimestamp | null;
+
+            /** Proposal signature */
+            signature?: Uint8Array | null;
+        }
+
+        /** Represents a Proposal. */
+        class Proposal implements IProposal {
+            /**
+             * Constructs a new Proposal.
+             * @param [p] Properties to set
+             */
+            constructor(p?: tendermintV2.types.IProposal);
+
+            /** Proposal type. */
+            public type: tendermintV2.types.SignedMsgType;
+
+            /** Proposal height. */
+            public height: Long;
+
+            /** Proposal round. */
+            public round: number;
+
+            /** Proposal polRound. */
+            public polRound: number;
+
+            /** Proposal blockId. */
+            public blockId?: tendermintV2.types.IBlockID | null;
+
+            /** Proposal timestamp. */
+            public timestamp?: google.protobuf.ITimestamp | null;
+
+            /** Proposal signature. */
+            public signature: Uint8Array;
+
+            /**
+             * Creates a new Proposal instance using the specified properties.
+             * @param [properties] Properties to set
+             * @returns Proposal instance
+             */
+            public static create(properties?: tendermintV2.types.IProposal): tendermintV2.types.Proposal;
+
+            /**
+             * Encodes the specified Proposal message. Does not implicitly {@link tendermintV2.types.Proposal.verify|verify} messages.
+             * @param m Proposal message or plain object to encode
+             * @param [w] Writer to encode to
+             * @returns Writer
+             */
+            public static encode(m: tendermintV2.types.IProposal, w?: $protobuf.Writer): $protobuf.Writer;
+
+            /**
+             * Decodes a Proposal message from the specified reader or buffer.
+             * @param r Reader or buffer to decode from
+             * @param [l] Message length if known beforehand
+             * @returns Proposal
+             * @throws {Error} If the payload is not a reader or valid buffer
+             * @throws {$protobuf.util.ProtocolError} If required fields are missing
+             */
+            public static decode(r: $protobuf.Reader | Uint8Array, l?: number): tendermintV2.types.Proposal;
+        }
+
+        /** Properties of a SignedHeader. */
+        interface ISignedHeader {
+            /** SignedHeader header */
+            header?: tendermintV2.types.IHeader | null;
+
+            /** SignedHeader commit */
+            commit?: tendermintV2.types.ICommit | null;
+        }
+
+        /** Represents a SignedHeader. */
+        class SignedHeader implements ISignedHeader {
+            /**
+             * Constructs a new SignedHeader.
+             * @param [p] Properties to set
+             */
+            constructor(p?: tendermintV2.types.ISignedHeader);
+
+            /** SignedHeader header. */
+            public header?: tendermintV2.types.IHeader | null;
+
+            /** SignedHeader commit. */
+            public commit?: tendermintV2.types.ICommit | null;
+
+            /**
+             * Creates a new SignedHeader instance using the specified properties.
+             * @param [properties] Properties to set
+             * @returns SignedHeader instance
+             */
+            public static create(properties?: tendermintV2.types.ISignedHeader): tendermintV2.types.SignedHeader;
+
+            /**
+             * Encodes the specified SignedHeader message. Does not implicitly {@link tendermintV2.types.SignedHeader.verify|verify} messages.
+             * @param m SignedHeader message or plain object to encode
+             * @param [w] Writer to encode to
+             * @returns Writer
+             */
+            public static encode(m: tendermintV2.types.ISignedHeader, w?: $protobuf.Writer): $protobuf.Writer;
+
+            /**
+             * Decodes a SignedHeader message from the specified reader or buffer.
+             * @param r Reader or buffer to decode from
+             * @param [l] Message length if known beforehand
+             * @returns SignedHeader
+             * @throws {Error} If the payload is not a reader or valid buffer
+             * @throws {$protobuf.util.ProtocolError} If required fields are missing
+             */
+            public static decode(r: $protobuf.Reader | Uint8Array, l?: number): tendermintV2.types.SignedHeader;
+        }
+
+        /** Properties of a LightBlock. */
+        interface ILightBlock {
+            /** LightBlock signedHeader */
+            signedHeader?: tendermintV2.types.ISignedHeader | null;
+
+            /** LightBlock validatorSet */
+            validatorSet?: tendermintV2.types.IValidatorSet | null;
+        }
+
+        /** Represents a LightBlock. */
+        class LightBlock implements ILightBlock {
+            /**
+             * Constructs a new LightBlock.
+             * @param [p] Properties to set
+             */
+            constructor(p?: tendermintV2.types.ILightBlock);
+
+            /** LightBlock signedHeader. */
+            public signedHeader?: tendermintV2.types.ISignedHeader | null;
+
+            /** LightBlock validatorSet. */
+            public validatorSet?: tendermintV2.types.IValidatorSet | null;
+
+            /**
+             * Creates a new LightBlock instance using the specified properties.
+             * @param [properties] Properties to set
+             * @returns LightBlock instance
+             */
+            public static create(properties?: tendermintV2.types.ILightBlock): tendermintV2.types.LightBlock;
+
+            /**
+             * Encodes the specified LightBlock message. Does not implicitly {@link tendermintV2.types.LightBlock.verify|verify} messages.
+             * @param m LightBlock message or plain object to encode
+             * @param [w] Writer to encode to
+             * @returns Writer
+             */
+            public static encode(m: tendermintV2.types.ILightBlock, w?: $protobuf.Writer): $protobuf.Writer;
+
+            /**
+             * Decodes a LightBlock message from the specified reader or buffer.
+             * @param r Reader or buffer to decode from
+             * @param [l] Message length if known beforehand
+             * @returns LightBlock
+             * @throws {Error} If the payload is not a reader or valid buffer
+             * @throws {$protobuf.util.ProtocolError} If required fields are missing
+             */
+            public static decode(r: $protobuf.Reader | Uint8Array, l?: number): tendermintV2.types.LightBlock;
+        }
+
+        /** Properties of a BlockMeta. */
+        interface IBlockMeta {
+            /** BlockMeta blockId */
+            blockId?: tendermintV2.types.IBlockID | null;
+
+            /** BlockMeta blockSize */
+            blockSize?: Long | null;
+
+            /** BlockMeta header */
+            header?: tendermintV2.types.IHeader | null;
+
+            /** BlockMeta numTxs */
+            numTxs?: Long | null;
+        }
+
+        /** Represents a BlockMeta. */
+        class BlockMeta implements IBlockMeta {
+            /**
+             * Constructs a new BlockMeta.
+             * @param [p] Properties to set
+             */
+            constructor(p?: tendermintV2.types.IBlockMeta);
+
+            /** BlockMeta blockId. */
+            public blockId?: tendermintV2.types.IBlockID | null;
+
+            /** BlockMeta blockSize. */
+            public blockSize: Long;
+
+            /** BlockMeta header. */
+            public header?: tendermintV2.types.IHeader | null;
+
+            /** BlockMeta numTxs. */
+            public numTxs: Long;
+
+            /**
+             * Creates a new BlockMeta instance using the specified properties.
+             * @param [properties] Properties to set
+             * @returns BlockMeta instance
+             */
+            public static create(properties?: tendermintV2.types.IBlockMeta): tendermintV2.types.BlockMeta;
+
+            /**
+             * Encodes the specified BlockMeta message. Does not implicitly {@link tendermintV2.types.BlockMeta.verify|verify} messages.
+             * @param m BlockMeta message or plain object to encode
+             * @param [w] Writer to encode to
+             * @returns Writer
+             */
+            public static encode(m: tendermintV2.types.IBlockMeta, w?: $protobuf.Writer): $protobuf.Writer;
+
+            /**
+             * Decodes a BlockMeta message from the specified reader or buffer.
+             * @param r Reader or buffer to decode from
+             * @param [l] Message length if known beforehand
+             * @returns BlockMeta
+             * @throws {Error} If the payload is not a reader or valid buffer
+             * @throws {$protobuf.util.ProtocolError} If required fields are missing
+             */
+            public static decode(r: $protobuf.Reader | Uint8Array, l?: number): tendermintV2.types.BlockMeta;
+        }
+
+        /** Properties of a TxProof. */
+        interface ITxProof {
+            /** TxProof rootHash */
+            rootHash?: Uint8Array | null;
+
+            /** TxProof data */
+            data?: Uint8Array | null;
+
+            /** TxProof proof */
+            proof?: tendermintV2.crypto.IProof | null;
+        }
+
+        /** Represents a TxProof. */
+        class TxProof implements ITxProof {
+            /**
+             * Constructs a new TxProof.
+             * @param [p] Properties to set
+             */
+            constructor(p?: tendermintV2.types.ITxProof);
+
+            /** TxProof rootHash. */
+            public rootHash: Uint8Array;
+
+            /** TxProof data. */
+            public data: Uint8Array;
+
+            /** TxProof proof. */
+            public proof?: tendermintV2.crypto.IProof | null;
+
+            /**
+             * Creates a new TxProof instance using the specified properties.
+             * @param [properties] Properties to set
+             * @returns TxProof instance
+             */
+            public static create(properties?: tendermintV2.types.ITxProof): tendermintV2.types.TxProof;
+
+            /**
+             * Encodes the specified TxProof message. Does not implicitly {@link tendermintV2.types.TxProof.verify|verify} messages.
+             * @param m TxProof message or plain object to encode
+             * @param [w] Writer to encode to
+             * @returns Writer
+             */
+            public static encode(m: tendermintV2.types.ITxProof, w?: $protobuf.Writer): $protobuf.Writer;
+
+            /**
+             * Decodes a TxProof message from the specified reader or buffer.
+             * @param r Reader or buffer to decode from
+             * @param [l] Message length if known beforehand
+             * @returns TxProof
+             * @throws {Error} If the payload is not a reader or valid buffer
+             * @throws {$protobuf.util.ProtocolError} If required fields are missing
+             */
+            public static decode(r: $protobuf.Reader | Uint8Array, l?: number): tendermintV2.types.TxProof;
+        }
+
+        /** Properties of a ValidatorSet. */
+        interface IValidatorSet {
+            /** ValidatorSet validators */
+            validators?: tendermintV2.types.IValidator[] | null;
+
+            /** ValidatorSet proposer */
+            proposer?: tendermintV2.types.IValidator | null;
+
+            /** ValidatorSet totalVotingPower */
+            totalVotingPower?: Long | null;
+        }
+
+        /** Represents a ValidatorSet. */
+        class ValidatorSet implements IValidatorSet {
+            /**
+             * Constructs a new ValidatorSet.
+             * @param [p] Properties to set
+             */
+            constructor(p?: tendermintV2.types.IValidatorSet);
+
+            /** ValidatorSet validators. */
+            public validators: tendermintV2.types.IValidator[];
+
+            /** ValidatorSet proposer. */
+            public proposer?: tendermintV2.types.IValidator | null;
+
+            /** ValidatorSet totalVotingPower. */
+            public totalVotingPower: Long;
+
+            /**
+             * Creates a new ValidatorSet instance using the specified properties.
+             * @param [properties] Properties to set
+             * @returns ValidatorSet instance
+             */
+            public static create(properties?: tendermintV2.types.IValidatorSet): tendermintV2.types.ValidatorSet;
+
+            /**
+             * Encodes the specified ValidatorSet message. Does not implicitly {@link tendermintV2.types.ValidatorSet.verify|verify} messages.
+             * @param m ValidatorSet message or plain object to encode
+             * @param [w] Writer to encode to
+             * @returns Writer
+             */
+            public static encode(m: tendermintV2.types.IValidatorSet, w?: $protobuf.Writer): $protobuf.Writer;
+
+            /**
+             * Decodes a ValidatorSet message from the specified reader or buffer.
+             * @param r Reader or buffer to decode from
+             * @param [l] Message length if known beforehand
+             * @returns ValidatorSet
+             * @throws {Error} If the payload is not a reader or valid buffer
+             * @throws {$protobuf.util.ProtocolError} If required fields are missing
+             */
+            public static decode(r: $protobuf.Reader | Uint8Array, l?: number): tendermintV2.types.ValidatorSet;
+        }
+
+        /** Properties of a Validator. */
+        interface IValidator {
+            /** Validator address */
+            address?: Uint8Array | null;
+
+            /** Validator pubKey */
+            pubKey?: tendermintV2.crypto.IPublicKey | null;
+
+            /** Validator votingPower */
+            votingPower?: Long | null;
+
+            /** Validator proposerPriority */
+            proposerPriority?: Long | null;
+        }
+
+        /** Represents a Validator. */
+        class Validator implements IValidator {
+            /**
+             * Constructs a new Validator.
+             * @param [p] Properties to set
+             */
+            constructor(p?: tendermintV2.types.IValidator);
+
+            /** Validator address. */
+            public address: Uint8Array;
+
+            /** Validator pubKey. */
+            public pubKey?: tendermintV2.crypto.IPublicKey | null;
+
+            /** Validator votingPower. */
+            public votingPower: Long;
+
+            /** Validator proposerPriority. */
+            public proposerPriority: Long;
+
+            /**
+             * Creates a new Validator instance using the specified properties.
+             * @param [properties] Properties to set
+             * @returns Validator instance
+             */
+            public static create(properties?: tendermintV2.types.IValidator): tendermintV2.types.Validator;
+
+            /**
+             * Encodes the specified Validator message. Does not implicitly {@link tendermintV2.types.Validator.verify|verify} messages.
+             * @param m Validator message or plain object to encode
+             * @param [w] Writer to encode to
+             * @returns Writer
+             */
+            public static encode(m: tendermintV2.types.IValidator, w?: $protobuf.Writer): $protobuf.Writer;
+
+            /**
+             * Decodes a Validator message from the specified reader or buffer.
+             * @param r Reader or buffer to decode from
+             * @param [l] Message length if known beforehand
+             * @returns Validator
+             * @throws {Error} If the payload is not a reader or valid buffer
+             * @throws {$protobuf.util.ProtocolError} If required fields are missing
+             */
+            public static decode(r: $protobuf.Reader | Uint8Array, l?: number): tendermintV2.types.Validator;
+        }
+
+        /** Properties of a SimpleValidator. */
+        interface ISimpleValidator {
+            /** SimpleValidator pubKey */
+            pubKey?: tendermintV2.crypto.IPublicKey | null;
+
+            /** SimpleValidator votingPower */
+            votingPower?: Long | null;
+        }
+
+        /** Represents a SimpleValidator. */
+        class SimpleValidator implements ISimpleValidator {
+            /**
+             * Constructs a new SimpleValidator.
+             * @param [p] Properties to set
+             */
+            constructor(p?: tendermintV2.types.ISimpleValidator);
+
+            /** SimpleValidator pubKey. */
+            public pubKey?: tendermintV2.crypto.IPublicKey | null;
+
+            /** SimpleValidator votingPower. */
+            public votingPower: Long;
+
+            /**
+             * Creates a new SimpleValidator instance using the specified properties.
+             * @param [properties] Properties to set
+             * @returns SimpleValidator instance
+             */
+            public static create(properties?: tendermintV2.types.ISimpleValidator): tendermintV2.types.SimpleValidator;
+
+            /**
+             * Encodes the specified SimpleValidator message. Does not implicitly {@link tendermintV2.types.SimpleValidator.verify|verify} messages.
+             * @param m SimpleValidator message or plain object to encode
+             * @param [w] Writer to encode to
+             * @returns Writer
+             */
+            public static encode(m: tendermintV2.types.ISimpleValidator, w?: $protobuf.Writer): $protobuf.Writer;
+
+            /**
+             * Decodes a SimpleValidator message from the specified reader or buffer.
+             * @param r Reader or buffer to decode from
+             * @param [l] Message length if known beforehand
+             * @returns SimpleValidator
+             * @throws {Error} If the payload is not a reader or valid buffer
+             * @throws {$protobuf.util.ProtocolError} If required fields are missing
+             */
+            public static decode(r: $protobuf.Reader | Uint8Array, l?: number): tendermintV2.types.SimpleValidator;
+        }
+    }
+
+    /** Namespace crypto. */
+    namespace crypto {
+        /** Properties of a Proof. */
+        interface IProof {
+            /** Proof total */
+            total?: Long | null;
+
+            /** Proof index */
+            index?: Long | null;
+
+            /** Proof leafHash */
+            leafHash?: Uint8Array | null;
+
+            /** Proof aunts */
+            aunts?: Uint8Array[] | null;
+        }
+
+        /** Represents a Proof. */
+        class Proof implements IProof {
+            /**
+             * Constructs a new Proof.
+             * @param [p] Properties to set
+             */
+            constructor(p?: tendermintV2.crypto.IProof);
+
+            /** Proof total. */
+            public total: Long;
+
+            /** Proof index. */
+            public index: Long;
+
+            /** Proof leafHash. */
+            public leafHash: Uint8Array;
+
+            /** Proof aunts. */
+            public aunts: Uint8Array[];
+
+            /**
+             * Creates a new Proof instance using the specified properties.
+             * @param [properties] Properties to set
+             * @returns Proof instance
+             */
+            public static create(properties?: tendermintV2.crypto.IProof): tendermintV2.crypto.Proof;
+
+            /**
+             * Encodes the specified Proof message. Does not implicitly {@link tendermintV2.crypto.Proof.verify|verify} messages.
+             * @param m Proof message or plain object to encode
+             * @param [w] Writer to encode to
+             * @returns Writer
+             */
+            public static encode(m: tendermintV2.crypto.IProof, w?: $protobuf.Writer): $protobuf.Writer;
+
+            /**
+             * Decodes a Proof message from the specified reader or buffer.
+             * @param r Reader or buffer to decode from
+             * @param [l] Message length if known beforehand
+             * @returns Proof
+             * @throws {Error} If the payload is not a reader or valid buffer
+             * @throws {$protobuf.util.ProtocolError} If required fields are missing
+             */
+            public static decode(r: $protobuf.Reader | Uint8Array, l?: number): tendermintV2.crypto.Proof;
+        }
+
+        /** Properties of a ValueOp. */
+        interface IValueOp {
+            /** ValueOp key */
+            key?: Uint8Array | null;
+
+            /** ValueOp proof */
+            proof?: tendermintV2.crypto.IProof | null;
+        }
+
+        /** Represents a ValueOp. */
+        class ValueOp implements IValueOp {
+            /**
+             * Constructs a new ValueOp.
+             * @param [p] Properties to set
+             */
+            constructor(p?: tendermintV2.crypto.IValueOp);
+
+            /** ValueOp key. */
+            public key: Uint8Array;
+
+            /** ValueOp proof. */
+            public proof?: tendermintV2.crypto.IProof | null;
+
+            /**
+             * Creates a new ValueOp instance using the specified properties.
+             * @param [properties] Properties to set
+             * @returns ValueOp instance
+             */
+            public static create(properties?: tendermintV2.crypto.IValueOp): tendermintV2.crypto.ValueOp;
+
+            /**
+             * Encodes the specified ValueOp message. Does not implicitly {@link tendermintV2.crypto.ValueOp.verify|verify} messages.
+             * @param m ValueOp message or plain object to encode
+             * @param [w] Writer to encode to
+             * @returns Writer
+             */
+            public static encode(m: tendermintV2.crypto.IValueOp, w?: $protobuf.Writer): $protobuf.Writer;
+
+            /**
+             * Decodes a ValueOp message from the specified reader or buffer.
+             * @param r Reader or buffer to decode from
+             * @param [l] Message length if known beforehand
+             * @returns ValueOp
+             * @throws {Error} If the payload is not a reader or valid buffer
+             * @throws {$protobuf.util.ProtocolError} If required fields are missing
+             */
+            public static decode(r: $protobuf.Reader | Uint8Array, l?: number): tendermintV2.crypto.ValueOp;
+        }
+
+        /** Properties of a DominoOp. */
+        interface IDominoOp {
+            /** DominoOp key */
+            key?: string | null;
+
+            /** DominoOp input */
+            input?: string | null;
+
+            /** DominoOp output */
+            output?: string | null;
+        }
+
+        /** Represents a DominoOp. */
+        class DominoOp implements IDominoOp {
+            /**
+             * Constructs a new DominoOp.
+             * @param [p] Properties to set
+             */
+            constructor(p?: tendermintV2.crypto.IDominoOp);
+
+            /** DominoOp key. */
+            public key: string;
+
+            /** DominoOp input. */
+            public input: string;
+
+            /** DominoOp output. */
+            public output: string;
+
+            /**
+             * Creates a new DominoOp instance using the specified properties.
+             * @param [properties] Properties to set
+             * @returns DominoOp instance
+             */
+            public static create(properties?: tendermintV2.crypto.IDominoOp): tendermintV2.crypto.DominoOp;
+
+            /**
+             * Encodes the specified DominoOp message. Does not implicitly {@link tendermintV2.crypto.DominoOp.verify|verify} messages.
+             * @param m DominoOp message or plain object to encode
+             * @param [w] Writer to encode to
+             * @returns Writer
+             */
+            public static encode(m: tendermintV2.crypto.IDominoOp, w?: $protobuf.Writer): $protobuf.Writer;
+
+            /**
+             * Decodes a DominoOp message from the specified reader or buffer.
+             * @param r Reader or buffer to decode from
+             * @param [l] Message length if known beforehand
+             * @returns DominoOp
+             * @throws {Error} If the payload is not a reader or valid buffer
+             * @throws {$protobuf.util.ProtocolError} If required fields are missing
+             */
+            public static decode(r: $protobuf.Reader | Uint8Array, l?: number): tendermintV2.crypto.DominoOp;
+        }
+
+        /** Properties of a ProofOp. */
+        interface IProofOp {
+            /** ProofOp type */
+            type?: string | null;
+
+            /** ProofOp key */
+            key?: Uint8Array | null;
+
+            /** ProofOp data */
+            data?: Uint8Array | null;
+        }
+
+        /** Represents a ProofOp. */
+        class ProofOp implements IProofOp {
+            /**
+             * Constructs a new ProofOp.
+             * @param [p] Properties to set
+             */
+            constructor(p?: tendermintV2.crypto.IProofOp);
+
+            /** ProofOp type. */
+            public type: string;
+
+            /** ProofOp key. */
+            public key: Uint8Array;
+
+            /** ProofOp data. */
+            public data: Uint8Array;
+
+            /**
+             * Creates a new ProofOp instance using the specified properties.
+             * @param [properties] Properties to set
+             * @returns ProofOp instance
+             */
+            public static create(properties?: tendermintV2.crypto.IProofOp): tendermintV2.crypto.ProofOp;
+
+            /**
+             * Encodes the specified ProofOp message. Does not implicitly {@link tendermintV2.crypto.ProofOp.verify|verify} messages.
+             * @param m ProofOp message or plain object to encode
+             * @param [w] Writer to encode to
+             * @returns Writer
+             */
+            public static encode(m: tendermintV2.crypto.IProofOp, w?: $protobuf.Writer): $protobuf.Writer;
+
+            /**
+             * Decodes a ProofOp message from the specified reader or buffer.
+             * @param r Reader or buffer to decode from
+             * @param [l] Message length if known beforehand
+             * @returns ProofOp
+             * @throws {Error} If the payload is not a reader or valid buffer
+             * @throws {$protobuf.util.ProtocolError} If required fields are missing
+             */
+            public static decode(r: $protobuf.Reader | Uint8Array, l?: number): tendermintV2.crypto.ProofOp;
+        }
+
+        /** Properties of a ProofOps. */
+        interface IProofOps {
+            /** ProofOps ops */
+            ops?: tendermintV2.crypto.IProofOp[] | null;
+        }
+
+        /** Represents a ProofOps. */
+        class ProofOps implements IProofOps {
+            /**
+             * Constructs a new ProofOps.
+             * @param [p] Properties to set
+             */
+            constructor(p?: tendermintV2.crypto.IProofOps);
+
+            /** ProofOps ops. */
+            public ops: tendermintV2.crypto.IProofOp[];
+
+            /**
+             * Creates a new ProofOps instance using the specified properties.
+             * @param [properties] Properties to set
+             * @returns ProofOps instance
+             */
+            public static create(properties?: tendermintV2.crypto.IProofOps): tendermintV2.crypto.ProofOps;
+
+            /**
+             * Encodes the specified ProofOps message. Does not implicitly {@link tendermintV2.crypto.ProofOps.verify|verify} messages.
+             * @param m ProofOps message or plain object to encode
+             * @param [w] Writer to encode to
+             * @returns Writer
+             */
+            public static encode(m: tendermintV2.crypto.IProofOps, w?: $protobuf.Writer): $protobuf.Writer;
+
+            /**
+             * Decodes a ProofOps message from the specified reader or buffer.
+             * @param r Reader or buffer to decode from
+             * @param [l] Message length if known beforehand
+             * @returns ProofOps
+             * @throws {Error} If the payload is not a reader or valid buffer
+             * @throws {$protobuf.util.ProtocolError} If required fields are missing
+             */
+            public static decode(r: $protobuf.Reader | Uint8Array, l?: number): tendermintV2.crypto.ProofOps;
+        }
+
+        /** Properties of a PublicKey. */
+        interface IPublicKey {
+            /** PublicKey ed25519 */
+            ed25519?: Uint8Array | null;
+
+            /** PublicKey secp256k1 */
+            secp256k1?: Uint8Array | null;
+        }
+
+        /** Represents a PublicKey. */
+        class PublicKey implements IPublicKey {
+            /**
+             * Constructs a new PublicKey.
+             * @param [p] Properties to set
+             */
+            constructor(p?: tendermintV2.crypto.IPublicKey);
+
+            /** PublicKey ed25519. */
+            public ed25519: Uint8Array;
+
+            /** PublicKey secp256k1. */
+            public secp256k1: Uint8Array;
+
+            /** PublicKey sum. */
+            public sum?: 'ed25519' | 'secp256k1';
+
+            /**
+             * Creates a new PublicKey instance using the specified properties.
+             * @param [properties] Properties to set
+             * @returns PublicKey instance
+             */
+            public static create(properties?: tendermintV2.crypto.IPublicKey): tendermintV2.crypto.PublicKey;
+
+            /**
+             * Encodes the specified PublicKey message. Does not implicitly {@link tendermintV2.crypto.PublicKey.verify|verify} messages.
+             * @param m PublicKey message or plain object to encode
+             * @param [w] Writer to encode to
+             * @returns Writer
+             */
+            public static encode(m: tendermintV2.crypto.IPublicKey, w?: $protobuf.Writer): $protobuf.Writer;
+
+            /**
+             * Decodes a PublicKey message from the specified reader or buffer.
+             * @param r Reader or buffer to decode from
+             * @param [l] Message length if known beforehand
+             * @returns PublicKey
+             * @throws {Error} If the payload is not a reader or valid buffer
+             * @throws {$protobuf.util.ProtocolError} If required fields are missing
+             */
+            public static decode(r: $protobuf.Reader | Uint8Array, l?: number): tendermintV2.crypto.PublicKey;
+        }
+    }
+
+    /** Namespace version. */
+    namespace version {
+        /** Properties of an App. */
+        interface IApp {
+            /** App protocol */
+            protocol?: Long | null;
+
+            /** App software */
+            software?: string | null;
+        }
+
+        /** Represents an App. */
+        class App implements IApp {
+            /**
+             * Constructs a new App.
+             * @param [p] Properties to set
+             */
+            constructor(p?: tendermintV2.version.IApp);
+
+            /** App protocol. */
+            public protocol: Long;
+
+            /** App software. */
+            public software: string;
+
+            /**
+             * Creates a new App instance using the specified properties.
+             * @param [properties] Properties to set
+             * @returns App instance
+             */
+            public static create(properties?: tendermintV2.version.IApp): tendermintV2.version.App;
+
+            /**
+             * Encodes the specified App message. Does not implicitly {@link tendermintV2.version.App.verify|verify} messages.
+             * @param m App message or plain object to encode
+             * @param [w] Writer to encode to
+             * @returns Writer
+             */
+            public static encode(m: tendermintV2.version.IApp, w?: $protobuf.Writer): $protobuf.Writer;
+
+            /**
+             * Decodes an App message from the specified reader or buffer.
+             * @param r Reader or buffer to decode from
+             * @param [l] Message length if known beforehand
+             * @returns App
+             * @throws {Error} If the payload is not a reader or valid buffer
+             * @throws {$protobuf.util.ProtocolError} If required fields are missing
+             */
+            public static decode(r: $protobuf.Reader | Uint8Array, l?: number): tendermintV2.version.App;
+        }
+
+        /** Properties of a Consensus. */
+        interface IConsensus {
+            /** Consensus block */
+            block?: Long | null;
+
+            /** Consensus app */
+            app?: Long | null;
+        }
+
+        /** Represents a Consensus. */
+        class Consensus implements IConsensus {
+            /**
+             * Constructs a new Consensus.
+             * @param [p] Properties to set
+             */
+            constructor(p?: tendermintV2.version.IConsensus);
+
+            /** Consensus block. */
+            public block: Long;
+
+            /** Consensus app. */
+            public app: Long;
+
+            /**
+             * Creates a new Consensus instance using the specified properties.
+             * @param [properties] Properties to set
+             * @returns Consensus instance
+             */
+            public static create(properties?: tendermintV2.version.IConsensus): tendermintV2.version.Consensus;
+
+            /**
+             * Encodes the specified Consensus message. Does not implicitly {@link tendermintV2.version.Consensus.verify|verify} messages.
+             * @param m Consensus message or plain object to encode
+             * @param [w] Writer to encode to
+             * @returns Writer
+             */
+            public static encode(m: tendermintV2.version.IConsensus, w?: $protobuf.Writer): $protobuf.Writer;
+
+            /**
+             * Decodes a Consensus message from the specified reader or buffer.
+             * @param r Reader or buffer to decode from
+             * @param [l] Message length if known beforehand
+             * @returns Consensus
+             * @throws {Error} If the payload is not a reader or valid buffer
+             * @throws {$protobuf.util.ProtocolError} If required fields are missing
+             */
+            public static decode(r: $protobuf.Reader | Uint8Array, l?: number): tendermintV2.version.Consensus;
         }
     }
 }

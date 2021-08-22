@@ -12,7 +12,7 @@ ROOT_PROTO_DIR="./proto/cosmos/cosmos-sdk"
 ICS23_PROTO_DIR="./proto/ics23"
 NFT_PROTO_DIR="./proto/nft"
 COSMOS_PROTO_DIR="$ROOT_PROTO_DIR/proto/cosmos"
-IBC_PROTO_DIR="$ROOT_PROTO_DIR/proto/ibc"
+IBC_PROTO_DIR="./proto/ibc/proto/ibc"
 TENDERMINT_PROTO_DIR="$ROOT_PROTO_DIR/third_party/proto/tendermint"
 
 mkdir -p "$GENERATED_DIR"
