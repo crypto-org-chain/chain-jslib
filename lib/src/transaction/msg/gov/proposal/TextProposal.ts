@@ -20,6 +20,24 @@ export const textProposal = function () {
         }
 
         /**
+         * Returns an instance of TextProposal
+         * @param {string} msgJsonStr
+         * @param {Network} network
+         * @returns {TextProposal}
+         */
+        public static fromCosmosMsgJSON(msgJsonStr: string): TextProposal {
+            const parsedMsg = JSON.parse(msgJsonStr) as TextProposalRaw;
+            if (parsedMsg['@type'] !== COSMOS_MSG_TYPEURL.gov.TextProposal) {
+                throw new Error(`Expected ${COSMOS_MSG_TYPEURL.gov.TextProposal} but got ${parsedMsg['@type']}`);
+            }
+
+            return new TextProposal({
+                description: parsedMsg.description,
+                title: parsedMsg.title,
+            });
+        }
+
+        /**
          * Returns the proto encoding representation of TextProposal
          * @returns {google.protobuf.Any}
          */
@@ -43,3 +61,9 @@ export type TextProposalOptions = {
     title: string;
     description: string;
 };
+
+interface TextProposalRaw {
+    '@type': string;
+    title: string;
+    description: string;
+}

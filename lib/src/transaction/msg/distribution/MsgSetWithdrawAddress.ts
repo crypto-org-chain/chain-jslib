@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 import ow from 'ow';
 import { CosmosMsg } from '../cosmosMsg';
 import { Msg } from '../../../cosmos/v1beta1/types/msg';
@@ -50,9 +51,29 @@ export const msgSetWithdrawAddress = function (config: InitConfigurations) {
                 typeUrl: COSMOS_MSG_TYPEURL.distribution.MsgSetWithdrawAddress,
                 value: {
                     delegatorAddress: this.delegatorAddress,
-                    validatorAddress: this.withdrawAddress,
+                    withdrawAddress: this.withdrawAddress,
                 },
             };
+        }
+
+        /**
+         * * Returns an instance of MsgSetWithdrawAddress
+         * @param {string} msgJsonStr
+         * @param {Network} network
+         * @returns {MsgSetWithdrawAddress}
+         */
+        public static fromCosmosMsgJSON(msgJsonStr: string): MsgSetWithdrawAddress {
+            const parsedMsg = JSON.parse(msgJsonStr) as MsgSetWithdrawAddressRaw;
+            if (parsedMsg['@type'] !== COSMOS_MSG_TYPEURL.distribution.MsgSetWithdrawAddress) {
+                throw new Error(
+                    `Expected ${COSMOS_MSG_TYPEURL.distribution.MsgSetWithdrawAddress} but got ${parsedMsg['@type']}`,
+                );
+            }
+
+            return new MsgSetWithdrawAddress({
+                withdrawAddress: parsedMsg.withdraw_address,
+                delegatorAddress: parsedMsg.delegator_address,
+            });
         }
 
         validateAddresses() {
@@ -83,3 +104,9 @@ export type MsgSetWithdrawAddressOptions = {
     delegatorAddress: string;
     withdrawAddress: string;
 };
+
+interface MsgSetWithdrawAddressRaw {
+    '@type': string;
+    delegator_address: string;
+    withdraw_address: string;
+}

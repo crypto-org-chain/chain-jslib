@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 import ow from 'ow';
 import { Msg } from '../../../cosmos/v1beta1/types/msg';
 import { owMsgBurnNFTOptions } from '../ow.types';
@@ -61,6 +62,25 @@ export const msgBurnNFT = function (config: InitConfigurations) {
             } as legacyAmino.MsgBurnNFT;
         }
 
+        /**
+         * Returns an instance of MsgBurnNFT
+         * @param {string} msgJsonStr
+         * @param {Network} network
+         * @returns {MsgBurnNFT}
+         */
+        public static fromCosmosMsgJSON(msgJsonStr: string): MsgBurnNFT {
+            const parsedMsg = JSON.parse(msgJsonStr) as MsgBurnNFTRaw;
+            if (parsedMsg['@type'] !== COSMOS_MSG_TYPEURL.nft.MsgBurnNFT) {
+                throw new Error(`Expected ${COSMOS_MSG_TYPEURL.nft.MsgBurnNFT} but got ${parsedMsg['@type']}`);
+            }
+
+            return new MsgBurnNFT({
+                id: parsedMsg.id,
+                sender: parsedMsg.sender,
+                denomId: parsedMsg.denom_id,
+            });
+        }
+
         validateAddress() {
             if (
                 !validateAddress({
@@ -78,5 +98,11 @@ export const msgBurnNFT = function (config: InitConfigurations) {
 export type MsgBurnNFTOptions = {
     id: string;
     denomId: string;
+    sender: string;
+};
+export type MsgBurnNFTRaw = {
+    '@type': string;
+    id: string;
+    denom_id: string;
     sender: string;
 };

@@ -1,7 +1,8 @@
 import ow from 'ow';
-import { cosmos, google } from '../../../cosmos/v1beta1/codec';
-import { IMsgProposalContent } from './IMsgProposalContent';
-import { owParamChangeProposalOptions } from './ow.types';
+import { cosmos, google } from '../../../../cosmos/v1beta1/codec';
+import { IMsgProposalContent } from '../IMsgProposalContent';
+import { owParamChangeProposalOptions } from '../ow.types';
+import { COSMOS_MSG_TYPEURL } from '../../../common/constants/typeurl';
 
 export const paramChangeProposal = function () {
     return class ParamChangeProposal implements IMsgProposalContent {
@@ -42,8 +43,29 @@ export const paramChangeProposal = function () {
             const spendProposal = cosmos.params.v1beta1.ParameterChangeProposal.create(paramChange);
 
             return google.protobuf.Any.create({
-                type_url: '/cosmos.params.v1beta1.ParameterChangeProposal',
+                type_url: COSMOS_MSG_TYPEURL.upgrade.ParameterChangeProposal,
                 value: cosmos.params.v1beta1.ParameterChangeProposal.encode(spendProposal).finish(),
+            });
+        }
+
+        /**
+         * Returns an instance of ParamChangeProposal
+         * @param {string} msgJsonStr
+         * @param {Network} network
+         * @returns {ParamChangeProposal}
+         */
+        public static fromCosmosMsgJSON(msgJsonStr: string): ParamChangeProposal {
+            const parsedMsg = JSON.parse(msgJsonStr) as ParamChangeProposalRaw;
+            if (parsedMsg['@type'] !== COSMOS_MSG_TYPEURL.upgrade.ParameterChangeProposal) {
+                throw new Error(
+                    `Expected ${COSMOS_MSG_TYPEURL.upgrade.ParameterChangeProposal} but got ${parsedMsg['@type']}`,
+                );
+            }
+
+            return new ParamChangeProposal({
+                description: parsedMsg.description,
+                title: parsedMsg.title,
+                paramChanges: parsedMsg.changes,
             });
         }
     };
@@ -65,3 +87,10 @@ export type ParamChangeProposalOptions = {
     description: string;
     paramChanges: ParamChange[];
 };
+
+export interface ParamChangeProposalRaw {
+    '@type': string;
+    changes: ParamChange[];
+    title: string;
+    description: string;
+}

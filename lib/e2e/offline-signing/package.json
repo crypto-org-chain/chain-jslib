@@ -1,0 +1,11 @@
+{
+  "dependencies": {
+    "@types/json-stable-stringify": "1.0.33",
+    "@types/temp": "0.9.1",
+    "big.js": "6.1.1",
+    "chai": "4.3.4",
+    "json-stable-stringify": "1.0.1",
+    "mocha": "9.0.3",
+    "temp": "0.9.4"
+  }
+}

@@ -2,3 +2,5 @@
 lib/**/codec/generated/codecimpl.*
 lib/dist
 docs
+*/**/*.md
+*/**/*.json

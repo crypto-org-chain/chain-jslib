@@ -15,6 +15,16 @@ export type TxBody = {
     };
 };
 
+export type AuthInfoV2 = {
+    signerInfos: SignerInfo[];
+    fee: {
+        amount?: ICoin[];
+        gasLimit?: Big;
+        payer?: string;
+        granter?: string;
+    };
+};
+
 export type AuthInfo = {
     signerInfos: SignerInfo[];
     fee: {

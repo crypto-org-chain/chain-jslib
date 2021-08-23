@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 import ow from 'ow';
 import { CosmosMsg } from '../cosmosMsg';
 import { Msg } from '../../../cosmos/v1beta1/types/msg';
@@ -55,6 +56,26 @@ export const msgWithdrawDelegateReward = function (config: InitConfigurations) {
             };
         }
 
+        /**
+         * * Returns an instance of MsgWithdrawDelegatorReward
+         * @param {string} msgJsonStr
+         * @param {Network} network
+         * @returns {MsgWithdrawDelegatorReward}
+         */
+        public static fromCosmosMsgJSON(msgJsonStr: string): MsgWithdrawDelegatorReward {
+            const parsedMsg = JSON.parse(msgJsonStr) as MsgWithdrawDelegatorRewardRaw;
+            if (parsedMsg['@type'] !== COSMOS_MSG_TYPEURL.MsgWithdrawDelegatorReward) {
+                throw new Error(
+                    `Expected ${COSMOS_MSG_TYPEURL.MsgWithdrawDelegatorReward} but got ${parsedMsg['@type']}`,
+                );
+            }
+
+            return new MsgWithdrawDelegatorReward({
+                validatorAddress: parsedMsg.validator_address,
+                delegatorAddress: parsedMsg.delegator_address,
+            });
+        }
+
         validateAddresses() {
             if (
                 !validateAddress({
@@ -83,3 +104,9 @@ export type MsgWithdrawDelegatorRewardOptions = {
     delegatorAddress: string;
     validatorAddress: string;
 };
+
+interface MsgWithdrawDelegatorRewardRaw {
+    '@type': string;
+    delegator_address: string;
+    validator_address: string;
+}

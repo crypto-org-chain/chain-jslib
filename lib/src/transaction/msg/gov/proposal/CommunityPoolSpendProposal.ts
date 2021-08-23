@@ -1,10 +1,12 @@
 import ow from 'ow';
-import { ICoin } from '../../../coin/coin';
-import { cosmos, google } from '../../../cosmos/v1beta1/codec';
-import { IMsgProposalContent } from './IMsgProposalContent';
-import { InitConfigurations } from '../../../core/cro';
-import { AddressType, validateAddress } from '../../../utils/address';
-import { owCommunityPoolSpendProposalOptions } from './ow.types';
+import { ICoin } from '../../../../coin/coin';
+import { cosmos, google } from '../../../../cosmos/v1beta1/codec';
+import { IMsgProposalContent } from '../IMsgProposalContent';
+import { InitConfigurations, CroSDK } from '../../../../core/cro';
+import { AddressType, validateAddress } from '../../../../utils/address';
+import { owCommunityPoolSpendProposalOptions } from '../ow.types';
+import { Amount } from '../../bank/msgsend';
+import { COSMOS_MSG_TYPEURL } from '../../../common/constants/typeurl';
 
 export const communityPoolSpendProposal = function (config: InitConfigurations) {
     return class CommunityPoolSpendProposal implements IMsgProposalContent {
@@ -27,6 +29,7 @@ export const communityPoolSpendProposal = function (config: InitConfigurations) 
             this.description = options.description;
             this.recipient = options.recipient;
             this.amount = options.amount;
+            this.validate();
         }
 
         /**
@@ -51,8 +54,34 @@ export const communityPoolSpendProposal = function (config: InitConfigurations) 
             const spendProposal = cosmos.distribution.v1beta1.CommunityPoolSpendProposal.create(communityPoolSpend);
 
             return google.protobuf.Any.create({
-                type_url: '/cosmos.distribution.v1beta1.CommunityPoolSpendProposal',
+                type_url: COSMOS_MSG_TYPEURL.upgrade.CommunityPoolSpendProposal,
                 value: cosmos.distribution.v1beta1.CommunityPoolSpendProposal.encode(spendProposal).finish(),
+            });
+        }
+
+        /**
+         * Returns an instance of CommunityPoolSpendProposal
+         * @param {string} msgJsonStr
+         * @param {Network} network
+         * @returns {CommunityPoolSpendProposal}
+         */
+        public static fromCosmosMsgJSON(msgJsonStr: string): CommunityPoolSpendProposal {
+            const parsedMsg = JSON.parse(msgJsonStr) as CommunityPoolSpendProposalRaw;
+            if (parsedMsg['@type'] !== COSMOS_MSG_TYPEURL.upgrade.CommunityPoolSpendProposal) {
+                throw new Error(
+                    `Expected ${COSMOS_MSG_TYPEURL.upgrade.CommunityPoolSpendProposal} but got ${parsedMsg['@type']}`,
+                );
+            }
+            if (!parsedMsg.amount || parsedMsg.amount.length !== 1) {
+                throw new Error('Invalid amount in the Msg.');
+            }
+            const cro = CroSDK({ network: config.network });
+
+            return new CommunityPoolSpendProposal({
+                description: parsedMsg.description,
+                title: parsedMsg.title,
+                recipient: parsedMsg.recipient,
+                amount: cro.v2.CoinV2.fromCustomAmountDenom(parsedMsg.amount[0].amount, parsedMsg.amount[0].denom),
             });
         }
 
@@ -76,3 +105,11 @@ export type CommunityPoolSpendProposalOptions = {
     recipient: string;
     amount: ICoin;
 };
+
+export interface CommunityPoolSpendProposalRaw {
+    '@type': string;
+    title: string;
+    description: string;
+    recipient: string;
+    amount: Amount[];
+}
