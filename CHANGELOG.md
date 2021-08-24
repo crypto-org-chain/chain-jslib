@@ -8,6 +8,7 @@ All notable changes to this project will be documented in this file.
 - Export or import Cosmos compatible JSON to the SDK
 - Introduced `V2` message types for flexible `denom` handling
 - Added Cosmos `IBC` Message types support
+- Add Cosmos-SDK v0.43.0 types support
 - Bug fixes 
 
 ## v0.0.22
