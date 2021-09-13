@@ -53,7 +53,9 @@ export const croClient = function (config: InitConfigurations) {
         private constructor(tmClient: Tendermint34Client, txClient: StargateClient) {
             this.txClient = txClient;
             this.tmClient = tmClient;
+            // @ts-ignore
             this.queryClient = QueryClient.withExtensions(
+                // @ts-ignore
                 tmClient,
                 setupAuthExtension,
                 setupBankExtension,
