@@ -178,6 +178,23 @@ export class CroNetwork {
         },
         rpcUrl: 'https://testnet-croeseid-3.crypto.org:26657',
     };
+
+    public static TestnetCroeseid4: Network = {
+        defaultNodeUrl: 'https://testnet-croeseid-4.crypto.org',
+        chainId: 'testnet-croeseid-4',
+        addressPrefix: 'tcro',
+        validatorAddressPrefix: 'tcrocncl',
+        validatorPubKeyPrefix: 'tcrocnclconspub',
+        coin: {
+            baseDenom: 'basetcro',
+            croDenom: 'tcro',
+        },
+        bip44Path: {
+            coinType: 1,
+            account: 0,
+        },
+        rpcUrl: 'https://testnet-croeseid-4.crypto.org:26657',
+    };
 }
 
 export type InitConfigurations = {
