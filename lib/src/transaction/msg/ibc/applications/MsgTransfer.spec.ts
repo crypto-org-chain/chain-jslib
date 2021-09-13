@@ -4,17 +4,20 @@ import { expect } from 'chai';
 import Big from 'big.js';
 
 import Long from 'long';
+import bech32 from 'bech32';
 import { fuzzyDescribe } from '../../../../test/mocha-fuzzy/suite';
 import { Msg } from '../../../../cosmos/v1beta1/types/msg';
 import { Secp256k1KeyPair } from '../../../../keypair/secp256k1';
-import { Bytes } from '../../../../utils/bytes/bytes';
+// import { Bytes } from '../../../../utils/bytes/bytes';
 import { CroSDK } from '../../../../core/cro';
 import { COSMOS_MSG_TYPEURL } from '../../../common/constants/typeurl';
+import { HDKey } from '../../../../hdkey/hdkey';
+import { Bytes } from '../../../../utils/bytes/bytes';
 
 const cro = CroSDK({
     network: {
         defaultNodeUrl: '',
-        chainId: 'testnet-croeseid-1',
+        chainId: 'testnet-croeseid-4',
         addressPrefix: 'tcro',
         validatorAddressPrefix: 'tcrocncl',
         validatorPubKeyPrefix: 'tcrocnclconspub',
@@ -86,36 +89,58 @@ describe('Testing MsgTransfer', function () {
     });
 
     it('Test appendTxBody MsgTransfer Tx signing', function () {
-        const anyKeyPair = Secp256k1KeyPair.fromPrivKey(
-            Bytes.fromHexString('66633d18513bec30dd11a209f1ceb1787aa9e2069d5d47e590174dc9665102b3'),
-        );
+        // const anyKeyPair = Secp256k1KeyPair.fromPrivKey(
+        //     Bytes.fromHexString('66633d18513bec30dd11a209f1ceb1787aa9e2069d5d47e590174dc9665102b3'),
+        // );
+
+        const hdKey = HDKey.fromMnemonic('');
+
+        const privKey = hdKey.derivePrivKey("m/44'/1'/0'/0/0");
+        const anyKeyPair = Secp256k1KeyPair.fromPrivKey(privKey);
+
+        // Converting address
+        const cronosAddress = '0xD47286f025F947482a2C374Fb70e9D4c94d809CF';
+        const cronosAddressBytes = Bytes.fromHexString(cronosAddress).toUint8Array();
+        const words = bech32.toWords(cronosAddressBytes);
+        const cronosToBech32Address = bech32.encode('eth1', words);
+
+        // eslint-disable-next-line no-console
+        console.log('Bech32 converted:', cronosToBech32Address);
+
+        const customTimeoutTimestamp = Long.fromValue((Date.now() + 3_600_000 * 1) * 1000 * 1000);
+        // eslint-disable-next-line no-console
+        console.log('customTimeoutTimestamp', customTimeoutTimestamp.toNumber());
 
         const MsgTransfer = new cro.ibc.MsgTransfer({
             sourcePort: 'transfer',
-            sourceChannel: 'channel-33',
-            token: tokenAmount,
-            sender: 'tcro15sfupd26sp6qf37ll5q6xuf330k7df9tnvrqht',
-            receiver: 'cosmos1vw4ucaeagtduv5ep4sa95e3aqzqpsk5meda08c',
-            timeoutHeight,
-            timeoutTimestamp: Long.fromString('1620640362229420996'),
+            sourceChannel: 'channel-3',
+            token: cro.Coin.fromBaseUnit('450040330'),
+            sender: 'tcro1lnj8dc9qazmlhm5t8vw8vryxyzv09zgep2cz9v',
+            receiver: cronosToBech32Address,
+            timeoutTimestamp: customTimeoutTimestamp,
         });
 
         const anySigner = {
             publicKey: anyKeyPair.getPubKey(),
-            accountNumber: new Big(0),
-            accountSequence: new Big(2),
+            accountNumber: new Big(227),
+            accountSequence: new Big(12),
         };
 
         const rawTx = new cro.RawTransaction();
+        rawTx.setFee(cro.Coin.fromBaseUnit('5000'));
 
         const signableTx = rawTx.appendMessage(MsgTransfer).addSigner(anySigner).toSignable();
 
         const signedTx = signableTx.setSignature(0, anyKeyPair.sign(signableTx.toSignDocumentHash(0))).toSigned();
 
         const signedTxHex = signedTx.encode().toHexString();
-        expect(signedTxHex).to.be.eql(
-            '0ac7010ac4010a292f6962632e6170706c69636174696f6e732e7472616e736665722e76312e4d73675472616e736665721296010a087472616e73666572120a6368616e6e656c2d33331a100a08626173657463726f120431323334222b7463726f313573667570643236737036716633376c6c3571367875663333306b37646639746e76727168742a2d636f736d6f7331767734756361656167746475763565703473613935653361717a7170736b356d6564613038633206080010e3a36838c4a7e1daaafaeabe1612580a500a460a1f2f636f736d6f732e63727970746f2e736563703235366b312e5075624b657912230a2103fd0d560b6c4aa1ca16721d039a192867c3457e19dad553edb98e7ba88b159c2712040a0208011802120410c09a0c1a40f1032ff3d1b53682d8038e4a06d7c1fadf17858a619e32cc3fa5f9463b35c6194f7ebff606dbe142fe63f3d978da2e4372831ea96faf94c80153416667bcd321',
-        );
+
+        // eslint-disable-next-line no-console
+        console.log(signedTxHex);
+
+        // expect(signedTxHex).to.be.eql(
+        //     '0ac7010ac4010a292f6962632e6170706c69636174696f6e732e7472616e736665722e76312e4d73675472616e736665721296010a087472616e73666572120a6368616e6e656c2d33331a100a08626173657463726f120431323334222b7463726f313573667570643236737036716633376c6c3571367875663333306b37646639746e76727168742a2d636f736d6f7331767734756361656167746475763565703473613935653361717a7170736b356d6564613038633206080010e3a36838c4a7e1daaafaeabe1612580a500a460a1f2f636f736d6f732e63727970746f2e736563703235366b312e5075624b657912230a2103fd0d560b6c4aa1ca16721d039a192867c3457e19dad553edb98e7ba88b159c2712040a0208011802120410c09a0c1a40f1032ff3d1b53682d8038e4a06d7c1fadf17858a619e32cc3fa5f9463b35c6194f7ebff606dbe142fe63f3d978da2e4372831ea96faf94c80153416667bcd321',
+        // );
     });
 
     it('Should validate MsgTransfer provided addresses with network config', function () {
