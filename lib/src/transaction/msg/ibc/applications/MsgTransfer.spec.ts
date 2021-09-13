@@ -99,14 +99,15 @@ describe('Testing MsgTransfer', function () {
         const anyKeyPair = Secp256k1KeyPair.fromPrivKey(privKey);
 
         // TODO : Converting EVM to Bech32 address - Moved to exported util function
-        const cronosAddress = '0xD47286f025F947482a2C374Fb70e9D4c94d809CF';
+        const cronosAddress = 'D47286f025F947482a2C374Fb70e9D4c94d809CF';
         const cronosAddressBytes = Bytes.fromHexString(cronosAddress).toUint8Array();
         const words = bech32.toWords(cronosAddressBytes);
-        const cronosToBech32Address = bech32.encode('eth1', words);
+        const cronosToBech32Address = bech32.encode('eth', words);
 
         // eslint-disable-next-line no-console
         console.log('Bech32 converted:', cronosToBech32Address);
 
+        // Time is in milliseconds
         const customTimeoutTimestamp = Long.fromValue((Date.now() + 3_600_000 * 1) * 1000 * 1000);
         // eslint-disable-next-line no-console
         console.log('customTimeoutTimestamp', customTimeoutTimestamp.toNumber());
@@ -114,7 +115,7 @@ describe('Testing MsgTransfer', function () {
         const MsgTransfer = new cro.ibc.MsgTransfer({
             sourcePort: 'transfer',
             sourceChannel: 'channel-3',
-            token: cro.Coin.fromBaseUnit('450040330'),
+            token: cro.Coin.fromBaseUnit('50040330'),
             sender: 'tcro1lnj8dc9qazmlhm5t8vw8vryxyzv09zgep2cz9v',
             receiver: cronosToBech32Address,
             timeoutTimestamp: customTimeoutTimestamp,
@@ -123,7 +124,7 @@ describe('Testing MsgTransfer', function () {
         const anySigner = {
             publicKey: anyKeyPair.getPubKey(),
             accountNumber: new Big(227),
-            accountSequence: new Big(12),
+            accountSequence: new Big(15),
         };
 
         const rawTx = new cro.RawTransaction();
