@@ -98,7 +98,7 @@ describe('Testing MsgTransfer', function () {
         const privKey = hdKey.derivePrivKey("m/44'/1'/0'/0/0");
         const anyKeyPair = Secp256k1KeyPair.fromPrivKey(privKey);
 
-        // Converting address
+        // TODO : Converting EVM to Bech32 address - Moved to exported util function
         const cronosAddress = '0xD47286f025F947482a2C374Fb70e9D4c94d809CF';
         const cronosAddressBytes = Bytes.fromHexString(cronosAddress).toUint8Array();
         const words = bech32.toWords(cronosAddressBytes);
