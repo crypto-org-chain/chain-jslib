@@ -10,6 +10,7 @@ import { Secp256k1KeyPair } from '../../../../keypair/secp256k1';
 import { Bytes } from '../../../../utils/bytes/bytes';
 import { CroSDK, CroNetwork } from '../../../../core/cro';
 import { COSMOS_MSG_TYPEURL } from '../../../common/constants/typeurl';
+import { isAminoMsgTransfer } from '../../../../cosmos/amino/msg';
 
 const cro = CroSDK({ network: CroNetwork.TestnetCroeseid3 });
 
@@ -131,7 +132,7 @@ describe('Testing MsgTransfer', function () {
         );
     });
 
-    it('Should throw on getting toRawAminoMsg()', function () {
+    it('Should return correct amino message on toRawAminoMsg()', function () {
         const MsgTransfer = new cro.ibc.MsgTransfer({
             sourcePort: 'transfer',
             sourceChannel: 'channel-33',
@@ -141,7 +142,7 @@ describe('Testing MsgTransfer', function () {
             timeoutHeight,
             timeoutTimestamp: Long.fromString('1620640362229420996'),
         });
-
+        expect(isAminoMsgTransfer(MsgTransfer.toRawAminoMsg()).valueOf()).to.be.true;
         expect(MsgTransfer.toRawAminoMsg()).to.deep.eq({
             type: 'cosmos-sdk/MsgTransfer',
             value: {
@@ -158,6 +159,28 @@ describe('Testing MsgTransfer', function () {
                     amount: '1234',
                     denom: 'basetcro',
                 },
+            },
+        });
+
+        // Case when timeoutHeight and token is undefined
+        const msgTransferIBC_UNdefined = new cro.ibc.MsgTransfer({
+            sourcePort: 'transfer',
+            sourceChannel: 'channel-33',
+            sender: 'tcro15sfupd26sp6qf37ll5q6xuf330k7df9tnvrqht',
+            receiver: 'cosmos1vw4ucaeagtduv5ep4sa95e3aqzqpsk5meda08c',
+            timeoutTimestamp: Long.fromString('1620640362229420996'),
+        });
+
+        expect(msgTransferIBC_UNdefined.toRawAminoMsg()).to.deep.eq({
+            type: 'cosmos-sdk/MsgTransfer',
+            value: {
+                receiver: 'cosmos1vw4ucaeagtduv5ep4sa95e3aqzqpsk5meda08c',
+                sender: 'tcro15sfupd26sp6qf37ll5q6xuf330k7df9tnvrqht',
+                source_channel: 'channel-33',
+                source_port: 'transfer',
+                timeout_height: undefined,
+                timeout_timestamp: '1620640362229420996',
+                token: undefined,
             },
         });
     });
