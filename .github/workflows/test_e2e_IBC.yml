@@ -46,7 +46,7 @@ jobs:
           export TMPGENESIS=$CHAIN_1_HOME/config/tmp_genesis.json
           export APPCONFIG=$CHAIN_1_HOME/config/app.toml
           export CLIENTCONFIG=$CHAIN_1_HOME/config/client.toml
-          export DENOM=basecro
+          export DENOM=hitesh
 
           # export GRPCPORT0=9090
           # export GRPCPORT1=9091
