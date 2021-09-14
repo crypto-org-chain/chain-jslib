@@ -3,226 +3,225 @@
 name: Integration_test_ibc_network
 
 on:
-  pull_request:
-  push:
-    branches:
-      - master
+    pull_request:
+    push:
+        branches:
+            - master
 
 jobs:
-  test-e2e:
-    name: End-to-end Test
-    runs-on: ubuntu-latest
-    steps:
-      - name: Set up Golang
-        uses: actions/setup-go@v2
+    test-e2e:
+        name: End-to-end Test
+        runs-on: ubuntu-latest
+        steps:
+            - name: Set up Golang
+              uses: actions/setup-go@v2
 
-      - name: Setup Rust/Cargo for running Hermes
-        uses: actions-rs/toolchain@v1
-        with:
-          toolchain: stable
+            - name: Setup Rust/Cargo for running Hermes
+              uses: actions-rs/toolchain@v1
+              with:
+                  toolchain: stable
 
-      - name: Checkout leejw51crypto/ibc-rs
-        uses: actions/checkout@v2
-        with:
-          repository: leejw51crypto/ibc-rs
-          ref: ibc
-          path: hermes-rs
-          submodules: recursive
+            - name: Checkout leejw51crypto/ibc-rs
+              uses: actions/checkout@v2
+              with:
+                  repository: leejw51crypto/ibc-rs
+                  ref: ibc
+                  path: hermes-rs
+                  submodules: recursive
 
-      - name: Checkout chain-main repository
-        uses: actions/checkout@v2
-        with:
-          repository: crypto-org-chain/chain-main
-          path: chain-main
-          ref: v3.1.1
-          submodules: recursive
+            - name: Checkout chain-main repository
+              uses: actions/checkout@v2
+              with:
+                  repository: crypto-org-chain/chain-main
+                  path: chain-main
+                  ref: v3.1.1
+                  submodules: recursive
 
-      - name: Build and start CHAIN_1
-        run: |
-          sudo apt-get install jq
-          mkdir ./chain2 && mkdir ./chain1
+            - name: Build and start CHAIN_1
+              run: |
+                  sudo apt-get install jq
+                  mkdir ./chain2 && mkdir ./chain1
 
-          cp -r chain-main/* ./chain1/
-          cp -r chain-main/* ./chain2/
-
-
-          ## Setup, configure and start `chain1`
-          cd ./chain1 
-
-          rm -rf $CHAIN_1_HOME
-
-          export CHAIN_1_HOME=$PWD/chain1_data
-          export CHAIN_1_ID=testnet1
-          export CHAIN_1_MONIKER=chain1
-          export ETHCONFIG=$CHAIN_1_HOME/config/config.toml
-          export GENESIS=$CHAIN_1_HOME/config/genesis.json
-          export TMPGENESIS=$CHAIN_1_HOME/config/tmp_genesis.json
-          export APPCONFIG=$CHAIN_1_HOME/config/app.toml
-          export CLIENTCONFIG=$CHAIN_1_HOME/config/client.toml
-          export DENOM=denomone
-          export CLI=./build/chain-maind
-          
-          export VALIDATOR_MNEMONIC="whale dry improve icon perfect sauce lesson wire oblige gadget exhaust toast spin enforce labor logic giraffe feed project weasel absent build reject life"
-          export ECOSYSTEM_MNEMONIC="rubber rocket snack author mad ship core physical arrange language enrich story lamp move dynamic into game marine ramp trap anchor beyond mystery gun"
+                  cp -r chain-main/* ./chain1/
+                  cp -r chain-main/* ./chain2/
 
 
-          export TOTALAMOUNT=100000000000000000000000000000000$DENOM
-          export MYAMOUNT=1000100000000000000001$DENOM
+                  ## Setup, configure and start `chain1`
+                  cd ./chain1 
 
-          NETWORK=testnet make install 
-          NETWORK=testnet make build
+                  rm -rf $CHAIN_1_HOME
 
-          $CLI config keyring-backend test --home $CHAIN_1_HOME
-          $CLI config chain-id $CHAIN_1_ID --home $CHAIN_1_HOME
+                  export CHAIN_1_HOME=$PWD/chain1_data
+                  export CHAIN_1_ID=testnet1
+                  export CHAIN_1_MONIKER=chain1
+                  export ETHCONFIG=$CHAIN_1_HOME/config/config.toml
+                  export GENESIS=$CHAIN_1_HOME/config/genesis.json
+                  export TMPGENESIS=$CHAIN_1_HOME/config/tmp_genesis.json
+                  export APPCONFIG=$CHAIN_1_HOME/config/app.toml
+                  export CLIENTCONFIG=$CHAIN_1_HOME/config/client.toml
+                  export DENOM=denomone
+                  export CLI=./build/chain-maind
 
-          $CLI init $CHAIN_1_MONIKER --chain-id $CHAIN_1_ID --home $CHAIN_1_HOME
-          
-          echo $VALIDATOR_MNEMONIC | $CLI keys add validator --keyring-backend test --recover --index 0 --home $CHAIN_1_HOME
-          echo $ECOSYSTEM_MNEMONIC | $CLI keys add ecosystem --keyring-backend test --recover --index 1 --home $CHAIN_1_HOME
-          
-          # $CLI keys add validator --keyring-backend test --home $CHAIN_1_HOME --output json >> ./validator.json
-          # $CLI keys add ecosystem --keyring-backend test --home $CHAIN_1_HOME --output json >> ./ecosystem.json
-          
-          # Change parameter token denominations to $DENOM
-          cat $GENESIS | jq '.app_state["staking"]["params"]["bond_denom"]="'$DENOM'"' > $TMPGENESIS && mv $TMPGENESIS $GENESIS
-          cat $GENESIS | jq '.app_state["crisis"]["constant_fee"]["denom"]="'$DENOM'"' > $TMPGENESIS && mv $TMPGENESIS $GENESIS
-          cat $GENESIS | jq '.app_state["gov"]["deposit_params"]["min_deposit"][0]["denom"]="'$DENOM'"' > $TMPGENESIS && mv $TMPGENESIS $GENESIS
-          cat $GENESIS | jq '.app_state["mint"]["params"]["mint_denom"]="'$DENOM'"' > $TMPGENESIS && mv $TMPGENESIS $GENESIS
+                  export VALIDATOR_MNEMONIC="whale dry improve icon perfect sauce lesson wire oblige gadget exhaust toast spin enforce labor logic giraffe feed project weasel absent build reject life"
+                  export ECOSYSTEM_MNEMONIC="rubber rocket snack author mad ship core physical arrange language enrich story lamp move dynamic into game marine ramp trap anchor beyond mystery gun"
 
-          # increase block time (?)
-          cat $GENESIS | jq '.consensus_params["block"]["time_iota_ms"]="1000"' > $TMPGENESIS && mv $TMPGENESIS $GENESIS
 
-          # Set gas limit in genesis
-          cat $GENESIS | jq '.consensus_params["block"]["max_gas"]="10000000"' > $TMPGENESIS && mv $TMPGENESIS $GENESIS
+                  export TOTALAMOUNT=100000000000000000000000000000000$DENOM
+                  export MYAMOUNT=1000100000000000000001$DENOM
 
-          # Allocate genesis accounts (cosmos formatted addresses)
-          $CLI add-genesis-account $($CLI keys show validator -a --keyring-backend test --home $CHAIN_1_HOME) $TOTALAMOUNT --keyring-backend test  --home $CHAIN_1_HOME
-          $CLI add-genesis-account $($CLI keys show ecosystem -a --keyring-backend test --home $CHAIN_1_HOME) $MYAMOUNT --keyring-backend test  --home $CHAIN_1_HOME
-          
-          $CLI gentx validator $MYAMOUNT --keyring-backend test --chain-id $CHAIN_1_ID  --home $CHAIN_1_HOME
+                  NETWORK=testnet make install 
+                  NETWORK=testnet make build
 
-          $CLI collect-gentxs  --home $CHAIN_1_HOME
+                  $CLI config keyring-backend test --home $CHAIN_1_HOME
+                  $CLI config chain-id $CHAIN_1_ID --home $CHAIN_1_HOME
 
-          $CLI validate-genesis  --home $CHAIN_1_HOME
+                  $CLI init $CHAIN_1_MONIKER --chain-id $CHAIN_1_ID --home $CHAIN_1_HOME
 
-          $CLI start --pruning=nothing --trace --log_level info --minimum-gas-prices=0.0001$DENOM --home $CHAIN_1_HOME &
+                  echo $VALIDATOR_MNEMONIC | $CLI keys add validator --keyring-backend test --recover --index 0 --home $CHAIN_1_HOME
+                  echo $ECOSYSTEM_MNEMONIC | $CLI keys add ecosystem --keyring-backend test --recover --index 1 --home $CHAIN_1_HOME
 
-      - name: Build and start CHAIN_2
-        run: |
-          
-          ## Setup, configure and start `chain2`
-          cd ./chain2
+                  # $CLI keys add validator --keyring-backend test --home $CHAIN_1_HOME --output json >> ./validator.json
+                  # $CLI keys add ecosystem --keyring-backend test --home $CHAIN_1_HOME --output json >> ./ecosystem.json
 
-          rm -rf $CHAIN_2_HOME
+                  # Change parameter token denominations to $DENOM
+                  cat $GENESIS | jq '.app_state["staking"]["params"]["bond_denom"]="'$DENOM'"' > $TMPGENESIS && mv $TMPGENESIS $GENESIS
+                  cat $GENESIS | jq '.app_state["crisis"]["constant_fee"]["denom"]="'$DENOM'"' > $TMPGENESIS && mv $TMPGENESIS $GENESIS
+                  cat $GENESIS | jq '.app_state["gov"]["deposit_params"]["min_deposit"][0]["denom"]="'$DENOM'"' > $TMPGENESIS && mv $TMPGENESIS $GENESIS
+                  cat $GENESIS | jq '.app_state["mint"]["params"]["mint_denom"]="'$DENOM'"' > $TMPGENESIS && mv $TMPGENESIS $GENESIS
 
-          export CHAIN_2_HOME=$PWD/chain2_data
-          export CHAIN_2_ID=testnet2
-          export CHAIN_2_MONIKER=chain2
-          export ETHCONFIG=$CHAIN_2_HOME/config/config.toml
-          export GENESIS=$CHAIN_2_HOME/config/genesis.json
-          export TMPGENESIS=$CHAIN_2_HOME/config/tmp_genesis.json
-          export APPCONFIG=$CHAIN_2_HOME/config/app.toml
-          export CLIENTCONFIG=$CHAIN_2_HOME/config/client.toml
-          export CLI=./build/chain-maind
-          export VALIDATOR_MNEMONIC="whale dry improve icon perfect sauce lesson wire oblige gadget exhaust toast spin enforce labor logic giraffe feed project weasel absent build reject life"
-          export ECOSYSTEM_MNEMONIC="rubber rocket snack author mad ship core physical arrange language enrich story lamp move dynamic into game marine ramp trap anchor beyond mystery gun"
+                  # increase block time (?)
+                  cat $GENESIS | jq '.consensus_params["block"]["time_iota_ms"]="1000"' > $TMPGENESIS && mv $TMPGENESIS $GENESIS
 
-          # New node ports and hosts
-          export DENOM_2=denomtwo
-          export GRPCPORT0=9080
-          export GRPCPORT1=9081
-          export ETHPORT0=8535
-          export ETHPORT1=8536
-          export COSMOSPORT0=26646
-          export COSMOSPORT1=26647
-          export NODE=tcp://127.0.0.1:26707
+                  # Set gas limit in genesis
+                  cat $GENESIS | jq '.consensus_params["block"]["max_gas"]="10000000"' > $TMPGENESIS && mv $TMPGENESIS $GENESIS
 
-          export TOTALAMOUNT=200000000000000000000000000000000$DENOM_2
-          export MYAMOUNT=2000200000000000000001$DENOM_2
+                  # Allocate genesis accounts (cosmos formatted addresses)
+                  $CLI add-genesis-account $($CLI keys show validator -a --keyring-backend test --home $CHAIN_1_HOME) $TOTALAMOUNT --keyring-backend test  --home $CHAIN_1_HOME
+                  $CLI add-genesis-account $($CLI keys show ecosystem -a --keyring-backend test --home $CHAIN_1_HOME) $MYAMOUNT --keyring-backend test  --home $CHAIN_1_HOME
 
-          NETWORK=testnet make install 
-          NETWORK=testnet make build
+                  $CLI gentx validator $MYAMOUNT --keyring-backend test --chain-id $CHAIN_1_ID  --home $CHAIN_1_HOME
 
-          $CLI config keyring-backend test --home $CHAIN_2_HOME
-          $CLI config chain-id $CHAIN_2_ID --home $CHAIN_2_HOME
+                  $CLI collect-gentxs  --home $CHAIN_1_HOME
 
-          $CLI init $CHAIN_2_MONIKER --chain-id $CHAIN_2_ID --home $CHAIN_2_HOME
+                  $CLI validate-genesis  --home $CHAIN_1_HOME
 
-          echo $VALIDATOR_MNEMONIC | $CLI keys add validator --keyring-backend test --recover --index 0 --home $CHAIN_2_HOME
-          echo $ECOSYSTEM_MNEMONIC | $CLI keys add ecosystem --keyring-backend test --recover --index 1 --home $CHAIN_2_HOME
+                  $CLI start --pruning=nothing --trace --log_level info --minimum-gas-prices=0.0001$DENOM --home $CHAIN_1_HOME &
 
-          # $CLI keys add validator --keyring-backend test --home $CHAIN_2_HOME --output json >> ./validator.json
-          # $CLI keys add ecosystem --keyring-backend test --home $CHAIN_2_HOME --output json >> ./ecosystem.json
-          
-          # Change parameter token denominations to $DENOM_2
-          cat $GENESIS | jq '.app_state["staking"]["params"]["bond_denom"]="'$DENOM_2'"' > $TMPGENESIS && mv $TMPGENESIS $GENESIS
-          cat $GENESIS | jq '.app_state["crisis"]["constant_fee"]["denom"]="'$DENOM_2'"' > $TMPGENESIS && mv $TMPGENESIS $GENESIS
-          cat $GENESIS | jq '.app_state["gov"]["deposit_params"]["min_deposit"][0]["denom"]="'$DENOM_2'"' > $TMPGENESIS && mv $TMPGENESIS $GENESIS
-          cat $GENESIS | jq '.app_state["mint"]["params"]["mint_denom"]="'$DENOM_2'"' > $TMPGENESIS && mv $TMPGENESIS $GENESIS
+            - name: Build and start CHAIN_2
+              run: |
 
-          # increase block time (?)
-          cat $GENESIS | jq '.consensus_params["block"]["time_iota_ms"]="1000"' > $TMPGENESIS && mv $TMPGENESIS $GENESIS
+                  ## Setup, configure and start `chain2`
+                  cd ./chain2
 
-          # Set gas limit in genesis
-          cat $GENESIS | jq '.consensus_params["block"]["max_gas"]="10000000"' > $TMPGENESIS && mv $TMPGENESIS $GENESIS
+                  rm -rf $CHAIN_2_HOME
 
-          # change port
-          sed -i "s/create_empty_blocks = true/create_empty_blocks = false/g" $ETHCONFIG
-          sed -i "s/26657/$COSMOSPORT1/g" $CLIENTCONFIG
-          sed -i "s/26657/$COSMOSPORT1/g" $ETHCONFIG
-          sed -i "s/26656/$COSMOSPORT0/g" $ETHCONFIG
-          sed -i "s/9090/$GRPCPORT0/g" $APPCONFIG
-          sed -i "s/9091/$GRPCPORT1/g" $APPCONFIG
-          sed -i "s/8545/$ETHPORT0/g" $APPCONFIG
-          sed -i "s/8546/$ETHPORT1/g" $APPCONFIG
-          sed -i "s/aphoton/$DENOM_2/g" $APPCONFIG
-          sed -i "s/aphoton/$DENOM_2/g" $GENESIS
+                  export CHAIN_2_HOME=$PWD/chain2_data
+                  export CHAIN_2_ID=testnet2
+                  export CHAIN_2_MONIKER=chain2
+                  export ETHCONFIG=$CHAIN_2_HOME/config/config.toml
+                  export GENESIS=$CHAIN_2_HOME/config/genesis.json
+                  export TMPGENESIS=$CHAIN_2_HOME/config/tmp_genesis.json
+                  export APPCONFIG=$CHAIN_2_HOME/config/app.toml
+                  export CLIENTCONFIG=$CHAIN_2_HOME/config/client.toml
+                  export CLI=./build/chain-maind
+                  export VALIDATOR_MNEMONIC="whale dry improve icon perfect sauce lesson wire oblige gadget exhaust toast spin enforce labor logic giraffe feed project weasel absent build reject life"
+                  export ECOSYSTEM_MNEMONIC="rubber rocket snack author mad ship core physical arrange language enrich story lamp move dynamic into game marine ramp trap anchor beyond mystery gun"
 
-          # Allocate genesis accounts (cosmos formatted addresses)
-          $CLI add-genesis-account $($CLI keys show validator -a --keyring-backend test --home $CHAIN_2_HOME) $TOTALAMOUNT --keyring-backend test  --home $CHAIN_2_HOME
-          $CLI add-genesis-account $($CLI keys show ecosystem -a --keyring-backend test --home $CHAIN_2_HOME) $MYAMOUNT --keyring-backend test  --home $CHAIN_2_HOME
-          
-          $CLI gentx validator $MYAMOUNT --keyring-backend test --chain-id $CHAIN_2_ID  --home $CHAIN_2_HOME
+                  # New node ports and hosts
+                  export DENOM_2=denomtwo
+                  export GRPCPORT0=9080
+                  export GRPCPORT1=9081
+                  export ETHPORT0=8535
+                  export ETHPORT1=8536
+                  export COSMOSPORT0=26646
+                  export COSMOSPORT1=26647
+                  export NODE=tcp://127.0.0.1:26707
 
-          $CLI collect-gentxs  --home $CHAIN_2_HOME
+                  export TOTALAMOUNT=200000000000000000000000000000000$DENOM_2
+                  export MYAMOUNT=2000200000000000000001$DENOM_2
 
-          $CLI validate-genesis  --home $CHAIN_2_HOME
+                  NETWORK=testnet make install 
+                  NETWORK=testnet make build
 
-          $CLI start --pruning=nothing --trace --log_level info --minimum-gas-prices=0.0001$DENOM_2 --home $CHAIN_2_HOME &
+                  $CLI config keyring-backend test --home $CHAIN_2_HOME
+                  $CLI config chain-id $CHAIN_2_ID --home $CHAIN_2_HOME
 
-      - name: Ping and check both the networks
-        run: |
-          ## Sleep 5 Seconds
-          sleep 5
-          # Network 1 : chain1 | Should return `network1` & `chain1`
-          curl --location --request GET 'localhost:26657/status' | jq '.result'
-          
-          # Network 2 : chain2  | Should return `network2` & `chain2`
-          curl --location --request GET 'localhost:26647/status' | jq '.result'
+                  $CLI init $CHAIN_2_MONIKER --chain-id $CHAIN_2_ID --home $CHAIN_2_HOME
 
-      - name: Setup hermes
-        run: |
-              wget -O hermes.tar.gz https://github.com/informalsystems/ibc-rs/releases/download/v0.7.0/hermes-v0.7.0-x86_64-unknown-linux-gnu.tar.gz
+                  echo $VALIDATOR_MNEMONIC | $CLI keys add validator --keyring-backend test --recover --index 0 --home $CHAIN_2_HOME
+                  echo $ECOSYSTEM_MNEMONIC | $CLI keys add ecosystem --keyring-backend test --recover --index 1 --home $CHAIN_2_HOME
 
-              mkdir -p $HOME/.hermes/bin
-              tar -C $HOME/.hermes/bin/ -vxzf hermes.tar.gz
-              export PATH="$HOME/.hermes/bin:$PATH"
+                  # $CLI keys add validator --keyring-backend test --home $CHAIN_2_HOME --output json >> ./validator.json
+                  # $CLI keys add ecosystem --keyring-backend test --home $CHAIN_2_HOME --output json >> ./ecosystem.json
 
-              hermes version
+                  # Change parameter token denominations to $DENOM_2
+                  cat $GENESIS | jq '.app_state["staking"]["params"]["bond_denom"]="'$DENOM_2'"' > $TMPGENESIS && mv $TMPGENESIS $GENESIS
+                  cat $GENESIS | jq '.app_state["crisis"]["constant_fee"]["denom"]="'$DENOM_2'"' > $TMPGENESIS && mv $TMPGENESIS $GENESIS
+                  cat $GENESIS | jq '.app_state["gov"]["deposit_params"]["min_deposit"][0]["denom"]="'$DENOM_2'"' > $TMPGENESIS && mv $TMPGENESIS $GENESIS
+                  cat $GENESIS | jq '.app_state["mint"]["params"]["mint_denom"]="'$DENOM_2'"' > $TMPGENESIS && mv $TMPGENESIS $GENESIS
 
-              ls {{github.workspace}}
-              cp {{github.workspace}}/ibc/config.toml ./hermes-rs
-              cd hermes-rs
+                  # increase block time (?)
+                  cat $GENESIS | jq '.consensus_params["block"]["time_iota_ms"]="1000"' > $TMPGENESIS && mv $TMPGENESIS $GENESIS
 
-              export MYIBC0=testnet1
-              export MYIBC1=testnet2
-              export MYCHANNEL=channel-0
-              export MYCONFIG=$PWD/config.toml
+                  # Set gas limit in genesis
+                  cat $GENESIS | jq '.consensus_params["block"]["max_gas"]="10000000"' > $TMPGENESIS && mv $TMPGENESIS $GENESIS
 
-              hermes -c $MYCONFIG  keys restore $MYIBC0 -m "whale dry improve icon perfect sauce lesson wire oblige gadget exhaust toast spin enforce labor logic giraffe feed project weasel absent build reject life"  -p "m/44'/1'/0'/0/0"
+                  # change port
+                  sed -i "s/create_empty_blocks = true/create_empty_blocks = false/g" $ETHCONFIG
+                  sed -i "s/26657/$COSMOSPORT1/g" $CLIENTCONFIG
+                  sed -i "s/26657/$COSMOSPORT1/g" $ETHCONFIG
+                  sed -i "s/26656/$COSMOSPORT0/g" $ETHCONFIG
+                  sed -i "s/9090/$GRPCPORT0/g" $APPCONFIG
+                  sed -i "s/9091/$GRPCPORT1/g" $APPCONFIG
+                  sed -i "s/8545/$ETHPORT0/g" $APPCONFIG
+                  sed -i "s/8546/$ETHPORT1/g" $APPCONFIG
+                  sed -i "s/aphoton/$DENOM_2/g" $APPCONFIG
+                  sed -i "s/aphoton/$DENOM_2/g" $GENESIS
 
-              hermes -c $MYCONFIG  keys restore $MYIBC1 -m "whale dry improve icon perfect sauce lesson wire oblige gadget exhaust toast spin enforce labor logic giraffe feed project weasel absent build reject life"  -p "m/44'/1'/0'/0/0"
+                  # Allocate genesis accounts (cosmos formatted addresses)
+                  $CLI add-genesis-account $($CLI keys show validator -a --keyring-backend test --home $CHAIN_2_HOME) $TOTALAMOUNT --keyring-backend test  --home $CHAIN_2_HOME
+                  $CLI add-genesis-account $($CLI keys show ecosystem -a --keyring-backend test --home $CHAIN_2_HOME) $MYAMOUNT --keyring-backend test  --home $CHAIN_2_HOME
 
-              hermes  -c $MYCONFIG keys list $MYIBC0
-              hermes  -c $MYCONFIG keys list $MYIBC1
-      
+                  $CLI gentx validator $MYAMOUNT --keyring-backend test --chain-id $CHAIN_2_ID  --home $CHAIN_2_HOME
+
+                  $CLI collect-gentxs  --home $CHAIN_2_HOME
+
+                  $CLI validate-genesis  --home $CHAIN_2_HOME
+
+                  $CLI start --pruning=nothing --trace --log_level info --minimum-gas-prices=0.0001$DENOM_2 --home $CHAIN_2_HOME &
+
+            - name: Ping and check both the networks
+              run: |
+                  ## Sleep 5 Seconds
+                  sleep 5
+                  # Network 1 : chain1 | Should return `network1` & `chain1`
+                  curl --location --request GET 'localhost:26657/status' | jq '.result'
+
+                  # Network 2 : chain2  | Should return `network2` & `chain2`
+                  curl --location --request GET 'localhost:26647/status' | jq '.result'
+
+            - name: Setup hermes
+              run: |
+                  wget -O hermes.tar.gz https://github.com/informalsystems/ibc-rs/releases/download/v0.7.0/hermes-v0.7.0-x86_64-unknown-linux-gnu.tar.gz
+
+                  mkdir -p $HOME/.hermes/bin
+                  tar -C $HOME/.hermes/bin/ -vxzf hermes.tar.gz
+                  export PATH="$HOME/.hermes/bin:$PATH"
+
+                  hermes version
+
+                  ls ${{github.workspace}}
+                  cp ${{github.workspace}}/ibc/config.toml ./hermes-rs
+                  cd hermes-rs
+
+                  export MYIBC0=testnet1
+                  export MYIBC1=testnet2
+                  export MYCHANNEL=channel-0
+                  export MYCONFIG=$PWD/config.toml
+
+                  hermes -c $MYCONFIG  keys restore $MYIBC0 -m "whale dry improve icon perfect sauce lesson wire oblige gadget exhaust toast spin enforce labor logic giraffe feed project weasel absent build reject life"  -p "m/44'/1'/0'/0/0"
+
+                  hermes -c $MYCONFIG  keys restore $MYIBC1 -m "whale dry improve icon perfect sauce lesson wire oblige gadget exhaust toast spin enforce labor logic giraffe feed project weasel absent build reject life"  -p "m/44'/1'/0'/0/0"
+
+                  hermes  -c $MYCONFIG keys list $MYIBC0
+                  hermes  -c $MYCONFIG keys list $MYIBC1
