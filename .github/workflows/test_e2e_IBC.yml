@@ -1,0 +1,117 @@
+# This is a basic workflow to help you get started with Actions
+
+name: Integration_test_ibc_network
+
+on:
+  pull_request:
+  push:
+    branches:
+      - master
+
+jobs:
+  test-e2e:
+    name: End-to-end Test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Set up Golang
+        uses: actions/setup-go@v2
+
+      - name: Checkout chain-main repository
+        uses: actions/checkout@v2
+        with:
+          repository: crypto-org-chain/chain-main
+          path: chain-main
+          ref: v3.1.1
+          submodules: recursive
+
+      - name: Build and start chain-maind
+        run: |
+          sudo apt-get install jq
+          mkdir ./chain2 && mkdir ./chain1
+
+          cp chain-main/* ./chain1/
+          cp chain-main/* ./chain2/
+
+
+          ## Setup, configure and start `chain1`
+          cd ./chain1 
+
+          rm -rf $CHAIN_1_HOME
+
+          export CHAIN_1_HOME=$PWD/chain1_data
+          export CHAIN_1_ID=testnet1
+          export CHAIN_1_MONIKER=chain1
+          export ETHCONFIG=$CHAIN_1_HOME/config/config.toml
+          export GENESIS=$CHAIN_1_HOME/config/genesis.json
+          export TMPGENESIS=$CHAIN_1_HOME/config/tmp_genesis.json
+          export APPCONFIG=$CHAIN_1_HOME/config/app.toml
+          export CLIENTCONFIG=$CHAIN_1_HOME/config/client.toml
+          export DENOM=basecro
+
+          # export GRPCPORT0=9090
+          # export GRPCPORT1=9091
+          # export ETHPORT0=8545
+          # export ETHPORT1=8546
+          # export COSMOSPORT0=26656
+          # export COSMOSPORT1=26657
+          # export CLI=chain-maind
+          # export NODE=tcp://127.0.0.1:26807
+
+          export TOTALAMOUNT=100000000000000000000000000000000$DENOM
+          export MYAMOUNT=1000100000000000000001$DENOM
+
+          NETWORK=testnet make install 
+          NETWORK=testnet make build
+
+          ./build/chain-maind config keyring-backend test --home $CHAIN_1_HOME
+          ./build/chain-maind config chain-id $CHAIN_1_ID --home $CHAIN_1_HOME
+
+          ./build/chain-maind init $CHAIN_1_MONIKER --chain-id $CHAIN_1_ID --home $CHAIN_1_HOME
+
+          ./build/chain-maind keys add validator --keyring-backend test --output json >> ./validator.json
+          ./build/chain-maind keys add ecosystem --keyring-backend test --output json >> ./ecosystem.json
+          
+          # Change parameter token denominations to $DENOM
+          cat $GENESIS | jq '.app_state["staking"]["params"]["bond_denom"]="'$DENOM'"' > $TMPGENESIS && mv $TMPGENESIS $GENESIS
+          cat $GENESIS | jq '.app_state["crisis"]["constant_fee"]["denom"]="'$DENOM'"' > $TMPGENESIS && mv $TMPGENESIS $GENESIS
+          cat $GENESIS | jq '.app_state["gov"]["deposit_params"]["min_deposit"][0]["denom"]="'$DENOM'"' > $TMPGENESIS && mv $TMPGENESIS $GENESIS
+          cat $GENESIS | jq '.app_state["mint"]["params"]["mint_denom"]="'$DENOM'"' > $TMPGENESIS && mv $TMPGENESIS $GENESIS
+
+          # increase block time (?)
+          cat $GENESIS | jq '.consensus_params["block"]["time_iota_ms"]="1000"' > $TMPGENESIS && mv $TMPGENESIS $GENESIS
+
+          # Set gas limit in genesis
+          cat $GENESIS | jq '.consensus_params["block"]["max_gas"]="10000000"' > $TMPGENESIS && mv $TMPGENESIS $GENESIS
+
+          # change port
+          # sed -i "s/create_empty_blocks = true/create_empty_blocks = false/g" $ETHCONFIG
+          # sed -i "s/26657/$COSMOSPORT1/g" $CLIENTCONFIG
+          # sed -i "s/26657/$COSMOSPORT1/g" $ETHCONFIG
+          # sed -i "s/26656/$COSMOSPORT0/g" $ETHCONFIG
+          # sed -i "s/9090/$GRPCPORT0/g" $APPCONFIG
+          # sed -i "s/9091/$GRPCPORT1/g" $APPCONFIG
+          # sed -i "s/8545/$ETHPORT0/g" $APPCONFIG
+          # sed -i "s/8546/$ETHPORT1/g" $APPCONFIG
+          # sed -i "s/aphoton/$DENOM/g" $APPCONFIG
+          # sed -i "s/aphoton/$DENOM/g" $GENESIS
+
+
+
+          # Allocate genesis accounts (cosmos formatted addresses)
+          ./build/chain-maind add-genesis-account $(./build/chain-maind keys show validator -a --keyring-backend test --home $CHAIN_1_HOME) $TOTALAMOUNT --keyring-backend test  --home $CHAIN_1_HOME
+          ./build/chain-maind add-genesis-account $(./build/chain-maind keys show ecosystem -a --keyring-backend test --home $CHAIN_1_HOME) $MYAMOUNT --keyring-backend test  --home $CHAIN_1_HOME
+          
+          ./build/chain-maind gentx validator $MYAMOUNT --keyring-backend test --chain-id $CHAIN_1_ID  --home $CHAIN_1_HOME
+
+          ./build/chain-maind collect-gentxs  --home $CHAIN_1_HOME
+
+          ./build/chain-maind validate-genesis  --home $CHAIN_1_HOME
+
+          ./build/chain-maind start --pruning=nothing --trace --log_level info --minimum-gas-prices=0.0001$DENOM --json-rpc.api eth,txpool,personal,net,debug,web3,miner  --home $CHAIN_1_HOME 
+
+
+      - name: Transfer funds to Test accounts
+        run: |
+          ## Sleep 5 Seconds
+          sleep 5
+          curl --location --request GET 'localhost:26657/status' | jq '.'
