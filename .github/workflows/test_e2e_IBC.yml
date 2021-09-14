@@ -109,7 +109,7 @@ jobs:
 
           ./build/chain-maind validate-genesis  --home $CHAIN_1_HOME
 
-          ./build/chain-maind start --pruning=nothing --trace --log_level info --minimum-gas-prices=0.0001$DENOM --home $CHAIN_1_HOME 
+          ./build/chain-maind start --pruning=nothing --trace --log_level info --minimum-gas-prices=0.0001$DENOM --home $CHAIN_1_HOME &
 
 
       - name: Transfer funds to Test accounts
