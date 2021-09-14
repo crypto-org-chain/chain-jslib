@@ -20,6 +20,8 @@ jobs:
         uses: actions-rs/toolchain@v1
         with:
           toolchain: stable
+          
+      - name: Check cargo
         run: |
               cargo build --release --all-features
               cargo version
