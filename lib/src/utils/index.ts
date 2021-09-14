@@ -2,7 +2,7 @@ import { cloneUint8Array } from './typed-array';
 import { Bytes } from './bytes/bytes';
 import { Big } from './big';
 import { hash160, sha256 } from './hash';
-import { AddressValidator, AddressType } from './address';
+import { AddressValidator, AddressType, getBech32AddressFromEVMAddress } from './address';
 import { TxDecoder } from './txDecoder';
 
 export default {
@@ -15,4 +15,5 @@ export default {
     TxDecoder,
     Big,
     Bytes,
+    convertEVMAddressToBech32Address: getBech32AddressFromEVMAddress,
 };
