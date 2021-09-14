@@ -29,7 +29,7 @@ describe('Testing MsgTransfer', function () {
             sender: 'tcro15sfupd26sp6qf37ll5q6xuf330k7df9tnvrqht',
             receiver: 'cosmos1vw4ucaeagtduv5ep4sa95e3aqzqpsk5meda08c',
             timeoutHeight,
-            timeoutTimestamp: Long.fromString('1620640362229420996'),
+            timeoutTimestampInNanoSeconds: Long.fromString('1620640362229420996'),
         };
 
         const testRunner = fuzzy(fuzzy.ObjArg(anyValidOptions));
@@ -50,7 +50,7 @@ describe('Testing MsgTransfer', function () {
             sender: 'tcro15sfupd26sp6qf37ll5q6xuf330k7df9tnvrqht',
             receiver: 'cosmos1vw4ucaeagtduv5ep4sa95e3aqzqpsk5meda08c',
             timeoutHeight,
-            timeoutTimestamp: Long.fromString('1620640362229420996'),
+            timeoutTimestampInNanoSeconds: Long.fromString('1620640362229420996'),
         });
 
         const rawMsg: Msg = {
@@ -81,7 +81,7 @@ describe('Testing MsgTransfer', function () {
             sender: 'tcro15sfupd26sp6qf37ll5q6xuf330k7df9tnvrqht',
             receiver: 'cosmos1vw4ucaeagtduv5ep4sa95e3aqzqpsk5meda08c',
             timeoutHeight,
-            timeoutTimestamp: Long.fromString('1620640362229420996'),
+            timeoutTimestampInNanoSeconds: Long.fromString('1620640362229420996'),
         });
 
         const anySigner = {
@@ -110,7 +110,7 @@ describe('Testing MsgTransfer', function () {
             sender: 'cosmos1vw4ucaeagtduv5ep4sa95e3aqzqpsk5meda08c',
             receiver: 'cosmos1vw4ucaeagtduv5ep4sa95e3aqzqpsk5meda08c',
             timeoutHeight,
-            timeoutTimestamp: Long.fromString('1620640362229420996'),
+            timeoutTimestampInNanoSeconds: Long.fromString('1620640362229420996'),
         };
 
         expect(() => new cro.ibc.MsgTransfer(params1)).to.throw('Provided `sender` does not match network selected');
@@ -124,7 +124,7 @@ describe('Testing MsgTransfer', function () {
             sender: 'tcro15sfupd26sp6qf37ll5q6xuf330k7df9tnvrqht',
             receiver: '0x7e00664398A54AE12648CAe2785c36d00dd51672',
             timeoutHeight,
-            timeoutTimestamp: Long.fromString('1620640362229420996'),
+            timeoutTimestampInNanoSeconds: Long.fromString('1620640362229420996'),
         };
 
         expect(() => new cro.ibc.MsgTransfer(params1)).to.throw(
@@ -140,7 +140,7 @@ describe('Testing MsgTransfer', function () {
             sender: 'tcro15sfupd26sp6qf37ll5q6xuf330k7df9tnvrqht',
             receiver: 'cosmos1vw4ucaeagtduv5ep4sa95e3aqzqpsk5meda08c',
             timeoutHeight,
-            timeoutTimestamp: Long.fromString('1620640362229420996'),
+            timeoutTimestampInNanoSeconds: Long.fromString('1620640362229420996'),
         });
         expect(isAminoMsgTransfer(MsgTransfer.toRawAminoMsg()).valueOf()).to.be.true;
         expect(MsgTransfer.toRawAminoMsg()).to.deep.eq({
@@ -168,7 +168,7 @@ describe('Testing MsgTransfer', function () {
             sourceChannel: 'channel-33',
             sender: 'tcro15sfupd26sp6qf37ll5q6xuf330k7df9tnvrqht',
             receiver: 'cosmos1vw4ucaeagtduv5ep4sa95e3aqzqpsk5meda08c',
-            timeoutTimestamp: Long.fromString('1620640362229420996'),
+            timeoutTimestampInNanoSeconds: Long.fromString('1620640362229420996'),
         });
 
         expect(msgTransferIBC_UNdefined.toRawAminoMsg()).to.deep.eq({
