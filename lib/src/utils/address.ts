@@ -1,4 +1,5 @@
 import bech32 from 'bech32';
+import { isAddress, stripHexPrefix } from 'web3-utils';
 import { Network } from '../network/network';
 import { Bytes } from './bytes/bytes';
 // import { toBase64 } from '@cosmjs/encoding';
@@ -52,6 +53,17 @@ export const assertAndReturnBech32AddressWordBytes = (addr: string): Bytes => {
     } catch (error) {
         throw new Error('Invalid Bech32 address.');
     }
+};
+
+export const getBech32AddressFromEVMAddress = (evmAddress: string, bech32Prefix: string) => {
+    if (!isAddress(evmAddress)) {
+        throw new TypeError('Please provide a valid EVM compatible address.');
+    }
+    const evmAddrWithoutHexPrefix = stripHexPrefix(evmAddress);
+    const evmAddressBytes = Bytes.fromHexString(evmAddrWithoutHexPrefix).toUint8Array();
+    const words = bech32.toWords(evmAddressBytes);
+    const cronosToBech32Address = bech32.encode(bech32Prefix, words);
+    return cronosToBech32Address;
 };
 
 export class AddressValidator {
