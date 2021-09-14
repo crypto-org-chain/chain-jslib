@@ -29,8 +29,8 @@ jobs:
           sudo apt-get install jq
           mkdir ./chain2 && mkdir ./chain1
 
-          cp chain-main/* ./chain1/
-          cp chain-main/* ./chain2/
+          cp -r chain-main/* ./chain1/
+          cp -r chain-main/* ./chain2/
 
 
           ## Setup, configure and start `chain1`
