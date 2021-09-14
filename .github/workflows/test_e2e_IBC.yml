@@ -15,16 +15,16 @@ jobs:
     steps:
       - name: Set up Golang
         uses: actions/setup-go@v2
-        
+
       - name: Setup Rust/Cargo for running Hermes
         steps: 
-        - uses: actions/checkout@v2
-        - uses: actions-rs/toolchain@v1
-          with:
-            toolchain: stable
-        - run: |
-            cargo build --release --all-features
-            cargo version
+          - uses: actions/checkout@v2
+          - uses: actions-rs/toolchain@v1
+            with:
+              toolchain: stable
+          - run: |
+              cargo build --release --all-features
+              cargo version
       # - name: Checkout chain-main repository
       #   uses: actions/checkout@v2
       #   with:
