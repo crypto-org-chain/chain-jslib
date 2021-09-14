@@ -231,7 +231,7 @@ export const owMsgTransferIBCOptions = owStrictObject().exactShape({
     sender: ow.string,
     receiver: ow.string,
     timeoutHeight: owIBCHeightOptional(),
-    timeoutTimestamp: owLong(),
+    timeoutTimestampInNanoSeconds: owLong(),
 });
 
 export const owMsgUpgradeClientOptions = owStrictObject().exactShape({

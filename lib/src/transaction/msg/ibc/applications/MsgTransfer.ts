@@ -30,8 +30,8 @@ export const msgTransferIBC = function (config: InitConfigurations) {
         /** MsgTransfer timeoutHeight. */
         public timeoutHeight?: IHeight | null;
 
-        /** MsgTransfer timeoutTimestamp. */
-        public timeoutTimestamp: Long;
+        /** MsgTransfer timeoutTimestamp in nano seconds. */
+        public timeoutTimestampInNanoSeconds: Long;
 
         /**
          * Constructor to create a new IBC.MsgTransfer
@@ -47,7 +47,7 @@ export const msgTransferIBC = function (config: InitConfigurations) {
             this.sender = options.sender;
             this.receiver = options.receiver;
             this.timeoutHeight = options.timeoutHeight;
-            this.timeoutTimestamp = options.timeoutTimestamp;
+            this.timeoutTimestampInNanoSeconds = options.timeoutTimestampInNanoSeconds;
 
             this.validateAddresses();
         }
@@ -66,14 +66,32 @@ export const msgTransferIBC = function (config: InitConfigurations) {
                     sender: this.sender,
                     receiver: this.receiver,
                     timeoutHeight: this.timeoutHeight,
-                    timeoutTimestamp: this.timeoutTimestamp,
-                } as MsgTransferOptions,
+                    timeoutTimestamp: this.timeoutTimestampInNanoSeconds,
+                },
             };
         }
 
         // eslint-disable-next-line class-methods-use-this
         toRawAminoMsg(): legacyAmino.Msg {
-            throw new Error('IBC Module not supported under amino encoding scheme');
+            const tokenCoin = this.token ? this.token.toCosmosCoin() : undefined;
+            const timeoutHeight = this.timeoutHeight
+                ? {
+                      revision_number: this.timeoutHeight?.revisionNumber.toString(),
+                      revision_height: this.timeoutHeight?.revisionHeight.toString(),
+                  }
+                : undefined;
+            return {
+                type: 'cosmos-sdk/MsgTransfer',
+                value: {
+                    source_port: this.sourcePort,
+                    source_channel: this.sourceChannel,
+                    token: tokenCoin,
+                    sender: this.sender,
+                    receiver: this.receiver,
+                    timeout_height: timeoutHeight,
+                    timeout_timestamp: this.timeoutTimestampInNanoSeconds.toString(),
+                },
+            } as legacyAmino.IbcMsgTransferAmino;
         }
 
         /**
@@ -108,7 +126,7 @@ export const msgTransferIBC = function (config: InitConfigurations) {
                 token: cro.v2.CoinV2.fromCustomAmountDenom(parsedMsg.token.amount, parsedMsg.token.denom),
                 sender: parsedMsg.sender,
                 receiver: parsedMsg.receiver,
-                timeoutTimestamp: Long.fromString(parsedMsg.timeout_timestamp),
+                timeoutTimestampInNanoSeconds: Long.fromString(parsedMsg.timeout_timestamp),
                 timeoutHeight,
             });
         }
@@ -140,7 +158,7 @@ export type MsgTransferOptions = {
     sender: string;
     receiver: string;
     timeoutHeight?: IHeight | null;
-    timeoutTimestamp: Long;
+    timeoutTimestampInNanoSeconds: Long;
 };
 
 export type IHeight = {
