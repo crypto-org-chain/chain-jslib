@@ -20,12 +20,22 @@ jobs:
         uses: actions-rs/toolchain@v1
         with:
           toolchain: stable
+      - name: Checkout leejw51crypto/ibc-rs
+        uses: actions/checkout@v2
+        with:
+          repository: leejw51crypto/ibc-rs
+          path: hermes-rs
+          submodules: recursive
 
       - name: Check cargo
         run: |
               cargo version
-              cargo install ibc-relayer-cli --bin hermes --locked
-              hermes version
+              # cargo install ibc-relayer-cli --bin hermes --locked
+              # hermes version
+
+              echo "Current files"
+
+              ls -lart
       # - name: Checkout chain-main repository
       #   uses: actions/checkout@v2
       #   with:
