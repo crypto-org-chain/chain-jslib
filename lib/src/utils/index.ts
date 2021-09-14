@@ -15,5 +15,5 @@ export default {
     TxDecoder,
     Big,
     Bytes,
-    convertEVMToBech32Address: getBech32AddressFromEVMAddress,
+    convertEVMAddressToBech32Address: getBech32AddressFromEVMAddress,
 };
