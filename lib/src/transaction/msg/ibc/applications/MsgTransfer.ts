@@ -47,7 +47,7 @@ export const msgTransferIBC = function (config: InitConfigurations) {
             this.sender = options.sender;
             this.receiver = options.receiver;
             this.timeoutHeight = options.timeoutHeight;
-            this.timeoutTimestampInNanoSeconds = options.timeoutTimestamp;
+            this.timeoutTimestampInNanoSeconds = options.timeoutTimestampInNanoSeconds;
 
             this.validateAddresses();
         }
@@ -67,7 +67,7 @@ export const msgTransferIBC = function (config: InitConfigurations) {
                     receiver: this.receiver,
                     timeoutHeight: this.timeoutHeight,
                     timeoutTimestamp: this.timeoutTimestampInNanoSeconds,
-                } as MsgTransferOptions,
+                },
             };
         }
 
@@ -126,7 +126,7 @@ export const msgTransferIBC = function (config: InitConfigurations) {
                 token: cro.v2.CoinV2.fromCustomAmountDenom(parsedMsg.token.amount, parsedMsg.token.denom),
                 sender: parsedMsg.sender,
                 receiver: parsedMsg.receiver,
-                timeoutTimestamp: Long.fromString(parsedMsg.timeout_timestamp),
+                timeoutTimestampInNanoSeconds: Long.fromString(parsedMsg.timeout_timestamp),
                 timeoutHeight,
             });
         }
@@ -158,7 +158,7 @@ export type MsgTransferOptions = {
     sender: string;
     receiver: string;
     timeoutHeight?: IHeight | null;
-    timeoutTimestamp: Long;
+    timeoutTimestampInNanoSeconds: Long;
 };
 
 export type IHeight = {
