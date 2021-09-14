@@ -186,4 +186,3 @@ jobs:
           # Network 2 : chain2  | Should return `network2` & `chain2`
           curl --location --request GET 'localhost:26647/status' | jq '.result."network"'
           curl --location --request GET 'localhost:26647/status' | jq '.result."moniker"'
-    }
