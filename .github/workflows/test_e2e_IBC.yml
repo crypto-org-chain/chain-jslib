@@ -135,8 +135,8 @@ jobs:
 
           $CLI init $CHAIN_2_MONIKER --chain-id $CHAIN_2_ID --home $CHAIN_2_HOME
 
-          echo $VALIDATOR_MNEMONIC | $CLI keys add validator --keyring-backend test --recover --index 0 --home $CHAIN_1_HOME
-          echo $ECOSYSTEM_MNEMONIC | $CLI keys add ecosystem --keyring-backend test --recover --index 1 --home $CHAIN_1_HOME
+          echo $VALIDATOR_MNEMONIC | $CLI keys add validator --keyring-backend test --recover --index 0 --home $CHAIN_2_HOME
+          echo $ECOSYSTEM_MNEMONIC | $CLI keys add ecosystem --keyring-backend test --recover --index 1 --home $CHAIN_2_HOME
 
           # $CLI keys add validator --keyring-backend test --home $CHAIN_2_HOME --output json >> ./validator.json
           # $CLI keys add ecosystem --keyring-backend test --home $CHAIN_2_HOME --output json >> ./ecosystem.json
