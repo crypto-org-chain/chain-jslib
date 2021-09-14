@@ -421,3 +421,29 @@ export interface MsgTransferNFT extends Msg {
 export function isMsgTransferNFT(msg: Msg): msg is MsgTransferNFT {
     return (msg as MsgTransferNFT).type === 'chainmain/nft/MsgTransferNFT';
 }
+
+export interface AminoTimeoutIbcHeight {
+    readonly revision_number: string;
+    readonly revision_height: string;
+}
+
+export interface IbcMsgTransferAmino extends Msg {
+    readonly type: 'cosmos-sdk/MsgTransfer';
+    readonly value: {
+        readonly source_port: string;
+        readonly source_channel: string;
+        readonly token?: Coin;
+        /** Bech32 account address */
+        readonly sender: string;
+        /** Bech32 account address */
+        readonly receiver: string;
+        readonly timeout_height?: AminoTimeoutIbcHeight;
+        // Timeout timestamp (in nanoseconds) relative to the current block timestamp.
+        // The timeout is disabled when set to 0.
+        readonly timeout_timestamp: string;
+    };
+}
+
+export function isAminoMsgTransfer(msg: Msg): msg is IbcMsgTransferAmino {
+    return msg.type === 'cosmos-sdk/MsgTransfer';
+}
