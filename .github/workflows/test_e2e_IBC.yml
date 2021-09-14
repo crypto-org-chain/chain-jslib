@@ -68,8 +68,10 @@ jobs:
 
           ./build/chain-maind init $CHAIN_1_MONIKER --chain-id $CHAIN_1_ID --home $CHAIN_1_HOME
 
-          ./build/chain-maind keys add validator --keyring-backend test --output json >> ./validator.json
-          ./build/chain-maind keys add ecosystem --keyring-backend test --output json >> ./ecosystem.json
+          echo "reached here so far"
+          
+          ./build/chain-maind keys add validator --keyring-backend test --home $CHAIN_1_HOME --output json >> ./validator.json
+          ./build/chain-maind keys add ecosystem --keyring-backend test --home $CHAIN_1_HOME --output json >> ./ecosystem.json
           
           # Change parameter token denominations to $DENOM
           cat $GENESIS | jq '.app_state["staking"]["params"]["bond_denom"]="'$DENOM'"' > $TMPGENESIS && mv $TMPGENESIS $GENESIS
@@ -95,7 +97,7 @@ jobs:
           # sed -i "s/aphoton/$DENOM/g" $APPCONFIG
           # sed -i "s/aphoton/$DENOM/g" $GENESIS
 
-
+          echo "REACHING BEFORE GENESIS"
 
           # Allocate genesis accounts (cosmos formatted addresses)
           ./build/chain-maind add-genesis-account $(./build/chain-maind keys show validator -a --keyring-backend test --home $CHAIN_1_HOME) $TOTALAMOUNT --keyring-backend test  --home $CHAIN_1_HOME
