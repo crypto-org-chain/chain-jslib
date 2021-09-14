@@ -49,8 +49,8 @@ jobs:
           export DENOM=denomone
           export CLI=./build/chain-maind
           
-          export VALIDATOR_MNEMONIC=whale dry improve icon perfect sauce lesson wire oblige gadget exhaust toast spin enforce labor logic giraffe feed project weasel absent build reject life
-          export ECOSYSTEM_MNEMONIC=rubber rocket snack author mad ship core physical arrange language enrich story lamp move dynamic into game marine ramp trap anchor beyond mystery gun
+          export VALIDATOR_MNEMONIC="whale dry improve icon perfect sauce lesson wire oblige gadget exhaust toast spin enforce labor logic giraffe feed project weasel absent build reject life"
+          export ECOSYSTEM_MNEMONIC="rubber rocket snack author mad ship core physical arrange language enrich story lamp move dynamic into game marine ramp trap anchor beyond mystery gun"
 
 
           export TOTALAMOUNT=100000000000000000000000000000000$DENOM
@@ -111,7 +111,9 @@ jobs:
           export APPCONFIG=$CHAIN_2_HOME/config/app.toml
           export CLIENTCONFIG=$CHAIN_2_HOME/config/client.toml
           export CLI=./build/chain-maind
-
+          export VALIDATOR_MNEMONIC="whale dry improve icon perfect sauce lesson wire oblige gadget exhaust toast spin enforce labor logic giraffe feed project weasel absent build reject life"
+          export ECOSYSTEM_MNEMONIC="rubber rocket snack author mad ship core physical arrange language enrich story lamp move dynamic into game marine ramp trap anchor beyond mystery gun"
+          
           # New node ports and hosts
           export DENOM_2=denomtwo
           export GRPCPORT0=9080
@@ -125,8 +127,8 @@ jobs:
           export TOTALAMOUNT=200000000000000000000000000000000$DENOM_2
           export MYAMOUNT=2000200000000000000001$DENOM_2
 
-          NETWORK=testnet make install 
-          NETWORK=testnet make build
+          NETWORK=testnet_2 make install 
+          NETWORK=testnet_2 make build
 
           $CLI config keyring-backend test --home $CHAIN_2_HOME
           $CLI config chain-id $CHAIN_2_ID --home $CHAIN_2_HOME
