@@ -1,0 +1,38 @@
+[global]
+strategy = 'packets'
+log_level = 'error'
+
+[[chains]]
+id = 'testnet1'
+rpc_addr = 'http://127.0.0.1:26657'
+grpc_addr = 'http://127.0.0.1:9090'
+websocket_addr = 'ws://localhost:26807/websocket'
+rpc_timeout = '10s'
+account_prefix = 'cro'
+key_name = 'validator'
+store_prefix = 'ibc'
+max_gas = 200000
+gas_price = { price = 0.001, denom = 'denomone' }
+max_msg_num = 4
+max_tx_size = 1048576
+clock_drift = '5s'
+trusting_period = '14days'
+trust_threshold = { numerator = '1', denominator = '3' }
+address_type = { derivation = 'cosmos' }
+
+
+
+[[chains]]
+id = 'testnet2'
+rpc_addr = 'http://127.0.0.1:26647'
+grpc_addr = 'http://127.0.0.1:9091'
+websocket_addr = 'ws://localhost:26707/websocket'
+rpc_timeout = '10s'
+account_prefix = 'tcro'
+key_name = 'validator'
+store_prefix = 'ibc'
+gas_price = { price = 0.001, denom = 'denomtwo' }
+clock_drift = '5s'
+trusting_period = '14days'
+trust_threshold = { numerator = '1', denominator = '3' }
+address_type = { derivation = 'cosmos' }

@@ -210,7 +210,8 @@ jobs:
 
               hermes version
 
-              cp ./ibc/config.toml ./hermes-rs
+              ls {{github.workspace}}
+              cp {{github.workspace}}/ibc/config.toml ./hermes-rs
               cd hermes-rs
 
               export MYIBC0=testnet1
@@ -218,9 +219,9 @@ jobs:
               export MYCHANNEL=channel-0
               export MYCONFIG=$PWD/config.toml
 
-              hermes -c $MYCONFIG  keys restore $MYIBC0 -m "shed crumble dismiss loyal latin million oblige gesture shrug still oxygen custom remove ribbon disorder palace addict again blanket sad flock consider obey popular"  -p "m/44'/1'/0'/0/0"
+              hermes -c $MYCONFIG  keys restore $MYIBC0 -m "whale dry improve icon perfect sauce lesson wire oblige gadget exhaust toast spin enforce labor logic giraffe feed project weasel absent build reject life"  -p "m/44'/1'/0'/0/0"
 
-              hermes -c $MYCONFIG  keys restore $MYIBC1 -m "shed crumble dismiss loyal latin million oblige gesture shrug still oxygen custom remove ribbon disorder palace addict again blanket sad flock consider obey popular"  -p "m/44'/1'/0'/0/0"
+              hermes -c $MYCONFIG  keys restore $MYIBC1 -m "whale dry improve icon perfect sauce lesson wire oblige gadget exhaust toast spin enforce labor logic giraffe feed project weasel absent build reject life"  -p "m/44'/1'/0'/0/0"
 
               hermes  -c $MYCONFIG keys list $MYIBC0
               hermes  -c $MYCONFIG keys list $MYIBC1
