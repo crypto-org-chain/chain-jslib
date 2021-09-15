@@ -4,7 +4,7 @@ import { fuzzyDescribe } from '../test/mocha-fuzzy/suite';
 
 import { CroNetwork, CroSDK } from '../core/cro';
 
-const cro = CroSDK({ network: CroNetwork.Testnet });
+const cro = CroSDK({ network: CroNetwork.Mainnet });
 const statusQueryResponse = {
     jsonrpc: '2.0',
     id: -1,

@@ -1,6 +1,6 @@
 {
   "name": "@crypto-org-chain/chain-jslib",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Crypto.org Chain JavaScript library",
   "author": "Crypto.org <chain@crypto.org>",
   "license": "Apache-2.0",
@@ -52,7 +52,7 @@
     "@cosmjs/proto-signing": "0.24.1",
     "@cosmjs/stargate": "0.25.0-alpha.2",
     "@cosmjs/tendermint-rpc": "0.25.0-alpha.2",
-    "axios": "0.21.1",
+    "axios": "0.21.2",
     "bech32": "1.1.4",
     "big.js": "6.0.0",
     "bip32": "2.0.6",
@@ -66,7 +66,9 @@
     "protobufjs": "6.10.1",
     "randombytes": "2.1.0",
     "secp256k1": "4.0.2",
-    "snakecase-keys": "3.2.1"
+    "snakecase-keys": "3.2.1",
+    "web3": "1.5.2",
+    "web3-utils": "1.5.2"
   },
   "devDependencies": {
     "@types/bech32": "1.1.2",
@@ -106,5 +108,10 @@
     "ts-node": "9.0.0",
     "typedoc": "0.20.28",
     "typescript": "4.0.3"
+  },
+  "resolutions": {
+    "glob-parent": "6.0.1",
+    "normalize-url": "7.0.2",
+    "ws": "8.2.2"
   }
 }
