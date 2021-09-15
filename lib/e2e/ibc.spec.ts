@@ -1,4 +1,3 @@
-//@ts-check
 /* eslint-disable */
 import 'mocha';
 import Big from 'big.js';
