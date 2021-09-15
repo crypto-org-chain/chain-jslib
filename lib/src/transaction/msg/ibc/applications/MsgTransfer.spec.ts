@@ -163,7 +163,7 @@ describe('Testing MsgTransfer', function () {
         });
 
         // Case when timeoutHeight and token is undefined
-        const msgTransferIBC_UNdefined = new cro.ibc.MsgTransfer({
+        const msgTransferIBC_Undefined = new cro.ibc.MsgTransfer({
             sourcePort: 'transfer',
             sourceChannel: 'channel-33',
             sender: 'tcro15sfupd26sp6qf37ll5q6xuf330k7df9tnvrqht',
@@ -171,7 +171,7 @@ describe('Testing MsgTransfer', function () {
             timeoutTimestampInNanoSeconds: Long.fromString('1620640362229420996'),
         });
 
-        expect(msgTransferIBC_UNdefined.toRawAminoMsg()).to.deep.eq({
+        expect(msgTransferIBC_Undefined.toRawAminoMsg()).to.deep.eq({
             type: 'cosmos-sdk/MsgTransfer',
             value: {
                 receiver: 'cosmos1vw4ucaeagtduv5ep4sa95e3aqzqpsk5meda08c',
