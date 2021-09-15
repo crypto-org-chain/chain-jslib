@@ -2,6 +2,11 @@
 
 All notable changes to this project will be documented in this file.
 
+## v1.0.2
+- Added IBC MsgTransfer amino support
+- Added utility `convertEVMAddressToBech32Address` for EVM<->Bech32 address conversion
+- Minor fixes
+  
 ## v1.0.1
 - Added CRO `Croeseid-4` Testnet network
   
