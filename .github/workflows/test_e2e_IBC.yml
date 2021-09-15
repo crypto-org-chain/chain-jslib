@@ -207,7 +207,8 @@ jobs:
                   mkdir -p $HOME/.hermes/bin
                   tar -C $HOME/.hermes/bin/ -xzf hermes.tar.gz
                   export PATH="$HOME/.hermes/bin:$PATH"
-
+                  
+                  cp workflowConfig/config.toml ./hermes-rs
                   cd hermes-rs
 
                   echo "Inside hermes"
