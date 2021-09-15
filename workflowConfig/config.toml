@@ -5,7 +5,7 @@ log_level = 'error'
 [[chains]]
 id = 'testnet1'
 rpc_addr = 'http://127.0.0.1:26657'
-grpc_addr = 'http://127.0.0.1:9091'
+grpc_addr = 'http://127.0.0.1:9090'
 websocket_addr = 'ws://localhost:26657/websocket'
 rpc_timeout = '10s'
 account_prefix = 'tcro'
@@ -23,7 +23,7 @@ trust_threshold = { numerator = '1', denominator = '3' }
 [[chains]]
 id = 'testnet2'
 rpc_addr = 'http://127.0.0.1:26647'
-grpc_addr = 'http://127.0.0.1:9081'
+grpc_addr = 'http://127.0.0.1:9080'
 websocket_addr = 'ws://localhost:26647/websocket'
 rpc_timeout = '10s'
 account_prefix = 'tcro'
