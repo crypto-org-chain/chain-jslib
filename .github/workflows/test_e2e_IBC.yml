@@ -30,6 +30,7 @@ jobs:
                   ref: ibc
                   path: hermes-rs
                   submodules: recursive
+            
             - name: Checkout chain-main repository
               uses: actions/checkout@v2
               with:
@@ -228,4 +229,20 @@ jobs:
 
                   hermes -c $MYCONFIG create channel $MYIBC0 $MYIBC1 --port-a transfer --port-b transfer 
 
-                  hermes -c $MYCONFIG start
+                  hermes -c $MYCONFIG start &
+            
+            - name: Setup Node.js
+              uses: actions/setup-node@v1
+              with:
+                node-version: 14
+
+            - uses: actions/cache@v2
+              id: cache-deps
+              with:
+                path: node_modules
+                key: ${{ runner.os }}-node${{ matrix.code }}-${{ hashFiles('**/package-lock.json') }} 
+            
+            - name: Run e2e test suite
+              run: |
+                npm install --no-progress --silent --quiet
+                npm run test:e2e

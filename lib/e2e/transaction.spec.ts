@@ -11,9 +11,10 @@ import { CroSDK } from '../src/core/cro';
 import { Units } from '../src/coin/coin';
 import { Network } from '../src/network/network';
 import { SIGN_MODE } from '../src/transaction/types';
+import Long from 'long';
 
 const customNetwork: Network = {
-    defaultNodeUrl: '',
+    defaultNodeUrl: 'http://localhost',
     chainId: 'testnet',
     addressPrefix: 'tcro',
     validatorAddressPrefix: 'tcrocncl',
@@ -739,6 +740,52 @@ describe('e2e test suite', function () {
         };
         const rawTx = new cro.RawTransaction();
         const signableTx = rawTx.appendMessage(MsgBurnNFT).addSigner(anySigner).toSignable();
+
+        const signedTx = signableTx.setSignature(0, keyPair.sign(signableTx.toSignDocumentHash(0))).toSigned();
+
+        const broadcast = await axios.get('broadcast_tx_commit', {
+            baseURL: axiosConfig.url,
+            params: { tx: `0x${signedTx.getHexEncoded()}` },
+        });
+        expect(broadcast.status).to.eq(200);
+        expect(broadcast.data).to.be.not.undefined;
+        assertIsBroadcastTxSuccess(broadcast.data);
+    });
+
+    it.only('[IBC] Creates, signs and broadcasts a `MsgTransfer` IBC Tx', async function () {
+        const hdKey = HDKey.fromMnemonic(env.mnemonic.validatorAccount);
+        const privKey = hdKey.derivePrivKey(`m/44'/${customNetwork.bip44Path.coinType}'/0'/0/0`);
+
+        const keyPair = Secp256k1KeyPair.fromPrivKey(privKey);
+
+        const cro = CroSDK({ network: customNetwork });
+        const address1 = new cro.Address(keyPair.getPubKey());
+        const tokenAmount = cro.v2.CoinV2.fromCustomAmountDenom('123456789', 'denomone');
+        const timeoutHeight = {
+            revisionNumber: Long.fromString('0'),
+            revisionHeight: Long.fromString('1708515'),
+        };
+        const msgTransferIBCProtobuf = new cro.ibc.MsgTransfer({
+            sourcePort: 'transfer',
+            sourceChannel: 'channel-0',
+            token: tokenAmount,
+            sender: 'tcro15sfupd26sp6qf37ll5q6xuf330k7df9tnvrqht',
+            receiver: 'cosmos1vw4ucaeagtduv5ep4sa95e3aqzqpsk5meda08c',
+            timeoutHeight,
+            timeoutTimestampInNanoSeconds: Long.fromString('1999620640362229420996'),
+        });
+
+        const client = await cro.CroClient.connect();
+
+        expect(client).to.be.not.undefined;
+        const account = await client.getAccount(address1.account());
+        const anySigner = {
+            publicKey: keyPair.getPubKey(),
+            accountNumber: new Big(account!.accountNumber),
+            accountSequence: new Big(account!.sequence),
+        };
+        const rawTx = new cro.RawTransaction();
+        const signableTx = rawTx.appendMessage(msgTransferIBCProtobuf).addSigner(anySigner).toSignable();
 
         const signedTx = signableTx.setSignature(0, keyPair.sign(signableTx.toSignDocumentHash(0))).toSigned();
 
