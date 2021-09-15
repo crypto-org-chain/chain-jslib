@@ -201,7 +201,6 @@ jobs:
             #       curl --location --request GET 'localhost:26647/status' | jq '.result'
 
             - name: Setup hermes
-              uses: actions/checkout@v2
               run: |
                   wget -O hermes.tar.gz https://github.com/informalsystems/ibc-rs/releases/download/v0.7.0/hermes-v0.7.0-x86_64-unknown-linux-gnu.tar.gz
 
