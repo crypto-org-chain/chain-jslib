@@ -21,13 +21,13 @@ jobs:
             #   with:
             #       toolchain: stable
 
-            # - name: Checkout leejw51crypto/ibc-rs
-            #   uses: actions/checkout@v2
-            #   with:
-            #       repository: leejw51crypto/ibc-rs
-            #       ref: ibc
-            #       path: hermes-rs
-            #       submodules: recursive
+            - name: Checkout leejw51crypto/ibc-rs
+              uses: actions/checkout@v2
+              with:
+                  repository: leejw51crypto/ibc-rs
+                  ref: ibc
+                  path: hermes-rs
+                  submodules: recursive
 
             # - name: Checkout chain-main repository
             #   uses: actions/checkout@v2
@@ -206,12 +206,8 @@ jobs:
                   wget -q -O hermes.tar.gz https://github.com/informalsystems/ibc-rs/releases/download/v0.7.0/hermes-v0.7.0-x86_64-unknown-linux-gnu.tar.gz
 
                   mkdir -p $HOME/.hermes/bin
-                  tar -C $HOME/.hermes/bin/ -xzf hermes.tar.gz
+                  tar -C $HOME/.hermes/bin/ -xvzf hermes.tar.gz
                   export PATH="$HOME/.hermes/bin:$PATH"
-
-                  ls $PWD
-
-                  ls -lart
 
                   cd hermes-rs
 
