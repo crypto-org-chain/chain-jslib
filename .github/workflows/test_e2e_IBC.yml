@@ -16,10 +16,6 @@ jobs:
             - name: Set up Golang
               uses: actions/setup-go@v2
 
-            # - name: Setup Rust/Cargo for running Hermes
-            #   uses: actions-rs/toolchain@v1
-            #   with:
-            #       toolchain: stable
             - name: Checkout local
               uses: actions/checkout@v2
 

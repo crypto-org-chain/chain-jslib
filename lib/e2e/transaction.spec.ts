@@ -124,7 +124,7 @@ describe('e2e test suite', function () {
             const { transactionHash } = broadcastResult;
             expect(transactionHash).to.match(/^[0-9A-F]{64}$/);
         });
-    })
+    });
 
     it('[BANK] creates a MsgSend type Transaction Signed by Legacy Amino JSON mode and Broadcasts it', async function () {
         const hdKey = HDKey.fromMnemonic(env.mnemonic.communityAccount);
@@ -294,12 +294,10 @@ describe('e2e test suite', function () {
                 accountNumber: new Big(account1!.accountNumber),
                 accountSequence: new Big(account1!.sequence),
             })
-            .setFee(cro.Coin.fromCRO("0.002"))
+            .setFee(cro.Coin.fromCRO('0.002'))
             .toSignable();
 
-        const signedTx = signableTx
-            .setSignature(0, keyPair.sign(signableTx.toSignDocumentHash(0)))
-            .toSigned();
+        const signedTx = signableTx.setSignature(0, keyPair.sign(signableTx.toSignDocumentHash(0))).toSigned();
 
         expect(msgSend1.fromAddress).to.eq(account1!.address);
         expect(msgSend1.toAddress).to.eq(randomAddress.account());
@@ -769,8 +767,8 @@ describe('e2e test suite', function () {
             sourcePort: 'transfer',
             sourceChannel: 'channel-0',
             token: tokenAmount,
-            sender: 'tcro15sfupd26sp6qf37ll5q6xuf330k7df9tnvrqht',
-            receiver: 'cosmos1vw4ucaeagtduv5ep4sa95e3aqzqpsk5meda08c',
+            sender: 'tcro1rm0etys4apkaa4v3w462q72rr74he8trfchsfn',
+            receiver: 'tcro1rm0etys4apkaa4v3w462q72rr74he8trfchsfn',
             timeoutHeight,
             timeoutTimestampInNanoSeconds: Long.fromString('1999620640362229420996'),
         });
@@ -783,6 +781,52 @@ describe('e2e test suite', function () {
             publicKey: keyPair.getPubKey(),
             accountNumber: new Big(account!.accountNumber),
             accountSequence: new Big(account!.sequence),
+        };
+        const rawTx = new cro.RawTransaction();
+        const signableTx = rawTx.appendMessage(msgTransferIBCProtobuf).addSigner(anySigner).toSignable();
+
+        const signedTx = signableTx.setSignature(0, keyPair.sign(signableTx.toSignDocumentHash(0))).toSigned();
+
+        const broadcast = await axios.get('broadcast_tx_commit', {
+            baseURL: axiosConfig.url,
+            params: { tx: `0x${signedTx.getHexEncoded()}` },
+        });
+        expect(broadcast.status).to.eq(200);
+        expect(broadcast.data).to.be.not.undefined;
+        assertIsBroadcastTxSuccess(broadcast.data);
+    });
+    it.only('[IBC] `MsgTransfer` IBC Tx using Amino', async function () {
+        const hdKey = HDKey.fromMnemonic(env.mnemonic.validatorAccount);
+        const privKey = hdKey.derivePrivKey(`m/44'/${customNetwork.bip44Path.coinType}'/0'/0/0`);
+
+        const keyPair = Secp256k1KeyPair.fromPrivKey(privKey);
+
+        const cro = CroSDK({ network: customNetwork });
+        const address1 = new cro.Address(keyPair.getPubKey());
+        const tokenAmount = cro.v2.CoinV2.fromCustomAmountDenom('123456789', 'denomone');
+        const timeoutHeight = {
+            revisionNumber: Long.fromString('0'),
+            revisionHeight: Long.fromString('1708515'),
+        };
+        const msgTransferIBCProtobuf = new cro.ibc.MsgTransfer({
+            sourcePort: 'transfer',
+            sourceChannel: 'channel-0',
+            token: tokenAmount,
+            sender: 'tcro1rm0etys4apkaa4v3w462q72rr74he8trfchsfn',
+            receiver: 'tcro1rm0etys4apkaa4v3w462q72rr74he8trfchsfn',
+            timeoutHeight,
+            timeoutTimestampInNanoSeconds: Long.fromString('1999620640362229420996'),
+        });
+
+        const client = await cro.CroClient.connect();
+
+        expect(client).to.be.not.undefined;
+        const account = await client.getAccount(address1.account());
+        const anySigner = {
+            publicKey: keyPair.getPubKey(),
+            accountNumber: new Big(account!.accountNumber),
+            accountSequence: new Big(account!.sequence),
+            signMode: SIGN_MODE.LEGACY_AMINO_JSON,
         };
         const rawTx = new cro.RawTransaction();
         const signableTx = rawTx.appendMessage(msgTransferIBCProtobuf).addSigner(anySigner).toSignable();
