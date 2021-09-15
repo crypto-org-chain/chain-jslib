@@ -1,3 +1,4 @@
+//@ts-check
 /* eslint-disable */
 import 'mocha';
 import Big from 'big.js';
@@ -8,7 +9,6 @@ import axios from 'axios';
 import { HDKey } from '../src/hdkey/hdkey';
 import { Secp256k1KeyPair } from '../src/keypair/secp256k1';
 import { CroSDK } from '../src/core/cro';
-import { Units } from '../src/coin/coin';
 import { Network } from '../src/network/network';
 import { SIGN_MODE } from '../src/transaction/types';
 import Long from 'long';
