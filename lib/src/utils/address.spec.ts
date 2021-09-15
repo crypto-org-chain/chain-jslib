@@ -1,6 +1,6 @@
 import 'mocha';
 import { expect } from 'chai';
-import { AddressType, AddressValidator, validateAddress } from './address';
+import { AddressType, AddressValidator, validateAddress, getBech32AddressFromEVMAddress } from './address';
 import { CroNetwork } from '../core/cro';
 
 describe('Validate address against network and checksums', function () {
@@ -97,6 +97,21 @@ describe('Validate address against network and checksums', function () {
 
             const addressValidator = new AddressValidator(addressProps);
             expect(addressValidator.isValid()).to.be.eq(true);
+        });
+
+        it('`getBech32AddressFromEVMAddress` should return converted address', function () {
+            expect(getBech32AddressFromEVMAddress('0xD47286f025F947482a2C374Fb70e9D4c94d809CF', 'eth')).to.be.eq(
+                'eth163egdup9l9r5s23vxa8mwr5afj2dszw04malry',
+            );
+            expect(getBech32AddressFromEVMAddress('D47286f025F947482a2C374Fb70e9D4c94d809CF', 'eth')).to.be.eq(
+                'eth163egdup9l9r5s23vxa8mwr5afj2dszw04malry',
+            );
+        });
+
+        it('`getBech32AddressFromEVMAddress` should throw on invalid address', function () {
+            expect(() => getBech32AddressFromEVMAddress('eth163egdup9l9r5s23vxa8mwr5afj2dszw04malry', 'eth')).to.throw(
+                'Please provide a valid EVM compatible address.',
+            );
         });
     });
 });

@@ -1,6 +1,6 @@
 {
   "name": "@crypto-org-chain/chain-jslib",
-  "version": "1.0.0",
+  "version": "1.0.2",
   "description": "Crypto.org Chain JavaScript library",
   "author": "Crypto.org <chain@crypto.org>",
   "license": "Apache-2.0",
@@ -26,9 +26,10 @@
     "lint": "eslint 'lib/**'",
     "test:watch": "nodemon",
     "test": "NODE_ENV=test mocha --timeout 10000 --require ./node_modules/ts-node/register --exit --color --recursive 'lib/src/**/*.spec.ts'",
-    "test:e2e": "NODE_ENV=test mocha --timeout 30000 --require ./node_modules/ts-node/register --exit --color ./lib/e2e/**/*.spec.ts",
+    "test:e2e": "NODE_ENV=test mocha --timeout 30000 --require ./node_modules/ts-node/register --exit --color ./lib/e2e/transaction.spec.ts",
     "test:e2e:tx-decoder": "NODE_ENV=test mocha --timeout 0 --require ./node_modules/ts-node/register --exit --color ./lib/e2e/tx-decoder/*.ts",
     "test:e2e:offline-signing": "NODE_ENV=test mocha --timeout 0 --require ./node_modules/ts-node/register --exit --color ./lib/e2e/offline-signing/*.ts",
+    "test:e2e:ibc": "NODE_ENV=test mocha --timeout 0 --require ./node_modules/ts-node/register --exit --color ./lib/e2e/ibc.spec.ts",
     "preget-proto": "rm -rf proto",
     "get-proto": "COSMOS_REF=v0.43.0 ICS23_REF=v0.6.3 CHAIN_MAIN_REF=v2.1.1 COSMOS_IBC_REF=v1.0.0 ./lib/src/cosmos/v1beta1/scripts/get-proto.sh",
     "predefine-proto": "./lib/src/cosmos/v1beta1/scripts/predefine-proto.sh",
@@ -51,7 +52,7 @@
     "@cosmjs/proto-signing": "0.24.1",
     "@cosmjs/stargate": "0.25.0-alpha.2",
     "@cosmjs/tendermint-rpc": "0.25.0-alpha.2",
-    "axios": "0.21.1",
+    "axios": "0.21.2",
     "bech32": "1.1.4",
     "big.js": "6.0.0",
     "bip32": "2.0.6",
@@ -65,7 +66,9 @@
     "protobufjs": "6.10.1",
     "randombytes": "2.1.0",
     "secp256k1": "4.0.2",
-    "snakecase-keys": "3.2.1"
+    "snakecase-keys": "3.2.1",
+    "web3": "1.5.2",
+    "web3-utils": "1.5.2"
   },
   "devDependencies": {
     "@types/bech32": "1.1.2",
@@ -105,5 +108,10 @@
     "ts-node": "9.0.0",
     "typedoc": "0.20.28",
     "typescript": "4.0.3"
+  },
+  "resolutions": {
+    "glob-parent": "6.0.1",
+    "normalize-url": "7.0.2",
+    "ws": "8.2.2"
   }
 }
