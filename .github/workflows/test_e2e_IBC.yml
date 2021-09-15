@@ -211,12 +211,13 @@ jobs:
                   cd hermes-rs
 
                   echo "Inside hermes"
-                  ls -lart
 
                   export MYIBC0=testnet1
                   export MYIBC1=testnet2
                   export MYCHANNEL=channel-0
                   export MYCONFIG=$PWD/config.toml
+
+                  cat $MYCONFIG
 
                   hermes -c $MYCONFIG  keys restore $MYIBC0 -m "whale dry improve icon perfect sauce lesson wire oblige gadget exhaust toast spin enforce labor logic giraffe feed project weasel absent build reject life"  -p "m/44'/1'/0'/0/0"
 
