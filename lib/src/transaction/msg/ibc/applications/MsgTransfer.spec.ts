@@ -11,8 +11,9 @@ import { Bytes } from '../../../../utils/bytes/bytes';
 import { CroSDK, CroNetwork } from '../../../../core/cro';
 import { COSMOS_MSG_TYPEURL } from '../../../common/constants/typeurl';
 import { isAminoMsgTransfer } from '../../../../cosmos/amino/msg';
+import { SIGN_MODE } from '../../../types';
 
-const cro = CroSDK({ network: CroNetwork.TestnetCroeseid3 });
+const cro = CroSDK({ network: CroNetwork.TestnetCroeseid4 });
 
 const tokenAmount = cro.Coin.fromBaseUnit('1234');
 const timeoutHeight = {
@@ -183,6 +184,53 @@ describe('Testing MsgTransfer', function () {
                 token: undefined,
             },
         });
+    });
+    it('Test MsgTransfer Tx signing AMINO mode', function () {
+        const anyKeyPair = Secp256k1KeyPair.fromPrivKey(
+            Bytes.fromHexString('66633d18513bec30dd11a209f1ceb1787aa9e2069d5d47e590174dc9665102b3'),
+        );
+
+        const MsgTransfer = new cro.ibc.MsgTransfer({
+            sourcePort: 'transfer',
+            sourceChannel: 'channel-125',
+            token: tokenAmount,
+            sender: 'tcro1sxe3v6gka3u8j7d2xhl8rmfyjnmggqlh6e82hq',
+            receiver: 'cosmos1vw4ucaeagtduv5ep4sa95e3aqzqpsk5meda08c',
+            timeoutHeight,
+            timeoutTimestampInNanoSeconds: Long.fromString('1620640362229420996'),
+        });
+
+        const anySigner = {
+            publicKey: anyKeyPair.getPubKey(),
+            accountNumber: new Big('1124'),
+            accountSequence: new Big('2'),
+            signMode: SIGN_MODE.LEGACY_AMINO_JSON,
+        };
+
+        const rawTx = new cro.RawTransaction();
+
+        const signableTx = rawTx
+            .addMessage(MsgTransfer)
+            .addSigner(anySigner)
+            .setFee(cro.Coin.fromBaseUnit('100000000'))
+            .setGasLimit('200000')
+            .toSignable();
+
+        const signedTx = signableTx.setSignature(0, anyKeyPair.sign(signableTx.toSignDocumentHash(0))).toSigned();
+
+        const signedTxHex = signedTx.encode().toHexString();
+        // console.log(new TxDecoder().fromHex(signedTxHex).toCosmosJSON());
+        console.log(signedTx.encode().toBase64String());
+        // expect(signedTxHex).to.be.eql(
+        // '0ac7010ac4010a292f6962632e6170706c69636174696f6e732e7472616e736665722e76312e4d73675472616e736665721296010a087472616e73666572120a6368616e6e656c2d33331a100a08626173657463726f120431323334222b7463726f313573667570643236737036716633376c6c3571367875663333306b37646639746e76727168742a2d636f736d6f7331767734756361656167746475763565703473613935653361717a7170736b356d6564613038633206080010e3a36838c4a7e1daaafaeabe1612580a500a460a1f2f636f736d6f732e63727970746f2e736563703235366b312e5075624b657912230a2103fd0d560b6c4aa1ca16721d039a192867c3457e19dad553edb98e7ba88b159c2712040a0208011802120410c09a0c1a40500a13e8940cbb0266b051ad759c227a7f75adfb1f1428ae854671552c7e309e46f33882605bd116e357b4c228c4de3a4ed5a75a473dbdf2a660205970fcfd1a',
+        // );
+        // console.log(
+        //     '112323',
+        //     Bytes.fromHexString(
+        //         '0a9b010a8c010a1c2f636f736d6f732e62616e6b2e763162657461312e4d736753656e64126c0a2b7463726f31667a63727a61336a3466323637376a667578756c6b6733337a36383532717371733868783530122b7463726f31667a63727a61336a3466323637376a667578756c6b6733337a363835327173717338687835301a100a08626173657463726f120431303030120a616d696e6f2074657374126b0a500a460a1f2f636f736d6f732e63727970746f2e736563703235366b312e5075624b657912230a210223c9395d41013e6470c8d27da8b75850554faada3fe3e812660cbdf4534a85d712040a02087f180112170a110a08626173657463726f1205313030303010a08d061a40c87c7198165c2f414f3dd09d0ef0df84225e9c737415db396e711dd0896efc883a3758f5ce61edead8cc5be33f3b871fda4f242682f43d4384da363ebd117707',
+        //     ).toBase64String(),
+        // );
+        console.log('signedHex', signedTxHex);
     });
 
     describe('fromCosmosJSON', function () {
