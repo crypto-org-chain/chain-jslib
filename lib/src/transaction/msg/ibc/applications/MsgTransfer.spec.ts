@@ -1,4 +1,4 @@
-/* eslint-disable camelcase */
+/* eslint-disable*/
 import 'mocha';
 import { expect } from 'chai';
 import Big from 'big.js';
@@ -17,8 +17,8 @@ const cro = CroSDK({ network: CroNetwork.TestnetCroeseid4 });
 
 const tokenAmount = cro.Coin.fromBaseUnit('1234');
 const timeoutHeight = {
-    revisionNumber: Long.fromString('0'),
-    revisionHeight: Long.fromString('1708515'),
+    revisionNumber: Long.fromString('99999', true),
+    revisionHeight: Long.fromString('1708515', true),
 };
 
 describe('Testing MsgTransfer', function () {
@@ -30,7 +30,7 @@ describe('Testing MsgTransfer', function () {
             sender: 'tcro15sfupd26sp6qf37ll5q6xuf330k7df9tnvrqht',
             receiver: 'cosmos1vw4ucaeagtduv5ep4sa95e3aqzqpsk5meda08c',
             timeoutHeight,
-            timeoutTimestampInNanoSeconds: Long.fromString('1620640362229420996'),
+            timeoutTimestampInNanoSeconds: Long.fromString('1620640362229420996', true),
         };
 
         const testRunner = fuzzy(fuzzy.ObjArg(anyValidOptions));
@@ -51,7 +51,7 @@ describe('Testing MsgTransfer', function () {
             sender: 'tcro15sfupd26sp6qf37ll5q6xuf330k7df9tnvrqht',
             receiver: 'cosmos1vw4ucaeagtduv5ep4sa95e3aqzqpsk5meda08c',
             timeoutHeight,
-            timeoutTimestampInNanoSeconds: Long.fromString('1620640362229420996'),
+            timeoutTimestampInNanoSeconds: Long.fromString('1620640362229420996', true),
         });
 
         const rawMsg: Msg = {
@@ -63,7 +63,7 @@ describe('Testing MsgTransfer', function () {
                 sender: 'tcro15sfupd26sp6qf37ll5q6xuf330k7df9tnvrqht',
                 receiver: 'cosmos1vw4ucaeagtduv5ep4sa95e3aqzqpsk5meda08c',
                 timeoutHeight,
-                timeoutTimestamp: Long.fromString('1620640362229420996'),
+                timeoutTimestamp: Long.fromString('1620640362229420996', true),
             },
         };
 
@@ -82,7 +82,7 @@ describe('Testing MsgTransfer', function () {
             sender: 'tcro15sfupd26sp6qf37ll5q6xuf330k7df9tnvrqht',
             receiver: 'cosmos1vw4ucaeagtduv5ep4sa95e3aqzqpsk5meda08c',
             timeoutHeight,
-            timeoutTimestampInNanoSeconds: Long.fromString('1620640362229420996'),
+            timeoutTimestampInNanoSeconds: Long.fromString('1620640362229420996', true),
         });
 
         const anySigner = {
@@ -99,7 +99,7 @@ describe('Testing MsgTransfer', function () {
 
         const signedTxHex = signedTx.encode().toHexString();
         expect(signedTxHex).to.be.eql(
-            '0ac7010ac4010a292f6962632e6170706c69636174696f6e732e7472616e736665722e76312e4d73675472616e736665721296010a087472616e73666572120a6368616e6e656c2d33331a100a08626173657463726f120431323334222b7463726f313573667570643236737036716633376c6c3571367875663333306b37646639746e76727168742a2d636f736d6f7331767734756361656167746475763565703473613935653361717a7170736b356d6564613038633206080010e3a36838c4a7e1daaafaeabe1612580a500a460a1f2f636f736d6f732e63727970746f2e736563703235366b312e5075624b657912230a2103fd0d560b6c4aa1ca16721d039a192867c3457e19dad553edb98e7ba88b159c2712040a0208011802120410c09a0c1a40500a13e8940cbb0266b051ad759c227a7f75adfb1f1428ae854671552c7e309e46f33882605bd116e357b4c228c4de3a4ed5a75a473dbdf2a660205970fcfd1a',
+            '0ac7010ac4010a292f6962632e6170706c69636174696f6e732e7472616e736665722e76312e4d73675472616e736665721296010a087472616e73666572120a6368616e6e656c2d33331a100a08626173657463726f120431323334222b7463726f313573667570643236737036716633376c6c3571367875663333306b37646639746e76727168742a2d636f736d6f7331767734756361656167746475763565703473613935653361717a7170736b356d6564613038633206080010e3a36838c4a7e1daaafaeabe1612580a500a460a1f2f636f736d6f732e63727970746f2e736563703235366b312e5075624b657912230a2103fd0d560b6c4aa1ca16721d039a192867c3457e19dad553edb98e7ba88b159c2712040a0208011802120410c09a0c1a4037550ce25ac90ec5204f5d2814b9afc93b97b95d68e00972e360c8a1db6d029703f539683d6861c0aa72002baf4cc489e356c4e9d478a0f97e9d4820c223bd0c',
         );
     });
 
@@ -111,7 +111,7 @@ describe('Testing MsgTransfer', function () {
             sender: 'cosmos1vw4ucaeagtduv5ep4sa95e3aqzqpsk5meda08c',
             receiver: 'cosmos1vw4ucaeagtduv5ep4sa95e3aqzqpsk5meda08c',
             timeoutHeight,
-            timeoutTimestampInNanoSeconds: Long.fromString('1620640362229420996'),
+            timeoutTimestampInNanoSeconds: Long.fromString('1620640362229420996', true),
         };
 
         expect(() => new cro.ibc.MsgTransfer(params1)).to.throw('Provided `sender` does not match network selected');
@@ -125,7 +125,7 @@ describe('Testing MsgTransfer', function () {
             sender: 'tcro15sfupd26sp6qf37ll5q6xuf330k7df9tnvrqht',
             receiver: '0x7e00664398A54AE12648CAe2785c36d00dd51672',
             timeoutHeight,
-            timeoutTimestampInNanoSeconds: Long.fromString('1620640362229420996'),
+            timeoutTimestampInNanoSeconds: Long.fromString('1620640362229420996', true),
         };
 
         expect(() => new cro.ibc.MsgTransfer(params1)).to.throw(
@@ -141,7 +141,7 @@ describe('Testing MsgTransfer', function () {
             sender: 'tcro15sfupd26sp6qf37ll5q6xuf330k7df9tnvrqht',
             receiver: 'cosmos1vw4ucaeagtduv5ep4sa95e3aqzqpsk5meda08c',
             timeoutHeight,
-            timeoutTimestampInNanoSeconds: Long.fromString('1620640362229420996'),
+            timeoutTimestampInNanoSeconds: Long.fromString('1620640362229420996', true),
         });
         expect(isAminoMsgTransfer(MsgTransfer.toRawAminoMsg()).valueOf()).to.be.true;
         expect(MsgTransfer.toRawAminoMsg()).to.deep.eq({
@@ -169,7 +169,7 @@ describe('Testing MsgTransfer', function () {
             sourceChannel: 'channel-33',
             sender: 'tcro15sfupd26sp6qf37ll5q6xuf330k7df9tnvrqht',
             receiver: 'cosmos1vw4ucaeagtduv5ep4sa95e3aqzqpsk5meda08c',
-            timeoutTimestampInNanoSeconds: Long.fromString('1620640362229420996'),
+            timeoutTimestampInNanoSeconds: Long.fromString('1620640362229420996', true),
         });
 
         expect(msgTransferIBC_Undefined.toRawAminoMsg()).to.deep.eq({
@@ -185,7 +185,7 @@ describe('Testing MsgTransfer', function () {
             },
         });
     });
-    it('Test MsgTransfer Tx signing AMINO mode', function () {
+    it.only('Test MsgTransfer Tx signing AMINO mode', function () {
         const anyKeyPair = Secp256k1KeyPair.fromPrivKey(
             Bytes.fromHexString('66633d18513bec30dd11a209f1ceb1787aa9e2069d5d47e590174dc9665102b3'),
         );
@@ -197,13 +197,13 @@ describe('Testing MsgTransfer', function () {
             sender: 'tcro1sxe3v6gka3u8j7d2xhl8rmfyjnmggqlh6e82hq',
             receiver: 'cosmos1vw4ucaeagtduv5ep4sa95e3aqzqpsk5meda08c',
             timeoutHeight,
-            timeoutTimestampInNanoSeconds: Long.fromString('1620640362229420996'),
+            timeoutTimestampInNanoSeconds: Long.fromString('999999999999999999999999999999', true),
         });
 
         const anySigner = {
             publicKey: anyKeyPair.getPubKey(),
             accountNumber: new Big('1124'),
-            accountSequence: new Big('2'),
+            accountSequence: new Big('4'),
             signMode: SIGN_MODE.LEGACY_AMINO_JSON,
         };
 
@@ -219,18 +219,10 @@ describe('Testing MsgTransfer', function () {
         const signedTx = signableTx.setSignature(0, anyKeyPair.sign(signableTx.toSignDocumentHash(0))).toSigned();
 
         const signedTxHex = signedTx.encode().toHexString();
-        // console.log(new TxDecoder().fromHex(signedTxHex).toCosmosJSON());
-        console.log(signedTx.encode().toBase64String());
-        // expect(signedTxHex).to.be.eql(
-        // '0ac7010ac4010a292f6962632e6170706c69636174696f6e732e7472616e736665722e76312e4d73675472616e736665721296010a087472616e73666572120a6368616e6e656c2d33331a100a08626173657463726f120431323334222b7463726f313573667570643236737036716633376c6c3571367875663333306b37646639746e76727168742a2d636f736d6f7331767734756361656167746475763565703473613935653361717a7170736b356d6564613038633206080010e3a36838c4a7e1daaafaeabe1612580a500a460a1f2f636f736d6f732e63727970746f2e736563703235366b312e5075624b657912230a2103fd0d560b6c4aa1ca16721d039a192867c3457e19dad553edb98e7ba88b159c2712040a0208011802120410c09a0c1a40500a13e8940cbb0266b051ad759c227a7f75adfb1f1428ae854671552c7e309e46f33882605bd116e357b4c228c4de3a4ed5a75a473dbdf2a660205970fcfd1a',
-        // );
-        // console.log(
-        //     '112323',
-        //     Bytes.fromHexString(
-        //         '0a9b010a8c010a1c2f636f736d6f732e62616e6b2e763162657461312e4d736753656e64126c0a2b7463726f31667a63727a61336a3466323637376a667578756c6b6733337a36383532717371733868783530122b7463726f31667a63727a61336a3466323637376a667578756c6b6733337a363835327173717338687835301a100a08626173657463726f120431303030120a616d696e6f2074657374126b0a500a460a1f2f636f736d6f732e63727970746f2e736563703235366b312e5075624b657912230a210223c9395d41013e6470c8d27da8b75850554faada3fe3e812660cbdf4534a85d712040a02087f180112170a110a08626173657463726f1205313030303010a08d061a40c87c7198165c2f414f3dd09d0ef0df84225e9c737415db396e711dd0896efc883a3758f5ce61edead8cc5be33f3b871fda4f242682f43d4384da363ebd117707',
-        //     ).toBase64String(),
-        // );
-        console.log('signedHex', signedTxHex);
+
+        expect(signedTxHex).to.be.eql(
+            '0aca010ac7010a292f6962632e6170706c69636174696f6e732e7472616e736665722e76312e4d73675472616e736665721299010a087472616e73666572120b6368616e6e656c2d3132351a100a08626173657463726f120431323334222b7463726f31737865337636676b613375386a37643278686c38726d66796a6e6d6767716c683665383268712a2d636f736d6f7331767734756361656167746475763565703473613935653361717a7170736b356d6564613038633208089f8d0610e3a36838ffffffffa3bdbbba46126f0a500a460a1f2f636f736d6f732e63727970746f2e736563703235366b312e5075624b657912230a2103fd0d560b6c4aa1ca16721d039a192867c3457e19dad553edb98e7ba88b159c2712040a02087f1804121b0a150a08626173657463726f120931303030303030303010c09a0c1a407f29a75a8d1ccc3d60d1e7a6fab0baa6f0fb91d3bf9db10b0387584f707067142881be533a9b63b25a64a7f2b1a072b92a3011f42ffc439a80862694330469bc'
+        );
     });
 
     describe('fromCosmosJSON', function () {
