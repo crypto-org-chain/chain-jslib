@@ -224,10 +224,10 @@ describe('CroClient', function () {
 
                 nock(rpcUrl).persist(true).post('/cosmos/tx/v1beta1/simulate').reply(200, mockSimulatedResponse);
 
-                const croHttpClient = await cro.CroClient.estimateGasLimit(cosmosTxObject);
+                const estimatedGas = await cro.CroClient.estimateGasLimit(cosmosTxObject);
 
-                expect(croHttpClient.gas_used).to.be.equal('462867');
-                expect(croHttpClient.gas_wanted).to.be.equal('0');
+                expect(estimatedGas.gas_used).to.be.equal('462867');
+                expect(estimatedGas.gas_wanted).to.be.equal('0');
 
                 nock.cleanAll();
             });
