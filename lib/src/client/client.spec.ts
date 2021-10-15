@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 import { expect } from 'chai';
 import nock from 'nock';
 import { fuzzyDescribe } from '../test/mocha-fuzzy/suite';
@@ -118,6 +119,116 @@ describe('CroClient', function () {
                 ).to.equal('number');
 
                 croHttpClient.disconnect();
+                nock.cleanAll();
+            });
+
+            it('Should return `gas_info` for gas estimation', async function () {
+                nock.disableNetConnect();
+                const mockSimulatedResponse = {
+                    gas_info: {
+                        gas_wanted: '0',
+                        gas_used: '462867',
+                    },
+                    result: {
+                        data: 'CiEKHy9jaGFpbm1haW4ubmZ0LnYxLk1zZ0lzc3VlRGVub20=',
+                        log:
+                            '[{"events":[{"type":"issue_denom","attributes":[{"key":"denom_id","value":"alpha"},{"key":"denom_name","value":"nft_name"},{"key":"creator","value":"tcro1rg4g3saewjdeadvalj427p735xy07s0ng6m4yu"}]},{"type":"message","attributes":[{"key":"action","value":"/chainmain.nft.v1.MsgIssueDenom"},{"key":"module","value":"nft"},{"key":"sender","value":"tcro1rg4g3saewjdeadvalj427p735xy07s0ng6m4yu"}]}]}]',
+                        events: [
+                            {
+                                type: 'message',
+                                attributes: [
+                                    {
+                                        key: 'YWN0aW9u',
+                                        value: 'L2NoYWlubWFpbi5uZnQudjEuTXNnSXNzdWVEZW5vbQ==',
+                                        index: false,
+                                    },
+                                ],
+                            },
+                            {
+                                type: 'issue_denom',
+                                attributes: [
+                                    {
+                                        key: 'ZGVub21faWQ=',
+                                        value: 'YWxwaGE=',
+                                        index: false,
+                                    },
+                                    {
+                                        key: 'ZGVub21fbmFtZQ==',
+                                        value: 'bmZ0X25hbWU=',
+                                        index: false,
+                                    },
+                                    {
+                                        key: 'Y3JlYXRvcg==',
+                                        value: 'dGNybzFyZzRnM3NhZXdqZGVhZHZhbGo0MjdwNzM1eHkwN3Mwbmc2bTR5dQ==',
+                                        index: false,
+                                    },
+                                ],
+                            },
+                            {
+                                type: 'message',
+                                attributes: [
+                                    {
+                                        key: 'bW9kdWxl',
+                                        value: 'bmZ0',
+                                        index: false,
+                                    },
+                                    {
+                                        key: 'c2VuZGVy',
+                                        value: 'dGNybzFyZzRnM3NhZXdqZGVhZHZhbGo0MjdwNzM1eHkwN3Mwbmc2bTR5dQ==',
+                                        index: false,
+                                    },
+                                ],
+                            },
+                        ],
+                    },
+                };
+                const cosmosTxObject = {
+                    body: {
+                        messages: [
+                            {
+                                '@type': '/cosmos.bank.v1beta1.MsgSend',
+                                amount: [{ denom: 'basetcro', amount: '1000' }],
+                                from_address: 'tcro1fzcrza3j4f2677jfuxulkg33z6852qsqs8hx50',
+                                to_address: 'tcro1fzcrza3j4f2677jfuxulkg33z6852qsqs8hx50',
+                            },
+                        ],
+                        memo: 'amino test',
+                        timeout_height: '0',
+                        extension_options: [],
+                        non_critical_extension_options: [],
+                    },
+                    auth_info: {
+                        signer_infos: [
+                            {
+                                public_key: {
+                                    '@type': '/cosmos.crypto.secp256k1.PubKey',
+                                    key: 'AiPJOV1BAT5kcMjSfai3WFBVT6raP+PoEmYMvfRTSoXX',
+                                },
+                                mode_info: { single: { mode: 'SIGN_MODE_DIRECT' } },
+                                sequence: '1',
+                            },
+                        ],
+                        fee: {
+                            amount: [{ denom: 'basetcro', amount: '10000' }],
+                            gas_limit: '100000',
+                            payer: '',
+                            granter: '',
+                        },
+                    },
+                    signatures: [],
+                };
+
+                const rpcUrl: string = `${CroNetwork.Mainnet.defaultNodeUrl}:1317`;
+
+                nock.cleanAll();
+
+                nock(rpcUrl).persist(true).post('/cosmos/tx/v1beta1/simulate').reply(200, mockSimulatedResponse);
+
+                const croHttpClient = await cro.CroClient.estimateGasLimit(cosmosTxObject);
+
+                expect(croHttpClient.gas_used).to.be.equal('462867');
+                expect(croHttpClient.gas_wanted).to.be.equal('0');
+
                 nock.cleanAll();
             });
 
