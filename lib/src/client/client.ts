@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 import { Tendermint34Client } from '@cosmjs/tendermint-rpc';
 import {
     StargateClient,
@@ -18,8 +19,24 @@ import { Coin } from '@cosmjs/stargate/build/codec/cosmos/base/v1beta1/coin';
 import { SearchTxFilter, SearchTxQuery } from '@cosmjs/stargate/build/search';
 import { Block, BroadcastTxResponse, IndexedTx, SequenceResponse } from '@cosmjs/stargate/build/stargateclient';
 import ow from 'ow';
+import axios from 'axios';
 import { InitConfigurations } from '../core/cro';
 import { owUrl } from './ow.types';
+import { CosmosTx } from '../cosmos/v1beta1/types/cosmostx';
+
+export interface GasInfo {
+    gas_wanted: string;
+    gas_used: string;
+}
+
+export interface GasEstimateResponse {
+    gas_info: GasInfo;
+    result: {
+        data: string;
+        log: string;
+        events: { type: string; attributes: { key: string; value: string }[] }[];
+    };
+}
 
 export interface ICroClient {
     query():
@@ -121,6 +138,14 @@ export const croClient = function (config: InitConfigurations) {
 
         public async broadcastTx(tx: Uint8Array): Promise<BroadcastTxResponse> {
             return this.txClient.broadcastTx(tx);
+        }
+
+        public static async estimateGasLimit(txBody: CosmosTx): Promise<GasInfo> {
+            const COSMOS_REST_PORT = 1317;
+            const requestUrl = `${config.network.defaultNodeUrl}:${COSMOS_REST_PORT}/cosmos/tx/v1beta1/simulate`;
+            const postData = { tx: txBody };
+            const gasEstimatedResponse = await axios.post<GasEstimateResponse>(requestUrl, postData);
+            return gasEstimatedResponse.data.gas_info;
         }
     };
 };
