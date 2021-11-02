@@ -12,12 +12,23 @@ describe('coins', function () {
             });
         });
 
+        it('works for high value amount', function () {
+            expect(coin('100000000234500000000000000', 'utoken')).to.deep.eq({
+                amount: '100000000234500000000000000',
+                denom: 'utoken',
+            });
+            expect(coin('100000000234500000000000000123123123123', 'utoken')).to.deep.eq({
+                amount: '100000000234500000000000000123123123123',
+                denom: 'utoken',
+            });
+        });
+
         it('throws for non-safe-integer values', function () {
             expect(() => coin('1.23', 'utoken')).to.throw();
             expect(() => coin('123.0', 'utoken')).to.throw();
             expect(() => coin('NaN', 'utoken')).to.throw();
             expect(() => coin(Number.POSITIVE_INFINITY.toString(), 'utoken')).to.throw();
-            expect(() => coin((Number.MAX_SAFE_INTEGER + 1).toString(), 'utoken')).to.throw();
+            expect(() => coin((Number.MAX_SAFE_INTEGER + 1).toString(), 'utoken')).to.not.throw();
         });
 
         it('throws for negative values', function () {
