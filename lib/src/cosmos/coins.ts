@@ -1,4 +1,10 @@
-import { Uint53 } from '@cosmjs/math';
+import { Big } from 'big.js';
+
+// Decimal places
+Big.DP = 100;
+
+// Precision quantity after exponent format starts
+Big.PE = 100;
 
 export interface Coin {
     readonly denom: string;
@@ -7,7 +13,13 @@ export interface Coin {
 
 /** Creates a coin */
 export function coin(amount: string, denom: string): Coin {
-    return { amount: Uint53.fromString(amount).toString(), denom };
+    const amountInBN = new Big(amount);
+
+    // Disallow decimal and negative integers
+    if (amountInBN.cmp(0) === -1 || amount.includes('.')) {
+        throw new Error('Invalid amount string.');
+    }
+    return { amount: amountInBN.toString(), denom };
 }
 
 /** Creates a list of coins with one element */
