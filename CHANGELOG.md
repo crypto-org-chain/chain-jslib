@@ -2,6 +2,9 @@
 
 All notable changes to this project will be documented in this file.
 
+## v1.0.3
+- Added support for transferring very large numbers. Using BigInt
+
 ## v1.0.2
 - Added IBC MsgTransfer amino support
 - Added utility `convertEVMAddressToBech32Address` for EVM<->Bech32 address conversion
