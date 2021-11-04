@@ -267,6 +267,32 @@ const msgFundCommPool = cro.v2.distribution.MsgFundCommunityPoolV2.fromCosmosMsg
             
 ```  
 
+### 1.9. Using the gas estimator for a transaction
+You can estimate gas for your transaction before signing and broadcasting it to the network.
+Eg.  
+```typescript
+//... initialising
+
+const coin = new cro.Coin('99999999', Units.BASE);
+
+const msgSendV2 = new cro.v2.bank.MsgSendV2({
+    fromAddress: 'tcro165tzcrh2yl83g8qeqxueg2g5gzgu57y3fe3kc3',
+    toAddress: 'tcro184lta2lsyu47vwyp2e8zmtca3k5yq85p6c4vp3',
+    amount: [coin],
+});
+
+const rawTxV2 = new cro.v2.RawTransactionV2();
+rawTxV2.addMessage(msgSendV2);
+
+const unsignedCosmosTx = rawTxV2.toCosmosJSON();
+const estimatedGas = await cro.CroClient.estimateGasLimit(unsignedCosmosTx);
+
+// set `gas_used` to the rawTx
+rawTxV2.setGasLimit(estimatedGas.gas_used);
+
+//... Do rest operations
+
+```
 ## 2. Introducing `V2` message types
 Our SDK has introduced `V2` message types in order to support:
 - Custom `denom`
