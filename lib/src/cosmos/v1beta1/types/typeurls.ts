@@ -60,6 +60,7 @@ export const typeUrlMappings: {
     '/ibc.lightclients.tendermint.v1.ClientState': ibc.lightclients.tendermint.v1.ClientState,
     '/ibc.lightclients.tendermint.v1.ConsensusState': ibc.lightclients.tendermint.v1.ConsensusState,
     '/ibc.lightclients.tendermint.v1.Header': ibc.lightclients.tendermint.v1.Header,
+    '/cosmos.vesting.v1beta1.MsgCreateVestingAccount': cosmos.vesting.v1beta1.MsgCreateVestingAccount,
 };
 
 export interface GeneratedType {

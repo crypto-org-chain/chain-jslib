@@ -46,6 +46,7 @@ import { msgConsensusState } from '../transaction/msg/ibc/lightclients/Consensus
 import { msgHeader } from '../transaction/msg/ibc/lightclients/Header';
 import { MsgConnectionOpenConfirmIBC } from '../transaction/msg/ibc/core/connection/MsgConnectionOpenConfirm';
 import { MsgConnectionOpenTryIBC } from '../transaction/msg/ibc/core/connection/MsgConnectionOpenTry';
+import { msgCreateVestingAccount } from '../transaction/msg/account/MsgCreateVestingAccount';
 
 export const CroSDK = function (configs: InitConfigurations) {
     ow(configs, 'configs', owCroSDKInitParams);
@@ -89,6 +90,9 @@ export const CroSDK = function (configs: InitConfigurations) {
             MsgEditNFT: msgEditNFT(configs),
             MsgTransferNFT: msgTransferNFT(configs),
             MsgBurnNFT: msgBurnNFT(configs),
+        },
+        accounts: {
+            MsgCreateVestingAccount: msgCreateVestingAccount(configs),
         },
         ibc: {
             MsgTransfer: msgTransferIBC(configs),

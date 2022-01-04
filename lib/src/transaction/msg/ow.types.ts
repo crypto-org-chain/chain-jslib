@@ -438,3 +438,11 @@ export const owMsgConnectionOpenTryOptions = owStrictObject().exactShape({
     consensusHeight: ow.any(owIBCHeightOptional(), ow.null),
     signer: ow.string,
 });
+
+export const owMsgCreateVestingAccountOptions = owStrictObject().exactShape({
+    fromAddress: ow.string,
+    toAddress: ow.string,
+    amount: owCoin(),
+    endTime: owLong(),
+    delayed: ow.boolean,
+});

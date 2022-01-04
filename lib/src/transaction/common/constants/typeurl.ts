@@ -50,6 +50,9 @@ export const COSMOS_MSG_TYPEURL = {
             MsgConnectionOpenTry: '/ibc.core.connection.v1.MsgConnectionOpenTry',
         },
     },
+    account: {
+        MsgCreateVestingAccount: '/cosmos.vesting.v1beta1.MsgCreateVestingAccount',
+    },
 };
 
 export const typeUrlToMsgClassMapping = (cro: any, typeUrl: string) => {
