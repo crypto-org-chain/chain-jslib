@@ -45,6 +45,9 @@ mkdir -p "$GENERATED_DIR"
   "$COSMOS_PROTO_DIR/gov/v1beta1/gov.proto" \
   "$COSMOS_PROTO_DIR/params/v1beta1/params.proto" \
   "$COSMOS_PROTO_DIR/upgrade/v1beta1/upgrade.proto" \
+  "$COSMOS_PROTO_DIR/auth/v1beta1/auth.proto" \
+  "$COSMOS_PROTO_DIR/vesting/v1beta1/tx.proto" \
+  "$COSMOS_PROTO_DIR/vesting/v1beta1/vesting.proto" \
   "$ICS23_PROTO_DIR/proofs.proto" \
   "$IBC_PROTO_DIR/core/commitment/v1/commitment.proto" \
   "$IBC_PROTO_DIR/applications/transfer/v1/tx.proto" \
