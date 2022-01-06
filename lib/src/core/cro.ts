@@ -47,6 +47,7 @@ import { msgHeader } from '../transaction/msg/ibc/lightclients/Header';
 import { MsgConnectionOpenConfirmIBC } from '../transaction/msg/ibc/core/connection/MsgConnectionOpenConfirm';
 import { MsgConnectionOpenTryIBC } from '../transaction/msg/ibc/core/connection/MsgConnectionOpenTry';
 import { msgCreateVestingAccount } from '../transaction/msg/account/MsgCreateVestingAccount';
+import { delayedVestingAccount } from '../transaction/msg/account/DelayedVestingAccount';
 
 export const CroSDK = function (configs: InitConfigurations) {
     ow(configs, 'configs', owCroSDKInitParams);
@@ -93,6 +94,7 @@ export const CroSDK = function (configs: InitConfigurations) {
         },
         accounts: {
             MsgCreateVestingAccount: msgCreateVestingAccount(configs),
+            DelayedVestingAccount: delayedVestingAccount(configs),
         },
         ibc: {
             MsgTransfer: msgTransferIBC(configs),

@@ -52,6 +52,7 @@ export const COSMOS_MSG_TYPEURL = {
     },
     account: {
         MsgCreateVestingAccount: '/cosmos.vesting.v1beta1.MsgCreateVestingAccount',
+        DelayedVestingAccount: '/cosmos.vesting.v1beta1.DelayedVestingAccount',
     },
 };
 
