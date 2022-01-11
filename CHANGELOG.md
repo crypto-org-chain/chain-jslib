@@ -2,6 +2,9 @@
 
 All notable changes to this project will be documented in this file.
 
+## v1.0.4
+- Added support for `MsgCreateVestingAccount` and `DelayedVestingAccount`
+
 ## v1.0.3
 - Added support for transferring very large numbers. Using BigInt
 
