@@ -2,6 +2,9 @@
 
 All notable changes to this project will be documented in this file.
 
+## v1.0.3
+- [Dependency] Update dependency for `protobufjs` to `6.11.3`
+  
 ## v1.0.2
 - Added IBC MsgTransfer amino support
 - Added utility `convertEVMAddressToBech32Address` for EVM<->Bech32 address conversion

@@ -1,6 +1,6 @@
 {
   "name": "@crypto-org-chain/chain-jslib",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Crypto.org Chain JavaScript library",
   "author": "Crypto.org <chain@crypto.org>",
   "license": "Apache-2.0",
@@ -63,7 +63,7 @@
     "long": "4.0.0",
     "moment": "2.29.1",
     "ow": "0.17.0",
-    "protobufjs": "6.10.1",
+    "protobufjs": "6.11.3",
     "randombytes": "2.1.0",
     "secp256k1": "4.0.2",
     "snakecase-keys": "3.2.1",
