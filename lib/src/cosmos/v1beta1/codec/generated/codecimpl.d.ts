@@ -6850,6 +6850,724 @@ export namespace cosmos {
             }
         }
     }
+
+    /** Namespace auth. */
+    namespace auth {
+        /** Namespace v1beta1. */
+        namespace v1beta1 {
+            /** Properties of a BaseAccount. */
+            interface IBaseAccount {
+                /** BaseAccount address */
+                address?: string | null;
+
+                /** BaseAccount pubKey */
+                pubKey?: google.protobuf.IAny | null;
+
+                /** BaseAccount accountNumber */
+                accountNumber?: Long | null;
+
+                /** BaseAccount sequence */
+                sequence?: Long | null;
+            }
+
+            /** Represents a BaseAccount. */
+            class BaseAccount implements IBaseAccount {
+                /**
+                 * Constructs a new BaseAccount.
+                 * @param [p] Properties to set
+                 */
+                constructor(p?: cosmos.auth.v1beta1.IBaseAccount);
+
+                /** BaseAccount address. */
+                public address: string;
+
+                /** BaseAccount pubKey. */
+                public pubKey?: google.protobuf.IAny | null;
+
+                /** BaseAccount accountNumber. */
+                public accountNumber: Long;
+
+                /** BaseAccount sequence. */
+                public sequence: Long;
+
+                /**
+                 * Creates a new BaseAccount instance using the specified properties.
+                 * @param [properties] Properties to set
+                 * @returns BaseAccount instance
+                 */
+                public static create(properties?: cosmos.auth.v1beta1.IBaseAccount): cosmos.auth.v1beta1.BaseAccount;
+
+                /**
+                 * Encodes the specified BaseAccount message. Does not implicitly {@link cosmos.auth.v1beta1.BaseAccount.verify|verify} messages.
+                 * @param m BaseAccount message or plain object to encode
+                 * @param [w] Writer to encode to
+                 * @returns Writer
+                 */
+                public static encode(m: cosmos.auth.v1beta1.IBaseAccount, w?: $protobuf.Writer): $protobuf.Writer;
+
+                /**
+                 * Decodes a BaseAccount message from the specified reader or buffer.
+                 * @param r Reader or buffer to decode from
+                 * @param [l] Message length if known beforehand
+                 * @returns BaseAccount
+                 * @throws {Error} If the payload is not a reader or valid buffer
+                 * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                 */
+                public static decode(r: $protobuf.Reader | Uint8Array, l?: number): cosmos.auth.v1beta1.BaseAccount;
+            }
+
+            /** Properties of a ModuleAccount. */
+            interface IModuleAccount {
+                /** ModuleAccount baseAccount */
+                baseAccount?: cosmos.auth.v1beta1.IBaseAccount | null;
+
+                /** ModuleAccount name */
+                name?: string | null;
+
+                /** ModuleAccount permissions */
+                permissions?: string[] | null;
+            }
+
+            /** Represents a ModuleAccount. */
+            class ModuleAccount implements IModuleAccount {
+                /**
+                 * Constructs a new ModuleAccount.
+                 * @param [p] Properties to set
+                 */
+                constructor(p?: cosmos.auth.v1beta1.IModuleAccount);
+
+                /** ModuleAccount baseAccount. */
+                public baseAccount?: cosmos.auth.v1beta1.IBaseAccount | null;
+
+                /** ModuleAccount name. */
+                public name: string;
+
+                /** ModuleAccount permissions. */
+                public permissions: string[];
+
+                /**
+                 * Creates a new ModuleAccount instance using the specified properties.
+                 * @param [properties] Properties to set
+                 * @returns ModuleAccount instance
+                 */
+                public static create(
+                    properties?: cosmos.auth.v1beta1.IModuleAccount,
+                ): cosmos.auth.v1beta1.ModuleAccount;
+
+                /**
+                 * Encodes the specified ModuleAccount message. Does not implicitly {@link cosmos.auth.v1beta1.ModuleAccount.verify|verify} messages.
+                 * @param m ModuleAccount message or plain object to encode
+                 * @param [w] Writer to encode to
+                 * @returns Writer
+                 */
+                public static encode(m: cosmos.auth.v1beta1.IModuleAccount, w?: $protobuf.Writer): $protobuf.Writer;
+
+                /**
+                 * Decodes a ModuleAccount message from the specified reader or buffer.
+                 * @param r Reader or buffer to decode from
+                 * @param [l] Message length if known beforehand
+                 * @returns ModuleAccount
+                 * @throws {Error} If the payload is not a reader or valid buffer
+                 * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                 */
+                public static decode(r: $protobuf.Reader | Uint8Array, l?: number): cosmos.auth.v1beta1.ModuleAccount;
+            }
+
+            /** Properties of a Params. */
+            interface IParams {
+                /** Params maxMemoCharacters */
+                maxMemoCharacters?: Long | null;
+
+                /** Params txSigLimit */
+                txSigLimit?: Long | null;
+
+                /** Params txSizeCostPerByte */
+                txSizeCostPerByte?: Long | null;
+
+                /** Params sigVerifyCostEd25519 */
+                sigVerifyCostEd25519?: Long | null;
+
+                /** Params sigVerifyCostSecp256k1 */
+                sigVerifyCostSecp256k1?: Long | null;
+            }
+
+            /** Represents a Params. */
+            class Params implements IParams {
+                /**
+                 * Constructs a new Params.
+                 * @param [p] Properties to set
+                 */
+                constructor(p?: cosmos.auth.v1beta1.IParams);
+
+                /** Params maxMemoCharacters. */
+                public maxMemoCharacters: Long;
+
+                /** Params txSigLimit. */
+                public txSigLimit: Long;
+
+                /** Params txSizeCostPerByte. */
+                public txSizeCostPerByte: Long;
+
+                /** Params sigVerifyCostEd25519. */
+                public sigVerifyCostEd25519: Long;
+
+                /** Params sigVerifyCostSecp256k1. */
+                public sigVerifyCostSecp256k1: Long;
+
+                /**
+                 * Creates a new Params instance using the specified properties.
+                 * @param [properties] Properties to set
+                 * @returns Params instance
+                 */
+                public static create(properties?: cosmos.auth.v1beta1.IParams): cosmos.auth.v1beta1.Params;
+
+                /**
+                 * Encodes the specified Params message. Does not implicitly {@link cosmos.auth.v1beta1.Params.verify|verify} messages.
+                 * @param m Params message or plain object to encode
+                 * @param [w] Writer to encode to
+                 * @returns Writer
+                 */
+                public static encode(m: cosmos.auth.v1beta1.IParams, w?: $protobuf.Writer): $protobuf.Writer;
+
+                /**
+                 * Decodes a Params message from the specified reader or buffer.
+                 * @param r Reader or buffer to decode from
+                 * @param [l] Message length if known beforehand
+                 * @returns Params
+                 * @throws {Error} If the payload is not a reader or valid buffer
+                 * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                 */
+                public static decode(r: $protobuf.Reader | Uint8Array, l?: number): cosmos.auth.v1beta1.Params;
+            }
+        }
+    }
+
+    /** Namespace vesting. */
+    namespace vesting {
+        /** Namespace v1beta1. */
+        namespace v1beta1 {
+            /** Represents a Msg */
+            class Msg extends $protobuf.rpc.Service {
+                /**
+                 * Constructs a new Msg service.
+                 * @param rpcImpl RPC implementation
+                 * @param [requestDelimited=false] Whether requests are length-delimited
+                 * @param [responseDelimited=false] Whether responses are length-delimited
+                 */
+                constructor(rpcImpl: $protobuf.RPCImpl, requestDelimited?: boolean, responseDelimited?: boolean);
+
+                /**
+                 * Creates new Msg service using the specified rpc implementation.
+                 * @param rpcImpl RPC implementation
+                 * @param [requestDelimited=false] Whether requests are length-delimited
+                 * @param [responseDelimited=false] Whether responses are length-delimited
+                 * @returns RPC service. Useful where requests and/or responses are streamed.
+                 */
+                public static create(
+                    rpcImpl: $protobuf.RPCImpl,
+                    requestDelimited?: boolean,
+                    responseDelimited?: boolean,
+                ): Msg;
+
+                /**
+                 * Calls CreateVestingAccount.
+                 * @param request MsgCreateVestingAccount message or plain object
+                 * @param callback Node-style callback called with the error, if any, and MsgCreateVestingAccountResponse
+                 */
+                public createVestingAccount(
+                    request: cosmos.vesting.v1beta1.IMsgCreateVestingAccount,
+                    callback: cosmos.vesting.v1beta1.Msg.CreateVestingAccountCallback,
+                ): void;
+
+                /**
+                 * Calls CreateVestingAccount.
+                 * @param request MsgCreateVestingAccount message or plain object
+                 * @returns Promise
+                 */
+                public createVestingAccount(
+                    request: cosmos.vesting.v1beta1.IMsgCreateVestingAccount,
+                ): Promise<cosmos.vesting.v1beta1.MsgCreateVestingAccountResponse>;
+            }
+
+            namespace Msg {
+                /**
+                 * Callback as used by {@link cosmos.vesting.v1beta1.Msg#createVestingAccount}.
+                 * @param error Error, if any
+                 * @param [response] MsgCreateVestingAccountResponse
+                 */
+                type CreateVestingAccountCallback = (
+                    error: Error | null,
+                    response?: cosmos.vesting.v1beta1.MsgCreateVestingAccountResponse,
+                ) => void;
+            }
+
+            /** Properties of a MsgCreateVestingAccount. */
+            interface IMsgCreateVestingAccount {
+                /** MsgCreateVestingAccount fromAddress */
+                fromAddress?: string | null;
+
+                /** MsgCreateVestingAccount toAddress */
+                toAddress?: string | null;
+
+                /** MsgCreateVestingAccount amount */
+                amount?: cosmos.base.v1beta1.ICoin[] | null;
+
+                /** MsgCreateVestingAccount endTime */
+                endTime?: Long | null;
+
+                /** MsgCreateVestingAccount delayed */
+                delayed?: boolean | null;
+            }
+
+            /** Represents a MsgCreateVestingAccount. */
+            class MsgCreateVestingAccount implements IMsgCreateVestingAccount {
+                /**
+                 * Constructs a new MsgCreateVestingAccount.
+                 * @param [p] Properties to set
+                 */
+                constructor(p?: cosmos.vesting.v1beta1.IMsgCreateVestingAccount);
+
+                /** MsgCreateVestingAccount fromAddress. */
+                public fromAddress: string;
+
+                /** MsgCreateVestingAccount toAddress. */
+                public toAddress: string;
+
+                /** MsgCreateVestingAccount amount. */
+                public amount: cosmos.base.v1beta1.ICoin[];
+
+                /** MsgCreateVestingAccount endTime. */
+                public endTime: Long;
+
+                /** MsgCreateVestingAccount delayed. */
+                public delayed: boolean;
+
+                /**
+                 * Creates a new MsgCreateVestingAccount instance using the specified properties.
+                 * @param [properties] Properties to set
+                 * @returns MsgCreateVestingAccount instance
+                 */
+                public static create(
+                    properties?: cosmos.vesting.v1beta1.IMsgCreateVestingAccount,
+                ): cosmos.vesting.v1beta1.MsgCreateVestingAccount;
+
+                /**
+                 * Encodes the specified MsgCreateVestingAccount message. Does not implicitly {@link cosmos.vesting.v1beta1.MsgCreateVestingAccount.verify|verify} messages.
+                 * @param m MsgCreateVestingAccount message or plain object to encode
+                 * @param [w] Writer to encode to
+                 * @returns Writer
+                 */
+                public static encode(
+                    m: cosmos.vesting.v1beta1.IMsgCreateVestingAccount,
+                    w?: $protobuf.Writer,
+                ): $protobuf.Writer;
+
+                /**
+                 * Decodes a MsgCreateVestingAccount message from the specified reader or buffer.
+                 * @param r Reader or buffer to decode from
+                 * @param [l] Message length if known beforehand
+                 * @returns MsgCreateVestingAccount
+                 * @throws {Error} If the payload is not a reader or valid buffer
+                 * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                 */
+                public static decode(
+                    r: $protobuf.Reader | Uint8Array,
+                    l?: number,
+                ): cosmos.vesting.v1beta1.MsgCreateVestingAccount;
+            }
+
+            /** Properties of a MsgCreateVestingAccountResponse. */
+            interface IMsgCreateVestingAccountResponse {}
+
+            /** Represents a MsgCreateVestingAccountResponse. */
+            class MsgCreateVestingAccountResponse implements IMsgCreateVestingAccountResponse {
+                /**
+                 * Constructs a new MsgCreateVestingAccountResponse.
+                 * @param [p] Properties to set
+                 */
+                constructor(p?: cosmos.vesting.v1beta1.IMsgCreateVestingAccountResponse);
+
+                /**
+                 * Creates a new MsgCreateVestingAccountResponse instance using the specified properties.
+                 * @param [properties] Properties to set
+                 * @returns MsgCreateVestingAccountResponse instance
+                 */
+                public static create(
+                    properties?: cosmos.vesting.v1beta1.IMsgCreateVestingAccountResponse,
+                ): cosmos.vesting.v1beta1.MsgCreateVestingAccountResponse;
+
+                /**
+                 * Encodes the specified MsgCreateVestingAccountResponse message. Does not implicitly {@link cosmos.vesting.v1beta1.MsgCreateVestingAccountResponse.verify|verify} messages.
+                 * @param m MsgCreateVestingAccountResponse message or plain object to encode
+                 * @param [w] Writer to encode to
+                 * @returns Writer
+                 */
+                public static encode(
+                    m: cosmos.vesting.v1beta1.IMsgCreateVestingAccountResponse,
+                    w?: $protobuf.Writer,
+                ): $protobuf.Writer;
+
+                /**
+                 * Decodes a MsgCreateVestingAccountResponse message from the specified reader or buffer.
+                 * @param r Reader or buffer to decode from
+                 * @param [l] Message length if known beforehand
+                 * @returns MsgCreateVestingAccountResponse
+                 * @throws {Error} If the payload is not a reader or valid buffer
+                 * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                 */
+                public static decode(
+                    r: $protobuf.Reader | Uint8Array,
+                    l?: number,
+                ): cosmos.vesting.v1beta1.MsgCreateVestingAccountResponse;
+            }
+
+            /** Properties of a BaseVestingAccount. */
+            interface IBaseVestingAccount {
+                /** BaseVestingAccount baseAccount */
+                baseAccount?: cosmos.auth.v1beta1.IBaseAccount | null;
+
+                /** BaseVestingAccount originalVesting */
+                originalVesting?: cosmos.base.v1beta1.ICoin[] | null;
+
+                /** BaseVestingAccount delegatedFree */
+                delegatedFree?: cosmos.base.v1beta1.ICoin[] | null;
+
+                /** BaseVestingAccount delegatedVesting */
+                delegatedVesting?: cosmos.base.v1beta1.ICoin[] | null;
+
+                /** BaseVestingAccount endTime */
+                endTime?: Long | null;
+            }
+
+            /** Represents a BaseVestingAccount. */
+            class BaseVestingAccount implements IBaseVestingAccount {
+                /**
+                 * Constructs a new BaseVestingAccount.
+                 * @param [p] Properties to set
+                 */
+                constructor(p?: cosmos.vesting.v1beta1.IBaseVestingAccount);
+
+                /** BaseVestingAccount baseAccount. */
+                public baseAccount?: cosmos.auth.v1beta1.IBaseAccount | null;
+
+                /** BaseVestingAccount originalVesting. */
+                public originalVesting: cosmos.base.v1beta1.ICoin[];
+
+                /** BaseVestingAccount delegatedFree. */
+                public delegatedFree: cosmos.base.v1beta1.ICoin[];
+
+                /** BaseVestingAccount delegatedVesting. */
+                public delegatedVesting: cosmos.base.v1beta1.ICoin[];
+
+                /** BaseVestingAccount endTime. */
+                public endTime: Long;
+
+                /**
+                 * Creates a new BaseVestingAccount instance using the specified properties.
+                 * @param [properties] Properties to set
+                 * @returns BaseVestingAccount instance
+                 */
+                public static create(
+                    properties?: cosmos.vesting.v1beta1.IBaseVestingAccount,
+                ): cosmos.vesting.v1beta1.BaseVestingAccount;
+
+                /**
+                 * Encodes the specified BaseVestingAccount message. Does not implicitly {@link cosmos.vesting.v1beta1.BaseVestingAccount.verify|verify} messages.
+                 * @param m BaseVestingAccount message or plain object to encode
+                 * @param [w] Writer to encode to
+                 * @returns Writer
+                 */
+                public static encode(
+                    m: cosmos.vesting.v1beta1.IBaseVestingAccount,
+                    w?: $protobuf.Writer,
+                ): $protobuf.Writer;
+
+                /**
+                 * Decodes a BaseVestingAccount message from the specified reader or buffer.
+                 * @param r Reader or buffer to decode from
+                 * @param [l] Message length if known beforehand
+                 * @returns BaseVestingAccount
+                 * @throws {Error} If the payload is not a reader or valid buffer
+                 * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                 */
+                public static decode(
+                    r: $protobuf.Reader | Uint8Array,
+                    l?: number,
+                ): cosmos.vesting.v1beta1.BaseVestingAccount;
+            }
+
+            /** Properties of a ContinuousVestingAccount. */
+            interface IContinuousVestingAccount {
+                /** ContinuousVestingAccount baseVestingAccount */
+                baseVestingAccount?: cosmos.vesting.v1beta1.IBaseVestingAccount | null;
+
+                /** ContinuousVestingAccount startTime */
+                startTime?: Long | null;
+            }
+
+            /** Represents a ContinuousVestingAccount. */
+            class ContinuousVestingAccount implements IContinuousVestingAccount {
+                /**
+                 * Constructs a new ContinuousVestingAccount.
+                 * @param [p] Properties to set
+                 */
+                constructor(p?: cosmos.vesting.v1beta1.IContinuousVestingAccount);
+
+                /** ContinuousVestingAccount baseVestingAccount. */
+                public baseVestingAccount?: cosmos.vesting.v1beta1.IBaseVestingAccount | null;
+
+                /** ContinuousVestingAccount startTime. */
+                public startTime: Long;
+
+                /**
+                 * Creates a new ContinuousVestingAccount instance using the specified properties.
+                 * @param [properties] Properties to set
+                 * @returns ContinuousVestingAccount instance
+                 */
+                public static create(
+                    properties?: cosmos.vesting.v1beta1.IContinuousVestingAccount,
+                ): cosmos.vesting.v1beta1.ContinuousVestingAccount;
+
+                /**
+                 * Encodes the specified ContinuousVestingAccount message. Does not implicitly {@link cosmos.vesting.v1beta1.ContinuousVestingAccount.verify|verify} messages.
+                 * @param m ContinuousVestingAccount message or plain object to encode
+                 * @param [w] Writer to encode to
+                 * @returns Writer
+                 */
+                public static encode(
+                    m: cosmos.vesting.v1beta1.IContinuousVestingAccount,
+                    w?: $protobuf.Writer,
+                ): $protobuf.Writer;
+
+                /**
+                 * Decodes a ContinuousVestingAccount message from the specified reader or buffer.
+                 * @param r Reader or buffer to decode from
+                 * @param [l] Message length if known beforehand
+                 * @returns ContinuousVestingAccount
+                 * @throws {Error} If the payload is not a reader or valid buffer
+                 * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                 */
+                public static decode(
+                    r: $protobuf.Reader | Uint8Array,
+                    l?: number,
+                ): cosmos.vesting.v1beta1.ContinuousVestingAccount;
+            }
+
+            /** Properties of a DelayedVestingAccount. */
+            interface IDelayedVestingAccount {
+                /** DelayedVestingAccount baseVestingAccount */
+                baseVestingAccount?: cosmos.vesting.v1beta1.IBaseVestingAccount | null;
+            }
+
+            /** Represents a DelayedVestingAccount. */
+            class DelayedVestingAccount implements IDelayedVestingAccount {
+                /**
+                 * Constructs a new DelayedVestingAccount.
+                 * @param [p] Properties to set
+                 */
+                constructor(p?: cosmos.vesting.v1beta1.IDelayedVestingAccount);
+
+                /** DelayedVestingAccount baseVestingAccount. */
+                public baseVestingAccount?: cosmos.vesting.v1beta1.IBaseVestingAccount | null;
+
+                /**
+                 * Creates a new DelayedVestingAccount instance using the specified properties.
+                 * @param [properties] Properties to set
+                 * @returns DelayedVestingAccount instance
+                 */
+                public static create(
+                    properties?: cosmos.vesting.v1beta1.IDelayedVestingAccount,
+                ): cosmos.vesting.v1beta1.DelayedVestingAccount;
+
+                /**
+                 * Encodes the specified DelayedVestingAccount message. Does not implicitly {@link cosmos.vesting.v1beta1.DelayedVestingAccount.verify|verify} messages.
+                 * @param m DelayedVestingAccount message or plain object to encode
+                 * @param [w] Writer to encode to
+                 * @returns Writer
+                 */
+                public static encode(
+                    m: cosmos.vesting.v1beta1.IDelayedVestingAccount,
+                    w?: $protobuf.Writer,
+                ): $protobuf.Writer;
+
+                /**
+                 * Decodes a DelayedVestingAccount message from the specified reader or buffer.
+                 * @param r Reader or buffer to decode from
+                 * @param [l] Message length if known beforehand
+                 * @returns DelayedVestingAccount
+                 * @throws {Error} If the payload is not a reader or valid buffer
+                 * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                 */
+                public static decode(
+                    r: $protobuf.Reader | Uint8Array,
+                    l?: number,
+                ): cosmos.vesting.v1beta1.DelayedVestingAccount;
+            }
+
+            /** Properties of a Period. */
+            interface IPeriod {
+                /** Period length */
+                length?: Long | null;
+
+                /** Period amount */
+                amount?: cosmos.base.v1beta1.ICoin[] | null;
+            }
+
+            /** Represents a Period. */
+            class Period implements IPeriod {
+                /**
+                 * Constructs a new Period.
+                 * @param [p] Properties to set
+                 */
+                constructor(p?: cosmos.vesting.v1beta1.IPeriod);
+
+                /** Period length. */
+                public length: Long;
+
+                /** Period amount. */
+                public amount: cosmos.base.v1beta1.ICoin[];
+
+                /**
+                 * Creates a new Period instance using the specified properties.
+                 * @param [properties] Properties to set
+                 * @returns Period instance
+                 */
+                public static create(properties?: cosmos.vesting.v1beta1.IPeriod): cosmos.vesting.v1beta1.Period;
+
+                /**
+                 * Encodes the specified Period message. Does not implicitly {@link cosmos.vesting.v1beta1.Period.verify|verify} messages.
+                 * @param m Period message or plain object to encode
+                 * @param [w] Writer to encode to
+                 * @returns Writer
+                 */
+                public static encode(m: cosmos.vesting.v1beta1.IPeriod, w?: $protobuf.Writer): $protobuf.Writer;
+
+                /**
+                 * Decodes a Period message from the specified reader or buffer.
+                 * @param r Reader or buffer to decode from
+                 * @param [l] Message length if known beforehand
+                 * @returns Period
+                 * @throws {Error} If the payload is not a reader or valid buffer
+                 * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                 */
+                public static decode(r: $protobuf.Reader | Uint8Array, l?: number): cosmos.vesting.v1beta1.Period;
+            }
+
+            /** Properties of a PeriodicVestingAccount. */
+            interface IPeriodicVestingAccount {
+                /** PeriodicVestingAccount baseVestingAccount */
+                baseVestingAccount?: cosmos.vesting.v1beta1.IBaseVestingAccount | null;
+
+                /** PeriodicVestingAccount startTime */
+                startTime?: Long | null;
+
+                /** PeriodicVestingAccount vestingPeriods */
+                vestingPeriods?: cosmos.vesting.v1beta1.IPeriod[] | null;
+            }
+
+            /** Represents a PeriodicVestingAccount. */
+            class PeriodicVestingAccount implements IPeriodicVestingAccount {
+                /**
+                 * Constructs a new PeriodicVestingAccount.
+                 * @param [p] Properties to set
+                 */
+                constructor(p?: cosmos.vesting.v1beta1.IPeriodicVestingAccount);
+
+                /** PeriodicVestingAccount baseVestingAccount. */
+                public baseVestingAccount?: cosmos.vesting.v1beta1.IBaseVestingAccount | null;
+
+                /** PeriodicVestingAccount startTime. */
+                public startTime: Long;
+
+                /** PeriodicVestingAccount vestingPeriods. */
+                public vestingPeriods: cosmos.vesting.v1beta1.IPeriod[];
+
+                /**
+                 * Creates a new PeriodicVestingAccount instance using the specified properties.
+                 * @param [properties] Properties to set
+                 * @returns PeriodicVestingAccount instance
+                 */
+                public static create(
+                    properties?: cosmos.vesting.v1beta1.IPeriodicVestingAccount,
+                ): cosmos.vesting.v1beta1.PeriodicVestingAccount;
+
+                /**
+                 * Encodes the specified PeriodicVestingAccount message. Does not implicitly {@link cosmos.vesting.v1beta1.PeriodicVestingAccount.verify|verify} messages.
+                 * @param m PeriodicVestingAccount message or plain object to encode
+                 * @param [w] Writer to encode to
+                 * @returns Writer
+                 */
+                public static encode(
+                    m: cosmos.vesting.v1beta1.IPeriodicVestingAccount,
+                    w?: $protobuf.Writer,
+                ): $protobuf.Writer;
+
+                /**
+                 * Decodes a PeriodicVestingAccount message from the specified reader or buffer.
+                 * @param r Reader or buffer to decode from
+                 * @param [l] Message length if known beforehand
+                 * @returns PeriodicVestingAccount
+                 * @throws {Error} If the payload is not a reader or valid buffer
+                 * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                 */
+                public static decode(
+                    r: $protobuf.Reader | Uint8Array,
+                    l?: number,
+                ): cosmos.vesting.v1beta1.PeriodicVestingAccount;
+            }
+
+            /** Properties of a PermanentLockedAccount. */
+            interface IPermanentLockedAccount {
+                /** PermanentLockedAccount baseVestingAccount */
+                baseVestingAccount?: cosmos.vesting.v1beta1.IBaseVestingAccount | null;
+            }
+
+            /** Represents a PermanentLockedAccount. */
+            class PermanentLockedAccount implements IPermanentLockedAccount {
+                /**
+                 * Constructs a new PermanentLockedAccount.
+                 * @param [p] Properties to set
+                 */
+                constructor(p?: cosmos.vesting.v1beta1.IPermanentLockedAccount);
+
+                /** PermanentLockedAccount baseVestingAccount. */
+                public baseVestingAccount?: cosmos.vesting.v1beta1.IBaseVestingAccount | null;
+
+                /**
+                 * Creates a new PermanentLockedAccount instance using the specified properties.
+                 * @param [properties] Properties to set
+                 * @returns PermanentLockedAccount instance
+                 */
+                public static create(
+                    properties?: cosmos.vesting.v1beta1.IPermanentLockedAccount,
+                ): cosmos.vesting.v1beta1.PermanentLockedAccount;
+
+                /**
+                 * Encodes the specified PermanentLockedAccount message. Does not implicitly {@link cosmos.vesting.v1beta1.PermanentLockedAccount.verify|verify} messages.
+                 * @param m PermanentLockedAccount message or plain object to encode
+                 * @param [w] Writer to encode to
+                 * @returns Writer
+                 */
+                public static encode(
+                    m: cosmos.vesting.v1beta1.IPermanentLockedAccount,
+                    w?: $protobuf.Writer,
+                ): $protobuf.Writer;
+
+                /**
+                 * Decodes a PermanentLockedAccount message from the specified reader or buffer.
+                 * @param r Reader or buffer to decode from
+                 * @param [l] Message length if known beforehand
+                 * @returns PermanentLockedAccount
+                 * @throws {Error} If the payload is not a reader or valid buffer
+                 * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                 */
+                public static decode(
+                    r: $protobuf.Reader | Uint8Array,
+                    l?: number,
+                ): cosmos.vesting.v1beta1.PermanentLockedAccount;
+            }
+        }
+    }
 }
 
 /** Namespace google. */
