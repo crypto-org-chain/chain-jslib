@@ -121,8 +121,8 @@ describe('Testing MsgDeposit', function () {
                 type: 'cosmos-sdk/MsgDeposit',
                 value: {
                     proposal_id: Long.fromNumber(1244000, true),
-                    depositor: this.depositor,
-                    amount: this.amount.map((coinItem) => coinItem.toCosmosCoin()),
+                    depositor: 'tcro184lta2lsyu47vwyp2e8zmtca3k5yq85p6c4vp3',
+                    amount: coin.toCosmosCoin(),
                 },
             };
             expect(msgDeposit.toRawAminoMsg()).to.eqls(rawMsg);
