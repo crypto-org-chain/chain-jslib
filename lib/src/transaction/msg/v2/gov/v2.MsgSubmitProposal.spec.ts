@@ -211,7 +211,7 @@ describe('Testing MsgSubmitProposalV2 and its content types', function () {
                 value: {
                     proposer: 'tcro14sh490wk79dltea4udk95k7mw40wmvf77p0l5a',
                     content: communityPoolSpentContent.getEncoded(),
-                    initial_deposit: coin.toCosmosCoin(),
+                    initial_deposit: [coin.toCosmosCoin()],
                 },
             };
             expect(MsgSubmitProposalChangeParam.toRawAminoMsg()).to.eqls(rawMsg);
