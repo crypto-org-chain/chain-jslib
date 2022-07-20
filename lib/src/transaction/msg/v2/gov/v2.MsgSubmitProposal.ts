@@ -36,7 +36,14 @@ export const msgSubmitProposalV2 = function (config: InitConfigurations) {
 
         // eslint-disable-next-line class-methods-use-this
         toRawAminoMsg(): legacyAmino.Msg {
-            throw new Error('Method not implemented.');
+            return {
+                type: 'cosmos-sdk/MsgSubmitProposal',
+                value: {
+                    proposer: this.proposer,
+                    content: this.content.getEncoded(),
+                    initial_deposit: this.initialDeposit.map((coin) => coin.toCosmosCoin()),
+                },
+            } as legacyAmino.MsgSubmitProposal;
         }
 
         /**
