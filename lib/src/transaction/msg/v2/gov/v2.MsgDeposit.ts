@@ -46,7 +46,7 @@ export const msgDepositV2 = function (config: InitConfigurations) {
                     depositor: this.depositor,
                     amount: this.amount.map((coin) => coin.toCosmosCoin()),
                 },
-            } as legacyAmino.MsgDeposit;
+            };
         }
 
         /**

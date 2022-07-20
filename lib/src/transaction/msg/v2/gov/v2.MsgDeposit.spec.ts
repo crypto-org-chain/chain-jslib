@@ -9,6 +9,7 @@ import { CroSDK } from '../../../../core/cro';
 import { Msg } from '../../../../cosmos/v1beta1/types/msg';
 import { Secp256k1KeyPair } from '../../../../keypair/secp256k1';
 import { HDKey } from '../../../../hdkey/hdkey';
+import * as legacyAmino from '../../../../cosmos/amino';
 
 const cro = CroSDK({
     network: {
@@ -105,6 +106,28 @@ describe('Testing MsgDeposit', function () {
         expect(signedTxHex).to.be.eql(
             '0a730a710a1e2f636f736d6f732e676f762e763162657461312e4d73674465706f736974124f08e0f64b122b7463726f3138346c7461326c7379753437767779703265387a6d746361336b3579713835703663347670331a1c0a08626173657463726f12103132303030353030303030303030303012580a500a460a1f2f636f736d6f732e63727970746f2e736563703235366b312e5075624b657912230a21030bf28c5f92c336db4703791691fa650fee408690b0a22c5ee4afb7e2508d32a712040a0208011800120410c09a0c1a40ba8c80028a85015ac737ca56603bef0a82e0fbd83f701ccbba02a4f381e5ee4a3d83af13cd02f1e9c1e8b386995d8468c2db1db73952c30fac6114004fe269c0',
         );
+    });
+    describe('Testing MsgDeposit Json', function () {
+        it('Test MsgDeposit conversion for amino json', function () {
+            const coin = new cro.Coin('12000500', Units.CRO);
+
+            const msgDeposit = new cro.v2.gov.MsgDepositV2({
+                proposalId: Big(1244000),
+                depositor: 'tcro184lta2lsyu47vwyp2e8zmtca3k5yq85p6c4vp3',
+                amount: [coin],
+            });
+
+            const rawMsg: legacyAmino.Msg = {
+                type: 'cosmos-sdk/MsgDeposit',
+                value: {
+                    proposal_id: Long.fromNumber(1244000, true),
+                    depositor: this.depositor,
+                    amount: this.amount.map((coin) => coin.toCosmosCoin()),
+                },
+            };
+            
+            expect(msgDeposit.toRawAminoMsg()).to.eqls(rawMsg);
+        });
     });
     describe('fromCosmosJSON', function () {
         it('should throw Error if the JSON is not a MsgDeposit', function () {

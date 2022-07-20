@@ -43,7 +43,7 @@ export const msgSubmitProposalV2 = function (config: InitConfigurations) {
                     content: this.content.getEncoded(),
                     initial_deposit: this.initialDeposit.map((coin) => coin.toCosmosCoin()),
                 },
-            } as legacyAmino.MsgSubmitProposal;
+            };
         }
 
         /**
