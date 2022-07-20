@@ -122,10 +122,9 @@ describe('Testing MsgDeposit', function () {
                 value: {
                     proposal_id: Long.fromNumber(1244000, true),
                     depositor: this.depositor,
-                    amount: this.amount.map((coin) => coin.toCosmosCoin()),
+                    amount: this.amount.map((coinItem) => coinItem.toCosmosCoin()),
                 },
             };
-            
             expect(msgDeposit.toRawAminoMsg()).to.eqls(rawMsg);
         });
     });

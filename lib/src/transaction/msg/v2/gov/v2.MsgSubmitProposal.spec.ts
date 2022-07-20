@@ -200,7 +200,6 @@ describe('Testing MsgSubmitProposalV2 and its content types', function () {
                     },
                 ],
             });
-    
             const MsgSubmitProposalChangeParam = new cro.v2.gov.MsgSubmitProposalV2({
                 proposer: 'tcro14sh490wk79dltea4udk95k7mw40wmvf77p0l5a',
                 initialDeposit: [coin],
@@ -212,10 +211,9 @@ describe('Testing MsgSubmitProposalV2 and its content types', function () {
                 value: {
                     proposer: 'tcro14sh490wk79dltea4udk95k7mw40wmvf77p0l5a',
                     content: communityPoolSpentContent.getEncoded(),
-                    initial_deposit: this.initialDeposit.map((coin) => coin.toCosmosCoin()),
+                    initial_deposit: this.initialDeposit.map((coinItem) => coinItem.toCosmosCoin()),
                 },
             };
-
             expect(MsgSubmitProposalChangeParam.toRawAminoMsg()).to.eqls(rawMsg);
         });
     });
