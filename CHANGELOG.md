@@ -2,6 +2,9 @@
 
 All notable changes to this project will be documented in this file.
 
+## v1.0.6
+- Added support for `MsgDeposit` and `MsgSubmitProposal` in Amino format
+
 ## v1.0.5
 - [Dependency] Update dependency for `protobufjs` to `6.11.3`
   
