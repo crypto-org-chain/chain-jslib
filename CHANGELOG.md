@@ -2,6 +2,10 @@
 
 All notable changes to this project will be documented in this file.
 
+## v1.0.7
+- Fix incorrect `proposal_id` type of `MsgDeposit` in Amino format
+- Update License
+
 ## v1.0.6
 - Added support for `MsgDeposit` and `MsgSubmitProposal` in Amino format
 
