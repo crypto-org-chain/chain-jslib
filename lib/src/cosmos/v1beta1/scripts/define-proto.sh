@@ -4,7 +4,7 @@ set -o errexit -o nounset -o pipefail
 # Copyright © 2018–2020 IOV SAS (licensed under the Apache License, Version 2.0)
 # Copyright © 2020 Confio UO (licensed under the Apache License, Version 2.0)
 # Copyright © 2020 Simon Warta (licensed under the Apache License, Version 2.0)
-# Modifications Copyright (c) 2018 - present Crypto.org (licensed under the Apache License, Version 2.0)
+# Modifications Copyright (c) 2018-present Crypto.org (licensed under the Apache License, Version 2.0)
 command -v shellcheck > /dev/null && shellcheck "$0"
 
 TMP_DIR="./tmp"
