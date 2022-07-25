@@ -1,7 +1,7 @@
 // Copyright © 2018–2020 IOV SAS (licensed under the Apache License, Version 2.0)
 // Copyright © 2020 Confio UO (licensed under the Apache License, Version 2.0)
 // Copyright © 2020 Simon Warta (licensed under the Apache License, Version 2.0)
-// Modifications Copyright (c) 2018-present (licensed under the Apache License, Version 2.0)
+// Modifications Copyright (c) 2018 - present Crypto.org (licensed under the Apache License, Version 2.0)
 import Big from 'big.js';
 import ow, { NumberPredicate } from 'ow';
 import Long from 'long';
