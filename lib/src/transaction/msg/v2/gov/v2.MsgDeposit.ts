@@ -38,7 +38,7 @@ export const msgDepositV2 = function (config: InitConfigurations) {
 
         // eslint-disable-next-line class-methods-use-this
         toRawAminoMsg(): legacyAmino.Msg {
-            const proposal = Long.fromNumber(this.proposalId.toNumber(), true);
+            const proposal = this.proposalId.toString();
             return {
                 type: 'cosmos-sdk/MsgDeposit',
                 value: {
