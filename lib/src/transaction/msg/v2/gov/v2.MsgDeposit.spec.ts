@@ -120,7 +120,7 @@ describe('Testing MsgDeposit', function () {
             const rawMsg: legacyAmino.Msg = {
                 type: 'cosmos-sdk/MsgDeposit',
                 value: {
-                    proposal_id: Long.fromNumber(1244000, true),
+                    proposal_id: '1244000',
                     depositor: 'tcro184lta2lsyu47vwyp2e8zmtca3k5yq85p6c4vp3',
                     amount: [coin.toCosmosCoin()],
                 },
