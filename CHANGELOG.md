@@ -2,6 +2,9 @@
 
 All notable changes to this project will be documented in this file.
 
+## v1.0.8
+- Fix decimal formatted tx decoding for `MsgCreateValidator` type of `MsgEditValidator`
+  
 ## v1.0.7
 - Fix incorrect `proposal_id` type of `MsgDeposit` in Amino format
 
