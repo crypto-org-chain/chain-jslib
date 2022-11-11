@@ -62,7 +62,7 @@ describe('Testing MsgEditValidator', function () {
                 details: 'HiteshTest',
             },
             validatorAddress: 'tcrocncl16mmzexp3zqfpgqtnn927m5ph560qgxrs52a3wx',
-            commissionRate: '0.100000000000000000',
+            commissionRate: '100000000000000000',
             minSelfDelegation: '2',
         });
 
@@ -77,7 +77,7 @@ describe('Testing MsgEditValidator', function () {
                     details: 'HiteshTest',
                 },
                 validatorAddress: 'tcrocncl16mmzexp3zqfpgqtnn927m5ph560qgxrs52a3wx',
-                commissionRate: '0.100000000000000000',
+                commissionRate: '100000000000000000',
                 minSelfDelegation: '2',
             },
         };
@@ -89,7 +89,7 @@ describe('Testing MsgEditValidator', function () {
         const msgSend = new cro.staking.MsgEditValidator({
             description: {},
             validatorAddress: 'tcrocncl16mmzexp3zqfpgqtnn927m5ph560qgxrs52a3wx',
-            commissionRate: '0.100000000000000000',
+            commissionRate: '100000000000000000',
             minSelfDelegation: '2',
         });
 
@@ -98,7 +98,7 @@ describe('Testing MsgEditValidator', function () {
             value: {
                 description: {},
                 validatorAddress: 'tcrocncl16mmzexp3zqfpgqtnn927m5ph560qgxrs52a3wx',
-                commissionRate: '0.100000000000000000',
+                commissionRate: '100000000000000000',
                 minSelfDelegation: '2',
             },
         };
@@ -119,7 +119,7 @@ describe('Testing MsgEditValidator', function () {
                 securityContact: 'hitesh.goel@crypto.com',
                 details: '',
             },
-            commissionRate: '0.100000000000000000',
+            commissionRate: '100000000000000000',
             minSelfDelegation: '1.0',
             validatorAddress: 'tcrocncl1j7pej8kplem4wt50p4hfvndhuw5jprxxxtenvr',
         });
@@ -135,7 +135,7 @@ describe('Testing MsgEditValidator', function () {
         const signedTx = signableTx.setSignature(0, anyKeyPair.sign(signableTx.toSignDocumentHash(0))).toSigned();
         const signedTxHex = signedTx.encode().toHexString();
         expect(signedTxHex).to.be.eql(
-            '0aa7010aa4010a282f636f736d6f732e7374616b696e672e763162657461312e4d73674564697456616c696461746f7212780a2a0a0a6869746573685465737412001a0022166869746573682e676f656c4063727970746f2e636f6d2a00122f7463726f636e636c316a3770656a386b706c656d347774353070346866766e64687577356a707278787874656e76721a14302e3130303030303030303030303030303030302203312e3012580a500a460a1f2f636f736d6f732e63727970746f2e736563703235366b312e5075624b657912230a2103fd0d560b6c4aa1ca16721d039a192867c3457e19dad553edb98e7ba88b159c2712040a0208011802120410c09a0c1a4087e81b3b9706a35520778ed9099560c86b3ce8aaec3b384cc9720c89d3e044ab2601240a0d83f6a2e683e370c828b27dca8117de53eea269065c034e45e820f3',
+            '0aa5010aa2010a282f636f736d6f732e7374616b696e672e763162657461312e4d73674564697456616c696461746f7212760a2a0a0a6869746573685465737412001a0022166869746573682e676f656c4063727970746f2e636f6d2a00122f7463726f636e636c316a3770656a386b706c656d347774353070346866766e64687577356a707278787874656e76721a123130303030303030303030303030303030302203312e3012580a500a460a1f2f636f736d6f732e63727970746f2e736563703235366b312e5075624b657912230a2103fd0d560b6c4aa1ca16721d039a192867c3457e19dad553edb98e7ba88b159c2712040a0208011802120410c09a0c1a40fe79a59e66813e4848d3c807ccf4a8f8b4cb91e0a4db97aa2e61dba4db2b4c9b100e4ebbc20dc7a08015a0bd6b1ef040be4a3e9584edb5f66b843d8c6b389432',
         );
     });
 
@@ -149,7 +149,7 @@ describe('Testing MsgEditValidator', function () {
                 details: 'HiteshTest',
             },
             validatorAddress: 'tcro1j7pej8kplem4wt50p4hfvndhuw5jprxxn5625q',
-            commissionRate: '0.100000000000000000',
+            commissionRate: '100000000000000000',
             minSelfDelegation: '2',
         };
 
@@ -162,7 +162,7 @@ describe('Testing MsgEditValidator', function () {
                 details: 'HiteshTest',
             },
             validatorAddress: 'tcrocncl16mmzexp3zqfpgqtnn927m5ph560qgxrs52a3w',
-            commissionRate: '0.100000000000000000',
+            commissionRate: '100000000000000000',
             minSelfDelegation: '2',
         };
 
