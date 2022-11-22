@@ -13,7 +13,7 @@ export interface MsgUnjailRaw {
     validator_addr: string;
 }
 
-export const msgUnjail = function (config: InitConfigurations) {
+export const msgUnjailV2 = function (config: InitConfigurations) {
     return class MsgUnjail implements CosmosMsg {
         /** MsgUnjail validatorAddress. */
         public validatorAddress: string;

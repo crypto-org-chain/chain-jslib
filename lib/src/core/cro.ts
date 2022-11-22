@@ -48,7 +48,7 @@ import { MsgConnectionOpenConfirmIBC } from '../transaction/msg/ibc/core/connect
 import { MsgConnectionOpenTryIBC } from '../transaction/msg/ibc/core/connection/MsgConnectionOpenTry';
 import { msgCreateVestingAccount } from '../transaction/msg/account/MsgCreateVestingAccount';
 import { delayedVestingAccount } from '../transaction/msg/account/DelayedVestingAccount';
-import { msgUnjail } from '../transaction/msg/slashing/MsgUnjail';
+import { msgUnjailV2 } from '../transaction/msg/slashing/MsgUnjail';
 
 export const CroSDK = function (configs: InitConfigurations) {
     ow(configs, 'configs', owCroSDKInitParams);
@@ -128,7 +128,7 @@ export const CroSDK = function (configs: InitConfigurations) {
                 },
             },
             slashing: {
-                MsgUnjail: msgUnjail(configs),
+                MsgUnjailV2: msgUnjailV2(configs),
             },
             RawTransactionV2: rawTransactionV2(configs),
             CoinV2: coinv2(configs),

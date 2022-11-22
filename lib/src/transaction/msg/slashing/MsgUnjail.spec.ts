@@ -39,14 +39,14 @@ describe('Testing MsgUnjail', function () {
             if (options.valid) {
                 return;
             }
-            expect(() => new cro.v2.slashing.MsgUnjail(options.value)).to.throw(
+            expect(() => new cro.v2.slashing.MsgUnjailV2(options.value)).to.throw(
                 'Expected `options` to be of type `object`',
             );
         });
     });
 
     it('Test MsgUnjail conversion', function () {
-        const MsgUnjail = new cro.v2.slashing.MsgUnjail({
+        const MsgUnjail = new cro.v2.slashing.MsgUnjailV2({
             validatorAddress: 'tcrocncl1j7pej8kplem4wt50p4hfvndhuw5jprxxxtenvr',
         });
 
@@ -65,7 +65,7 @@ describe('Testing MsgUnjail', function () {
             Bytes.fromHexString('66633d18513bec30dd11a209f1ceb1787aa9e2069d5d47e590174dc9665102b3'),
         );
 
-        const MsgUnjail = new cro.v2.slashing.MsgUnjail({
+        const MsgUnjail = new cro.v2.slashing.MsgUnjailV2({
             validatorAddress: 'tcrocncl1j7pej8kplem4wt50p4hfvndhuw5jprxxxtenvr',
         });
 
@@ -92,14 +92,14 @@ describe('Testing MsgUnjail', function () {
             validatorAddress: 'tcro165tzcrh2yl83g8qeqxueg2g5gzgu57y3fe3kc3',
         };
 
-        expect(() => new cro.v2.slashing.MsgUnjail(params2)).to.throw(
+        expect(() => new cro.v2.slashing.MsgUnjailV2(params2)).to.throw(
             'Provided `validatorAddress` doesnt match network selected',
         );
     });
 
     describe('Testing MsgUnjail Json', function () {
         it('Test MsgUnjail conversion for amino json', function () {
-            const MsgUnjail = new cro.v2.slashing.MsgUnjail({
+            const MsgUnjail = new cro.v2.slashing.MsgUnjailV2({
                 validatorAddress: 'tcrocncl1j7pej8kplem4wt50p4hfvndhuw5jprxxxtenvr',
             });
 
@@ -117,13 +117,13 @@ describe('Testing MsgUnjail', function () {
         it('should throw Error if the JSON is not a MsgUnjail', function () {
             const json =
                 '{ "@type": "/cosmos.bank.v1beta1.MsgCreateValidator", "amount": [{ "denom": "basetcro", "amount": "3478499933290496" }], "from_address": "tcro1x07kkkepfj2hl8etlcuqhej7jj6myqrp48y4hg", "to_address": "tcro184lta2lsyu47vwyp2e8zmtca3k5yq85p6c4vp3" }';
-            expect(() => cro.v2.slashing.MsgUnjail.fromCosmosMsgJSON(json)).to.throw(
+            expect(() => cro.v2.slashing.MsgUnjailV2.fromCosmosMsgJSON(json)).to.throw(
                 'Expected /cosmos.slashing.v1beta1.MsgUnjail but got /cosmos.bank.v1beta1.MsgCreateValidator',
             );
         });
         it('should throw Error when the `validator_address` field is missing', function () {
             const json = '{"@type":"/cosmos.slashing.v1beta1.MsgUnjail"}';
-            expect(() => cro.v2.slashing.MsgUnjail.fromCosmosMsgJSON(json)).to.throw(
+            expect(() => cro.v2.slashing.MsgUnjailV2.fromCosmosMsgJSON(json)).to.throw(
                 'Expected property `validatorAddress` to be of type `string` but received type `undefined` in object `options`',
             );
         });
@@ -131,7 +131,7 @@ describe('Testing MsgUnjail', function () {
         it('should return the MsgUnjail corresponding to the JSON', function () {
             const json =
                 '{"@type":"/cosmos.slashing.v1beta1.MsgUnjail","validator_addr":"tcrocncl1j7pej8kplem4wt50p4hfvndhuw5jprxxxtenvr"}';
-            const MsgUnjail = cro.v2.slashing.MsgUnjail.fromCosmosMsgJSON(json);
+            const MsgUnjail = cro.v2.slashing.MsgUnjailV2.fromCosmosMsgJSON(json);
             expect(MsgUnjail.validatorAddress).to.eql('tcrocncl1j7pej8kplem4wt50p4hfvndhuw5jprxxxtenvr');
         });
     });

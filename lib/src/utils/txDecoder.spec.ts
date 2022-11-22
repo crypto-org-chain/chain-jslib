@@ -176,6 +176,19 @@ describe('TxDecoder', function () {
         });
     })
 
+    context('`MsgUnjail`', function () {
+        it('should decode `MsgUnjail` correctly', function () {
+            const txDecoder = new TxDecoder();
+            expect(
+                txDecoder
+                    .fromHex(
+                        '0a590a570a222f636f736d6f732e736c617368696e672e763162657461312e4d7367556e6a61696c12310a2f7463726f636e636c316a3770656a386b706c656d347774353070346866766e64687577356a707278787874656e767212580a500a460a1f2f636f736d6f732e63727970746f2e736563703235366b312e5075624b657912230a2103fd0d560b6c4aa1ca16721d039a192867c3457e19dad553edb98e7ba88b159c2712040a0208011802120410c09a0c1a40186e87b0b41928e69a1211c1fb5ebcb4c11fa6350f5cc830fa5f38f36f37f66e00d062707672b5d4ebf98cd5e3c7c4b40562707321bb9e8f2d3d605d8beb7b13',
+                    )
+                    .toCosmosJSON(),
+            ).to.deep.equal(JSON.stringify({ "body": { "messages": [{ "@type": "/cosmos.slashing.v1beta1.MsgUnjail", "validator_addr": "tcrocncl1j7pej8kplem4wt50p4hfvndhuw5jprxxxtenvr" }], "memo": "", "timeout_height": "0", "extension_options": [], "non_critical_extension_options": [] }, "auth_info": { "signer_infos": [{ "public_key": { "@type": "/cosmos.crypto.secp256k1.PubKey", "key": "A/0NVgtsSqHKFnIdA5oZKGfDRX4Z2tVT7bmOe6iLFZwn" }, "mode_info": { "single": { "mode": "SIGN_MODE_DIRECT" } }, "sequence": "2" }], "fee": { "amount": [], "gas_limit": "200000", "payer": "", "granter": "" } }, "signatures": ["GG6HsLQZKOaaEhHB+168tMEfpjUPXMgw+l8482839m4A0GJwdnK11Ov5jNXjx8S0BWJwcyG7no8tPWBdi+t7Ew=="] }));
+        });
+    })
+
     it('should decode the transaction correctly FOR CUSTOM MESSAGE PARAMS', function () {
         const txDecoder = new TxDecoder();
         expect(
