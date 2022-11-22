@@ -29,11 +29,10 @@ const cro = CroSDK({
     },
 });
 
-describe('Testing MsgUnjail (Unbonding)', function () {
+describe('Testing MsgUnjail', function () {
     fuzzyDescribe('should throw Error when options is invalid', function (fuzzy) {
         const anyValidOptions = {
             validatorAddress: 'tcrocncl1j7pej8kplem4wt50p4hfvndhuw5jprxxxtenvr',
-            amount: new cro.Coin('1000', Units.BASE),
         };
         const testRunner = fuzzy(fuzzy.ObjArg(anyValidOptions));
 

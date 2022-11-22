@@ -13,11 +13,6 @@ export interface MsgUnjailRaw {
     validator_addr: string;
 }
 
-export interface Amount {
-    denom: string;
-    amount: string;
-}
-
 export const msgUnjail = function (config: InitConfigurations) {
     return class MsgUnjail implements CosmosMsg {
         /** MsgUnjail validatorAddress. */
