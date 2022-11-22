@@ -2,6 +2,9 @@
 
 All notable changes to this project will be documented in this file.
 
+## v1.1.0
+- Added support for `MsgUnjail`
+  
 ## v1.0.8
 - Fix wrong commission tx decoding for `MsgCreateValidator` and `MsgEditValidator`
   
