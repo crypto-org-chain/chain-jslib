@@ -14,6 +14,9 @@ export const COSMOS_MSG_TYPEURL = {
     PubKey: {
         ed25519: '/cosmos.crypto.ed25519.PubKey',
     },
+    slashing: {
+        MsgUnjail: '/cosmos.slashing.v1beta1.MsgUnjail',
+    },
     upgrade: {
         CancelSoftwareUpgradeProposal: '/cosmos.upgrade.v1beta1.CancelSoftwareUpgradeProposal',
         SoftwareUpgradeProposal: '/cosmos.upgrade.v1beta1.SoftwareUpgradeProposal',
@@ -134,6 +137,9 @@ export const typeUrlToMsgClassMapping = (cro: any, typeUrl: string) => {
         case COSMOS_MSG_TYPEURL.nft.MsgBurnNFT:
             return cro.nft.MsgBurnNFT;
 
+        // slashing
+        case COSMOS_MSG_TYPEURL.slashing.MsgUnjail:
+            return cro.v2.slashing.MsgUnjail;
         default:
             throw new Error(`${typeUrl} not supported.`);
     }

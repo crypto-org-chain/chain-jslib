@@ -131,6 +131,10 @@ export const owMsgUndelegateOptions = owStrictObject().exactShape({
     amount: owCoin(),
 });
 
+export const owMsgUnjailOptions = owStrictObject().exactShape({
+    validatorAddress: ow.string,
+});
+
 export const owMsgWithdrawValidatorCommissionOptions = owStrictObject().exactShape({
     validatorAddress: ow.string,
 });
