@@ -139,7 +139,7 @@ export const typeUrlToMsgClassMapping = (cro: any, typeUrl: string) => {
 
         // slashing
         case COSMOS_MSG_TYPEURL.slashing.MsgUnjail:
-            return cro.v2.slashing.MsgUnjail;
+            return cro.v2.slashing.MsgUnjailV2;
         default:
             throw new Error(`${typeUrl} not supported.`);
     }
