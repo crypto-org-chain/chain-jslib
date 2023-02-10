@@ -205,7 +205,7 @@ export class CroNetwork {
         },
         rpcUrl: 'https://testnet-croeseid-4.crypto.org:26657',
     };
-    
+
     public static TestnetCroeseid5: Network = {
         defaultNodeUrl: 'https://testnet-croeseid-5.crypto.org',
         chainId: 'testnet-croeseid-5',
