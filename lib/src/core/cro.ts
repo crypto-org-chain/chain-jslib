@@ -155,6 +155,40 @@ export class CroNetwork {
         rpcUrl: 'https://rpc.mainnet.crypto.org',
     };
 
+    public static Testnet: Network = {
+        defaultNodeUrl: 'https://testnet-croeseid.crypto.org',
+        chainId: 'testnet-croeseid-2',
+        addressPrefix: 'tcro',
+        validatorAddressPrefix: 'tcrocncl',
+        validatorPubKeyPrefix: 'tcrocnclconspub',
+        coin: {
+            baseDenom: 'basetcro',
+            croDenom: 'tcro',
+        },
+        bip44Path: {
+            coinType: 1,
+            account: 0,
+        },
+        rpcUrl: 'https://testnet-croeseid.crypto.org:26657',
+    };
+    
+    public static TestnetCroeseid3: Network = {
+        defaultNodeUrl: 'https://testnet-croeseid-3.crypto.org',
+        chainId: 'testnet-croeseid-3',
+        addressPrefix: 'tcro',
+        validatorAddressPrefix: 'tcrocncl',
+        validatorPubKeyPrefix: 'tcrocnclconspub',
+        coin: {
+            baseDenom: 'basetcro',
+            croDenom: 'tcro',
+        },
+        bip44Path: {
+            coinType: 1,
+            account: 0,
+        },
+        rpcUrl: 'https://testnet-croeseid-3.crypto.org:26657',
+    };
+
     public static TestnetCroeseid4: Network = {
         defaultNodeUrl: 'https://rpc-testnet-croeseid-4.crypto.org',
         chainId: 'testnet-croeseid-4',
@@ -187,7 +221,7 @@ export class CroNetwork {
             account: 0,
         },
         rpcUrl: 'https://rpc-c5.crypto.org',
-    };
+    }
 }
 
 export type InitConfigurations = {
