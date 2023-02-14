@@ -139,7 +139,7 @@ export const CroSDK = function (configs: InitConfigurations) {
 
 export class CroNetwork {
     public static Mainnet: Network = {
-        defaultNodeUrl: 'https://mainnet.crypto.org',
+        defaultNodeUrl: 'https://rpc.mainnet.crypto.org',
         chainId: 'crypto-org-chain-mainnet-1',
         addressPrefix: 'cro',
         validatorAddressPrefix: 'crocncl',
@@ -152,45 +152,11 @@ export class CroNetwork {
             coinType: 394,
             account: 0,
         },
-        rpcUrl: 'https://mainnet.crypto.org:26657',
-    };
-
-    public static Testnet: Network = {
-        defaultNodeUrl: 'https://testnet-croeseid.crypto.org',
-        chainId: 'testnet-croeseid-2',
-        addressPrefix: 'tcro',
-        validatorAddressPrefix: 'tcrocncl',
-        validatorPubKeyPrefix: 'tcrocnclconspub',
-        coin: {
-            baseDenom: 'basetcro',
-            croDenom: 'tcro',
-        },
-        bip44Path: {
-            coinType: 1,
-            account: 0,
-        },
-        rpcUrl: 'https://testnet-croeseid.crypto.org:26657',
-    };
-
-    public static TestnetCroeseid3: Network = {
-        defaultNodeUrl: 'https://testnet-croeseid-3.crypto.org',
-        chainId: 'testnet-croeseid-3',
-        addressPrefix: 'tcro',
-        validatorAddressPrefix: 'tcrocncl',
-        validatorPubKeyPrefix: 'tcrocnclconspub',
-        coin: {
-            baseDenom: 'basetcro',
-            croDenom: 'tcro',
-        },
-        bip44Path: {
-            coinType: 1,
-            account: 0,
-        },
-        rpcUrl: 'https://testnet-croeseid-3.crypto.org:26657',
+        rpcUrl: 'https://rpc.mainnet.crypto.org',
     };
 
     public static TestnetCroeseid4: Network = {
-        defaultNodeUrl: 'https://testnet-croeseid-4.crypto.org',
+        defaultNodeUrl: 'https://rpc-testnet-croeseid-4.crypto.org',
         chainId: 'testnet-croeseid-4',
         addressPrefix: 'tcro',
         validatorAddressPrefix: 'tcrocncl',
@@ -203,11 +169,11 @@ export class CroNetwork {
             coinType: 1,
             account: 0,
         },
-        rpcUrl: 'https://testnet-croeseid-4.crypto.org:26657',
+        rpcUrl: 'https://rpc-testnet-croeseid-4.crypto.org',
     };
 
     public static TestnetCroeseid5: Network = {
-        defaultNodeUrl: 'https://testnet-croeseid-5.crypto.org',
+        defaultNodeUrl: 'https://rpc-c5.crypto.org',
         chainId: 'testnet-croeseid-5',
         addressPrefix: 'tcro',
         validatorAddressPrefix: 'tcrocncl',
@@ -220,7 +186,7 @@ export class CroNetwork {
             coinType: 1,
             account: 0,
         },
-        rpcUrl: 'https://testnet-croeseid-5.crypto.org:26657',
+        rpcUrl: 'https://rpc-c5.crypto.org',
     };
 }
 

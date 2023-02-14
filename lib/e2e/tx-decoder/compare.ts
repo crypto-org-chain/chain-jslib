@@ -20,7 +20,7 @@ const README = `
     TXDECODER_TENDERMINT_RPC: (Optional) The base URL to Crypto.org Chain Tendermint RPC
     TXDECODER_DIFF_OUTPUT_FOLDER: (Optional) Folder to output the differences. Default ./lib/e2e/tx-decoder/diff
 `;
-const TENDERMINT_RPC_BASEURL = process.env.TXDECODER_TENDERMINT_RPC || 'https://mainnet.crypto.org:26657';
+const TENDERMINT_RPC_BASEURL = process.env.TXDECODER_TENDERMINT_RPC || 'https://rpc.mainnet.crypto.org';
 const GO_DECODER_PATH = './lib/e2e/tx-decoder/decode-cosmosbase64tx';
 const DIFF_OUTPUT_FOLDER = process.env.TXDECODER_DIFF_OUTPUT_FOLDER || './lib/e2e/tx-decoder/diff';
 
