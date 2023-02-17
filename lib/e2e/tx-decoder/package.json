@@ -4,6 +4,6 @@
     "big.js": "6.1.1",
     "chai": "4.3.4",
     "deep-object-diff": "1.1.0",
-    "mocha": "9.0.3"
+    "mocha": "9.2.2"
   }
 }
