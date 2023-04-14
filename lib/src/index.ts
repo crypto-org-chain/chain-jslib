@@ -3,6 +3,7 @@ import { HDKey } from './hdkey/hdkey';
 import { Secp256k1KeyPair } from './keypair/secp256k1';
 import utils from './utils';
 import { CroNetwork, CroSDK } from './core/cro';
+import { CronosNetwork, CronosSDK } from './core/cronos';
 import { Units } from './coin/coin';
 import { TxDecoder } from './utils/txDecoder';
 
@@ -15,7 +16,9 @@ const _ = {
     HDKey,
     Secp256k1KeyPair,
     CroSDK,
+    CronosSDK,
     CroNetwork,
+    CronosNetwork,
     Units,
     TxDecoder,
 };
