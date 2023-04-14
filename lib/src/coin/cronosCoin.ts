@@ -8,7 +8,7 @@ import { Coin as CosmosCoin, coin as cosmosCoin, coins as cosmosCoins } from '..
 import { ICoin } from './coin';
 
 export const cronosCoin = function (config: InitConfigurations) {
-    return class Coin implements ICoin {
+    return class CronosCoin implements ICoin {
         /**
          * Total supply in base unit represented as string
          * @type {string}
@@ -17,7 +17,7 @@ export const cronosCoin = function (config: InitConfigurations) {
          */
         public static TOTAL_SUPPLY_STRING = '100000000000000000000000000000';
 
-        public static TOTAL_SUPPLY = new Coin(Coin.TOTAL_SUPPLY_STRING);
+        public static TOTAL_SUPPLY = new CronosCoin(CronosCoin.TOTAL_SUPPLY_STRING);
 
         /**
          * Coin value stored in basic unit as Big
@@ -42,7 +42,7 @@ export const cronosCoin = function (config: InitConfigurations) {
                 throw new TypeError(`Expected amount to be a base10 number represented as string, got \`${amount}\``);
             }
             this.network = config.network;
-            this.baseAmount = Coin.parseBaseAmount(coins);
+            this.baseAmount = CronosCoin.parseBaseAmount(coins);
         }
 
         getNetwork(): Network {
@@ -63,7 +63,7 @@ export const cronosCoin = function (config: InitConfigurations) {
                 throw new TypeError(`Expected base amount to be positive, got \`${baseAmount}\``);
             }
 
-            if (baseAmount.gt(Coin.TOTAL_SUPPLY_STRING)) {
+            if (baseAmount.gt(CronosCoin.TOTAL_SUPPLY_STRING)) {
                 throw new TypeError(`Expected base amount to be within total supply, got \`${baseAmount}\``);
             }
 
@@ -77,14 +77,14 @@ export const cronosCoin = function (config: InitConfigurations) {
          * @throws {Error} adding two coins would exceed total supply
          * @memberof Coin
          */
-        public add(anotherCoin: Coin): Coin {
+        public add(anotherCoin: CronosCoin): CronosCoin {
             ow(anotherCoin, owCoin());
 
             const newAmount = this.baseAmount.add(anotherCoin.toBig());
-            if (newAmount.gt(Coin.TOTAL_SUPPLY_STRING)) {
+            if (newAmount.gt(CronosCoin.TOTAL_SUPPLY_STRING)) {
                 throw new Error('Adding two Coin together exceed total supply');
             }
-            return new Coin(newAmount.toString());
+            return new CronosCoin(newAmount.toString());
         }
 
         /**
@@ -94,14 +94,14 @@ export const cronosCoin = function (config: InitConfigurations) {
          * @throws {Error} subtracting two coins would become negative
          * @memberof Coin
          */
-        public sub(anotherCoin: Coin): Coin {
+        public sub(anotherCoin: CronosCoin): CronosCoin {
             ow(anotherCoin, owCoin());
 
             const newAmount = this.baseAmount.sub(anotherCoin.toBig());
             if (newAmount.lt(0)) {
                 throw new Error('Subtracting the Coin results in negation Coin');
             }
-            return new Coin(newAmount.toString());
+            return new CronosCoin(newAmount.toString());
         }
 
         /**

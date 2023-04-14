@@ -2,7 +2,7 @@ import ow from 'ow';
 
 import { croClient } from '../client/client';
 import { Network } from '../network/network';
-import { cronosCoin } from '../coin/cronos_coin';
+import { cronosCoin } from '../coin/cronosCoin';
 import { owCroSDKInitParams } from './ow.types';
 import { rawTransaction } from '../transaction/raw';
 import { msgSend } from '../transaction/msg/bank/msgsend';
@@ -25,13 +25,13 @@ import { msgUpdateClientIBC } from '../transaction/msg/ibc/core/MsgUpdateClient'
 import { msgUpgradeClientIBC } from '../transaction/msg/ibc/core/MsgUpgradeClient';
 import { msgSubmitMisbehaviourIBC } from '../transaction/msg/ibc/core/MsgSubmitMisbehaviour';
 import { rawTransactionV2 } from '../transaction/v2.raw';
-import { coinv2 } from '../coin/v2.coin/v2.coin';
 import { msgClientState } from '../transaction/msg/ibc/lightclients/ClientState';
 import { msgConsensusState } from '../transaction/msg/ibc/lightclients/ConsensusState';
 import { msgHeader } from '../transaction/msg/ibc/lightclients/Header';
 import { MsgConnectionOpenConfirmIBC } from '../transaction/msg/ibc/core/connection/MsgConnectionOpenConfirm';
 import { MsgConnectionOpenTryIBC } from '../transaction/msg/ibc/core/connection/MsgConnectionOpenTry';
 import { InitConfigurations } from './cro';
+import { cronosCoinv2 } from '../coin/v2.coin/v2.cronosCoin';
 
 export const CronosSDK = function (configs: InitConfigurations) {
     ow(configs, 'configs', owCroSDKInitParams);
@@ -84,7 +84,7 @@ export const CronosSDK = function (configs: InitConfigurations) {
                 },
             },
             RawTransactionV2: rawTransactionV2(configs),
-            CoinV2: coinv2(configs),
+            CoinV2: cronosCoinv2(configs),
         },
         Options: configs,
     };
