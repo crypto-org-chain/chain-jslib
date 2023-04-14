@@ -31,7 +31,6 @@ import { msgConsensusState } from '../transaction/msg/ibc/lightclients/Consensus
 import { msgHeader } from '../transaction/msg/ibc/lightclients/Header';
 import { MsgConnectionOpenConfirmIBC } from '../transaction/msg/ibc/core/connection/MsgConnectionOpenConfirm';
 import { MsgConnectionOpenTryIBC } from '../transaction/msg/ibc/core/connection/MsgConnectionOpenTry';
-import { msgUnjailV2 } from '../transaction/msg/slashing/MsgUnjail';
 import { InitConfigurations } from './cro';
 
 export const CronosSDK = function (configs: InitConfigurations) {
@@ -83,9 +82,6 @@ export const CronosSDK = function (configs: InitConfigurations) {
                 proposal: {
                     CommunityPoolSpendProposalV2: communityPoolSpendProposalV2(configs),
                 },
-            },
-            slashing: {
-                MsgUnjailV2: msgUnjailV2(configs),
             },
             RawTransactionV2: rawTransactionV2(configs),
             CoinV2: coinv2(configs),
