@@ -9,6 +9,7 @@ import { Coin as CosmosCoin, coin as cosmosCoin, coins as cosmosCoins } from '..
 export enum Units {
     BASE = 'base',
     CRO = 'cro',
+    CUSTOM = 'custom',
 }
 
 // Duck type check due to limitations of non exportable type for proper instance of checks
@@ -111,6 +112,8 @@ export const coinv2 = function (config: InitConfigurations) {
                 } else if (!['cro', 'tcro'].includes(denom.toLowerCase())) {
                     throw new Error('Provided Units and Denom do not belong to the same network.');
                 }
+            } else if (unit === Units.CUSTOM) {
+                this.baseAmount = CoinV2.parseCustomAmount(coins);
             }
             this.denom = denom || this.network.coin.baseDenom;
             this.receivedAmount = coins;
@@ -122,7 +125,7 @@ export const coinv2 = function (config: InitConfigurations) {
          * @param {string} denom chain compatible denom value
          */
         public static fromCustomAmountDenom = (amount: string, denom: string): CoinV2 => {
-            return new CoinV2(amount, Units.BASE, denom);
+            return new CoinV2(amount, Units.CUSTOM, denom);
         };
 
         getNetwork(): Network {
@@ -171,6 +174,23 @@ export const coinv2 = function (config: InitConfigurations) {
             }
 
             return baseAmount;
+        }
+
+        /**
+         * Parse and validate a amount in base unit represented as Big
+         * @param {Big} customAmount amount in base unit
+         * @returns {Big} the parsed coins in base unit
+         * @throws {TypeError} coins amount is invalid
+         */
+        static parseCustomAmount(customAmount: Big): Big {
+            if (customAmount.cmp(customAmount.toFixed(0)) !== 0) {
+                throw new TypeError(`Expected base amount to be an integer, got \`${customAmount}\``);
+            }
+            if (customAmount.lt(0)) {
+                throw new TypeError(`Expected base amount to be positive, got \`${customAmount}\``);
+            }
+
+            return customAmount;
         }
 
         /**
