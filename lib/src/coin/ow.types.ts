@@ -1,6 +1,6 @@
 import ow from 'ow';
 import { owOptionalStrictObject, owStrictObject } from '../ow.types';
-import { isCoin, Units } from './coin';
+import { isCoin, Units } from './v2.coin/v2.coin';
 
 export const owCoinUnit = ow.string.validate((val) => ({
     validator: Object.values(Units).includes(val as any),

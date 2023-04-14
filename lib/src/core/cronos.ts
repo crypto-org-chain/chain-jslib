@@ -31,14 +31,14 @@ import { msgHeader } from '../transaction/msg/ibc/lightclients/Header';
 import { MsgConnectionOpenConfirmIBC } from '../transaction/msg/ibc/core/connection/MsgConnectionOpenConfirm';
 import { MsgConnectionOpenTryIBC } from '../transaction/msg/ibc/core/connection/MsgConnectionOpenTry';
 import { InitConfigurations } from './cro';
-import { cronosCoinv2 } from '../coin/v2.coin/v2.cronosCoin';
+import { coinv2 } from '../coin/v2.coin/v2.coin';
 
 export const CronosSDK = function (configs: InitConfigurations) {
     ow(configs, 'configs', owCroSDKInitParams);
 
     return {
         CroClient: croClient(configs),
-        Coin: cronosCoin(configs),
+        CronosCoin: cronosCoin(configs),
         RawTransaction: rawTransaction(configs),
         Address: userAddress(configs),
         gov: {
@@ -84,7 +84,7 @@ export const CronosSDK = function (configs: InitConfigurations) {
                 },
             },
             RawTransactionV2: rawTransactionV2(configs),
-            CoinV2: cronosCoinv2(configs),
+            CoinV2: coinv2(configs),
         },
         Options: configs,
     };
