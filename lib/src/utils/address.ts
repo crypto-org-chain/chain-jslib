@@ -1,5 +1,6 @@
 import bech32 from 'bech32';
-import { isAddress, stripHexPrefix } from 'web3-utils';
+import { isAddress } from 'web3-validator';
+import { stripHexPrefix } from 'web3-eth-accounts';
 import { Network } from '../network/network';
 import { Bytes } from './bytes/bytes';
 // import { toBase64 } from '@cosmjs/encoding';
