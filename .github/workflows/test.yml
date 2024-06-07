@@ -8,16 +8,12 @@ on:
 
 jobs:
   unit:
-    name: Unit Test (Node.js v${{ matrix.node }})
+    name: Unit Test (Node.js v16)
     runs-on: ubuntu-latest
-    strategy:
-      matrix: 
-        node: [16]
-        
     steps:
       - uses: actions/setup-node@v1
         with:
-          node-version: ${{ matrix.node }}
+          node-version: 16
 
       - uses: actions/checkout@v2
 
@@ -25,7 +21,7 @@ jobs:
         id: cache-deps
         with:
           path: node_modules
-          key: ${{ runner.os }}-node${{ matrix.code }}-${{ hashFiles('**/package-lock.json') }}
+          key: ${{ runner.os }}-node16-${{ hashFiles('**/package-lock.json') }}
       
       - name: Run test
         run: |
