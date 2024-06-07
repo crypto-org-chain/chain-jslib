@@ -61,11 +61,7 @@ export function checkAddressCheckSum(data: string): boolean {
     return true;
 }
 
-export const isAddress = (value: Uint8Array | bigint | string | number | boolean, checkChecksum = true) => {
-    if (typeof value !== 'string' && !isUint8Array(value)) {
-        return false;
-    }
-
+export const isAddress = (value: Uint8Array | string, checkChecksum = true) => {
     let valueToCheck: string;
 
     if (isUint8Array(value)) {

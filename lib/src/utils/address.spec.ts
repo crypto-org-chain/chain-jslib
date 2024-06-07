@@ -116,6 +116,15 @@ describe('Validate address against network and checksums', function () {
         it(`isAddress should return true for valid EVM address`, function () {
             expect(isAddress(address.EVM)).to.be.eq(true);
         });
+        it(`isAddress should return false for non 40-length string`, function () {
+            expect(isAddress('should return false')).to.be.eq(false);
+        });
+        it(`isAddress should return false for 40-length non EVM-valid string`, function () {
+            expect(isAddress('0xD47286f025F947482a2C374Fb70e9D4c94d809CG')).to.be.eq(false);
+        });
+        it(`isAddress should return true for valid capitalized EVM address`, function () {
+            expect(isAddress(address.EVM.toUpperCase())).to.be.eq(true);
+        });
         it(`isAddress should return true for valid trimmed EVM address`, function () {
             expect(isAddress(stripHexPrefix(address.EVM))).to.be.eq(true);
         });
@@ -124,6 +133,9 @@ describe('Validate address against network and checksums', function () {
         });
         it(`checkAddressCheckSum should return false for invalid EVM address`, function () {
             expect(checkAddressCheckSum('0x6c46a1e212f127a6a8787b456a243c0d')).to.be.eq(false);
+        });
+        it(`checkAddressCheckSum should return false`, function () {
+            expect(checkAddressCheckSum('0xd47286f025F947482a2C374Fb70e9D4c94d809CF')).to.be.eq(false);
         });
     });
 
