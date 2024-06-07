@@ -10,7 +10,6 @@ import {
     isUint8Array,
     stripHexPrefix,
     uint8ArrayToHexString,
-    ensureIfUint8Array,
     isAddress,
     checkAddressCheckSum,
 } from './address';
@@ -110,12 +109,6 @@ describe('Validate address against network and checksums', function () {
         });
         it(`uint8ArrayToHexString convert Uint8Array to HexString`, function () {
             expect(uint8ArrayToHexString(new Uint8Array([0x1f, 0x2f, 0x3f, 0x4f]))).to.be.eq('0x1f2f3f4f');
-        });
-        it(`ensureIfUint8Array should return Uint8Array instance with Uint8Array input`, function () {
-            expect(ensureIfUint8Array(new Uint8Array([21, 31]))).to.be.instanceOf(Uint8Array);
-        });
-        it(`ensureIfUint8Array should return Array instance with non-array input`, function () {
-            expect(ensureIfUint8Array([21, 31])).to.be.instanceOf(Array);
         });
         it(`isAddress should return false for valid EVM address`, function () {
             expect(isAddress(address.tendermint)).to.be.eq(false);

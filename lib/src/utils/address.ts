@@ -16,17 +16,10 @@ export enum AddressType {
 }
 
 export function isHexPrefixed(str: string): boolean {
-    if (typeof str !== 'string') {
-        throw new Error(`[isHexPrefixed] input must be type 'string', received type ${typeof str}`);
-    }
-
     return str.startsWith('0x');
 }
 
 export function stripHexPrefix(str: string): string {
-    if (typeof str !== 'string')
-        throw new Error(`[stripHexPrefix] input must be type 'string', received ${typeof str}`);
-
     return isHexPrefixed(str) ? str.slice(2) : str;
 }
 
@@ -49,22 +42,12 @@ export function isHexStrict(hex: Uint8Array | bigint | string | number | boolean
     return typeof hex === 'string' && /^((-)?0x[0-9a-f]+|(0x))$/i.test(hex);
 }
 
-export function ensureIfUint8Array<T = any>(data: T) {
-    if (
-        !(data instanceof Uint8Array) &&
-        (data as { constructor: { name: string } })?.constructor?.name === 'Uint8Array'
-    ) {
-        return Uint8Array.from((data as unknown) as Uint8Array);
-    }
-    return data;
-}
-
 export function checkAddressCheckSum(data: string): boolean {
     if (!/^(0x)?[0-9a-f]{40}$/i.test(data)) return false;
     const address = data.slice(2);
     const updatedData = utf8ToBytes(address.toLowerCase());
 
-    const addressHash = uint8ArrayToHexString(keccak256(ensureIfUint8Array(updatedData))).slice(2);
+    const addressHash = uint8ArrayToHexString(keccak256(updatedData)).slice(2);
 
     for (let i = 0; i < 40; i += 1) {
         // the nth letter should be uppercase if the nth digit of casemap is 1
