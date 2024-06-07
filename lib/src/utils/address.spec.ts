@@ -116,6 +116,9 @@ describe('Validate address against network and checksums', function () {
         it(`isAddress should return true for valid EVM address`, function () {
             expect(isAddress(address.EVM)).to.be.eq(true);
         });
+        it(`isAddress should return true with EVM-valid Uint8Array`, function () {
+            expect(isAddress(new Uint8Array(20))).to.be.eq(true);
+        });
         it(`isAddress should return false for non 40-length string`, function () {
             expect(isAddress('should return false')).to.be.eq(false);
         });
