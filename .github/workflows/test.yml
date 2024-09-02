@@ -12,7 +12,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix: 
-        node: [10, 11, 12, 13]
+        node: [16]
         
     steps:
       - uses: actions/setup-node@v1
@@ -26,7 +26,7 @@ jobs:
         with:
           path: node_modules
           key: ${{ runner.os }}-node${{ matrix.code }}-${{ hashFiles('**/package-lock.json') }}
-      
+
       - name: Run test
         run: |
           npm install
