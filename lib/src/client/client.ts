@@ -23,6 +23,8 @@ import axios from 'axios';
 import { InitConfigurations } from '../core/cro';
 import { owUrl } from './ow.types';
 import { CosmosTx } from '../cosmos/v1beta1/types/cosmostx';
+import { toHex } from '@cosmjs/encoding';
+import { TxMsgData } from '@cosmjs/stargate/build/codec/cosmos/base/abci/v1beta1/abci';
 
 export interface GasInfo {
     gas_wanted: string;
@@ -137,7 +139,15 @@ export const croClient = function (config: InitConfigurations) {
         }
 
         public async broadcastTx(tx: Uint8Array): Promise<BroadcastTxResponse> {
-            return this.txClient.broadcastTx(tx);
+            const broadcastResp = await this.tmClient.broadcastTxSync({ tx });
+            const txResp = await this.tmClient.tx({ hash: broadcastResp.hash });
+
+            return {
+                height: txResp.height,
+                transactionHash: toHex(txResp.hash).toUpperCase(),
+                rawLog: txResp.result.log,
+                data: txResp.result.data ? TxMsgData.decode(txResp.result.data).data : undefined,
+            }
         }
 
         public static async estimateGasLimit(txBody: CosmosTx): Promise<GasInfo> {
