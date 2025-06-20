@@ -196,7 +196,15 @@ jobs:
 
             - name: Setup hermes
               run: |
-                  sudo apt-get install -y libssl-dev
+                  # Install OpenSSL 1.1 for compatibility with hermes binary
+                  sudo apt-get update
+                  sudo apt-get install -y libssl1.1
+                  
+                  # Create symbolic link if needed
+                  if [ ! -f /usr/lib/x86_64-linux-gnu/libssl.so.1.1 ]; then
+                      sudo ln -sf /usr/lib/x86_64-linux-gnu/libssl.so.1.1 /usr/lib/x86_64-linux-gnu/libssl.so.1.1
+                  fi
+                  
                   wget -q -O hermes.tar.gz https://github.com/informalsystems/hermes/releases/download/v0.7.0/hermes-v0.7.0-x86_64-unknown-linux-gnu.tar.gz
 
                   mkdir -p $HOME/.hermes/bin
