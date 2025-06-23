@@ -339,7 +339,8 @@ describe('e2e test suite', function () {
         assertIsDeliverTxSuccess(broadcastResult);
         const { transactionHash } = broadcastResult;
         expect(transactionHash).to.match(/^[0-9A-F]{64}$/);
-        expect(broadcastResult.data).to.be.not.undefined;
+        expect(broadcastResult.code).to.be.equal(0);
+        expect(broadcastResult.events.length).to.be.greaterThan(1);
     });
 
     it('[STAKING] Creates, signs and broadcasts a `MsgUndelegate` Tx', async function () {
@@ -372,7 +373,8 @@ describe('e2e test suite', function () {
         assertIsDeliverTxSuccess(broadcastResult);
         const { transactionHash } = broadcastResult;
         expect(transactionHash).to.match(/^[0-9A-F]{64}$/);
-        expect(broadcastResult.data).to.be.not.undefined;
+        expect(broadcastResult.code).to.be.equal(0);
+        expect(broadcastResult.events.length).to.be.greaterThan(1);
     });
 
     it('[STAKING] Creates, signs and broadcasts a `MsgCreateValidator` Tx', async function () {
@@ -419,7 +421,8 @@ describe('e2e test suite', function () {
         assertIsDeliverTxSuccess(broadcastResult);
         const { transactionHash } = broadcastResult;
         expect(transactionHash).to.match(/^[0-9A-F]{64}$/);
-        expect(broadcastResult.data).to.be.not.undefined;
+        expect(broadcastResult.code).to.be.equal(0);
+        expect(broadcastResult.events.length).to.be.greaterThan(1);
     });
 
     it('[STAKING] Creates, signs and broadcasts a `MsgEditValidator` Tx', async function () {
@@ -455,7 +458,8 @@ describe('e2e test suite', function () {
         assertIsDeliverTxSuccess(broadcastResult);
         const { transactionHash } = broadcastResult;
         expect(transactionHash).to.match(/^[0-9A-F]{64}$/);
-        expect(broadcastResult.data).to.be.not.undefined;
+        expect(broadcastResult.code).to.be.equal(0);
+        expect(broadcastResult.events.length).to.be.greaterThan(1);
     });
 
     it('[STAKING] Creates, signs and broadcasts a `MsgBeginRedelegate` Tx', async function () {
@@ -490,7 +494,8 @@ describe('e2e test suite', function () {
         assertIsDeliverTxSuccess(broadcastResult);
         const { transactionHash } = broadcastResult;
         expect(transactionHash).to.match(/^[0-9A-F]{64}$/);
-        expect(broadcastResult.data).to.be.not.undefined;
+        expect(broadcastResult.code).to.be.equal(0);
+        expect(broadcastResult.events.length).to.be.greaterThan(1);
     });
     it('[DISTRIBUTION] Creates, signs and broadasts a `MsgWithdrawDelegatorReward` Tx', async function () {
         const hdKey = HDKey.fromMnemonic(env.mnemonic.ecosystemAccount);
@@ -521,7 +526,8 @@ describe('e2e test suite', function () {
         assertIsDeliverTxSuccess(broadcastResult);
         const { transactionHash } = broadcastResult;
         expect(transactionHash).to.match(/^[0-9A-F]{64}$/);
-        expect(broadcastResult.data).to.be.not.undefined;
+        expect(broadcastResult.code).to.be.equal(0);
+        expect(broadcastResult.events.length).to.be.greaterThan(1);
     });
 
     it('[DISTRIBUTION] Creates, signs and broadcasts a `MsgWithdrawValidatorCommission` Tx', async function () {
