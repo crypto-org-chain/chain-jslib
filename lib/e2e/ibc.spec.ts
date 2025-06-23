@@ -2,7 +2,7 @@
 import 'mocha';
 import Big from 'big.js';
 import { expect } from 'chai';
-import { assertIsBroadcastTxSuccess } from '@cosmjs/stargate';
+import { assertIsDeliverTxSuccess } from '@cosmjs/stargate';
 import axios from 'axios';
 
 import { HDKey } from '../src/hdkey/hdkey';
@@ -101,7 +101,7 @@ describe('e2e tests for IBC transactions', function () {
         });
         expect(broadcast.status).to.eq(200);
         expect(broadcast.data).to.be.not.undefined;
-        assertIsBroadcastTxSuccess(broadcast.data);
+        assertIsDeliverTxSuccess(broadcast.data);
     });
     it('[IBC] `MsgTransfer` IBC Tx using Amino', async function () {
         const hdKey = HDKey.fromMnemonic(env.mnemonic.validatorAccount);
@@ -147,6 +147,6 @@ describe('e2e tests for IBC transactions', function () {
         });
         expect(broadcast.status).to.eq(200);
         expect(broadcast.data).to.be.not.undefined;
-        assertIsBroadcastTxSuccess(broadcast.data);
+        assertIsDeliverTxSuccess(broadcast.data);
     });
 });
