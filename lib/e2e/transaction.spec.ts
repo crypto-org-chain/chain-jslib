@@ -2,7 +2,7 @@
 import 'mocha';
 import Big from 'big.js';
 import { expect } from 'chai';
-import { assertIsBroadcastTxSuccess } from '@cosmjs/stargate';
+import { assertIsDeliverTxSuccess } from '@cosmjs/stargate';
 import axios from 'axios';
 
 import { HDKey } from '../src/hdkey/hdkey';
@@ -118,7 +118,7 @@ describe('e2e test suite', function () {
             expect(msgSend1.fromAddress).to.eq(account1!.address);
             expect(msgSend1.toAddress).to.eq(randomAddress.account());
             const broadcastResult = await client.broadcastTx(signedTx.encode().toUint8Array());
-            assertIsBroadcastTxSuccess(broadcastResult);
+            assertIsDeliverTxSuccess(broadcastResult);
 
             const { transactionHash } = broadcastResult;
             expect(transactionHash).to.match(/^[0-9A-F]{64}$/);
@@ -186,7 +186,7 @@ describe('e2e test suite', function () {
         expect(msgSend1.fromAddress).to.eq(account1!.address);
         expect(msgSend1.toAddress).to.eq(randomAddress.account());
         const broadcastResult = await client.broadcastTx(signedTx.encode().toUint8Array());
-        assertIsBroadcastTxSuccess(broadcastResult);
+        assertIsDeliverTxSuccess(broadcastResult);
 
         const { transactionHash } = broadcastResult;
         expect(transactionHash).to.match(/^[0-9A-F]{64}$/);
@@ -251,7 +251,7 @@ describe('e2e test suite', function () {
         expect(msgSend1.fromAddress).to.eq(account1!.address);
         expect(msgSend1.toAddress).to.eq(randomAddress.account());
         const broadcastResult = await client.broadcastTx(signedTx.encode().toUint8Array());
-        assertIsBroadcastTxSuccess(broadcastResult);
+        assertIsDeliverTxSuccess(broadcastResult);
 
         const { transactionHash } = broadcastResult;
         expect(transactionHash).to.match(/^[0-9A-F]{64}$/);
@@ -303,7 +303,7 @@ describe('e2e test suite', function () {
         expect(msgSend1.fromAddress).to.eq(account1!.address);
         expect(msgSend1.toAddress).to.eq(randomAddress.account());
         const broadcastResult = await client.broadcastTx(signedTx.encode().toUint8Array());
-        assertIsBroadcastTxSuccess(broadcastResult);
+        assertIsDeliverTxSuccess(broadcastResult);
 
         const { transactionHash } = broadcastResult;
         expect(transactionHash).to.match(/^[0-9A-F]{64}$/);
@@ -336,7 +336,7 @@ describe('e2e test suite', function () {
         const signableTx = rawTx.appendMessage(MsgDelegate).addSigner(anySigner).toSignable();
         const signedTx = signableTx.setSignature(0, keyPair.sign(signableTx.toSignDocumentHash(0))).toSigned();
         const broadcastResult = await client.broadcastTx(signedTx.encode().toUint8Array());
-        assertIsBroadcastTxSuccess(broadcastResult);
+        assertIsDeliverTxSuccess(broadcastResult);
         const { transactionHash } = broadcastResult;
         expect(transactionHash).to.match(/^[0-9A-F]{64}$/);
         expect(broadcastResult.data).to.be.not.undefined;
@@ -369,7 +369,7 @@ describe('e2e test suite', function () {
         const signableTx = rawTx.appendMessage(MsgUndelegate).addSigner(anySigner).toSignable();
         const signedTx = signableTx.setSignature(0, keyPair.sign(signableTx.toSignDocumentHash(0))).toSigned();
         const broadcastResult = await client.broadcastTx(signedTx.encode().toUint8Array());
-        assertIsBroadcastTxSuccess(broadcastResult);
+        assertIsDeliverTxSuccess(broadcastResult);
         const { transactionHash } = broadcastResult;
         expect(transactionHash).to.match(/^[0-9A-F]{64}$/);
         expect(broadcastResult.data).to.be.not.undefined;
@@ -416,7 +416,7 @@ describe('e2e test suite', function () {
         const signableTx = rawTx.appendMessage(MsgCreateValidator).addSigner(anySigner).toSignable();
         const signedTx = signableTx.setSignature(0, keyPair.sign(signableTx.toSignDocumentHash(0))).toSigned();
         const broadcastResult = await client.broadcastTx(signedTx.encode().toUint8Array());
-        assertIsBroadcastTxSuccess(broadcastResult);
+        assertIsDeliverTxSuccess(broadcastResult);
         const { transactionHash } = broadcastResult;
         expect(transactionHash).to.match(/^[0-9A-F]{64}$/);
         expect(broadcastResult.data).to.be.not.undefined;
@@ -452,7 +452,7 @@ describe('e2e test suite', function () {
         const signableTx = rawTx.appendMessage(MsgEditValidator).addSigner(anySigner).toSignable();
         const signedTx = signableTx.setSignature(0, keyPair.sign(signableTx.toSignDocumentHash(0))).toSigned();
         const broadcastResult = await client.broadcastTx(signedTx.encode().toUint8Array());
-        assertIsBroadcastTxSuccess(broadcastResult);
+        assertIsDeliverTxSuccess(broadcastResult);
         const { transactionHash } = broadcastResult;
         expect(transactionHash).to.match(/^[0-9A-F]{64}$/);
         expect(broadcastResult.data).to.be.not.undefined;
@@ -487,7 +487,7 @@ describe('e2e test suite', function () {
         const signableTx = rawTx.appendMessage(MsgBeginRedelegate).addSigner(anySigner).toSignable();
         const signedTx = signableTx.setSignature(0, keyPair.sign(signableTx.toSignDocumentHash(0))).toSigned();
         const broadcastResult = await client.broadcastTx(signedTx.encode().toUint8Array());
-        assertIsBroadcastTxSuccess(broadcastResult);
+        assertIsDeliverTxSuccess(broadcastResult);
         const { transactionHash } = broadcastResult;
         expect(transactionHash).to.match(/^[0-9A-F]{64}$/);
         expect(broadcastResult.data).to.be.not.undefined;
@@ -518,7 +518,7 @@ describe('e2e test suite', function () {
         const signableTx = rawTx.appendMessage(MsgWithdrawDelegatorReward).addSigner(anySigner).toSignable();
         const signedTx = signableTx.setSignature(0, keyPair.sign(signableTx.toSignDocumentHash(0))).toSigned();
         const broadcastResult = await client.broadcastTx(signedTx.encode().toUint8Array());
-        assertIsBroadcastTxSuccess(broadcastResult);
+        assertIsDeliverTxSuccess(broadcastResult);
         const { transactionHash } = broadcastResult;
         expect(transactionHash).to.match(/^[0-9A-F]{64}$/);
         expect(broadcastResult.data).to.be.not.undefined;
@@ -554,7 +554,7 @@ describe('e2e test suite', function () {
         });
         expect(broadcast.status).to.eq(200);
         expect(broadcast.data).to.be.not.undefined;
-        assertIsBroadcastTxSuccess(broadcast.data);
+        assertIsDeliverTxSuccess(broadcast.data);
     });
 
     it('[NFT] Creates, signs and broadcasts a `MsgIssueDenom` NFT Tx', async function () {
@@ -592,7 +592,7 @@ describe('e2e test suite', function () {
         });
         expect(broadcast.status).to.eq(200);
         expect(broadcast.data).to.be.not.undefined;
-        assertIsBroadcastTxSuccess(broadcast.data);
+        assertIsDeliverTxSuccess(broadcast.data);
     });
 
     it('[NFT] Creates, signs and broadcasts a `MsgMintNFT` NFT Tx', async function () {
@@ -633,7 +633,7 @@ describe('e2e test suite', function () {
         });
         expect(broadcast.status).to.eq(200);
         expect(broadcast.data).to.be.not.undefined;
-        assertIsBroadcastTxSuccess(broadcast.data);
+        assertIsDeliverTxSuccess(broadcast.data);
     });
 
     it('[NFT] Creates, signs and broadcasts a `MsgTransferNFT` NFT Tx', async function () {
@@ -671,7 +671,7 @@ describe('e2e test suite', function () {
         });
         expect(broadcast.status).to.eq(200);
         expect(broadcast.data).to.be.not.undefined;
-        assertIsBroadcastTxSuccess(broadcast.data);
+        assertIsDeliverTxSuccess(broadcast.data);
     });
 
     it('[NFT] Creates, signs and broadcasts a `MsgEditNFT` NFT Tx', async function () {
@@ -711,7 +711,7 @@ describe('e2e test suite', function () {
         });
         expect(broadcast.status).to.eq(200);
         expect(broadcast.data).to.be.not.undefined;
-        assertIsBroadcastTxSuccess(broadcast.data);
+        assertIsDeliverTxSuccess(broadcast.data);
     });
 
     it('[NFT] Creates, signs and broadcasts a `MsgBurnNFT` NFT Tx', async function () {
@@ -748,6 +748,6 @@ describe('e2e test suite', function () {
         });
         expect(broadcast.status).to.eq(200);
         expect(broadcast.data).to.be.not.undefined;
-        assertIsBroadcastTxSuccess(broadcast.data);
+        assertIsDeliverTxSuccess(broadcast.data);
     });
 });

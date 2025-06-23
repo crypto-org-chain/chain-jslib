@@ -2,7 +2,7 @@
 import 'mocha';
 import { expect } from 'chai';
 import { TxBody } from '@cosmjs/proto-signing/build/codec/cosmos/tx/v1beta1/tx';
-import { Any } from '@cosmjs/stargate/build/codec/google/protobuf/any';
+import { Any } from 'cosmjs-types/google/protobuf/any';
 import Long from 'long';
 import Big from 'big.js';
 import { TxDecoder } from './txDecoder';

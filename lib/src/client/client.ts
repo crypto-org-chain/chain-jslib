@@ -139,6 +139,7 @@ export const croClient = function (config: InitConfigurations) {
         public async broadcastTx(tx: Uint8Array): Promise<DeliverTxResponse> {
             return this.txClient.broadcastTx(tx);
         }
+
         public static async estimateGasLimit(txBody: CosmosTx): Promise<GasInfo> {
             const COSMOS_REST_PORT = 1317;
             const requestUrl = `${config.network.defaultNodeUrl}:${COSMOS_REST_PORT}/cosmos/tx/v1beta1/simulate`;
