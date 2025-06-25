@@ -23,7 +23,7 @@ jobs:
         with:
           repository: crypto-com/chain-main
           path: chain-main
-          ref: v1.2.1
+          ref: v5.0.2
           submodules: recursive
 
       - name: Build and start chain-maind
