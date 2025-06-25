@@ -57,7 +57,11 @@ jobs:
 
           ./build/chain-maind validate-genesis
 
-          ./build/chain-maind start --trace &
+          ./build/chain-maind start --minimum-gas-prices=0.025basetcro --trace &
+          if [ $? -ne 0 ]; then
+            echo "Failed to start chain-maind"
+            exit 1
+          fi
 
       - name: Transfer funds to Test accounts
         run: |
