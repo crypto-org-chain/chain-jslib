@@ -34,7 +34,7 @@ jobs:
           NETWORK=testnet make install 
           NETWORK=testnet make build
 
-          ./build/chain-maind unsafe-reset-all
+          ./build/chain-maind comet unsafe-reset-all
 
           ./build/chain-maind init testnode --chain-id testnet -o
 
