@@ -70,16 +70,16 @@ jobs:
           curl --silent --location --request GET 'localhost:26657/status' | jq '.'
 
           cd chain-main  
-          ./build/chain-maind keys show validator --bech val --keyring-backend test --output json | jq '.' | tee ./validatorDetails.json
+          ./build/chain-maind keys show validator --bech val --keyring-backend test --output json | jq '.'
 
           ## TRANSFER 100CRO FROM "ecosystem" to "tcro1n0jfe772qx5svnme9y2gl75u85luxfjnhkacy0"
-          ./build/chain-maind tx bank send $(./build/chain-maind keys show ecosystem -a --keyring-backend test) tcro1n0jfe772qx5svnme9y2gl75u85luxfjnhkacy0 100tcro --keyring-backend test --chain-id testnet -y | jq '.'
+          ./build/chain-maind tx bank send $(./build/chain-maind keys show ecosystem -a --keyring-backend test) tcro1n0jfe772qx5svnme9y2gl75u85luxfjnhkacy0 100tcro --keyring-backend test --chain-id testnet -y --output json | jq '.'
       
           ## TRANSFER 100CRO FROM "ecosystem" to "tcro17c6rn92lnw0d8ct37mlycdaeau4f9hm569ef9s"
-          ./build/chain-maind tx bank send $(./build/chain-maind keys show ecosystem -a --keyring-backend test) tcro17c6rn92lnw0d8ct37mlycdaeau4f9hm569ef9s 100tcro --keyring-backend test --chain-id testnet -y | jq '.'
+          ./build/chain-maind tx bank send $(./build/chain-maind keys show ecosystem -a --keyring-backend test) tcro17c6rn92lnw0d8ct37mlycdaeau4f9hm569ef9s 100tcro --keyring-backend test --chain-id testnet -y --output json | jq '.'
       
           ## TRANSFER 10CRO FROM "reserve" to "tcro1c5nd9l5ylh8udw5lsfs0hlvzxwrlymxqlnl266"
-          ./build/chain-maind tx bank send $(./build/chain-maind keys show reserve -a --keyring-backend test) tcro1c5nd9l5ylh8udw5lsfs0hlvzxwrlymxqlnl266 100tcro --keyring-backend test --chain-id testnet -y | jq '.'
+          ./build/chain-maind tx bank send $(./build/chain-maind keys show reserve -a --keyring-backend test) tcro1c5nd9l5ylh8udw5lsfs0hlvzxwrlymxqlnl266 100tcro --keyring-backend test --chain-id testnet -y --output json | jq '.'
 
       - name: Checkout this project
         uses: actions/checkout@v2
