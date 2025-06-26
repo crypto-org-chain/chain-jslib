@@ -70,7 +70,7 @@ jobs:
           curl --silent --location --request GET 'localhost:26657/status' | jq '.'
 
           cd chain-main  
-          ./build/chain-maind keys show validator --bech val --keyring-backend test --output json | jq '.'>> ./validatorDetails.json
+          ./build/chain-maind keys show validator --bech val --keyring-backend test --output json | jq '.' | tee ./validatorDetails.json
 
           ## TRANSFER 100CRO FROM "ecosystem" to "tcro1n0jfe772qx5svnme9y2gl75u85luxfjnhkacy0"
           ./build/chain-maind tx bank send $(./build/chain-maind keys show ecosystem -a --keyring-backend test) tcro1n0jfe772qx5svnme9y2gl75u85luxfjnhkacy0 100tcro --keyring-backend test --chain-id testnet -y | jq '.'
