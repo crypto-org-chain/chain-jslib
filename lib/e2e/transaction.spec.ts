@@ -57,6 +57,8 @@ const env = {
     },
 };
 
+console.log(env);
+
 describe('e2e test suite', function () {
     describe('`v2` message types', function () {
         it('[BANK] creates a MsgSend Type Transaction and Broadcasts it.', async function () {
