@@ -524,7 +524,7 @@ describe('e2e test suite', function () {
             accountSequence: new Big(account!.sequence),
         };
         const rawTx = new cro.RawTransaction();
-        const signableTx = rawTx.appendMessage(MsgWithdrawDelegatorReward)i.setFee(new cro.Coin('5000', Units.BASE)).addSigner(anySigner).toSignable();
+        const signableTx = rawTx.appendMessage(MsgWithdrawDelegatorReward).setFee(new cro.Coin('5000', Units.BASE)).addSigner(anySigner).toSignable();
         const signedTx = signableTx.setSignature(0, keyPair.sign(signableTx.toSignDocumentHash(0))).toSigned();
         const broadcastResult = await client.broadcastTx(signedTx.encode().toUint8Array());
         assertIsDeliverTxSuccess(broadcastResult);
