@@ -80,7 +80,8 @@ jobs:
             --keyring-backend test \
             --chain-id testnet \
             --broadcast-mode sync \
-            -y --output json | jq '.'
+            -y --output json | jq '.')
+          echo $RESULT
           if [[ $(echo $RESULT | jq '.code') -ne 0 ]]; then
             echo "failed to transfer 100tcro from ecosystem to tcro1n0jfe772qx5svnme9y2gl75u85luxfjnhkacy0"
             exit 1
@@ -114,7 +115,8 @@ jobs:
             --keyring-backend test \
             --chain-id testnet \
             --broadcast-mode sync \
-            -y --output json | jq '.'
+            -y --output json | jq '.')
+          echo $RESULT
           if [[ $(echo $RESULT | jq '.code') -ne 0 ]]; then
             echo "failed to transfer 100tcro from reserve to tcro1c5nd9l5ylh8udw5lsfs0hlvzxwrlymxqlnl266"
             exit 1
