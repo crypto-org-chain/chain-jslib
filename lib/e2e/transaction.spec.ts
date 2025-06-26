@@ -98,6 +98,7 @@ describe('e2e test suite', function () {
             const signableTx = rawTx
                 .appendMessage(msgSend1)
                 .appendMessage(msgSend2)
+                .setFees([new cro.Coin('5000', Units.BASE)])
                 .addSigner({
                     publicKey: keyPair.getPubKey(),
                     accountNumber: new Big(account1!.accountNumber),
@@ -164,6 +165,7 @@ describe('e2e test suite', function () {
         const signableTx = rawTx
             .appendMessage(msgSend1)
             .appendMessage(msgSend2)
+            .setFee(new cro.Coin('5000', Units.BASE))
             .addSigner({
                 publicKey: keyPair.getPubKey(),
                 accountNumber: new Big(account1!.accountNumber),
@@ -231,6 +233,7 @@ describe('e2e test suite', function () {
         const signableTx = rawTx
             .appendMessage(msgSend1)
             .appendMessage(msgSend2)
+            .setFee(new cro.Coin('5000', Units.BASE))
             .addSigner({
                 publicKey: keyPair.getPubKey(),
                 accountNumber: new Big(account1!.accountNumber),
@@ -288,6 +291,7 @@ describe('e2e test suite', function () {
 
         const signableTx = rawTx
             .appendMessage(msgSend1)
+            .setFee(new cro.Coin('5000', Units.BASE))
             .addSigner({
                 publicKey: keyPair.getPubKey(),
                 accountNumber: new Big(account1!.accountNumber),
@@ -333,7 +337,7 @@ describe('e2e test suite', function () {
             accountSequence: new Big(account!.sequence),
         };
         const rawTx = new cro.RawTransaction();
-        const signableTx = rawTx.appendMessage(MsgDelegate).addSigner(anySigner).toSignable();
+        const signableTx = rawTx.appendMessage(MsgDelegate).setFee(new cro.Coin('5000', Units.BASE)).addSigner(anySigner).toSignable();
         const signedTx = signableTx.setSignature(0, keyPair.sign(signableTx.toSignDocumentHash(0))).toSigned();
         const broadcastResult = await client.broadcastTx(signedTx.encode().toUint8Array());
         assertIsDeliverTxSuccess(broadcastResult);
@@ -367,7 +371,7 @@ describe('e2e test suite', function () {
             accountSequence: new Big(account!.sequence),
         };
         const rawTx = new cro.RawTransaction();
-        const signableTx = rawTx.appendMessage(MsgUndelegate).addSigner(anySigner).toSignable();
+        const signableTx = rawTx.appendMessage(MsgUndelegate).setFee(new cro.Coin('5000', Units.BASE)).addSigner(anySigner).toSignable();
         const signedTx = signableTx.setSignature(0, keyPair.sign(signableTx.toSignDocumentHash(0))).toSigned();
         const broadcastResult = await client.broadcastTx(signedTx.encode().toUint8Array());
         assertIsDeliverTxSuccess(broadcastResult);
@@ -415,7 +419,7 @@ describe('e2e test suite', function () {
             accountSequence: new Big(account!.sequence),
         };
         const rawTx = new cro.RawTransaction();
-        const signableTx = rawTx.appendMessage(MsgCreateValidator).addSigner(anySigner).toSignable();
+        const signableTx = rawTx.appendMessage(MsgCreateValidator).setFee(new cro.Coin('5000', Units.BASE)).addSigner(anySigner).toSignable();
         const signedTx = signableTx.setSignature(0, keyPair.sign(signableTx.toSignDocumentHash(0))).toSigned();
         const broadcastResult = await client.broadcastTx(signedTx.encode().toUint8Array());
         assertIsDeliverTxSuccess(broadcastResult);
@@ -452,7 +456,7 @@ describe('e2e test suite', function () {
             accountSequence: new Big(account!.sequence),
         };
         const rawTx = new cro.RawTransaction();
-        const signableTx = rawTx.appendMessage(MsgEditValidator).addSigner(anySigner).toSignable();
+        const signableTx = rawTx.appendMessage(MsgEditValidator).setFee(new cro.Coin('5000', Units.BASE)).addSigner(anySigner).toSignable();
         const signedTx = signableTx.setSignature(0, keyPair.sign(signableTx.toSignDocumentHash(0))).toSigned();
         const broadcastResult = await client.broadcastTx(signedTx.encode().toUint8Array());
         assertIsDeliverTxSuccess(broadcastResult);
@@ -488,7 +492,7 @@ describe('e2e test suite', function () {
         };
         const rawTx = new cro.RawTransaction();
         rawTx.setGasLimit('300000');
-        const signableTx = rawTx.appendMessage(MsgBeginRedelegate).addSigner(anySigner).toSignable();
+        const signableTx = rawTx.appendMessage(MsgBeginRedelegate).setFee(new cro.Coin('5000', Units.BASE)).addSigner(anySigner).toSignable();
         const signedTx = signableTx.setSignature(0, keyPair.sign(signableTx.toSignDocumentHash(0))).toSigned();
         const broadcastResult = await client.broadcastTx(signedTx.encode().toUint8Array());
         assertIsDeliverTxSuccess(broadcastResult);
@@ -520,7 +524,7 @@ describe('e2e test suite', function () {
             accountSequence: new Big(account!.sequence),
         };
         const rawTx = new cro.RawTransaction();
-        const signableTx = rawTx.appendMessage(MsgWithdrawDelegatorReward).addSigner(anySigner).toSignable();
+        const signableTx = rawTx.appendMessage(MsgWithdrawDelegatorReward)i.setFee(new cro.Coin('5000', Units.BASE)).addSigner(anySigner).toSignable();
         const signedTx = signableTx.setSignature(0, keyPair.sign(signableTx.toSignDocumentHash(0))).toSigned();
         const broadcastResult = await client.broadcastTx(signedTx.encode().toUint8Array());
         assertIsDeliverTxSuccess(broadcastResult);
@@ -552,7 +556,7 @@ describe('e2e test suite', function () {
             accountSequence: new Big(account!.sequence),
         };
         const rawTx = new cro.RawTransaction();
-        const signableTx = rawTx.appendMessage(MsgWithdrawValidatorCommission).addSigner(anySigner).toSignable();
+        const signableTx = rawTx.appendMessage(MsgWithdrawValidatorCommission).setFee(new cro.Coin('5000', Units.BASE)).addSigner(anySigner).toSignable();
         const signedTx = signableTx.setSignature(0, keyPair.sign(signableTx.toSignDocumentHash(0))).toSigned();
         const broadcast = await axios.get('broadcast_tx_commit', {
             baseURL: axiosConfig.url,
@@ -588,7 +592,7 @@ describe('e2e test suite', function () {
             accountSequence: new Big(account!.sequence),
         };
         const rawTx = new cro.RawTransaction();
-        const signableTx = rawTx.appendMessage(MsgIssueDenom).addSigner(anySigner).toSignable();
+        const signableTx = rawTx.appendMessage(MsgIssueDenom).setFee(new cro.Coin('5000', Units.BASE)).addSigner(anySigner).toSignable();
 
         const signedTx = signableTx.setSignature(0, keyPair.sign(signableTx.toSignDocumentHash(0))).toSigned();
 
@@ -629,7 +633,7 @@ describe('e2e test suite', function () {
             accountSequence: new Big(account!.sequence),
         };
         const rawTx = new cro.RawTransaction();
-        const signableTx = rawTx.appendMessage(MsgMintNFT).addSigner(anySigner).toSignable();
+        const signableTx = rawTx.appendMessage(MsgMintNFT).setFee(new cro.Coin('5000', Units.BASE)).addSigner(anySigner).toSignable();
 
         const signedTx = signableTx.setSignature(0, keyPair.sign(signableTx.toSignDocumentHash(0))).toSigned();
 
@@ -667,7 +671,7 @@ describe('e2e test suite', function () {
             accountSequence: new Big(account!.sequence),
         };
         const rawTx = new cro.RawTransaction();
-        const signableTx = rawTx.appendMessage(MsgTransferNFT).addSigner(anySigner).toSignable();
+        const signableTx = rawTx.appendMessage(MsgTransferNFT).setFee(new cro.Coin('5000', Units.BASE)).addSigner(anySigner).toSignable();
 
         const signedTx = signableTx.setSignature(0, keyPair.sign(signableTx.toSignDocumentHash(0))).toSigned();
 
@@ -707,7 +711,7 @@ describe('e2e test suite', function () {
             accountSequence: new Big(account!.sequence),
         };
         const rawTx = new cro.RawTransaction();
-        const signableTx = rawTx.appendMessage(MsgEditNFT).addSigner(anySigner).toSignable();
+        const signableTx = rawTx.appendMessage(MsgEditNFT).setFee(new cro.Coin('5000', Units.BASE)).addSigner(anySigner).toSignable();
 
         const signedTx = signableTx.setSignature(0, keyPair.sign(signableTx.toSignDocumentHash(0))).toSigned();
 
@@ -744,7 +748,7 @@ describe('e2e test suite', function () {
             accountSequence: new Big(account!.sequence),
         };
         const rawTx = new cro.RawTransaction();
-        const signableTx = rawTx.appendMessage(MsgBurnNFT).addSigner(anySigner).toSignable();
+        const signableTx = rawTx.appendMessage(MsgBurnNFT).setFee(new cro.Coin('5000', Units.BASE)).addSigner(anySigner).toSignable();
 
         const signedTx = signableTx.setSignature(0, keyPair.sign(signableTx.toSignDocumentHash(0))).toSigned();
 
