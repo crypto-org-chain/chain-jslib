@@ -67,7 +67,7 @@ jobs:
         run: |
           ## Sleep 5 Seconds
           sleep 5
-          curl --location --request GET 'localhost:26657/status' | jq '.'
+          curl --silent --location --request GET 'localhost:26657/status' | jq '.'
 
           cd chain-main  
           ./build/chain-maind keys show validator --bech val --keyring-backend test --output json | jq '.'>> ./validatorDetails.json
