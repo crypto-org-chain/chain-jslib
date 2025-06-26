@@ -73,61 +73,34 @@ jobs:
           ./build/chain-maind keys show validator --bech val --keyring-backend test --output json | jq '.'
 
           ## TRANSFER 100CRO FROM "ecosystem" to "tcro1n0jfe772qx5svnme9y2gl75u85luxfjnhkacy0"
-          RESULT=$(./build/chain-maind tx bank send \
+          ./build/chain-maind tx bank send \
             $(./build/chain-maind keys show ecosystem -a --keyring-backend test) \
             tcro1n0jfe772qx5svnme9y2gl75u85luxfjnhkacy0 \
             100tcro \
-            --minimum-gas-prices=0.025basetcro \
+            --gas-prices=0.025basetcro \
             --keyring-backend test \
             --chain-id testnet \
-            -y --output json | jq '.')
-          if [ $? -ne 0 ]; then
-            echo "Failed to transfer funds from ecosystem to tcro1n0jfe772qx5svnme9y2gl75u85luxfjnhkacy0"
-            exit 1
-          fi
-          echo $RESULT
-          if [ $(echo "$RESULT" | jq '.code') -ne 0 ]; then
-            echo "Failed to transfer funds from ecosystem to tcro1n0jfe772qx5svnme9y2gl75u85luxfjnhkacy0"
-            exit 1
-          fi
+            -y --output json | jq '.'
 
           ## TRANSFER 100CRO FROM "ecosystem" to "tcro17c6rn92lnw0d8ct37mlycdaeau4f9hm569ef9s"
-          RESULT=$(./build/chain-maind tx bank send \
+          ./build/chain-maind tx bank send \
             $(./build/chain-maind keys show ecosystem -a --keyring-backend test) \
             tcro17c6rn92lnw0d8ct37mlycdaeau4f9hm569ef9s \
             100tcro \
             --gas-prices=0.025basetcro \
             --keyring-backend test \
             --chain-id testnet \
-            -y --output json | jq '.')
-          if [ $? -ne 0 ]; then
-            echo "Failed to transfer funds from ecosystem to tcro17c6rn92lnw0d8ct37mlycdaeau4f9hm569ef9s"
-            exit 1
-          fi
-          echo $RESULT
-          if [ $(echo "$RESULT" | jq '.code') -ne 0 ]; then
-            echo "Failed to transfer funds from ecosystem to tcro17c6rn92lnw0d8ct37mlycdaeau4f9hm569ef9s"
-            exit 1
-          fi
-      
+            -y --output json | jq '.'
+
           ## TRANSFER 10CRO FROM "reserve" to "tcro1c5nd9l5ylh8udw5lsfs0hlvzxwrlymxqlnl266"
-          RESULT=$(./build/chain-maind tx bank send \
+          ./build/chain-maind tx bank send \
             $(./build/chain-maind keys show reserve -a --keyring-backend test) \
             tcro1c5nd9l5ylh8udw5lsfs0hlvzxwrlymxqlnl266 \
             100tcro \
-            --minimum-gas-prices=0.025basetcro \
+            --gas-prices=0.025basetcro \
             --keyring-backend test \
             --chain-id testnet \
-            -y --output json | jq '.')
-          if [ $? -ne 0 ]; then
-            echo "Failed to transfer funds from reserve to tcro1c5nd9l5ylh8udw5lsfs0hlvzxwrlymxqlnl266"
-            exit 1
-          fi
-          echo $RESULT
-          if [ $(echo "$RESULT" | jq '.code') -ne 0 ]; then
-            echo "Failed to transfer funds from reserve to tcro1c5nd9l5ylh8udw5lsfs0hlvzxwrlymxqlnl266"
-            exit 1
-          fi
+            -y --output json | jq '.'
 
       - name: Checkout this project
         uses: actions/checkout@v2

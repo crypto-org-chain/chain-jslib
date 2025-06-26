@@ -199,10 +199,24 @@ jobs:
                   sudo apt-get update
                   sudo apt-get install -y ca-certificates wget
                   cd /tmp
+                  # Get the latest version by parsing OpenSSL version numbers properly
+                  echo "Available libssl1.1 packages:"
+                  wget -qO- http://archive.ubuntu.com/ubuntu/pool/main/o/openssl/ | grep -o 'libssl1\.1_[^"]*_amd64\.deb'
+                  
+                  echo "Sorted versions:"
+                  wget -qO- http://archive.ubuntu.com/ubuntu/pool/main/o/openssl/ | grep -o 'libssl1\.1_[^"]*_amd64\.deb' | while read pkg; do
+                      # Extract version part (e.g., 1.1.1f-1ubuntu2.24 from libssl1.1_1.1.1f-1ubuntu2.24_amd64.deb)
+                      version=$(echo "$pkg" | sed 's/libssl1\.1_\(.*\)_amd64\.deb/\1/')
+                      echo "$version $pkg"
+                  done | sort -V -k1
+                  
                   LIBSSL_LATEST_REVISION=$(wget -qO- http://archive.ubuntu.com/ubuntu/pool/main/o/openssl/ | grep -o 'libssl1\.1_[^"]*_amd64\.deb' | while read pkg; do
+                      # Extract version part (e.g., 1.1.1f-1ubuntu2.24 from libssl1.1_1.1.1f-1ubuntu2.24_amd64.deb)
                       version=$(echo "$pkg" | sed 's/libssl1\.1_\(.*\)_amd64\.deb/\1/')
                       echo "$version $pkg"
                   done | sort -V -k1 | tail -1 | awk '{print $2}')
+                  
+                  echo "Selected package: $LIBSSL_LATEST_REVISION"
                   wget "http://archive.ubuntu.com/ubuntu/pool/main/o/openssl/$LIBSSL_LATEST_REVISION"
                   sudo dpkg -i "$LIBSSL_LATEST_REVISION"
                   rm "$LIBSSL_LATEST_REVISION"
