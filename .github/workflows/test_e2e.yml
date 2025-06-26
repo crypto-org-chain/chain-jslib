@@ -80,15 +80,15 @@ jobs:
             --keyring-backend test \
             --chain-id testnet \
             --broadcast-mode sync \
-            -y --output json | jq '.')
-          echo $RESULT
+            -y --output json)
+          echo $RESULT | jq '.'
           if [[ $(echo $RESULT | jq '.code') -ne 0 ]]; then
             echo "failed to transfer 100tcro from ecosystem to tcro1n0jfe772qx5svnme9y2gl75u85luxfjnhkacy0"
             exit 1
           fi
           
-          # # Wait for the transaction to be included in a block
-          # sleep 5
+          # Wait for the transaction to be included in a block
+          sleep 5
 
           ## TRANSFER 100CRO FROM "ecosystem" to "tcro17c6rn92lnw0d8ct37mlycdaeau4f9hm569ef9s"
           RESULT=$(./build/chain-maind tx bank send \
@@ -99,15 +99,15 @@ jobs:
             --keyring-backend test \
             --chain-id testnet \
             --broadcast-mode sync \
-            -y --output json | jq '.')
-          echo $RESULT
+            -y --output json)
+          echo $RESULT | jq '.'
           if [[ $(echo $RESULT | jq '.code') -ne 0 ]]; then
             echo "failed to transfer 100tcro from ecosystem to tcro17c6rn92lnw0d8ct37mlycdaeau4f9hm569ef9s"
             exit 1
           fi
 
           ## TRANSFER 10CRO FROM "reserve" to "tcro1c5nd9l5ylh8udw5lsfs0hlvzxwrlymxqlnl266"
-          RESULT=$(t./build/chain-maind tx bank send \
+          RESULT=$(./build/chain-maind tx bank send \
             $(./build/chain-maind keys show reserve -a --keyring-backend test) \
             tcro1c5nd9l5ylh8udw5lsfs0hlvzxwrlymxqlnl266 \
             100tcro \
@@ -115,8 +115,8 @@ jobs:
             --keyring-backend test \
             --chain-id testnet \
             --broadcast-mode sync \
-            -y --output json | jq '.')
-          echo $RESULT
+            -y --output json)
+          echo $RESULT | jq '.'
           if [[ $(echo $RESULT | jq '.code') -ne 0 ]]; then
             echo "failed to transfer 100tcro from reserve to tcro1c5nd9l5ylh8udw5lsfs0hlvzxwrlymxqlnl266"
             exit 1
