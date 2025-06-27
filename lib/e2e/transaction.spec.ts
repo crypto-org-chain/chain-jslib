@@ -57,8 +57,6 @@ const env = {
     },
 };
 
-console.log(env);
-
 describe('e2e test suite', function () {
     describe('`v2` message types', function () {
         it('[BANK] creates a MsgSend Type Transaction and Broadcasts it.', async function () {
@@ -161,9 +159,6 @@ describe('e2e test suite', function () {
         const account1 = await client.getAccount(address1.account());
         const account2 = await client.getAccount(address2.account());
 
-        console.log(`${address1.account()} balance: ${JSON.stringify(await client.getCroBalance(address1.account()))}`);
-        console.log(`${address2.account()} balance: ${JSON.stringify(await client.getCroBalance(address2.account()))}`);
-
         expect(account1).to.be.not.null;
         expect(account2).to.be.not.null;
 
@@ -194,13 +189,6 @@ describe('e2e test suite', function () {
         expect(msgSend1.toAddress).to.eq(randomAddress.account());
         const broadcastResult = await client.broadcastTx(signedTx.encode().toUint8Array());
         assertIsDeliverTxSuccess(broadcastResult);
-
-        console.log(`broadcastResult: ${JSON.stringify(broadcastResult, (_, value) => {
-            if (typeof value === 'bigint') {
-                return value.toString();
-            }
-            return value;
-        })}`);
 
         const { transactionHash } = broadcastResult;
         expect(transactionHash).to.match(/^[0-9A-F]{64}$/);
@@ -504,7 +492,8 @@ describe('e2e test suite', function () {
         };
         const rawTx = new cro.RawTransaction();
         rawTx.setGasLimit('300000');
-        const signableTx = rawTx.appendMessage(MsgBeginRedelegate).setFee(new cro.Coin('5000', Units.BASE)).addSigner(anySigner).toSignable();
+        rawTx.setFee(new cro.Coin('7500', Units.BASE));
+        const signableTx = rawTx.appendMessage(MsgBeginRedelegate).addSigner(anySigner).toSignable();
         const signedTx = signableTx.setSignature(0, keyPair.sign(signableTx.toSignDocumentHash(0))).toSigned();
         const broadcastResult = await client.broadcastTx(signedTx.encode().toUint8Array());
         assertIsDeliverTxSuccess(broadcastResult);
