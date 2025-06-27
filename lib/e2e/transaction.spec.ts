@@ -195,7 +195,7 @@ describe('e2e test suite', function () {
         const broadcastResult = await client.broadcastTx(signedTx.encode().toUint8Array());
         assertIsDeliverTxSuccess(broadcastResult);
 
-        console.log(`broadcastResult: ${JSON.stringify(broadcastResult, (key, value) => {
+        console.log(`broadcastResult: ${JSON.stringify(broadcastResult, (_, value) => {
             if (typeof value === 'bigint') {
                 return value.toString();
             }
