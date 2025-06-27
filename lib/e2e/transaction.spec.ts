@@ -161,8 +161,8 @@ describe('e2e test suite', function () {
         const account1 = await client.getAccount(address1.account());
         const account2 = await client.getAccount(address2.account());
 
-        console.log(`balance1: ${await client.getCroBalance(address1.account())}`);
-        console.log(`balance2: ${await client.getCroBalance(address2.account())}`);
+        console.log(`balance1: ${JSON.stringify(await client.getCroBalance(address1.account()))}`);
+        console.log(`balance2: ${JSON.stringify(await client.getCroBalance(address2.account()))}`);
 
         expect(account1).to.be.not.null;
         expect(account2).to.be.not.null;
@@ -195,7 +195,7 @@ describe('e2e test suite', function () {
         const broadcastResult = await client.broadcastTx(signedTx.encode().toUint8Array());
         assertIsDeliverTxSuccess(broadcastResult);
 
-        console.log(`broadcastResult: ${broadcastResult}`);
+        console.log(`broadcastResult: ${JSON.stringify(broadcastResult)}`);
 
         const { transactionHash } = broadcastResult;
         expect(transactionHash).to.match(/^[0-9A-F]{64}$/);
