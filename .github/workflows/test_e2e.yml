@@ -145,9 +145,9 @@ jobs:
           npm install --no-progress --silent --quiet
 
           VALIDATOR_OPERATOR_ADDRESS=$(../chain-main/build/chain-maind keys show validator -a --bech val --keyring-backend test)
-          COMMUNITY_ACCOUNT_MNEMONIC=$(cat ../chain-main/community.json | jq '.mnemonic')
-          RESERVE_ACCOUNT_MNEMONIC=$(cat ../chain-main/reserve.json | jq '.mnemonic')
-          ECOSYSTEM_ACCOUNT_MNEMONIC=$(cat ../chain-main/ecosystem.json | jq '.mnemonic') 
+          COMMUNITY_ACCOUNT_MNEMONIC=$(cat ../chain-main/community.json | jq -r '.mnemonic')
+          RESERVE_ACCOUNT_MNEMONIC=$(cat ../chain-main/reserve.json | jq -r '.mnemonic')
+          ECOSYSTEM_ACCOUNT_MNEMONIC=$(cat ../chain-main/ecosystem.json | jq -r '.mnemonic') 
 
           echo "VALIDATOR_OPERATOR_ADDRESS: $VALIDATOR_OPERATOR_ADDRESS"
           echo "COMMUNITY_ACCOUNT_MNEMONIC: $COMMUNITY_ACCOUNT_MNEMONIC"
