@@ -10,7 +10,7 @@ import { SignableTransactionV2 } from './v2.signable';
 import utils from '../utils';
 import { SIGN_MODE } from './types';
 
-const cro = CroSDK({ network: CroNetwork.Testnet });
+const cro = CroSDK({ network: CroNetwork.TestnetCroeseid4 });
 
 const anyTransaction = () => new cro.v2.RawTransactionV2();
 

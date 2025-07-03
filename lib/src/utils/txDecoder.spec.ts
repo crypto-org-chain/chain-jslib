@@ -73,7 +73,7 @@ describe('TxDecoder', function () {
     it('should decode and re-encode Cosmos JSON tx correctly', function () {
         const signableTx = new SignableTransactionV2({
             rawTxJSON: JSON.stringify(cosmosTxObject),
-            network: CroNetwork.Testnet,
+            network: CroNetwork.TestnetCroeseid4,
             signerAccounts: []
         })
         signableTx.importSignerAccounts([{ accountNumber: new Big(0), publicKey: Bytes.fromBase64String('AiPJOV1BAT5kcMjSfai3WFBVT6raP+PoEmYMvfRTSoXX'), signMode: SIGN_MODE.DIRECT }])
@@ -91,7 +91,7 @@ describe('TxDecoder', function () {
     it('should decode and re-encode Cosmos JSON tx correctly for LEGACY MODE', function () {
         const signableTx = new SignableTransactionV2({
             rawTxJSON: JSON.stringify(cosmosTxObject_Legacy),
-            network: CroNetwork.Testnet,
+            network: CroNetwork.TestnetCroeseid4,
             signerAccounts: []
         })
         signableTx.importSignerAccounts([{ accountNumber: new Big(0), publicKey: Bytes.fromBase64String('AiPJOV1BAT5kcMjSfai3WFBVT6raP+PoEmYMvfRTSoXX'), signMode: SIGN_MODE.LEGACY_AMINO_JSON }])

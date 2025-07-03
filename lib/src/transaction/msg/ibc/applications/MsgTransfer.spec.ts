@@ -12,7 +12,7 @@ import { CroSDK, CroNetwork } from '../../../../core/cro';
 import { COSMOS_MSG_TYPEURL } from '../../../common/constants/typeurl';
 import { isAminoMsgTransfer } from '../../../../cosmos/amino/msg';
 
-const cro = CroSDK({ network: CroNetwork.TestnetCroeseid3 });
+const cro = CroSDK({ network: CroNetwork.TestnetCroeseid4Croeseid3 });
 
 const tokenAmount = cro.Coin.fromBaseUnit('1234');
 const timeoutHeight = {

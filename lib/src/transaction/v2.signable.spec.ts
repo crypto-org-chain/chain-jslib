@@ -168,7 +168,7 @@ describe('SignableTransaction', function () {
         });
     });
     describe('check `typeUrlToMsgClassMapping`', function () {
-        const croSdk = CroSDK({ network: CroNetwork.TestnetCroeseid3 });
+        const croSdk = CroSDK({ network: CroNetwork.TestnetCroeseid4Croeseid3 });
 
         [
             COSMOS_MSG_TYPEURL.MsgSend,

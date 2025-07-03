@@ -6,7 +6,7 @@ import { CosmosMsgSuiteFactory, TransactionSignerFactory } from './test';
 import { SignableTransaction } from './signable';
 import { CroNetwork, CroSDK } from '../core/cro';
 
-const cro = CroSDK({ network: CroNetwork.Testnet });
+const cro = CroSDK({ network: CroNetwork.TestnetCroeseid4 });
 
 const anyTransaction = () => new cro.RawTransaction();
 

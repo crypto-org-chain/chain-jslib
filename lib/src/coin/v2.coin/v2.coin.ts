@@ -30,7 +30,7 @@ export const coinv2 = function (config: InitConfigurations) {
     return class CoinV2 implements ICoin {
         public static croAllDenoms = [
             ...Object.values(CroNetwork.Mainnet.coin),
-            ...Object.values(CroNetwork.Testnet.coin),
+            ...Object.values(CroNetwork.TestnetCroeseid4Croeseid4.coin),
         ];
 
         /**

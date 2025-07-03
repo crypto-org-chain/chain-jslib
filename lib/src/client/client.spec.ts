@@ -103,7 +103,7 @@ describe('CroClient', function () {
         context('Getting On-Chain details', function () {
             it('Should fetch correct details from the network', async function () {
                 nock.disableNetConnect();
-                const rpcUrl: string = CroNetwork.TestnetCroeseid4.rpcUrl ?? '';
+                const rpcUrl: string = CroNetwork.TestnetCroeseid4Croeseid4.rpcUrl ?? '';
                 nock(rpcUrl).persist(true).post('/').reply(200, statusQueryResponse);
 
                 const croHttpClient = await cro.CroClient.connect(rpcUrl);
@@ -233,7 +233,7 @@ describe('CroClient', function () {
             });
 
             function remockNockForAbciQuery() {
-                const rpcUrl: string = CroNetwork.Testnet.rpcUrl ?? '';
+                const rpcUrl: string = CroNetwork.TestnetCroeseid4.rpcUrl ?? '';
                 nock.cleanAll();
                 nock(rpcUrl).persist(true).post('/').reply(200, abciQueryResponse);
             }
