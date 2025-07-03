@@ -18,7 +18,7 @@ const statusQueryResponse = {
             },
             id: 'd3d2139a61c2a841545e78ff0e0cd03094a5197d',
             listen_addr: '18.136.230.70:26656',
-            network: 'testnet-croeseid-2',
+            network: 'testnet-croeseid-4',
             version: '',
             channels: '40202122233038606100',
             moniker: 'sentry_node2',
