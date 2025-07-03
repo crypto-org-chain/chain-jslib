@@ -108,7 +108,7 @@ describe('CroClient', function () {
 
                 const croHttpClient = await cro.CroClient.connect(rpcUrl);
 
-                expect(await croHttpClient.getChainId()).to.be.equal('testnet-croeseid-2');
+                expect(await croHttpClient.getChainId()).to.be.equal('testnet-croeseid-4');
                 expect(typeof (await croHttpClient.getHeight())).to.equal('number');
 
                 remockNockForAbciQuery();
