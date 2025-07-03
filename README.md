@@ -29,7 +29,7 @@ const Bytes = sdk.utils.Bytes;
 
 
 // Initializing the library configurations with Croeseid4 Testnet config
-const cro = sdk.CroSDK({ network: sdk.CroNetwork.TestnetCroeseid4Croeseid4 });
+const cro = sdk.CroSDK({ network: sdk.CroNetwork.TestnetCroeseid4 });
 
 // Generating a random mnemonic phrase
 let randomPhrase = HDKey.generateMnemonic(12); // This returns a 12 words mnemonic phrase
