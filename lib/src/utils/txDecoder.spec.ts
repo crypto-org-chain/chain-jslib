@@ -270,14 +270,14 @@ let cosmosTxObject = {
         ],
         fee: { amount: [{ denom: 'basetcro', amount: '10000' }], gas_limit: '100000', payer: '', granter: '' },
     },
-    signatures: ['MfTEibmN7LNnlyeQdHE5x3BvVKr9nlo6WtpPcsewF2RvHrXLG99RhgPV2JkUZqE8P2iETc2bFotdTKDLXqUUvA=='],
+    signatures: ['YZa18j6HATqUEIvvHoMJuKSOGlmMYuggNUG6q2rSkcld+QZWun5dC6V6ITFkAzHNfAUMt4PhB4fLh4ZNhEgUjw=='],
 };
 
 let cosmosTxObject_Legacy = JSON.parse(JSON.stringify(cosmosTxObject));
 cosmosTxObject_Legacy.auth_info.signer_infos[0].mode_info.single.mode = 'SIGN_MODE_LEGACY_AMINO_JSON';
 cosmosTxObject_Legacy.auth_info.fee.amount = [{ denom: 'basetcro', amount: '1000000000000' }];
 cosmosTxObject_Legacy.signatures[0] =
-    'xYN+yNCrRPCMZG1NsxAY93RmNnl7GpxnkZfz7MGoc9lXKHZiRd8WDVEqnGChTfvsBzU/2om+AGSYrJy/JyPc/w==';
+    'I92la+N7fdwts7/hjr6kuK6krXoazc2Pc9IEBg8s5eIJ/boH9/OxrlDwwqBRvyfTlXI3fJ9Gl9BjgRn/y4Pxkg==';
 
 let cosmosTxObject_UNRECOGNIZED = JSON.parse(JSON.stringify(cosmosTxObject));
 cosmosTxObject_UNRECOGNIZED.auth_info.signer_infos[0].mode_info.single.mode = 'UNRECOGNIZED';
