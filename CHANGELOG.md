@@ -1,6 +1,9 @@
 # Changelog
 
 All notable changes to this project will be documented in this file.
+## v1.1.3
+- Remove dependencies from `web3 1.x`
+
 ## v1.1.2
 - Added CRO `Croeseid-5` Testnet network
 - Update CRO `Mainnet` & `Croeseid-4` Testnet network endpoints

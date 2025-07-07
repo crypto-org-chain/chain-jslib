@@ -47,7 +47,7 @@ describe('TxDecoder', function () {
         const txDecoder = new TxDecoder();
         const txBytes = Bytes.fromBase64String('CpQBCpEBChwvY29zbW9zLmJhbmsudjFiZXRhMS5Nc2dTZW5kEnEKK3Rjcm8xMnlnd2R2ZnZndDRjNzJlMG11N2g2Z21mdjl5d2gzNHI5a2FjanISK3Rjcm8xMnlnd2R2ZnZndDRjNzJlMG11N2g2Z21mdjl5d2gzNHI5a2FjanIaFQoIYmFzZXRjcm8SCTEwMDAwMDAwMBKxAgqoAgqIAgopL2Nvc21vcy5jcnlwdG8ubXVsdGlzaWcuTGVnYWN5QW1pbm9QdWJLZXkS2gEIAxJGCh8vY29zbW9zLmNyeXB0by5zZWNwMjU2azEuUHViS2V5EiMKIQMmHiFA8uJvK1ug4G0W1/pPLiZ+Ora8MsrgRPO9ZUbAxBJGCh8vY29zbW9zLmNyeXB0by5zZWNwMjU2azEuUHViS2V5EiMKIQIXveFFPdAc68u/wp8cyiSeVxSSaieLvHDr/a6ut9gf2RJGCh8vY29zbW9zLmNyeXB0by5zZWNwMjU2azEuUHViS2V5EiMKIQILzYXwxGx61Az+IAaYhDpsTKIPgRwhIOEgePSj1Ae5vhIbEhkKBQgDEgHgEgQKAgh/EgQKAgh/EgQKAgh/EgQQwJoMGsYBCkAqnZ+kKTI2KNThqP4bi67jdF4vUItthnQjzzUbbpVrNS1L1JzRKAk8p3JAD/ZcJv5NrYH6nj/XA3BIY5aDGORRCkC+o5tK8zr8OZLuFIwias8t7v2U6u8XXrfNFL6uF3TyBSpvmW8BwCRZDFkwKosz6ryg6rObF6NCpheN0t+e7j+UCkCntQCqbypaLXA8RD0o7B/Gb5iQqD5jpOR0hd7rVQZ1xm+g6bKXS6Vd+vpNlzXmCUD1h8AxgEkKWxN5cQzL/0ZW');
 
-        expect(() => txDecoder.fromHex(txBytes.toHexString()).toCosmosJSON()).to.throw("Cannot read property 'length' of undefined");
+        expect(() => txDecoder.fromHex(txBytes.toHexString()).toCosmosJSON()).to.throw("Cannot read properties of undefined (reading 'length')");
     });
 
     it('should throw on invalid tx body messages array', function () {
