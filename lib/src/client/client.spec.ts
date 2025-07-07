@@ -18,7 +18,7 @@ const statusQueryResponse = {
             },
             id: 'd3d2139a61c2a841545e78ff0e0cd03094a5197d',
             listen_addr: '18.136.230.70:26656',
-            network: 'testnet-croeseid-2',
+            network: 'testnet-croeseid-4',
             version: '',
             channels: '40202122233038606100',
             moniker: 'sentry_node2',
@@ -103,18 +103,18 @@ describe('CroClient', function () {
         context('Getting On-Chain details', function () {
             it('Should fetch correct details from the network', async function () {
                 nock.disableNetConnect();
-                const rpcUrl: string = CroNetwork.Testnet.rpcUrl ?? '';
+                const rpcUrl: string = CroNetwork.TestnetCroeseid4.rpcUrl ?? '';
                 nock(rpcUrl).persist(true).post('/').reply(200, statusQueryResponse);
 
                 const croHttpClient = await cro.CroClient.connect(rpcUrl);
 
-                expect(await croHttpClient.getChainId()).to.be.equal('testnet-croeseid-2');
+                expect(await croHttpClient.getChainId()).to.be.equal('testnet-croeseid-4');
                 expect(typeof (await croHttpClient.getHeight())).to.equal('number');
 
                 remockNockForAbciQuery();
 
                 expect(
-                    typeof (await (await croHttpClient.getSequence('tcro1mz5rdtf9wufwkh8te2zww7twtmna6rhl2qlhlc'))
+                    typeof (await (await croHttpClient.getSequence('tcro1s4ggq2zuzvwg5k8vnx2xfwtdm4cz6wtnfl4xx7'))
                         .sequence),
                 ).to.equal('number');
 
@@ -233,7 +233,7 @@ describe('CroClient', function () {
             });
 
             function remockNockForAbciQuery() {
-                const rpcUrl: string = CroNetwork.Testnet.rpcUrl ?? '';
+                const rpcUrl: string = CroNetwork.TestnetCroeseid4.rpcUrl ?? '';
                 nock.cleanAll();
                 nock(rpcUrl).persist(true).post('/').reply(200, abciQueryResponse);
             }
