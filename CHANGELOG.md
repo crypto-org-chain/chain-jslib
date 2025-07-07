@@ -4,6 +4,7 @@ All notable changes to this project will be documented in this file.
 ## v1.1.2
 - Added CRO `Croeseid-5` Testnet network
 - Update CRO `Mainnet` & `Croeseid-4` Testnet network endpoints
+- Removed discontinued Testnet networks in config
 
 ## v1.1.1
 - Bugfix for `MsgUnjailV2` transaction management
