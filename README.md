@@ -28,8 +28,8 @@ const Secp256k1KeyPair = sdk.Secp256k1KeyPair;
 const Bytes = sdk.utils.Bytes;
 
 
-// Initializing the library configurations with TestNet config
-const cro = sdk.CroSDK({ network: sdk.CroNetwork.Testnet });
+// Initializing the library configurations with Croeseid4 Testnet config
+const cro = sdk.CroSDK({ network: sdk.CroNetwork.TestnetCroeseid4 });
 
 // Generating a random mnemonic phrase
 let randomPhrase = HDKey.generateMnemonic(12); // This returns a 12 words mnemonic phrase
@@ -51,7 +51,7 @@ const keyPair = Secp256k1KeyPair.fromPrivKey(privateKey);
 
 ```javascript
 // Initializing the library configurations with TestNet config
-const cro = sdk.CroSDK({ network: sdk.CroNetwork.Testnet });
+const cro = sdk.CroSDK({ network: sdk.CroNetwork.TestnetCroeseid4 });
 
 // Import private key from hex key value
 let privKey = Bytes.fromHexString(
@@ -77,7 +77,7 @@ const Units = sdk.Units;
 const Big = sdk.utils.Big;
 
 // Initialize the library configurations with TestNet configs
-const cro = sdk.CroSDK({ network: sdk.CroNetwork.Testnet });
+const cro = sdk.CroSDK({ network: sdk.CroNetwork.TestnetCroeseid4 });
 
 const importedHDKey = HDKey.fromMnemonic(
   "curtain maid fetch push pilot frozen speak motion island pigeon habit suffer gap purse royal hollow among orange pluck mutual eager cement void panther"
@@ -133,7 +133,7 @@ https://github.com/cosmos/cosmjs/tree/main/packages/stargate
 ```javascript
 // Imports
 const sdk = require("@crypto-org-chain/chain-jslib");
-const cro = sdk.CroSDK({ network: sdk.CroNetwork.Testnet });
+const cro = sdk.CroSDK({ network: sdk.CroNetwork.TestnetCroeseid4 });
 const client = await cro.CroClient.connect();
 await client.broadcastTx(signedTx.encode().toUint8Array());
 ```
@@ -145,7 +145,7 @@ https://github.com/cosmos/cosmjs/tree/main/packages/stargate/src/queries
 ```javascript
 // Imports
 const sdk = require("@crypto-org-chain/chain-jslib");
-const cro = sdk.CroSDK({ network: sdk.CroNetwork.Testnet });
+const cro = sdk.CroSDK({ network: sdk.CroNetwork.TestnetCroeseid4 });
 const client = await cro.CroClient.connect();
 const queryResult = await client.query().<module>.<operation>
 // example client.query().bank.allBalances(<address>)
@@ -256,13 +256,13 @@ Eg.
 ```typescript
 const msgSendJson ='{ "@type": "/cosmos.bank.v1beta1.MsgSend", "amount": [{ "denom": "basetcro", "amount":   "3478499933290496" }], "from_address": "tcro1x07kkkepfj2hl8etlcuqhej7jj6myqrp48y4hg", "to_address": "tcro184lta2lsyu47vwyp2e8zmtca3k5yq85p6c4vp3" }';
             
-const msgSend = cro.v2.bank.MsgSendV2.fromCosmosMsgJSON(msgSendJson, CroNetwork.Testnet);
+const msgSend = cro.v2.bank.MsgSendV2.fromCosmosMsgJSON(msgSendJson, CroNetwork.TestnetCroeseid4);
 // `msgSend` is a valid instance of `MsgSendV2` and can be used for Transaction building
 
 
 const msgFundCommunityPoolJson = '{"@type":"/cosmos.distribution.v1beta1.MsgFundCommunityPool","amount":[{ "denom": "basetcro", "amount": "3478499933290496" }],"depositor":"tcro165tzcrh2yl83g8qeqxueg2g5gzgu57y3fe3kc3"}';
 
-const msgFundCommPool = cro.v2.distribution.MsgFundCommunityPoolV2.fromCosmosMsgJSON(msgFundCommunityPoolJson, CroNetwork.Testnet);
+const msgFundCommPool = cro.v2.distribution.MsgFundCommunityPoolV2.fromCosmosMsgJSON(msgFundCommunityPoolJson, CroNetwork.TestnetCroeseid4);
 // `msgFundCommPool`is a valid instance of `MsgFundCommunityPoolV2` and can be used for Transaction building
             
 ```  
@@ -304,7 +304,7 @@ You can use the `v2` property on the `CroSDK` instance like in the example below
 ```typescript
 // imports here
 
-const cro = CroSDK({ network: sdk.CroNetwork.Testnet });
+const cro = CroSDK({ network: sdk.CroNetwork.TestnetCroeseid4 });
 
 // v2 methods below
 const coin1 = new cro.Coin('88888888', Units.BASE);

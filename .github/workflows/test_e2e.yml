@@ -16,14 +16,14 @@ jobs:
       - name: Set up Golang
         uses: actions/setup-go@v2
         with:
-          go-version: 1.15.5
+          go-version: 1.23.0
 
       - name: Checkout chain-main repository
         uses: actions/checkout@v2
         with:
           repository: crypto-com/chain-main
           path: chain-main
-          ref: v1.2.1
+          ref: v5.0.2
           submodules: recursive
 
       - name: Build and start chain-maind
@@ -34,7 +34,7 @@ jobs:
           NETWORK=testnet make install 
           NETWORK=testnet make build
 
-          ./build/chain-maind unsafe-reset-all
+          ./build/chain-maind comet unsafe-reset-all
 
           ./build/chain-maind init testnode --chain-id testnet -o
 
@@ -57,25 +57,70 @@ jobs:
 
           ./build/chain-maind validate-genesis
 
-          ./build/chain-maind start --trace &
+          ./build/chain-maind start --minimum-gas-prices=0.025basetcro --trace &
+          if [ $? -ne 0 ]; then
+            echo "Failed to start chain-maind"
+            exit 1
+          fi
 
       - name: Transfer funds to Test accounts
         run: |
-          ## Sleep 5 Seconds
           sleep 5
-          curl --location --request GET 'localhost:26657/status' | jq '.'
+          curl --silent --location --request GET 'localhost:26657/status' | jq '.'
 
           cd chain-main  
-          ./build/chain-maind keys show validator --bech val --keyring-backend test --output json | jq '.'>> ./validatorDetails.json
+          ./build/chain-maind keys show validator --bech val --keyring-backend test --output json | jq '.'
 
           ## TRANSFER 100CRO FROM "ecosystem" to "tcro1n0jfe772qx5svnme9y2gl75u85luxfjnhkacy0"
-          ./build/chain-maind tx bank send $(./build/chain-maind keys show ecosystem -a --keyring-backend test) tcro1n0jfe772qx5svnme9y2gl75u85luxfjnhkacy0 100tcro --keyring-backend test --chain-id testnet -y | jq '.'
-      
+          RESULT=$(./build/chain-maind tx bank send \
+            $(./build/chain-maind keys show ecosystem -a --keyring-backend test) \
+            tcro1n0jfe772qx5svnme9y2gl75u85luxfjnhkacy0 \
+            100tcro \
+            --gas-prices=0.025basetcro \
+            --keyring-backend test \
+            --chain-id testnet \
+            --broadcast-mode sync \
+            -y --output json)
+          echo $RESULT | jq '.'
+          if [[ $(echo $RESULT | jq '.code') -ne 0 ]]; then
+            echo "failed to transfer 100tcro from ecosystem to tcro1n0jfe772qx5svnme9y2gl75u85luxfjnhkacy0"
+            exit 1
+          fi
+          
+          # Wait for the transaction to be included in a block
+          sleep 5
+
           ## TRANSFER 100CRO FROM "ecosystem" to "tcro17c6rn92lnw0d8ct37mlycdaeau4f9hm569ef9s"
-          ./build/chain-maind tx bank send $(./build/chain-maind keys show ecosystem -a --keyring-backend test) tcro17c6rn92lnw0d8ct37mlycdaeau4f9hm569ef9s 100tcro --keyring-backend test --chain-id testnet -y | jq '.'
-      
+          RESULT=$(./build/chain-maind tx bank send \
+            $(./build/chain-maind keys show ecosystem -a --keyring-backend test) \
+            tcro17c6rn92lnw0d8ct37mlycdaeau4f9hm569ef9s \
+            100tcro \
+            --gas-prices=0.025basetcro \
+            --keyring-backend test \
+            --chain-id testnet \
+            --broadcast-mode sync \
+            -y --output json)
+          echo $RESULT | jq '.'
+          if [[ $(echo $RESULT | jq '.code') -ne 0 ]]; then
+            echo "failed to transfer 100tcro from ecosystem to tcro17c6rn92lnw0d8ct37mlycdaeau4f9hm569ef9s"
+            exit 1
+          fi
+
           ## TRANSFER 10CRO FROM "reserve" to "tcro1c5nd9l5ylh8udw5lsfs0hlvzxwrlymxqlnl266"
-          ./build/chain-maind tx bank send $(./build/chain-maind keys show reserve -a --keyring-backend test) tcro1c5nd9l5ylh8udw5lsfs0hlvzxwrlymxqlnl266 100tcro --keyring-backend test --chain-id testnet -y | jq '.'
+          RESULT=$(./build/chain-maind tx bank send \
+            $(./build/chain-maind keys show reserve -a --keyring-backend test) \
+            tcro1c5nd9l5ylh8udw5lsfs0hlvzxwrlymxqlnl266 \
+            100tcro \
+            --gas-prices=0.025basetcro \
+            --keyring-backend test \
+            --chain-id testnet \
+            --broadcast-mode sync \
+            -y --output json)
+          echo $RESULT | jq '.'
+          if [[ $(echo $RESULT | jq '.code') -ne 0 ]]; then
+            echo "failed to transfer 100tcro from reserve to tcro1c5nd9l5ylh8udw5lsfs0hlvzxwrlymxqlnl266"
+            exit 1
+          fi
 
       - name: Checkout this project
         uses: actions/checkout@v2
@@ -96,11 +141,21 @@ jobs:
       - name: Run e2e test suite
         run: |
           cd jslib
+
           npm install --no-progress --silent --quiet
-          VALIDATOR_OPERATOR_ADDRESS=$(../chain-main/build/chain-maind keys show validator -a --bech val --keyring-backend test) COMMUNITY_ACCOUNT_MNEMONIC=$(cat ../chain-main/community.json | jq '.mnemonic') RESERVE_ACCOUNT_MNEMONIC=$(cat ../chain-main/reserve.json | jq '.mnemonic') ECOSYSTEM_ACCOUNT_MNEMONIC=$(cat ../chain-main/ecosystem.json | jq '.mnemonic') 
+
+          VALIDATOR_OPERATOR_ADDRESS=$(../chain-main/build/chain-maind keys show validator -a --bech val --keyring-backend test)
+          COMMUNITY_ACCOUNT_MNEMONIC=$(cat ../chain-main/community.json | jq -r '.mnemonic')
+          RESERVE_ACCOUNT_MNEMONIC=$(cat ../chain-main/reserve.json | jq -r '.mnemonic')
+          ECOSYSTEM_ACCOUNT_MNEMONIC=$(cat ../chain-main/ecosystem.json | jq -r '.mnemonic') 
+
           echo "VALIDATOR_OPERATOR_ADDRESS: $VALIDATOR_OPERATOR_ADDRESS"
           echo "COMMUNITY_ACCOUNT_MNEMONIC: $COMMUNITY_ACCOUNT_MNEMONIC"
           echo "RESERVE_ACCOUNT_MNEMONIC: $RESERVE_ACCOUNT_MNEMONIC"
           echo "ECOSYSTEM_ACCOUNT_MNEMONIC: $ECOSYSTEM_ACCOUNT_MNEMONIC"
-          # COMMUNITY_ACCOUNT_MNEMONIC=$COMMUNITY_ACCOUNT_MNEMONIC RESERVE_ACCOUNT_MNEMONIC=$RESERVE_ACCOUNT_MNEMONIC ECOSYSTEM_ACCOUNT_MNEMONIC=$ECOSYSTEM_ACCOUNT_MNEMONIC
-          VALIDATOR_OPERATOR_ADDRESS=$VALIDATOR_OPERATOR_ADDRESS npm run test:e2e
+
+          COMMUNITY_ACCOUNT_MNEMONIC=$COMMUNITY_ACCOUNT_MNEMONIC \
+          RESERVE_ACCOUNT_MNEMONIC=$RESERVE_ACCOUNT_MNEMONIC \
+          ECOSYSTEM_ACCOUNT_MNEMONIC=$ECOSYSTEM_ACCOUNT_MNEMONIC \
+          VALIDATOR_OPERATOR_ADDRESS=$VALIDATOR_OPERATOR_ADDRESS \
+          npm run test:e2e

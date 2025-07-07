@@ -2,7 +2,7 @@
 import 'mocha';
 import Big from 'big.js';
 import { expect } from 'chai';
-import { assertIsBroadcastTxSuccess } from '@cosmjs/stargate';
+import { assertIsDeliverTxSuccess } from '@cosmjs/stargate';
 import axios from 'axios';
 
 import { HDKey } from '../src/hdkey/hdkey';
@@ -98,6 +98,7 @@ describe('e2e test suite', function () {
             const signableTx = rawTx
                 .appendMessage(msgSend1)
                 .appendMessage(msgSend2)
+                .setFees([new cro.Coin('5000', Units.BASE)])
                 .addSigner({
                     publicKey: keyPair.getPubKey(),
                     accountNumber: new Big(account1!.accountNumber),
@@ -118,7 +119,7 @@ describe('e2e test suite', function () {
             expect(msgSend1.fromAddress).to.eq(account1!.address);
             expect(msgSend1.toAddress).to.eq(randomAddress.account());
             const broadcastResult = await client.broadcastTx(signedTx.encode().toUint8Array());
-            assertIsBroadcastTxSuccess(broadcastResult);
+            assertIsDeliverTxSuccess(broadcastResult);
 
             const { transactionHash } = broadcastResult;
             expect(transactionHash).to.match(/^[0-9A-F]{64}$/);
@@ -164,6 +165,7 @@ describe('e2e test suite', function () {
         const signableTx = rawTx
             .appendMessage(msgSend1)
             .appendMessage(msgSend2)
+            .setFee(new cro.Coin('5000', Units.BASE))
             .addSigner({
                 publicKey: keyPair.getPubKey(),
                 accountNumber: new Big(account1!.accountNumber),
@@ -186,7 +188,7 @@ describe('e2e test suite', function () {
         expect(msgSend1.fromAddress).to.eq(account1!.address);
         expect(msgSend1.toAddress).to.eq(randomAddress.account());
         const broadcastResult = await client.broadcastTx(signedTx.encode().toUint8Array());
-        assertIsBroadcastTxSuccess(broadcastResult);
+        assertIsDeliverTxSuccess(broadcastResult);
 
         const { transactionHash } = broadcastResult;
         expect(transactionHash).to.match(/^[0-9A-F]{64}$/);
@@ -231,6 +233,7 @@ describe('e2e test suite', function () {
         const signableTx = rawTx
             .appendMessage(msgSend1)
             .appendMessage(msgSend2)
+            .setFee(new cro.Coin('5000', Units.BASE))
             .addSigner({
                 publicKey: keyPair.getPubKey(),
                 accountNumber: new Big(account1!.accountNumber),
@@ -251,7 +254,7 @@ describe('e2e test suite', function () {
         expect(msgSend1.fromAddress).to.eq(account1!.address);
         expect(msgSend1.toAddress).to.eq(randomAddress.account());
         const broadcastResult = await client.broadcastTx(signedTx.encode().toUint8Array());
-        assertIsBroadcastTxSuccess(broadcastResult);
+        assertIsDeliverTxSuccess(broadcastResult);
 
         const { transactionHash } = broadcastResult;
         expect(transactionHash).to.match(/^[0-9A-F]{64}$/);
@@ -288,6 +291,7 @@ describe('e2e test suite', function () {
 
         const signableTx = rawTx
             .appendMessage(msgSend1)
+            .setFee(new cro.Coin('5000', Units.BASE))
             .addSigner({
                 publicKey: keyPair.getPubKey(),
                 accountNumber: new Big(account1!.accountNumber),
@@ -303,7 +307,7 @@ describe('e2e test suite', function () {
         expect(msgSend1.fromAddress).to.eq(account1!.address);
         expect(msgSend1.toAddress).to.eq(randomAddress.account());
         const broadcastResult = await client.broadcastTx(signedTx.encode().toUint8Array());
-        assertIsBroadcastTxSuccess(broadcastResult);
+        assertIsDeliverTxSuccess(broadcastResult);
 
         const { transactionHash } = broadcastResult;
         expect(transactionHash).to.match(/^[0-9A-F]{64}$/);
@@ -333,13 +337,14 @@ describe('e2e test suite', function () {
             accountSequence: new Big(account!.sequence),
         };
         const rawTx = new cro.RawTransaction();
-        const signableTx = rawTx.appendMessage(MsgDelegate).addSigner(anySigner).toSignable();
+        const signableTx = rawTx.appendMessage(MsgDelegate).setFee(new cro.Coin('5000', Units.BASE)).addSigner(anySigner).toSignable();
         const signedTx = signableTx.setSignature(0, keyPair.sign(signableTx.toSignDocumentHash(0))).toSigned();
         const broadcastResult = await client.broadcastTx(signedTx.encode().toUint8Array());
-        assertIsBroadcastTxSuccess(broadcastResult);
+        assertIsDeliverTxSuccess(broadcastResult);
         const { transactionHash } = broadcastResult;
         expect(transactionHash).to.match(/^[0-9A-F]{64}$/);
-        expect(broadcastResult.data).to.be.not.undefined;
+        expect(broadcastResult.code).to.be.equal(0);
+        expect(broadcastResult.events.length).to.be.greaterThan(1);
     });
 
     it('[STAKING] Creates, signs and broadcasts a `MsgUndelegate` Tx', async function () {
@@ -366,13 +371,18 @@ describe('e2e test suite', function () {
             accountSequence: new Big(account!.sequence),
         };
         const rawTx = new cro.RawTransaction();
-        const signableTx = rawTx.appendMessage(MsgUndelegate).addSigner(anySigner).toSignable();
+        const signableTx = rawTx.appendMessage(MsgUndelegate)
+            .setFee(new cro.Coin('7500', Units.BASE))
+            .setGasLimit('300000')
+            .addSigner(anySigner)
+            .toSignable();
         const signedTx = signableTx.setSignature(0, keyPair.sign(signableTx.toSignDocumentHash(0))).toSigned();
         const broadcastResult = await client.broadcastTx(signedTx.encode().toUint8Array());
-        assertIsBroadcastTxSuccess(broadcastResult);
+        assertIsDeliverTxSuccess(broadcastResult);
         const { transactionHash } = broadcastResult;
         expect(transactionHash).to.match(/^[0-9A-F]{64}$/);
-        expect(broadcastResult.data).to.be.not.undefined;
+        expect(broadcastResult.code).to.be.equal(0);
+        expect(broadcastResult.events.length).to.be.greaterThan(1);
     });
 
     it('[STAKING] Creates, signs and broadcasts a `MsgCreateValidator` Tx', async function () {
@@ -413,13 +423,14 @@ describe('e2e test suite', function () {
             accountSequence: new Big(account!.sequence),
         };
         const rawTx = new cro.RawTransaction();
-        const signableTx = rawTx.appendMessage(MsgCreateValidator).addSigner(anySigner).toSignable();
+        const signableTx = rawTx.appendMessage(MsgCreateValidator).setFee(new cro.Coin('5000', Units.BASE)).addSigner(anySigner).toSignable();
         const signedTx = signableTx.setSignature(0, keyPair.sign(signableTx.toSignDocumentHash(0))).toSigned();
         const broadcastResult = await client.broadcastTx(signedTx.encode().toUint8Array());
-        assertIsBroadcastTxSuccess(broadcastResult);
+        assertIsDeliverTxSuccess(broadcastResult);
         const { transactionHash } = broadcastResult;
         expect(transactionHash).to.match(/^[0-9A-F]{64}$/);
-        expect(broadcastResult.data).to.be.not.undefined;
+        expect(broadcastResult.code).to.be.equal(0);
+        expect(broadcastResult.events.length).to.be.greaterThan(1);
     });
 
     it('[STAKING] Creates, signs and broadcasts a `MsgEditValidator` Tx', async function () {
@@ -449,13 +460,14 @@ describe('e2e test suite', function () {
             accountSequence: new Big(account!.sequence),
         };
         const rawTx = new cro.RawTransaction();
-        const signableTx = rawTx.appendMessage(MsgEditValidator).addSigner(anySigner).toSignable();
+        const signableTx = rawTx.appendMessage(MsgEditValidator).setFee(new cro.Coin('5000', Units.BASE)).addSigner(anySigner).toSignable();
         const signedTx = signableTx.setSignature(0, keyPair.sign(signableTx.toSignDocumentHash(0))).toSigned();
         const broadcastResult = await client.broadcastTx(signedTx.encode().toUint8Array());
-        assertIsBroadcastTxSuccess(broadcastResult);
+        assertIsDeliverTxSuccess(broadcastResult);
         const { transactionHash } = broadcastResult;
         expect(transactionHash).to.match(/^[0-9A-F]{64}$/);
-        expect(broadcastResult.data).to.be.not.undefined;
+        expect(broadcastResult.code).to.be.equal(0);
+        expect(broadcastResult.events.length).to.be.greaterThan(1);
     });
 
     it('[STAKING] Creates, signs and broadcasts a `MsgBeginRedelegate` Tx', async function () {
@@ -484,13 +496,15 @@ describe('e2e test suite', function () {
         };
         const rawTx = new cro.RawTransaction();
         rawTx.setGasLimit('300000');
+        rawTx.setFee(new cro.Coin('7500', Units.BASE));
         const signableTx = rawTx.appendMessage(MsgBeginRedelegate).addSigner(anySigner).toSignable();
         const signedTx = signableTx.setSignature(0, keyPair.sign(signableTx.toSignDocumentHash(0))).toSigned();
         const broadcastResult = await client.broadcastTx(signedTx.encode().toUint8Array());
-        assertIsBroadcastTxSuccess(broadcastResult);
+        assertIsDeliverTxSuccess(broadcastResult);
         const { transactionHash } = broadcastResult;
         expect(transactionHash).to.match(/^[0-9A-F]{64}$/);
-        expect(broadcastResult.data).to.be.not.undefined;
+        expect(broadcastResult.code).to.be.equal(0);
+        expect(broadcastResult.events.length).to.be.greaterThan(1);
     });
     it('[DISTRIBUTION] Creates, signs and broadasts a `MsgWithdrawDelegatorReward` Tx', async function () {
         const hdKey = HDKey.fromMnemonic(env.mnemonic.ecosystemAccount);
@@ -515,13 +529,14 @@ describe('e2e test suite', function () {
             accountSequence: new Big(account!.sequence),
         };
         const rawTx = new cro.RawTransaction();
-        const signableTx = rawTx.appendMessage(MsgWithdrawDelegatorReward).addSigner(anySigner).toSignable();
+        const signableTx = rawTx.appendMessage(MsgWithdrawDelegatorReward).setFee(new cro.Coin('5000', Units.BASE)).addSigner(anySigner).toSignable();
         const signedTx = signableTx.setSignature(0, keyPair.sign(signableTx.toSignDocumentHash(0))).toSigned();
         const broadcastResult = await client.broadcastTx(signedTx.encode().toUint8Array());
-        assertIsBroadcastTxSuccess(broadcastResult);
+        assertIsDeliverTxSuccess(broadcastResult);
         const { transactionHash } = broadcastResult;
         expect(transactionHash).to.match(/^[0-9A-F]{64}$/);
-        expect(broadcastResult.data).to.be.not.undefined;
+        expect(broadcastResult.code).to.be.equal(0);
+        expect(broadcastResult.events.length).to.be.greaterThan(1);
     });
 
     it('[DISTRIBUTION] Creates, signs and broadcasts a `MsgWithdrawValidatorCommission` Tx', async function () {
@@ -546,7 +561,7 @@ describe('e2e test suite', function () {
             accountSequence: new Big(account!.sequence),
         };
         const rawTx = new cro.RawTransaction();
-        const signableTx = rawTx.appendMessage(MsgWithdrawValidatorCommission).addSigner(anySigner).toSignable();
+        const signableTx = rawTx.appendMessage(MsgWithdrawValidatorCommission).setFee(new cro.Coin('5000', Units.BASE)).addSigner(anySigner).toSignable();
         const signedTx = signableTx.setSignature(0, keyPair.sign(signableTx.toSignDocumentHash(0))).toSigned();
         const broadcast = await axios.get('broadcast_tx_commit', {
             baseURL: axiosConfig.url,
@@ -554,7 +569,7 @@ describe('e2e test suite', function () {
         });
         expect(broadcast.status).to.eq(200);
         expect(broadcast.data).to.be.not.undefined;
-        assertIsBroadcastTxSuccess(broadcast.data);
+        assertIsDeliverTxSuccess(broadcast.data);
     });
 
     it('[NFT] Creates, signs and broadcasts a `MsgIssueDenom` NFT Tx', async function () {
@@ -582,7 +597,7 @@ describe('e2e test suite', function () {
             accountSequence: new Big(account!.sequence),
         };
         const rawTx = new cro.RawTransaction();
-        const signableTx = rawTx.appendMessage(MsgIssueDenom).addSigner(anySigner).toSignable();
+        const signableTx = rawTx.appendMessage(MsgIssueDenom).setFee(new cro.Coin('5000', Units.BASE)).addSigner(anySigner).toSignable();
 
         const signedTx = signableTx.setSignature(0, keyPair.sign(signableTx.toSignDocumentHash(0))).toSigned();
 
@@ -592,7 +607,7 @@ describe('e2e test suite', function () {
         });
         expect(broadcast.status).to.eq(200);
         expect(broadcast.data).to.be.not.undefined;
-        assertIsBroadcastTxSuccess(broadcast.data);
+        assertIsDeliverTxSuccess(broadcast.data);
     });
 
     it('[NFT] Creates, signs and broadcasts a `MsgMintNFT` NFT Tx', async function () {
@@ -623,7 +638,7 @@ describe('e2e test suite', function () {
             accountSequence: new Big(account!.sequence),
         };
         const rawTx = new cro.RawTransaction();
-        const signableTx = rawTx.appendMessage(MsgMintNFT).addSigner(anySigner).toSignable();
+        const signableTx = rawTx.appendMessage(MsgMintNFT).setFee(new cro.Coin('5000', Units.BASE)).addSigner(anySigner).toSignable();
 
         const signedTx = signableTx.setSignature(0, keyPair.sign(signableTx.toSignDocumentHash(0))).toSigned();
 
@@ -633,7 +648,7 @@ describe('e2e test suite', function () {
         });
         expect(broadcast.status).to.eq(200);
         expect(broadcast.data).to.be.not.undefined;
-        assertIsBroadcastTxSuccess(broadcast.data);
+        assertIsDeliverTxSuccess(broadcast.data);
     });
 
     it('[NFT] Creates, signs and broadcasts a `MsgTransferNFT` NFT Tx', async function () {
@@ -661,7 +676,7 @@ describe('e2e test suite', function () {
             accountSequence: new Big(account!.sequence),
         };
         const rawTx = new cro.RawTransaction();
-        const signableTx = rawTx.appendMessage(MsgTransferNFT).addSigner(anySigner).toSignable();
+        const signableTx = rawTx.appendMessage(MsgTransferNFT).setFee(new cro.Coin('5000', Units.BASE)).addSigner(anySigner).toSignable();
 
         const signedTx = signableTx.setSignature(0, keyPair.sign(signableTx.toSignDocumentHash(0))).toSigned();
 
@@ -671,7 +686,7 @@ describe('e2e test suite', function () {
         });
         expect(broadcast.status).to.eq(200);
         expect(broadcast.data).to.be.not.undefined;
-        assertIsBroadcastTxSuccess(broadcast.data);
+        assertIsDeliverTxSuccess(broadcast.data);
     });
 
     it('[NFT] Creates, signs and broadcasts a `MsgEditNFT` NFT Tx', async function () {
@@ -701,7 +716,7 @@ describe('e2e test suite', function () {
             accountSequence: new Big(account!.sequence),
         };
         const rawTx = new cro.RawTransaction();
-        const signableTx = rawTx.appendMessage(MsgEditNFT).addSigner(anySigner).toSignable();
+        const signableTx = rawTx.appendMessage(MsgEditNFT).setFee(new cro.Coin('5000', Units.BASE)).addSigner(anySigner).toSignable();
 
         const signedTx = signableTx.setSignature(0, keyPair.sign(signableTx.toSignDocumentHash(0))).toSigned();
 
@@ -711,7 +726,7 @@ describe('e2e test suite', function () {
         });
         expect(broadcast.status).to.eq(200);
         expect(broadcast.data).to.be.not.undefined;
-        assertIsBroadcastTxSuccess(broadcast.data);
+        assertIsDeliverTxSuccess(broadcast.data);
     });
 
     it('[NFT] Creates, signs and broadcasts a `MsgBurnNFT` NFT Tx', async function () {
@@ -738,7 +753,7 @@ describe('e2e test suite', function () {
             accountSequence: new Big(account!.sequence),
         };
         const rawTx = new cro.RawTransaction();
-        const signableTx = rawTx.appendMessage(MsgBurnNFT).addSigner(anySigner).toSignable();
+        const signableTx = rawTx.appendMessage(MsgBurnNFT).setFee(new cro.Coin('5000', Units.BASE)).addSigner(anySigner).toSignable();
 
         const signedTx = signableTx.setSignature(0, keyPair.sign(signableTx.toSignDocumentHash(0))).toSigned();
 
@@ -748,6 +763,6 @@ describe('e2e test suite', function () {
         });
         expect(broadcast.status).to.eq(200);
         expect(broadcast.data).to.be.not.undefined;
-        assertIsBroadcastTxSuccess(broadcast.data);
+        assertIsDeliverTxSuccess(broadcast.data);
     });
 });

@@ -1,5 +1,5 @@
 /* eslint-disable camelcase */
-import { Tendermint34Client } from '@cosmjs/tendermint-rpc';
+import { Tendermint37Client } from '@cosmjs/tendermint-rpc';
 import {
     StargateClient,
     QueryClient,
@@ -15,9 +15,9 @@ import {
     setupIbcExtension,
 } from '@cosmjs/stargate';
 import { Account } from '@cosmjs/stargate/build/accounts';
-import { Coin } from '@cosmjs/stargate/build/codec/cosmos/base/v1beta1/coin';
-import { SearchTxFilter, SearchTxQuery } from '@cosmjs/stargate/build/search';
-import { Block, BroadcastTxResponse, IndexedTx, SequenceResponse } from '@cosmjs/stargate/build/stargateclient';
+import { Coin } from 'cosmjs-types/cosmos/base/v1beta1/coin';
+import { SearchTxQuery } from '@cosmjs/stargate/build/search';
+import { Block, DeliverTxResponse, IndexedTx, SequenceResponse } from '@cosmjs/stargate/build/stargateclient';
 import ow from 'ow';
 import axios from 'axios';
 import { InitConfigurations } from '../core/cro';
@@ -50,14 +50,14 @@ export interface ICroClient {
     getBlock(height?: number): Promise<Block>;
     getCroBalance(address: string): Promise<Coin>;
     getTx(id: string): Promise<IndexedTx | null>;
-    searchTx(query: SearchTxQuery, filter?: SearchTxFilter): Promise<readonly IndexedTx[]>;
+    searchTx(query: SearchTxQuery): Promise<readonly IndexedTx[]>;
     disconnect(): void;
-    broadcastTx(tx: Uint8Array): Promise<BroadcastTxResponse>;
+    broadcastTx(tx: Uint8Array): Promise<DeliverTxResponse>;
 }
 
 export const croClient = function (config: InitConfigurations) {
     return class CroClient implements ICroClient {
-        tmClient: Tendermint34Client;
+        tmClient: Tendermint37Client;
 
         baseDenom: string;
 
@@ -67,7 +67,7 @@ export const croClient = function (config: InitConfigurations) {
             | (QueryClient & AuthExtension & BankExtension & DistributionExtension & StakingExtension & IbcExtension)
             | undefined;
 
-        private constructor(tmClient: Tendermint34Client, txClient: StargateClient) {
+        private constructor(tmClient: Tendermint37Client, txClient: StargateClient) {
             this.txClient = txClient;
             this.tmClient = tmClient;
             this.queryClient = QueryClient.withExtensions(
@@ -84,7 +84,7 @@ export const croClient = function (config: InitConfigurations) {
 
         public static async connect(endpoint: string = config.network.rpcUrl ?? ''): Promise<CroClient> {
             ow(endpoint, 'endpoint', owUrl);
-            const tmClient = await Tendermint34Client.connect(endpoint);
+            const tmClient = await Tendermint37Client.connect(endpoint);
             const txClient = await StargateClient.connect(endpoint);
             return new CroClient(tmClient, txClient);
         }
@@ -113,7 +113,7 @@ export const croClient = function (config: InitConfigurations) {
         }
 
         public async getAccountVerified(searchAddress: string): Promise<Account | null> {
-            return this.txClient.getAccountVerified(searchAddress);
+            return this.txClient.getAccount(searchAddress);
         }
 
         public async getSequence(address: string): Promise<SequenceResponse> {
@@ -132,11 +132,11 @@ export const croClient = function (config: InitConfigurations) {
             return this.txClient.getTx(id);
         }
 
-        public async searchTx(query: SearchTxQuery, filter?: SearchTxFilter): Promise<readonly IndexedTx[]> {
-            return this.txClient.searchTx(query, filter);
+        public async searchTx(query: SearchTxQuery): Promise<readonly IndexedTx[]> {
+            return this.txClient.searchTx(query);
         }
 
-        public async broadcastTx(tx: Uint8Array): Promise<BroadcastTxResponse> {
+        public async broadcastTx(tx: Uint8Array): Promise<DeliverTxResponse> {
             return this.txClient.broadcastTx(tx);
         }
 

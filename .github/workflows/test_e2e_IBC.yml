@@ -199,10 +199,13 @@ jobs:
                   sudo apt-get update
                   sudo apt-get install -y ca-certificates wget
                   cd /tmp
-                  LIBSSL_LATEST_REVISION=$(wget -qO- http://archive.ubuntu.com/ubuntu/pool/main/o/openssl/ | grep -o 'libssl1\.1_[^"]*_amd64\.deb' | sort -V | tail -1)
-                  if [ -z "$LIBSSL_LATEST_REVISION" ]; then
-                      LIBSSL_LATEST_REVISION="libssl1.1_1.1.1f-1ubuntu2.24_amd64.deb"
-                  fi
+                  # Get the latest version using pure Unix commands
+                  LIBSSL_LATEST_REVISION=$(wget -qO- http://archive.ubuntu.com/ubuntu/pool/main/o/openssl/ | grep -o 'libssl1\.1_[^"]*_amd64\.deb' | while read pkg; do
+                      version=$(echo "$pkg" | sed 's/libssl1\.1_\(.*\)_amd64\.deb/\1/')
+                      # Normalize version format: 1.1.1f -> 1.1.1.6, 1.1.1 -> 1.1.1.0
+                      normalized=$(echo "$version" | sed 's/1\.1\.1\([a-z]\)/1.1.1.\1/' | sed 's/1\.1\.1$/1.1.1.0/' | sed 's/1\.1\.0\([a-z]\)/1.1.0.\1/' | sed 's/1\.1\.0$/1.1.0.0/' | sed 's/a/1/g; s/b/2/g; s/c/3/g; s/d/4/g; s/e/5/g; s/f/6/g; s/g/7/g; s/h/8/g; s/i/9/g; s/j/10/g; s/k/11/g; s/l/12/g; s/m/13/g; s/n/14/g; s/o/15/g; s/p/16/g; s/q/17/g; s/r/18/g; s/s/19/g; s/t/20/g; s/u/21/g; s/v/22/g; s/w/23/g; s/x/24/g; s/y/25/g; s/z/26/g')
+                      echo "$normalized $pkg"
+                  done | sort -t' ' -k1,1V | tail -1 | cut -d' ' -f2)
                   wget "http://archive.ubuntu.com/ubuntu/pool/main/o/openssl/$LIBSSL_LATEST_REVISION"
                   sudo dpkg -i "$LIBSSL_LATEST_REVISION"
                   rm "$LIBSSL_LATEST_REVISION"

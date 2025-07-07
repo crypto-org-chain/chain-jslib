@@ -21,10 +21,10 @@ export type MessageSuite = {
     toAddress: string;
     message: CosmosMsg;
 };
-const cro = CroSDK({ network: CroNetwork.Testnet });
+const cro = CroSDK({ network: CroNetwork.TestnetCroeseid4 });
 
 export const CosmosMsgSuiteFactory = new Factory<MessageSuite>()
-    .option('network', CroNetwork.Testnet)
+    .option('network', CroNetwork.TestnetCroeseid4)
     .attr('keyPair', () => Secp256k1KeyPair.generateRandom())
     .attr('toAddress', 'tcro184lta2lsyu47vwyp2e8zmtca3k5yq85p6c4vp3')
     .attr(
@@ -39,7 +39,7 @@ export const CosmosMsgSuiteFactory = new Factory<MessageSuite>()
     );
 
 export const CosmosMsgSuiteFactoryV2 = new Factory<MessageSuite>()
-    .option('network', CroNetwork.Testnet)
+    .option('network', CroNetwork.TestnetCroeseid4)
     .attr('keyPair', () => Secp256k1KeyPair.generateRandom())
     .attr('toAddress', 'tcro184lta2lsyu47vwyp2e8zmtca3k5yq85p6c4vp3')
     .attr(
@@ -68,7 +68,7 @@ export type SignableTransactionParamsSuiteV2 = {
     params: SignableTransactionV2Params;
 };
 export const SignableTransactionParamsSuiteFactoryV2 = new Factory<SignableTransactionParamsSuiteV2>()
-    .option('network', CroNetwork.Testnet)
+    .option('network', CroNetwork.TestnetCroeseid4)
     .attr('keyPair', () => Secp256k1KeyPair.generateRandom())
     .attr(
         'params',
@@ -138,7 +138,7 @@ export type SignableTransactionParamsSuite = {
     params: SignableTransactionParams;
 };
 export const SignableTransactionParamsSuiteFactory = new Factory<SignableTransactionParamsSuite>()
-    .option('network', CroNetwork.Testnet)
+    .option('network', CroNetwork.TestnetCroeseid4)
     .attr('keyPair', () => Secp256k1KeyPair.generateRandom())
     .attr(
         'params',

@@ -20,7 +20,7 @@ describe('Validate address against network and checksums', function () {
         expect(
             validateAddress({
                 address: 'tcro165tzcrh2yl83g8qeqxueg2g5gzgu57y3fe3kc3',
-                network: CroNetwork.Testnet,
+                network: CroNetwork.TestnetCroeseid4,
                 type: AddressType.USER,
             }),
         ).to.be.eq(true);
@@ -30,7 +30,7 @@ describe('Validate address against network and checksums', function () {
         expect(
             validateAddress({
                 address: 'cro1pndm4ywdf4qtmupa0fqe75krmqed2znjyj6x8f',
-                network: CroNetwork.Testnet,
+                network: CroNetwork.TestnetCroeseid4,
                 type: AddressType.USER,
             }),
         ).to.be.eq(false);
@@ -40,7 +40,7 @@ describe('Validate address against network and checksums', function () {
         expect(() =>
             validateAddress({
                 address: 'tcro1pndm4ywdf4qtmupa0fqe75krmqed2znjyj6x8fzqa',
-                network: CroNetwork.Testnet,
+                network: CroNetwork.TestnetCroeseid4,
                 type: AddressType.USER,
             }),
         ).to.throw('Invalid checksum for tcro1pndm4ywdf4qtmupa0fqe75krmqed2znjyj6x8fzqa');
@@ -50,7 +50,7 @@ describe('Validate address against network and checksums', function () {
         expect(
             validateAddress({
                 address: 'tcrocncl1reyshfdygf7673xm9p8v0xvtd96m6cd6canhu3',
-                network: CroNetwork.Testnet,
+                network: CroNetwork.TestnetCroeseid4,
                 type: AddressType.VALIDATOR,
             }),
         ).to.be.eq(true);
@@ -58,7 +58,7 @@ describe('Validate address against network and checksums', function () {
         expect(() =>
             validateAddress({
                 address: 'tcrocncl1reyshfdygf7673xm9p8v0xvtd96m6cd6canhu3xcqa',
-                network: CroNetwork.Testnet,
+                network: CroNetwork.TestnetCroeseid4,
                 type: AddressType.VALIDATOR,
             }),
         ).to.throw('Invalid checksum for tcrocncl1reyshfdygf7673xm9p8v0xvtd96m6cd6canhu3xcqa');
@@ -146,7 +146,7 @@ describe('Validate address against network and checksums', function () {
         it('validate should throw Error when the address is invalid', function () {
             const addressProps = {
                 address: 'tcrocncl1reyshfdygf7673xm9p8v0xvtd96m6cd6canhu3xcqa',
-                network: CroNetwork.Testnet,
+                network: CroNetwork.TestnetCroeseid4,
                 type: AddressType.USER,
             };
 
@@ -159,7 +159,7 @@ describe('Validate address against network and checksums', function () {
         it('validate should return true when the address', function () {
             const addressProps = {
                 address: 'tcro165tzcrh2yl83g8qeqxueg2g5gzgu57y3fe3kc3',
-                network: CroNetwork.Testnet,
+                network: CroNetwork.TestnetCroeseid4,
                 type: AddressType.USER,
             };
 
@@ -170,7 +170,7 @@ describe('Validate address against network and checksums', function () {
         it('isValid should return false when the address is invalid', function () {
             const addressProps = {
                 address: 'tcrocncl1reyshfdygf7673xm9p8v0xvtd96m6cd6canhu3xcqa',
-                network: CroNetwork.Testnet,
+                network: CroNetwork.TestnetCroeseid4,
                 type: AddressType.USER,
             };
 
@@ -181,7 +181,7 @@ describe('Validate address against network and checksums', function () {
         it('isValid should return true when the address', function () {
             const addressProps = {
                 address: 'tcro165tzcrh2yl83g8qeqxueg2g5gzgu57y3fe3kc3',
-                network: CroNetwork.Testnet,
+                network: CroNetwork.TestnetCroeseid4,
                 type: AddressType.USER,
             };
 

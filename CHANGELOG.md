@@ -1,6 +1,11 @@
 # Changelog
 
 All notable changes to this project will be documented in this file.
+## v1.2.0
+- CroClient interface has been changed. Breaking changes to arguments and returns are introduced.
+- Bumped @cosmjs/stargate and @cosmjs/tendermint-rpc versions to v0.33.1
+- Removed discontinued Testnet networks in config
+
 ## v1.1.3
 - Remove dependencies from `web3 1.x`
 

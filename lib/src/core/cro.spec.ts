@@ -3,7 +3,7 @@ import { CroNetwork, CroSDK, InitConfigurations } from './cro';
 import { fuzzyDescribe } from '../test/mocha-fuzzy/suite';
 
 const anyValidOptions: () => InitConfigurations = () => ({
-    network: CroNetwork.Testnet,
+    network: CroNetwork.TestnetCroeseid4,
 });
 
 describe('Testing Cro Initialization configs', function () {
@@ -20,10 +20,10 @@ describe('Testing Cro Initialization configs', function () {
 
         it('should return a Cro with the provided network', function () {
             const cro = CroSDK({
-                network: CroNetwork.Testnet,
+                network: CroNetwork.TestnetCroeseid4,
             });
 
-            expect(cro.Options.network).to.eq(CroNetwork.Testnet);
+            expect(cro.Options.network).to.eq(CroNetwork.TestnetCroeseid4);
         });
     });
 });
