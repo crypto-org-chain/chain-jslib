@@ -5,7 +5,7 @@ import { fuzzyDescribe } from '../../test/mocha-fuzzy/suite';
 
 import { CroNetwork, CroSDK } from '../../core/cro';
 
-const cro = CroSDK({ network: CroNetwork.Testnet });
+const cro = CroSDK({ network: CroNetwork.TestnetCroeseid4 });
 
 describe('Coin', function () {
     describe('constructor', function () {
@@ -265,7 +265,7 @@ describe('Coin', function () {
             const anyCoin = cro.v2.CoinV2.fromBaseUnit('1000');
             expect(anyCoin.toCosmosCoin()).to.deep.eq({
                 amount: '1000',
-                denom: CroNetwork.Testnet.coin.baseDenom,
+                denom: CroNetwork.TestnetCroeseid4.coin.baseDenom,
             });
         });
     });

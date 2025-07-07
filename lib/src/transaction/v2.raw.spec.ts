@@ -10,7 +10,7 @@ import { SignableTransactionV2 } from './v2.signable';
 import utils from '../utils';
 import { SIGN_MODE } from './types';
 
-const cro = CroSDK({ network: CroNetwork.Testnet });
+const cro = CroSDK({ network: CroNetwork.TestnetCroeseid4 });
 
 const anyTransaction = () => new cro.v2.RawTransactionV2();
 
@@ -377,7 +377,7 @@ describe('Transaction', function () {
                 expect(() => {
                     anyTx.toCosmosJSON();
                 }).to.throw(
-                    "error converting RawTransaction to Cosmos compatible JSON: TypeError: Cannot read property 'value' of undefined",
+                    "error converting RawTransaction to Cosmos compatible JSON: TypeError: Cannot read properties of undefined (reading 'value')",
                 );
             });
 

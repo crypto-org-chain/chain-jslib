@@ -6,7 +6,7 @@ import { Secp256k1KeyPair } from '../keypair/secp256k1';
 import { Bytes } from '../utils/bytes/bytes';
 import { CroNetwork, CroSDK } from '../core/cro';
 
-const cro = CroSDK({ network: CroNetwork.Testnet });
+const cro = CroSDK({ network: CroNetwork.TestnetCroeseid4 });
 const croMainNet = CroSDK({ network: CroNetwork.Mainnet });
 
 describe('account', function () {
