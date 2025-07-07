@@ -114,7 +114,7 @@ describe('TxDecoder', function () {
                     '0a9b010a8c010a1c2f636f736d6f732e62616e6b2e763162657461312e4d736753656e64126c0a2b7463726f31667a63727a61336a3466323637376a667578756c6b6733337a36383532717371733868783530122b7463726f31667a63727a61336a3466323637376a667578756c6b6733337a363835327173717338687835301a100a08626173657463726f120431303030120a616d696e6f2074657374126b0a500a460a1f2f636f736d6f732e63727970746f2e736563703235366b312e5075624b657912230a210223c9395d41013e6470c8d27da8b75850554faada3fe3e812660cbdf4534a85d712040a020801180112170a110a08626173657463726f1205313030303010a08d061a4031f4c489b98decb367972790747139c7706f54aafd9e5a3a5ada4f72c7b017646f1eb5cb1bdf518603d5d8991466a13c3f68844dcd9b168b5d4ca0cb5ea514bc',
                 )
                 .toCosmosJSON(),
-        ).equal(JSON.stringify(cosmosTxObject));
+        ).equal(JSON.stringify({"body":{"messages":[{"@type":"/cosmos.bank.v1beta1.MsgSend","amount":[{"denom":"basetcro","amount":"1000"}],"from_address":"tcro1fzcrza3j4f2677jfuxulkg33z6852qsqs8hx50","to_address":"tcro1fzcrza3j4f2677jfuxulkg33z6852qsqs8hx50"}],"memo":"amino test","timeout_height":"0","extension_options":[],"non_critical_extension_options":[]},"auth_info":{"signer_infos":[{"public_key":{"@type":"/cosmos.crypto.secp256k1.PubKey","key":"AiPJOV1BAT5kcMjSfai3WFBVT6raP+PoEmYMvfRTSoXX"},"mode_info":{"single":{"mode":"SIGN_MODE_DIRECT"}},"sequence":"1"}],"fee":{"amount":[{"denom":"basetcro","amount":"10000"}],"gas_limit":"100000","payer":"","granter":""}},"signatures":["MfTEibmN7LNnlyeQdHE5x3BvVKr9nlo6WtpPcsewF2RvHrXLG99RhgPV2JkUZqE8P2iETc2bFotdTKDLXqUUvA=="]}));
     });
 
     context('`MsgCreateValidator`', function () {
