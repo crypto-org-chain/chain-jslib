@@ -3,7 +3,8 @@ import { HDKey } from './hdkey/hdkey';
 import { Secp256k1KeyPair } from './keypair/secp256k1';
 import utils from './utils';
 import { CroNetwork, CroSDK } from './core/cro';
-import { Units } from './coin/coin';
+import { CronosNetwork, CronosSDK } from './core/cronos';
+import { Units } from './coin/v2.coin/v2.coin';
 import { TxDecoder } from './utils/txDecoder';
 
 // The maximum number of decimal places of the results of operations involving division
@@ -15,7 +16,9 @@ const _ = {
     HDKey,
     Secp256k1KeyPair,
     CroSDK,
+    CronosSDK,
     CroNetwork,
+    CronosNetwork,
     Units,
     TxDecoder,
 };
