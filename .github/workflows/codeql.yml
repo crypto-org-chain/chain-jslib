@@ -1,0 +1,41 @@
+name: "CodeQL"
+
+on:
+  push:
+    branches: [ "dev", "bugFix-accountNumberProtoEncoding", "dependabot/npm_and_yarn/ansi-regex-3.0.1", "dependabot/npm_and_yarn/follow-redirects-1.15.1", "dependabot/npm_and_yarn/glob-parent-5.1.2", "dependabot/npm_and_yarn/lib/e2e/offline-signing/ansi-regex-3.0.1", "dependabot/npm_and_yarn/lib/e2e/offline-signing/minimist-1.2.6", "dependabot/npm_and_yarn/lib/e2e/tx-decoder/ansi-regex-3.0.1", "dependabot/npm_and_yarn/lib/e2e/tx-decoder/follow-redirects-1.14.8", "dependabot/npm_and_yarn/minimist-1.2.6", "dependabot/npm_and_yarn/moment-2.29.4", "dependabot/npm_and_yarn/pathval-1.1.1", "dependabot/npm_and_yarn/simple-get-2.8.2", "feature/amino-json", "feature/140a", "feature/140b", "feature/146", "jonghwan", "master", "tx-revamp-dev" ]
+  pull_request:
+    branches: [ "dev" ]
+  schedule:
+    - cron: "7 18 * * 1"
+
+jobs:
+  analyze:
+    name: Analyze
+    runs-on: ubuntu-latest
+    permissions:
+      actions: read
+      contents: read
+      security-events: write
+
+    strategy:
+      fail-fast: false
+      matrix:
+        language: [ javascript ]
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Initialize CodeQL
+        uses: github/codeql-action/init@v2
+        with:
+          languages: ${{ matrix.language }}
+          queries: +security-and-quality
+
+      - name: Autobuild
+        uses: github/codeql-action/autobuild@v2
+
+      - name: Perform CodeQL Analysis
+        uses: github/codeql-action/analyze@v2
+        with:
+          category: "/language:${{ matrix.language }}"
